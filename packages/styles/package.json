@@ -1,0 +1,14 @@
+{
+    "name": "@hanum/styles",
+    "main": "./src/index.ts",
+    "packageManager": "yarn@3.6.2",
+    "devDependencies": {
+        "@types/react": "^18.0.17",
+        "typescript": "^4.7.4"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.10.0",
+        "@emotion/styled": "^11.10.0",
+        "react": "^18.2.0"
+    }
+}

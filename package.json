@@ -1,0 +1,50 @@
+{
+  "name": "hanum-monorepo",
+  "version": "1.0.0",
+  "repository": "https://github.com/hansei-hanum/hanum-frontend.git",
+  "author": {
+    "name": "GeunWon Choi",
+    "email": "kidjustinchoi@gmail.com",
+    "url": "https://github.com/choi138"
+  },
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "hanum-auth": "yarn workspace @hanum/auth",
+    "hanum-forum": "yarn workspace @hanum/forum",
+    "format": "prettier \"{apps,packages}/**/*.{js,jsx,ts,tsx,json}\" --write --cache",
+    "lint": "eslint \"{apps,packages}/**/*.{js,jsx,ts,tsx}\" --fix --cache"
+  },
+  "packageManager": "yarn@3.6.2",
+  "devDependencies": {
+    "@emotion/native": "^11.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-native": "^4.0.0",
+    "expo": "^49.0.7",
+    "prettier": "^3.0.2",
+    "react": "^18.2.0",
+    "typescript": "^5.1.6"
+  },
+  "lint-staged": {
+    "**/*.+(ts|tsx|js|jsx)": [
+      "eslint --fix --cache",
+      "prettier --write"
+    ]
+  },
+  "private": true,
+  "license": "MIT"
+}
