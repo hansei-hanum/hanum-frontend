@@ -38,7 +38,7 @@ export const PhoneScreen: React.FC = () => {
                         style={{ marginBottom: 10 }}
                     />
                 </TouchableOpacity>
-                <Text size='28' fontFamily='bold'>휴대폰 번호를 알려 주세요</Text>
+                <Text size='28' fontFamily='bold'>휴대폰 번호를 알려주세요</Text>
                 <S.PhoneScreenInput
                     onChangeText={onPhoneChange}
                     value={phone}
