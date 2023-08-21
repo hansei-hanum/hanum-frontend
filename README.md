@@ -5,7 +5,7 @@
 ## commands
 
 ```bash
-$ git clone https://github.com/hansei-hanum/hanum-frontend
+$ git clone https://github.com/hansei-hanum/hanum-frontend.git
 $ cd hanum-frontend
 $ yarn install
 
