@@ -8522,6 +8522,7 @@ __metadata:
   resolution: "hanum-monorepo@workspace:."
   dependencies:
     "@emotion/native": ^11.11.0
+    "@expo/vector-icons": ^13.0.0
     "@typescript-eslint/eslint-plugin": ^6.4.0
     "@typescript-eslint/parser": ^6.4.0
     babel-plugin-module-resolver: ^5.0.0

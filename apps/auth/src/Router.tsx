@@ -11,9 +11,12 @@ import {
   SpoqaHanSansNeoRegular,
   SpoqaHanSansNeoLight,
   SpoqaHanSansNeoThin,
+  Logo,
 } from '@hanum/assets';
+
 import { MainScreen } from './screens';
 import { PhoneScreen } from './screens/phone';
+import { Image, Text, View } from 'react-native';
 
 const stack = createStackNavigator();
 
@@ -59,6 +62,6 @@ export const Router: React.FC = () => {
         <stack.Screen name="Main" component={MainScreen} />
         <stack.Screen name="Phone" component={PhoneScreen} />
       </stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
   );
 };

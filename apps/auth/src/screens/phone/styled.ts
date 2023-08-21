@@ -10,10 +10,11 @@ export const PhoneScreenContainer = styled.View`
     justify-content: space-between;
 `;
 
-export const PhoneScreenInputContainer = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`
+
+export const PhoneScreenInputContainer = styled.View`
     justify-content: flex-start;
     align-items: flex-start;
-    row-gap: 30px;
+    row-gap: 20px;
 `;
 
 export const PhoneScreenInput = styled(TextInput)`
@@ -24,7 +25,7 @@ export const PhoneScreenInput = styled(TextInput)`
     font-family: ${fonts.medium};
 `;
 
-export const ButtonWrapper = styled.View`
+export const ButtonWrapper = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`
     width: 100%;
     justify-content: center;
     align-items: center;

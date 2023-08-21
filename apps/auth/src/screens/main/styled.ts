@@ -1,5 +1,4 @@
 import { WithLocalSvg } from 'react-native-svg';
-
 import styled from '@emotion/native';
 import { colors } from '@hanum/styles';
 
@@ -18,10 +17,6 @@ export const MainScreenLogoContainer = styled.View`
   justify-content: center;
   align-items: center;
   row-gap: 10px;
-`;
-
-export const MainScreenLogo = styled(WithLocalSvg)`
-
 `;
 
 export const MainScreenButtonContainer = styled.View`

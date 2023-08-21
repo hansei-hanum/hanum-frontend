@@ -48,6 +48,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "react-native-svg": "^13.11.0"
   }
 }

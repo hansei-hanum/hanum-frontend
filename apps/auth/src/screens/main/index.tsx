@@ -7,6 +7,7 @@ import { Button, Text } from '@hanum/components';
 import { colors } from '@hanum/styles';
 
 import * as S from './styled';
+import { WithLocalSvg } from 'react-native-svg';
 
 export const MainScreen: React.FC = () => {
   const navigate = useNavigation().navigate as (s: string) => void;
@@ -14,7 +15,7 @@ export const MainScreen: React.FC = () => {
   return (
     <S.MainScreenContainer>
       <S.MainScreenLogoContainer>
-        <S.MainScreenLogo width={180} height={50} asset={Logo} />
+        <WithLocalSvg width={180} height={50} asset={Logo} />
         <Text size='16' fontFamily="bold">
           한세인 도우미, 한움
         </Text>
