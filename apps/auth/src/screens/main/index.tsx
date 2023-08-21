@@ -14,7 +14,7 @@ export const MainScreen: React.FC = () => {
   return (
     <S.MainScreenContainer>
       <S.MainScreenLogoContainer>
-        <S.MainScreenLogo source={Logo} />
+        <S.MainScreenLogo width={180} height={50} asset={Logo} />
         <Text size='16' fontFamily="bold">
           한세인 도우미, 한움
         </Text>

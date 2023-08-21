@@ -1,6 +1,7 @@
 import styled from "@emotion/native";
 import { colors, fonts } from "@hanum/styles";
 import { TextInput } from "@react-native-material/core";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 
 export const PhoneScreenContainer = styled.View`    
     flex: 1;
@@ -9,7 +10,7 @@ export const PhoneScreenContainer = styled.View`
     justify-content: space-between;
 `;
 
-export const PhoneScreenInputContainer = styled.View`
+export const PhoneScreenInputContainer = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`
     justify-content: flex-start;
     align-items: flex-start;
     row-gap: 30px;

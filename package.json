@@ -46,5 +46,8 @@
     ]
   },
   "private": true,
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-native-svg": "^13.11.0"
+  }
 }

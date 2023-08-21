@@ -3,7 +3,7 @@ import * as S from "./styled"
 import { Button, Text } from "@hanum/components"
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
-import {  TextInputProps } from "@react-native-material/core";
+import { TextInputProps } from "@react-native-material/core";
 import { useRef, useState } from "react";
 
 import { checkNumber } from "src/utils";
