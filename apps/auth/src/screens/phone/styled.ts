@@ -1,9 +1,10 @@
 import styled from "@emotion/native";
 import { colors, fonts } from "@hanum/styles";
+import { TextInput } from "@react-native-material/core";
 
-export const PhoneScreenContainer = styled.TouchableOpacity`    
+export const PhoneScreenContainer = styled.View`    
     flex: 1;
-    padding: 70px 0 30px 20px;
+    padding: 70px 20px 30px 20px;
     background-color: ${colors.white};
     justify-content: space-between;
 `;
@@ -14,15 +15,16 @@ export const PhoneScreenInputContainer = styled.View`
     row-gap: 30px;
 `;
 
-export const PhoneScreenInput = styled.TextInput<{ isDisabled: boolean }>`
-    width: 95%;
+export const PhoneScreenInput = styled(TextInput)`
+    width: 100%;
     padding: 10px 0;
     margin-right: 20px;
-    border-bottom-width: 1px;
-    border-bottom-color: ${({ isDisabled }) => isDisabled ? colors.danger : colors.secondary};
     font-size: 16px;
     font-family: ${fonts.medium};
-    &::placeholder {
-        color: ${colors.black};
-    }
+`;
+
+export const ButtonWrapper = styled.View`
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 `;

@@ -3,21 +3,17 @@ import * as S from "./styled"
 import { Button, Text } from "@hanum/components"
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
-
+import {  TextInputProps } from "@react-native-material/core";
 import { useRef, useState } from "react";
-import { TextInput } from "react-native-gesture-handler";
 
 import { checkNumber } from "src/utils";
+import { colors } from "@hanum/styles";
 
 export const PhoneScreen: React.FC = () => {
     const [phone, setPhone] = useState<string>('');
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
-    const phoneRef = useRef<TextInput>(null);
+    const phoneRef = useRef<TextInputProps>(null);
     const navigation = useNavigation();
-
-    const inputFocusOut = () => {
-        phoneRef.current?.blur();
-    }
 
     const onPhoneChange = (phone: string) => {
         const newPhone = checkNumber(phone);
@@ -31,23 +27,27 @@ export const PhoneScreen: React.FC = () => {
     }
 
     return (
-        <S.PhoneScreenContainer activeOpacity={1} onPress={inputFocusOut}>
+        <S.PhoneScreenContainer >
             <S.PhoneScreenInputContainer>
                 <AntDesign name="left" size={32} color="black" onPress={() => navigation.goBack()} />
                 <Text size='28' fontFamily='bold'>휴대폰 번호를 알려 주세요</Text>
                 <S.PhoneScreenInput
-                    isDisabled={isDisabled}
                     onChangeText={onPhoneChange}
-                    ref={phoneRef}
                     value={phone}
-                    placeholder="휴대폰 번호"
+                    variant="standard"
+                    label="휴대폰 번호"
                     keyboardType="numeric"
                     maxLength={11}
+                    color={colors.placeholder}
+                    inputContainerStyle={{ borderBottomColor: colors.placeholder }}
+                    inputStyle={{ fontSize: 20 }}
                 />
             </S.PhoneScreenInputContainer>
-            <Button isDisabled={isDisabled}>
-                다음
-            </Button>
+            <S.ButtonWrapper>
+                <Button isDisabled={isDisabled}>
+                    다음
+                </Button>
+            </S.ButtonWrapper>
         </S.PhoneScreenContainer>
     )
 }

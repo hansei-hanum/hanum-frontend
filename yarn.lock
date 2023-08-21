@@ -2590,6 +2590,7 @@ __metadata:
     "@hanum/assets": "workspace:^"
     "@hanum/components": "workspace:^"
     "@hanum/styles": "workspace:^"
+    "@react-native-material/core": ^1.3.7
     "@react-navigation/native": ^6.1.7
     "@react-navigation/stack": ^6.3.17
     "@types/react": ~18.0.14
@@ -3110,6 +3111,19 @@ __metadata:
   bin:
     react-native: build/bin.js
   checksum: 6d9f6544521c72212a3ab5e76a94d98c65072b5d15af6f533e8d6e36068dceff3fee5c1d5014d0f856ab54c63658849ee6be59911e087e95ef361bb43bcb6ad2
+  languageName: node
+  linkType: hard
+
+"@react-native-material/core@npm:^1.3.7":
+  version: 1.3.7
+  resolution: "@react-native-material/core@npm:1.3.7"
+  dependencies:
+    chroma-js: ^2.4.2
+    react-native-flex-layout: ^0.1.5
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 16ed4c7dc148d4061db38b2e7bedbb7c3c9c506dcabde003431ac55eb01d2a9280223c8ba1cd3cb4d9f76e64d50884445ad8345107efa65a4983e45af45a71a8
   languageName: node
   linkType: hard
 
@@ -5378,6 +5392,13 @@ __metadata:
   version: 2.0.0
   resolution: "chownr@npm:2.0.0"
   checksum: c57cf9dd0791e2f18a5ee9c1a299ae6e801ff58fee96dc8bfd0dcb4738a6ce58dd252a3605b1c93c6418fe4f9d5093b28ffbf4d66648cb2a9c67eaef9679be2f
+  languageName: node
+  linkType: hard
+
+"chroma-js@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "chroma-js@npm:2.4.2"
+  checksum: cf9884c02d406286e4370599bcd1afbf089384407df46b3a69edfedcba7bb99e8f959a5cfdbfec750b305c441c06ca40cd1f70ba3a6c2ce739ac09a92520ddae
   languageName: node
   linkType: hard
 
@@ -12820,6 +12841,16 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-native-flex-layout@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "react-native-flex-layout@npm:0.1.5"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 82aa1e66bb0f7feacf1419c586a3b35931de27efeebab24127a5e2d5589e41f0d9591c204f2ab354c4e71e6b40420ee20f7e99929a6e65476ed283ac445ad3fd
   languageName: node
   linkType: hard
 
