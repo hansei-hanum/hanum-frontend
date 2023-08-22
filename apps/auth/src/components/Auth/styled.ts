@@ -14,13 +14,11 @@ export const AuthInputContainer = styled.View`
     justify-content: flex-start;
     align-items: flex-start;
     row-gap: 20px;
-    border: 1px solid red;
 `;
 
 export const AuthTextContainer = styled.View`
     flex-direction: column;
-    /* row-gap: 6px; */
-    border: 1px solid blue;
+    row-gap: 6px;
 `;
 
 export const AuthInput = styled(TextInput)`

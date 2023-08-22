@@ -3,6 +3,7 @@ import { colors } from "@hanum/styles";
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { Auth } from "src/components/Auth";
+import * as S from "./styled"
 
 export const VerifyCodeScreen: React.FC = () => {
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -10,12 +11,12 @@ export const VerifyCodeScreen: React.FC = () => {
         <Auth
             headerText={`인증 번호를 보냈어요!\n` + `받은 인증 번호를 입력해 주세요`}
             subHeaderText={
-                <>
+                <S.VerifyCodeTextContainer>
                     <Text size="16">문자가 안 오나요?</Text>
                     <TouchableOpacity activeOpacity={0.2}>
-                        <Text size="16" color={colors.primary}>재전송 하기</Text>
+                        <Text size="16" color={colors.primary}> 재전송 하기</Text>
                     </TouchableOpacity>
-                </>
+                </S.VerifyCodeTextContainer>
             }
             bottomText="인증하기"
             isDisabled={isDisabled}
