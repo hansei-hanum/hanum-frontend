@@ -55,12 +55,14 @@ export const MainScreen: React.FC = () => {
               onPress={() => { onButtonPress('Name') }}
               width="48"
               isSecondary
+              isModalBtn
             >
               아니오
             </Button>
             <Button
               onPress={() => { onButtonPress('SelfCheck') }}
               width="48"
+              isModalBtn
             >
               예!
             </Button>

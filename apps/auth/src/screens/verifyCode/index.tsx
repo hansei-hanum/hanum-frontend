@@ -11,11 +11,13 @@ import {
 } from 'react-native-confirmation-code-field';
 import * as S from "./styled"
 import { checkNumber } from "src/utils";
+import { useNavigation } from "@react-navigation/native";
 
 const CELL_COUNT = 6;
 const RESEND_TIME = 60 * 1000; // 1 minute in milliseconds
 
 export const VerifyCodeScreen: React.FC = () => {
+    const navigate = useNavigation().navigate as (s: string) => void;
     const [value, setValue] = useState('');
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [lastInputTime, setLastInputTime] = useState<number>(0);
@@ -56,6 +58,10 @@ export const VerifyCodeScreen: React.FC = () => {
         }
     };
 
+    const onSubmit = () => {
+        navigate('Success');
+    }
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             setModalVisible(true);
@@ -81,7 +87,7 @@ export const VerifyCodeScreen: React.FC = () => {
                 }
                 bottomText="인증하기"
                 isDisabled={isDisabled}
-                onPress={() => { console.log('인증번호 보냄') }}
+                onPress={onSubmit}
             >
                 <CodeField
                     ref={codeFieldRef}
@@ -108,7 +114,7 @@ export const VerifyCodeScreen: React.FC = () => {
                 title="인증 시간 초과"
                 text={`인증번호를 입력할 수 있는 시간이 지났어요.\n` + `처음부터 다시 시도해 주세요.`}
                 modalVisible={modalVisible}
-                button={<Button onPress={() => setModalVisible(false)}>확인</Button>}
+                button={<Button onPress={() => setModalVisible(false)} isModalBtn>확인</Button>}
             />
         </>
     )

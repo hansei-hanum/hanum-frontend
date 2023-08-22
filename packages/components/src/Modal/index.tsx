@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 import * as S from "./styled";
-import { Pressable } from "react-native";
 import { Modal as ModalElement } from "react-native";
-import { colors } from "@hanum/styles";
 import { Text } from "../Text";
 
 export interface ModalProps {
