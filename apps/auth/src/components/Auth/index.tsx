@@ -33,7 +33,7 @@ export const Auth: React.FC<AuthProps> = ({ children, isDisabled, headerText, su
                 <S.AuthTextContainer>
                     <Text size='26' fontFamily='bold'>{headerText.split('\n').map((line, index) => (
                         <>
-                            {headerText.split('\n').length > 1 && index > 0 ? <>{line}</> : <>{line}{'\n'}</>}
+                            {line}{index !== headerText.split('\n').length - 1 && <>{'\n'}</>}
                         </>
                     ))}
                     </Text>

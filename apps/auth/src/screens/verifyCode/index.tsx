@@ -1,6 +1,6 @@
 import { Text } from "@hanum/components";
 import { colors } from "@hanum/styles";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { Auth } from "src/components/Auth";
 import {
@@ -11,13 +11,18 @@ import {
 } from 'react-native-confirmation-code-field';
 import * as S from "./styled"
 import { checkNumber } from "src/utils";
+import moment from "moment";
 
 const CELL_COUNT = 6;
+const RESEND_TIME = 60 * 1000; // 1 minute in milliseconds
 
 export const VerifyCodeScreen: React.FC = () => {
     const [value, setValue] = useState('');
-    const codeFieldRef = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
+    const [lastInputTime, setLastInputTime] = useState<number>(0);
+    const [lastResendTime, setLastResendTime] = useState<number>(0);
+    const [resend, setResend] = useState({ message: '재전송 하기', color: colors.primary });
+    const codeFieldRef = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
         value,
         setValue,
@@ -28,7 +33,37 @@ export const VerifyCodeScreen: React.FC = () => {
         const codeValidationRegex = /^\d{6}$/;
         codeValidationRegex.test(newText) ? setIsDisabled(false) : setIsDisabled(true);
         setValue(newText);
+        setLastInputTime(Date.now());
     };
+
+    const handleResend = () => {
+        const currentTime = Date.now();
+        if (currentTime - lastResendTime <= RESEND_TIME) {
+            setResend({ message: '1분에 한번만 전송 가능해요', color: colors.danger });
+        } else {
+            setResend({ message: '전송되었어요!', color: colors.primary });
+            setLastResendTime(currentTime);
+        }
+
+        const resendClear = setInterval(() => {
+            setResend({ message: '재전송 하기', color: colors.primary });
+            setLastResendTime(currentTime);
+        }, 60 * 1000);
+
+        return () => {
+            clearInterval(resendClear);
+        }
+    };
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            console.log('입력 시간이 초과되었습니다.');
+        }, 5 * 60 * 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [lastInputTime]);
 
     return (
         <Auth
@@ -36,14 +71,14 @@ export const VerifyCodeScreen: React.FC = () => {
             subHeaderText={
                 <S.VerifyCodeScreenTextContainer>
                     <Text size="16">문자가 안 오나요?</Text>
-                    <TouchableOpacity activeOpacity={0.2}>
-                        <Text size="16" color={colors.primary}> 재전송 하기</Text>
+                    <TouchableOpacity {...resend.color !== colors.danger ? { activeOpacity: 0.2 } : { activeOpacity: 1 }} onPress={handleResend} >
+                        <Text size="16" color={resend.color}> {resend.message}</Text>
                     </TouchableOpacity>
-                </S.VerifyCodeScreenTextContainer>
+                </S.VerifyCodeScreenTextContainer >
             }
             bottomText="인증하기"
             isDisabled={isDisabled}
-            onPress={() => console.log('인증하기')}
+            onPress={() => { console.log('인증번호 보냄') }}
         >
             <CodeField
                 ref={codeFieldRef}
@@ -65,6 +100,6 @@ export const VerifyCodeScreen: React.FC = () => {
                     </S.VerifyCodeScreenInput>
                 )}
             />
-        </Auth>
+        </Auth >
     )
 }
