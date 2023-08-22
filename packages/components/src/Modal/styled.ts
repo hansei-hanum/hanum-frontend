@@ -15,12 +15,12 @@ export const ModalContainer = styled.View`
     width: 90%;
     border-radius: 16px;
     background-color: ${colors.white};
-    padding: 20px 0;
+    padding: 14px;
     row-gap: 20px;
 `;
 
 export const DummyContainer = styled.View`  
-flex: 1;
+    flex: 1;
     position: absolute;
     z-index: 999;
     width: 100%;

@@ -2,8 +2,8 @@ import styled from '@emotion/native';
 
 import { colors, fonts } from '@hanum/styles';
 
-export const ButtonElement = styled.TouchableOpacity<{ isSecondary?: boolean; isDisabled?: boolean, isModal?: boolean }>`
-  width: ${({ isModal }) => isModal ? '90%' : '100%'};
+export const ButtonElement = styled.TouchableOpacity<{ isSecondary?: boolean; isDisabled?: boolean }>`
+  width: 100%;
   border-radius: 10px;
   background-color: ${({ isSecondary, isDisabled }) => isSecondary || isDisabled ? colors.secondary : colors.primary};
   color: ${colors.white};

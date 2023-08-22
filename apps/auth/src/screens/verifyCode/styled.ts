@@ -10,15 +10,6 @@ export const VerifyCodeScreenContainer = styled.View`
     background-color: ${colors.primary};
 `;
 
-
-export const DummyContainer = styled.View`  
-    position: absolute;
-    z-index: 999;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-`;
-
 export const VerifyCodeScreenTextContainer = styled.View` 
     flex-direction: row;
     align-items: center;

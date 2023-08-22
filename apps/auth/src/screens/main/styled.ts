@@ -19,7 +19,7 @@ export const MainScreenLogoContainer = styled.View`
   row-gap: 10px;
 `;
 
-export const MainScreenButtonContainer = styled.View`
+export const MainScreenMainSection = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -29,5 +29,12 @@ export const MainScreenButtonContainer = styled.View`
 
 export const MainScreenTextContainer = styled.View`
   flex-direction: row;
+  align-items: center;
+`;
+
+export const MainScreenButtonContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 `;

@@ -1,8 +1,8 @@
-import { Button, Modal, Text } from "@hanum/components";
+import { Button, DummyContainer, Modal, Text } from "@hanum/components";
 import { colors } from "@hanum/styles";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
-import { Auth } from "src/components/Auth";
+import { Auth } from "src/components";
 import {
     CodeField,
     Cursor,
@@ -11,7 +11,6 @@ import {
 } from 'react-native-confirmation-code-field';
 import * as S from "./styled"
 import { checkNumber } from "src/utils";
-import moment from "moment";
 
 const CELL_COUNT = 6;
 const RESEND_TIME = 60 * 1000; // 1 minute in milliseconds
@@ -38,6 +37,7 @@ export const VerifyCodeScreen: React.FC = () => {
     };
 
     const handleResend = () => {
+        setModalVisible(true);
         const currentTime = Date.now();
         if (currentTime - lastResendTime <= RESEND_TIME) {
             setResend({ message: '1분에 한번만 전송 가능해요', color: colors.danger });
@@ -68,7 +68,7 @@ export const VerifyCodeScreen: React.FC = () => {
 
     return (
         <>
-            {modalVisible && <S.DummyContainer />}
+            {modalVisible && <DummyContainer />}
             <Auth
                 headerText={`인증 번호를 보냈어요!\n` + `받은 인증 번호를 입력해 주세요`}
                 subHeaderText={
@@ -103,13 +103,13 @@ export const VerifyCodeScreen: React.FC = () => {
                         </S.VerifyCodeScreenInput>
                     )}
                 />
-                <Modal
-                    title="인증 시간 초과"
-                    text={`인증번호를 입력할 수 있는 시간이 지났어요.\n` + `처음부터 다시 시도해 주세요.`}
-                    modalVisible={modalVisible}
-                    button={<Button onPress={() => setModalVisible(false)} isModal={true}>확인</Button>}
-                />
             </Auth >
+            <Modal
+                title="인증 시간 초과"
+                text={`인증번호를 입력할 수 있는 시간이 지났어요.\n` + `처음부터 다시 시도해 주세요.`}
+                modalVisible={modalVisible}
+                button={<Button onPress={() => setModalVisible(false)}>확인</Button>}
+            />
         </>
     )
 }
