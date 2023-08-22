@@ -31,9 +31,9 @@ export const Auth: React.FC<AuthProps> = ({ children, isDisabled, headerText, su
                     />
                 </TouchableOpacity>
                 <S.AuthTextContainer>
-                    <Text size='28' fontFamily='bold'>{headerText.split('\n').map((line, index) => (
+                    <Text size='26' fontFamily='bold'>{headerText.split('\n').map((line, index) => (
                         <>
-                            {headerText.split('\n').length > 1 && index > 0 ? <>{line}{'\n'}</> : <>{line}</>}
+                            {headerText.split('\n').length > 1 && index > 0 ? <>{line}</> : <>{line}{'\n'}</>}
                         </>
                     ))}
                     </Text>
