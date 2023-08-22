@@ -14,8 +14,7 @@ import {
   Logo,
 } from '@hanum/assets';
 
-import { MainScreen } from './screens';
-import { PhoneScreen } from './screens/phone';
+import { MainScreen, PhoneScreen, VerifyCodeScreen } from './screens';
 import { Image, Text, View } from 'react-native';
 
 const stack = createStackNavigator();
@@ -58,9 +57,10 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="MainScreen">
+      <stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Main">
         <stack.Screen name="Main" component={MainScreen} />
         <stack.Screen name="Phone" component={PhoneScreen} />
+        <stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
       </stack.Navigator>
     </NavigationContainer >
   );
