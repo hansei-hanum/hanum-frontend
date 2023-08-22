@@ -14,7 +14,7 @@ import {
   Logo,
 } from '@hanum/assets';
 
-import { MainScreen, PhoneScreen, VerifyCodeScreen } from './screens';
+import { MainScreen, PhoneScreen, SelfCheckScreen, VerifyCodeScreen } from './screens';
 import { Image, Text, View } from 'react-native';
 
 const stack = createStackNavigator();
@@ -61,6 +61,7 @@ export const Router: React.FC = () => {
         <stack.Screen name="Main" component={MainScreen} />
         <stack.Screen name="Phone" component={PhoneScreen} />
         <stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
+        <stack.Screen name="SelfCheck" component={SelfCheckScreen} />
       </stack.Navigator>
     </NavigationContainer >
   );
