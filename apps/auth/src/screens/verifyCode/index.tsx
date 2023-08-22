@@ -38,7 +38,6 @@ export const VerifyCodeScreen: React.FC = () => {
     };
 
     const handleResend = () => {
-        setModalVisible(true);
         const currentTime = Date.now();
         if (currentTime - lastResendTime <= RESEND_TIME) {
             setResend({ message: '1분에 한번만 전송 가능해요', color: colors.danger });
