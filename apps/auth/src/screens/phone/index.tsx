@@ -3,18 +3,18 @@ import * as S from "./styled"
 import { Button, Text } from "@hanum/components"
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
-import { TextInputProps } from "@react-native-material/core";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { checkNumber } from "src/utils";
 import { colors } from "@hanum/styles";
 import { TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { Auth } from "src/components";
 
 export const PhoneScreen: React.FC = () => {
     const [phone, setPhone] = useState<string>('');
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const navigation = useNavigation();
+    const navigate = navigation.navigate as (screen: string) => void;
 
     const onPhoneChange = (phone: string) => {
         const newPhone = checkNumber(phone);
@@ -28,34 +28,23 @@ export const PhoneScreen: React.FC = () => {
     }
 
     return (
-        <S.PhoneScreenContainer>
-            <S.PhoneScreenInputContainer>
-                <TouchableOpacity activeOpacity={0.2} onPress={() => navigation.goBack()}>
-                    <Entypo
-                        name="chevron-thin-left"
-                        size={28}
-                        color="black"
-                        style={{ marginBottom: 10 }}
-                    />
-                </TouchableOpacity>
-                <Text size='28' fontFamily='bold'>휴대폰 번호를 알려 주세요</Text>
-                <S.PhoneScreenInput
-                    onChangeText={onPhoneChange}
-                    value={phone}
-                    variant="standard"
-                    label="휴대폰 번호"
-                    keyboardType="numeric"
-                    maxLength={11}
-                    color={colors.placeholder}
-                    inputContainerStyle={{ borderBottomColor: colors.placeholder }}
-                    inputStyle={{ fontSize: 20 }}
-                />
-            </S.PhoneScreenInputContainer>
-            <S.ButtonWrapper behavior="padding" keyboardVerticalOffset={15}>
-                <Button isDisabled={isDisabled}>
-                    다음
-                </Button>
-            </S.ButtonWrapper>
-        </S.PhoneScreenContainer>
+        <Auth
+            headerText="휴대폰 번호를 알려주세요"
+            bottomText="다음"
+            onPress={() => navigate('VerifyCode')}
+            isDisabled={isDisabled}
+        >
+            <S.PhoneScreenInput
+                onChangeText={onPhoneChange}
+                value={phone}
+                variant="standard"
+                label="휴대폰 번호"
+                keyboardType="numeric"
+                maxLength={11}
+                color={colors.placeholder}
+                inputContainerStyle={{ borderBottomColor: colors.placeholder }}
+                inputStyle={{ fontSize: 20 }}
+            />
+        </Auth>
     )
 }
