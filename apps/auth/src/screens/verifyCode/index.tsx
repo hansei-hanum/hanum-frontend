@@ -1,4 +1,4 @@
-import { Text } from "@hanum/components";
+import { Button, Modal, Text } from "@hanum/components";
 import { colors } from "@hanum/styles";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
@@ -12,7 +12,6 @@ import {
 import * as S from "./styled"
 import { checkNumber } from "src/utils";
 import moment from "moment";
-import { Modal } from "src/components";
 
 const CELL_COUNT = 6;
 const RESEND_TIME = 60 * 1000; // 1 minute in milliseconds
@@ -28,6 +27,7 @@ export const VerifyCodeScreen: React.FC = () => {
         value,
         setValue,
     });
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
 
     const onChangeText = (text: string) => {
         const newText = checkNumber(text);
@@ -38,6 +38,7 @@ export const VerifyCodeScreen: React.FC = () => {
     };
 
     const handleResend = () => {
+        setModalVisible(true);
         const currentTime = Date.now();
         if (currentTime - lastResendTime <= RESEND_TIME) {
             setResend({ message: '1분에 한번만 전송 가능해요', color: colors.danger });
@@ -58,7 +59,7 @@ export const VerifyCodeScreen: React.FC = () => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            console.log('입력 시간이 초과되었습니다.');
+            setModalVisible(true);
         }, 5 * 60 * 1000);
 
         return () => {
@@ -67,43 +68,49 @@ export const VerifyCodeScreen: React.FC = () => {
     }, [lastInputTime]);
 
     return (
-        // <Auth
-        //     headerText={`인증 번호를 보냈어요!\n` + `받은 인증 번호를 입력해 주세요`}
-        //     subHeaderText={
-        //         <S.VerifyCodeScreenTextContainer>
-        //             <Text size="16">문자가 안 오나요?</Text>
-        //             <TouchableOpacity {...resend.color !== colors.danger ? { activeOpacity: 0.2 } : { activeOpacity: 1 }} onPress={handleResend} >
-        //                 <Text size="16" color={resend.color}> {resend.message}</Text>
-        //             </TouchableOpacity>
-        //         </S.VerifyCodeScreenTextContainer >
-        //     }
-        //     bottomText="인증하기"
-        //     isDisabled={isDisabled}
-        //     onPress={() => { console.log('인증번호 보냄') }}
-        // >
-        //     <CodeField
-        //         ref={codeFieldRef}
-        //         {...props}
-        //         value={value}
-        //         onChangeText={onChangeText}
-        //         cellCount={CELL_COUNT}
-        //         caretHidden={true}
-        //         keyboardType="number-pad"
-        //         textContentType="oneTimeCode"
-        //         rootStyle={{
-        //             width: '100%',
-        //         }}
-        //         renderCell={({ index, symbol, isFocused }) => (
-        //             <S.VerifyCodeScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
-        //                 <Text size="20" fontFamily="medium">
-        //                     {symbol || (isFocused ? <Cursor /> : null)}
-        //                 </Text>
-        //             </S.VerifyCodeScreenInput>
-        //         )}
-        //     />
-        // </Auth >
         <>
-            <Modal />
+            {modalVisible && <S.DummyContainer />}
+            <Auth
+                headerText={`인증 번호를 보냈어요!\n` + `받은 인증 번호를 입력해 주세요`}
+                subHeaderText={
+                    <S.VerifyCodeScreenTextContainer>
+                        <Text size="16">문자가 안 오나요?</Text>
+                        <TouchableOpacity {...resend.color !== colors.danger ? { activeOpacity: 0.2 } : { activeOpacity: 1 }} onPress={handleResend} >
+                            <Text size="16" color={resend.color}> {resend.message}</Text>
+                        </TouchableOpacity>
+                    </S.VerifyCodeScreenTextContainer >
+                }
+                bottomText="인증하기"
+                isDisabled={isDisabled}
+                onPress={() => { console.log('인증번호 보냄') }}
+            >
+                <CodeField
+                    ref={codeFieldRef}
+                    {...props}
+                    value={value}
+                    onChangeText={onChangeText}
+                    cellCount={CELL_COUNT}
+                    caretHidden={true}
+                    keyboardType="number-pad"
+                    textContentType="oneTimeCode"
+                    rootStyle={{
+                        width: '100%',
+                    }}
+                    renderCell={({ index, symbol, isFocused }) => (
+                        <S.VerifyCodeScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
+                            <Text size="20" fontFamily="medium">
+                                {symbol || (isFocused ? <Cursor /> : null)}
+                            </Text>
+                        </S.VerifyCodeScreenInput>
+                    )}
+                />
+                <Modal
+                    title="인증 시간 초과"
+                    text={`인증번호를 입력할 수 있는 시간이 지났어요.\n` + `처음부터 다시 시도해 주세요.`}
+                    modalVisible={modalVisible}
+                    button={<Button onPress={() => setModalVisible(false)} isModal={true}>확인</Button>}
+                />
+            </Auth >
         </>
     )
 }

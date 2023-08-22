@@ -9,14 +9,16 @@ export interface ButtonProps {
   children: React.ReactNode;
   isSecondary?: boolean;
   isDisabled?: boolean;
+  isModal?: boolean;
   onPress?: () => void;
 }
 
-export const Button: React.FC<ButtonProps> = ({ children, isSecondary, onPress, isDisabled }) => {
+export const Button: React.FC<ButtonProps> = ({ children, isSecondary, onPress, isDisabled, isModal }) => {
   return (
     <S.ButtonElement
       {...!isDisabled && { onPress: onPress }}
       isDisabled={isDisabled}
+      isModal={isModal}
       isSecondary={isSecondary}
       activeOpacity={0.8}
     >
