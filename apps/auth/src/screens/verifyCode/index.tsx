@@ -39,7 +39,6 @@ export const VerifyCodeScreen: React.FC = () => {
     };
 
     const handleResend = () => {
-        setModalVisible(true);
         const currentTime = Date.now();
         if (currentTime - lastResendTime <= RESEND_TIME) {
             setResend({ message: '1분에 한번만 전송 가능해요', color: colors.danger });
@@ -79,7 +78,7 @@ export const VerifyCodeScreen: React.FC = () => {
                 headerText={`인증 번호를 보냈어요!\n` + `받은 인증 번호를 입력해 주세요`}
                 subHeaderText={
                     <S.VerifyCodeScreenTextContainer>
-                        <Text size="16">문자가 안 오나요?</Text>
+                        <Text size="16" fontFamily='regular'>문자가 안 오나요?</Text>
                         <TouchableOpacity {...resend.color !== colors.danger ? { activeOpacity: 0.2 } : { activeOpacity: 1 }} onPress={handleResend} >
                             <Text size="16" color={resend.color}> {resend.message}</Text>
                         </TouchableOpacity>
@@ -96,7 +95,7 @@ export const VerifyCodeScreen: React.FC = () => {
                     onChangeText={onChangeText}
                     cellCount={CELL_COUNT}
                     caretHidden={true}
-                    keyboardType="number-pad"
+                    keyboardType='numeric'
                     textContentType="oneTimeCode"
                     rootStyle={{
                         width: '100%',

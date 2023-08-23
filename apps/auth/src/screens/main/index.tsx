@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useNavigation } from '@react-navigation/native';
-import { Logo } from '@hanum/assets';
+import { Logo } from 'src/assets';
 import { Button, DummyContainer, Modal, Text } from '@hanum/components';
 import { colors } from '@hanum/styles';
 
