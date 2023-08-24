@@ -2628,6 +2628,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@hanum/main@workspace:apps/main":
+  version: 0.0.0-use.local
+  resolution: "@hanum/main@workspace:apps/main"
+  dependencies:
+    "@babel/core": ^7.20.0
+    "@hanum/components": "workspace:^"
+    "@hanum/styles": "workspace:^"
+    "@types/react": ~18.0.14
+    expo: ~49.0.8
+    expo-status-bar: ~1.6.0
+    react: 18.2.0
+    react-native: 0.72.4
+    typescript: ^5.1.3
+  languageName: unknown
+  linkType: soft
+
 "@hanum/styles@workspace:^, @hanum/styles@workspace:packages/styles":
   version: 0.0.0-use.local
   resolution: "@hanum/styles@workspace:packages/styles"
@@ -7767,7 +7783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:^49.0.7, expo@npm:~49.0.7":
+"expo@npm:^49.0.7, expo@npm:~49.0.7, expo@npm:~49.0.8":
   version: 49.0.8
   resolution: "expo@npm:49.0.8"
   dependencies:
@@ -13350,7 +13366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:^0.72.4":
+"react-native@npm:0.72.4, react-native@npm:^0.72.4":
   version: 0.72.4
   resolution: "react-native@npm:0.72.4"
   dependencies:
