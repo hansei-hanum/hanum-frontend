@@ -2,7 +2,7 @@ import styled from "@emotion/native";
 import { colors } from "@hanum/styles";
 import { TextInput } from "react-native-gesture-handler";
 
-export const VerifyCodeScreenContainer = styled.View` 
+export const SelfCheckScreenContainer = styled.View` 
     position: absolute;
      flex: 1;
     justify-content: center;
@@ -10,12 +10,12 @@ export const VerifyCodeScreenContainer = styled.View`
     background-color: ${colors.primary};
 `;
 
-export const VerifyCodeScreenTextContainer = styled.View` 
+export const SelfCheckScreenTextContainer = styled.View` 
     flex-direction: row;
     align-items: center;
 `;
 
-export const VerifyCodeScreenInput = styled(TextInput)`
+export const SelfCheckScreenInput = styled(TextInput)`
   width: 47px;
   height: 67px;
   padding: 0px 16px;

@@ -5,17 +5,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+import { MainScreen, PhoneScreen, SelfCheckScreen, VerifyCodeScreen } from './screens';
 import {
   SpoqaHanSansNeoBold,
   SpoqaHanSansNeoMedium,
   SpoqaHanSansNeoRegular,
   SpoqaHanSansNeoLight,
-  SpoqaHanSansNeoThin,
-  Logo,
-} from '@hanum/assets';
-
-import { MainScreen, PhoneScreen, VerifyCodeScreen } from './screens';
-import { Image, Text, View } from 'react-native';
+  SpoqaHanSansNeoThin
+} from './assets';
 
 const stack = createStackNavigator();
 
@@ -32,7 +29,7 @@ export const Router: React.FC = () => {
           SpoqaHanSansNeoMedium: SpoqaHanSansNeoMedium,
           SpoqaHanSansNeoRegular: SpoqaHanSansNeoRegular,
           SpoqaHanSansNeoLight: SpoqaHanSansNeoLight,
-          SpoqaHanSansNeoThin: SpoqaHanSansNeoThin,
+          SpoqaHanSansNeoThin: SpoqaHanSansNeoThin
         });
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
@@ -61,6 +58,7 @@ export const Router: React.FC = () => {
         <stack.Screen name="Main" component={MainScreen} />
         <stack.Screen name="Phone" component={PhoneScreen} />
         <stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
+        <stack.Screen name="SelfCheck" component={SelfCheckScreen} />
       </stack.Navigator>
     </NavigationContainer >
   );

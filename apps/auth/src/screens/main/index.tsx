@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useNavigation } from '@react-navigation/native';
-import { Logo } from '@hanum/assets';
+import { Logo } from 'src/assets';
 import { Button, DummyContainer, Modal, Text } from '@hanum/components';
 import { colors } from '@hanum/styles';
 
@@ -55,12 +55,14 @@ export const MainScreen: React.FC = () => {
               onPress={() => { onButtonPress('Name') }}
               width="48"
               isSecondary
+              isModalBtn
             >
               아니오
             </Button>
             <Button
               onPress={() => { onButtonPress('SelfCheck') }}
               width="48"
+              isModalBtn
             >
               예!
             </Button>

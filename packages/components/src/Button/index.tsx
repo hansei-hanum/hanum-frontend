@@ -10,16 +10,18 @@ export interface ButtonProps {
   isSecondary?: boolean;
   isDisabled?: boolean;
   width?: string;
+  isModalBtn?: boolean;
   onPress?: () => void;
 }
 
-export const Button: React.FC<ButtonProps> = ({ children, isSecondary, onPress, isDisabled, width }) => {
+export const Button: React.FC<ButtonProps> = ({ children, isSecondary, onPress, isDisabled, width, isModalBtn }) => {
   return (
     <S.ButtonElement
       {...!isDisabled && { onPress: onPress }}
       isDisabled={isDisabled}
       isSecondary={isSecondary}
       activeOpacity={0.8}
+      isModalBtn={isModalBtn}
       style={
         css`
         width: ${width}%;
@@ -36,6 +38,6 @@ export const Button: React.FC<ButtonProps> = ({ children, isSecondary, onPress, 
       >
         {children}
       </S.ButtonText>
-    </S.ButtonElement>
+    </S.ButtonElement >
   );
 };
