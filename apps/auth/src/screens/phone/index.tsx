@@ -1,13 +1,10 @@
 import * as S from "./styled"
 
-import { Button, Text } from "@hanum/components"
-import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 
 import { checkNumber } from "src/utils";
 import { colors } from "@hanum/styles";
-import { TouchableOpacity } from "react-native";
 import { Auth } from "src/components";
 
 export const PhoneScreen: React.FC = () => {
@@ -17,6 +14,7 @@ export const PhoneScreen: React.FC = () => {
     const navigate = navigation.navigate as (screen: string) => void;
 
     const onPhoneChange = (phone: string) => {
+        console.log(phone);
         const newPhone = checkNumber(phone);
         const phoneRegex = /^010-?\d{4}-?\d{4}$/
         if (!phoneRegex.test(newPhone)) {
