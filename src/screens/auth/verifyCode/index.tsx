@@ -60,7 +60,7 @@ export const VerifyCodeScreen: React.FC = () => {
   };
 
   const onSubmit = () => {
-    navigate('Success');
+    navigate('Home');
   };
 
   useEffect(() => {
