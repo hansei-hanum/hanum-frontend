@@ -5,7 +5,7 @@ import { KeyboardAvoidingView, Platform, View } from "react-native";
 
 export const AuthContainer = styled.View`    
     flex: 1;
-    padding: 70px 20px 30px 20px;
+    padding: 70px 20px ${Platform.OS == 'ios' ? '30px' : '20px'} 20px;
     background-color: ${colors.white};
     justify-content: space-between;
 `;
