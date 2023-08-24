@@ -7,7 +7,6 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import {
   AuthMainScreen,
-  HomeScreen,
   NameScreen,
   PhoneScreen,
   SelfCheckScreen,
@@ -20,6 +19,7 @@ import {
   SpoqaHanSansNeoLight,
   SpoqaHanSansNeoThin,
 } from './assets';
+import { MainScreen } from './screens/main';
 
 const stack = createStackNavigator();
 
@@ -62,7 +62,7 @@ export const Router: React.FC = () => {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Main">
-        <stack.Screen name="Home" component={HomeScreen} />
+        <stack.Screen name="Main" component={MainScreen} />
         <stack.Screen name="AuthMain" component={AuthMainScreen} />
         <stack.Screen name="Phone" component={PhoneScreen} />
         <stack.Screen name="Name" component={NameScreen} />
