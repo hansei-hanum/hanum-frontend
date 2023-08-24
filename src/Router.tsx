@@ -5,7 +5,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { MainScreen, NameScreen, PhoneScreen, SelfCheckScreen, VerifyCodeScreen } from './screens';
+import {
+  AuthMainScreen,
+  NameScreen,
+  PhoneScreen,
+  SelfCheckScreen,
+  VerifyCodeScreen,
+} from './screens';
 import {
   SpoqaHanSansNeoBold,
   SpoqaHanSansNeoMedium,
@@ -55,7 +61,7 @@ export const Router: React.FC = () => {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Main">
-        <stack.Screen name="Main" component={MainScreen} />
+        <stack.Screen name="AuthMain" component={AuthMainScreen} />
         <stack.Screen name="Phone" component={PhoneScreen} />
         <stack.Screen name="Name" component={NameScreen} />
         <stack.Screen name="VerifyCode" component={VerifyCodeScreen} />

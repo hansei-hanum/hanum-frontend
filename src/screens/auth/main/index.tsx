@@ -10,7 +10,7 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-export const MainScreen: React.FC = () => {
+export const AuthMainScreen: React.FC = () => {
   const navigate = useNavigation().navigate as (s: string) => void;
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -22,19 +22,19 @@ export const MainScreen: React.FC = () => {
   return (
     <>
       {modalVisible && <DummyContainer />}
-      <S.MainScreenContainer>
-        <S.MainScreenLogoContainer>
+      <S.AuthMainScreenContainer>
+        <S.AuthMainScreenLogoContainer>
           <WithLocalSvg width={180} height={50} asset={Logo} />
           <Text size="16" fontFamily="bold">
             한세인 도우미, 한움
           </Text>
-        </S.MainScreenLogoContainer>
-        <S.MainScreenMainSection>
+        </S.AuthMainScreenLogoContainer>
+        <S.AuthMainScreenMainSection>
           <Button onPress={() => navigate('Phone')}>로그인</Button>
           <Button isSecondary onPress={() => setModalVisible(true)}>
             회원가입
           </Button>
-          <S.MainScreenTextContainer>
+          <S.AuthMainScreenTextContainer>
             <Text size="16" fontFamily="bold">
               교직원이신가요?{' '}
             </Text>
@@ -43,9 +43,9 @@ export const MainScreen: React.FC = () => {
                 교직원 회원가입 요청
               </Text>
             </TouchableOpacity>
-          </S.MainScreenTextContainer>
-        </S.MainScreenMainSection>
-      </S.MainScreenContainer>
+          </S.AuthMainScreenTextContainer>
+        </S.AuthMainScreenMainSection>
+      </S.AuthMainScreenContainer>
       <Modal
         title="정회원 가입 안내"
         text={
@@ -54,7 +54,7 @@ export const MainScreen: React.FC = () => {
         }
         modalVisible={modalVisible}
         button={
-          <S.MainScreenButtonContainer>
+          <S.AuthMainScreenButtonContainer>
             <Button
               onPress={() => {
                 onButtonPress('Name');
@@ -74,7 +74,7 @@ export const MainScreen: React.FC = () => {
             >
               예!
             </Button>
-          </S.MainScreenButtonContainer>
+          </S.AuthMainScreenButtonContainer>
         }
       />
     </>
