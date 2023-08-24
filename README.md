@@ -10,24 +10,8 @@ $ cd hanum-frontend
 $ yarn install
 
 # command of a specific package
-$ yarn <workspace-name> <command>
+$ yarn run <os>
 
 # example
-$ yarn hanum-auth ios # run ios app
-```
-
-## directory structure
-
-```bash
-...
-│── apps
-│   └── auth
-│   └── main
-│   └── pay
-│
-│── packages
-│   └── assets
-│   └── components
-│   └── styles
-...
+$ yarn run ios # run ios app
 ```

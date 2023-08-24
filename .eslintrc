@@ -1,12 +1,135 @@
 {
-  "extends": "@react-native-community",
-  "rules": {
-    "react-native/no-inline-styles": 0,
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        "ignoreRestSiblings": true
-      }
-    ]
-  }
+    "env": {
+        "es6": true,
+        "browser": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "prettier",
+        "import",
+        "react-native",
+        "react",
+        "react-hooks",
+        "jsx-a11y"
+    ],
+    "extends": [
+        "prettier",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+        "no-unused-vars": "off",
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-useless-constructor": "error",
+        "import/no-unresolved": "error",
+        "import/prefer-default-export": "off",
+        "import/order": [
+            "error",
+            {
+                "pathGroups": [
+                    {
+                        "pattern": "{@expo*, expo*, expo*/**}",
+                        "group": "builtin",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "{react*,react*/**}",
+                        "group": "external",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "./**, @/**",
+                        "group": "internal",
+                        "position": "after"
+                    }
+                ],
+                "groups": [
+                    "type",
+                    "builtin",
+                    "external",
+                    "internal",
+                    "parent",
+                    "sibling",
+                    "index",
+                    "unknown"
+                ],
+                "pathGroupsExcludedImportTypes": [
+                    "react",
+                    "react-native"
+                ],
+                "newlines-between": "always"
+            }
+        ],
+        "react/jsx-filename-extension": [
+            "warn",
+            {
+                "extensions": [
+                    ".tsx"
+                ]
+            }
+        ],
+        "react/jsx-no-target-blank": "error",
+        "react/jsx-no-useless-fragment": "warn",
+        "react/prop-types": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "off"
+    },
+    "overrides": [
+        {
+            "files": [
+                "**/*.ts?(x)"
+            ],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "project": [
+                    "./tsconfig.json",
+                    "./tsconfig.eslint.json",
+                    "./tsconfig.node.json"
+                ]
+            },
+            "extends": [
+                "plugin:@typescript-eslint/recommended"
+            ],
+            "rules": {
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+                "@typescript-eslint/no-floating-promises": "off",
+                "@typescript-eslint/no-unused-vars": "warn",
+                "@typescript-eslint/no-use-before-define": [
+                    "error",
+                    {
+                        "variables": false
+                    }
+                ],
+                "@typescript-eslint/no-useless-constructor": "error",
+                "@typescript-eslint/no-misused-promises": "off",
+                "@typescript-eslint/no-var-requires": "error",
+                "@typescript-eslint/require-await": "error"
+            }
+        }
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        },
+        "import/parsers": {
+            "@typescript-eslint/parser": [
+                ".ts",
+                ".tsx"
+            ]
+        },
+        "import/extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+        ],
+        "import/resolver": {
+            "typescript": {}
+        }
+    }
 }

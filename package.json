@@ -1,31 +1,48 @@
 {
-  "name": "hanum-monorepo",
+  "name": "hanum",
   "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
   "repository": "https://github.com/hansei-hanum/hanum-frontend.git",
   "author": {
     "name": "GeunWon Choi",
     "email": "kidjustinchoi@gmail.com",
     "url": "https://github.com/choi138"
   },
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*"
-    ]
-  },
+  "packageManager": "yarn@3.6.3",
   "scripts": {
-    "hanum-auth": "yarn workspace @hanum/auth",
-    "hanum-main": "yarn workspace @hanum/main",
-    "hanum-forum": "yarn workspace @hanum/forum",
-    "format": "prettier \"{apps,packages}/**/*.{js,jsx,ts,tsx,json}\" --write --cache",
-    "lint": "eslint \"{apps,packages}/**/*.{js,jsx,ts,tsx}\" --fix --cache"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --fix --cache",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write"
   },
-  "packageManager": "yarn@3.6.2",
-  "devDependencies": {
+  "dependencies": {
     "@emotion/native": "^11.11.0",
-    "@types/react-native": "^0.72.2",
-    "@typescript-eslint/eslint-plugin": "^6.4.0",
-    "@typescript-eslint/parser": "^6.4.0",
+    "@emotion/react": "^11.11.1",
+    "@expo/vector-icons": "^13.0.0",
+    "@react-native-material/core": "^1.3.7",
+    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/stack": "^6.3.17",
+    "@types/react-native-vector-icons": "^6.4.14",
+    "expo": "^49.0.7",
+    "expo-splash-screen": "^0.20.5",
+    "expo-status-bar": "~1.6.0",
+    "global": "^4.4.0",
+    "moment": "^2.29.4",
+    "react-native": "^0.72.4",
+    "react-native-confirmation-code-field": "^7.3.1",
+    "react-native-gesture-handler": "^2.12.1",
+    "react-native-safe-area-context": "^4.7.1",
+    "react-native-svg": "^13.12.0",
+    "react-native-vector-icons": "^10.0.0",
+    "react-query": "^3.39.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.0.14",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
@@ -36,7 +53,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-native": "^4.0.0",
-    "expo": "^49.0.7",
     "prettier": "^3.0.2",
     "react": "^18.2.0",
     "typescript": "^5.1.6"
@@ -47,10 +63,5 @@
       "prettier --write"
     ]
   },
-  "private": true,
-  "license": "MIT",
-  "dependencies": {
-    "expo-cli": "^6.3.10",
-    "react-native-svg": "^13.11.0"
-  }
+  "private": true
 }
