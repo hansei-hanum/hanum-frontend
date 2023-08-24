@@ -1,6 +1,6 @@
 import styled from "@emotion/native";
 import { colors } from "@hanum/styles";
-import { TextInput } from "react-native-gesture-handler";
+import { TextInput } from "react-native";
 
 export const VerifyCodeScreenContainer = styled.View` 
     position: absolute;

@@ -23,14 +23,14 @@ export const VerifyCodeScreen: React.FC = () => {
     const [lastInputTime, setLastInputTime] = useState<number>(0);
     const [lastResendTime, setLastResendTime] = useState<number>(0);
     const [resend, setResend] = useState({ message: '재전송 하기', color: colors.primary });
-    const codeFieldRef = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+    const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
         value,
         setValue,
     });
     const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-    const onChangeText = (text: string) => {
+    const onChangeText = (text: any) => {
         const newText = checkNumber(text);
         const codeValidationRegex = /^\d{6}$/;
         codeValidationRegex.test(newText) ? setIsDisabled(false) : setIsDisabled(true);
@@ -89,13 +89,13 @@ export const VerifyCodeScreen: React.FC = () => {
                 onPress={onSubmit}
             >
                 <CodeField
-                    ref={codeFieldRef}
+                    ref={ref}
                     {...props}
                     value={value}
                     onChangeText={onChangeText}
                     cellCount={CELL_COUNT}
                     caretHidden={true}
-                    keyboardType='numeric'
+                    keyboardType="numeric"
                     textContentType="oneTimeCode"
                     rootStyle={{
                         width: '100%',
