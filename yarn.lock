@@ -2595,7 +2595,6 @@ __metadata:
     react-native-safe-area-context: ^4.7.1
     react-native-vector-icons: ^10.0.0
     react-query: ^3.39.3
-    recoil: ^0.7.7
     typescript: ^5.1.3
   languageName: unknown
   linkType: soft
@@ -2634,6 +2633,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.0
     "@hanum/components": "workspace:^"
+    "@hanum/settings": "workspace:^"
     "@hanum/styles": "workspace:^"
     "@types/react": ~18.0.14
     expo: ~49.0.8
@@ -2641,6 +2641,19 @@ __metadata:
     react: 18.2.0
     react-native: 0.72.4
     typescript: ^5.1.3
+  languageName: unknown
+  linkType: soft
+
+"@hanum/settings@workspace:^, @hanum/settings@workspace:packages/settings":
+  version: 0.0.0-use.local
+  resolution: "@hanum/settings@workspace:packages/settings"
+  dependencies:
+    "@types/react": ^18.2.21
+    react: ^18.2.0
+    react-native: ^0.72.4
+    react-query: ^3.39.3
+    recoil: ^0.7.7
+    typescript: ^5.1.6
   languageName: unknown
   linkType: soft
 
@@ -3846,7 +3859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.0.17, @types/react@npm:^18.2.20":
+"@types/react@npm:*, @types/react@npm:^18.0.17, @types/react@npm:^18.2.20, @types/react@npm:^18.2.21":
   version: 18.2.21
   resolution: "@types/react@npm:18.2.21"
   dependencies:
