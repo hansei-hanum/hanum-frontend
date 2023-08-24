@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { useNavigation } from '@react-navigation/native';
-
 import { colors } from 'src/styles';
 import { checkNumber, checkString } from 'src/utils';
 
@@ -22,7 +20,6 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   isNameScreen,
   onSubmit,
 }) => {
-  const navigate = useNavigation().navigate as (screen: string) => void;
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
