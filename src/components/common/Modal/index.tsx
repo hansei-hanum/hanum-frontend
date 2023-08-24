@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { Modal as ModalElement } from 'react-native';
 

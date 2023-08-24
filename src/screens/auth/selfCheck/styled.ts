@@ -2,8 +2,6 @@ import { TextInput } from 'react-native';
 
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
-
 export const SelfCheckScreenInput = styled(TextInput)`
   width: 47px;
   height: 67px;
