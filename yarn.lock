@@ -5687,6 +5687,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-blur@npm:^12.4.1":
+  version: 12.5.0
+  resolution: "expo-blur@npm:12.5.0"
+  peerDependencies:
+    expo: "*"
+  checksum: eaf362df817b0fd6a3a1041c7ff10bef0240d42724df7d49e851d4686d241eedddcac824a8b03e14441040c017d9be0b905eb570faf0336674696ae879003d14
+  languageName: node
+  linkType: hard
+
 "expo-constants@npm:~14.4.2":
   version: 14.4.2
   resolution: "expo-constants@npm:14.4.2"
@@ -6515,6 +6524,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-native: ^4.0.0
     expo: ^49.0.7
+    expo-blur: ^12.4.1
     expo-splash-screen: ^0.20.5
     expo-status-bar: ~1.6.0
     global: ^4.4.0
