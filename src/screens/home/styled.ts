@@ -2,8 +2,6 @@ import { Platform } from 'react-native';
 
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
-
 export const HomeScreenWrapper = styled.View`
   flex: 1;
   background-color: #fefefe;
@@ -25,21 +23,33 @@ export const HomeScreenTopSection = styled.View`
   align-items: center;
 `;
 
-export const PayContainer = styled.View`
+export const HomeScreenPayContainer = styled.View`
   width: 100%;
   align-items: center;
   justify-content: center;
 `;
 
-export const PayButtonContainer = styled(HomeScreenTopSection)`
+export const HomeScreenPayButtonContainer = styled(HomeScreenTopSection)`
   margin-top: 20px;
 `;
 
-export const PayButton = styled.TouchableOpacity`
-  width: 49%;
-  border-radius: 14px;
-  align-items: center;
+export const HomeScreenScheduleContainer = styled.View`
+  width: 100%;
   justify-content: center;
-  background-color: ${colors.lightGray};
-  padding: 10px 0;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 30px;
+`;
+
+export const HomeScreenScheduleTextWrapper = styled(HomeScreenScheduleContainer)`
+  width: 80%;
+  justify-content: space-between;
+  flex-direction: row;
+  height: 100px;
+`;
+
+export const HomeScreenScheduleLine = styled.View`
+  width: 1px;
+  height: 100%;
+  background-color: #efefef;
 `;

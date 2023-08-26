@@ -4,8 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { Logo, PartyIcon, PayIcon } from 'src/assets';
-import { AlertBox, Content, PayButton, Text } from 'src/components';
+import { Logo, PartyIcon, PayIcon, ScheduleIcon } from 'src/assets';
+import { AlertBox, Content, PayButton, ScheduleText, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -33,15 +33,25 @@ export const HomeScreen: React.FC = () => {
           navigateUrl="Main"
         />
         <Content icon={PayIcon} name="한움페이" navigateUrl="Main">
-          <S.PayContainer>
-            <Text size="30" fontFamily="bold" color={colors.black}>
+          <S.HomeScreenPayContainer>
+            <Text size="26" fontFamily="bold" color={colors.black}>
               19,000원
             </Text>
-            <S.PayButtonContainer>
+            <S.HomeScreenPayButtonContainer>
               <PayButton text="결제" onPress={() => console.log('결제')} />
               <PayButton text="송금" onPress={() => console.log('송금')} />
-            </S.PayButtonContainer>
-          </S.PayContainer>
+            </S.HomeScreenPayButtonContainer>
+          </S.HomeScreenPayContainer>
+        </Content>
+        <Content icon={ScheduleIcon} name="시간표" navigateUrl="Main">
+          <S.HomeScreenScheduleContainer>
+            <ScheduleText subText="이번 수업" mainText="영어" />
+            <S.HomeScreenScheduleTextWrapper>
+              <ScheduleText subText="이전 수업" mainText="공업" />
+              <S.HomeScreenScheduleLine />
+              <ScheduleText subText="다음 수업" mainText="수학" />
+            </S.HomeScreenScheduleTextWrapper>
+          </S.HomeScreenScheduleContainer>
         </Content>
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>
