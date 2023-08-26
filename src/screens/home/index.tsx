@@ -4,8 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { Logo } from 'src/assets';
-import { ContentBox, Text } from 'src/components';
+import { Logo, PartyIcon } from 'src/assets';
+import { AlertBox } from 'src/components';
 
 import * as S from './styled';
 
@@ -24,11 +24,12 @@ export const HomeScreen: React.FC = () => {
           />
         </TouchableOpacity>
       </S.HomeScreenTopSection>
-      <ContentBox>
-        <Text size="17" fontFamily="bold">
-          실시간으로 즐기기
-        </Text>
-      </ContentBox>
+      <AlertBox
+        icon={PartyIcon}
+        mainText="실시간으로 즐기기"
+        subText="한세어울림한마당 진행 중!"
+        navigateUrl="Main"
+      />
     </S.HomeScreenContainer>
   );
 };
