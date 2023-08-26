@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -77,6 +78,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />
         </Stack.Group>
       </Stack.Navigator>
+      <StatusBar barStyle="dark-content" />
     </NavigationContainer>
   );
 };
