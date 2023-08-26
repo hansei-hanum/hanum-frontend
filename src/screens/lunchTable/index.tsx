@@ -4,12 +4,12 @@ import { Text } from 'src/components';
 
 import * as S from './styled';
 
-export const PayScreen: React.FC = () => {
+export const LunchTableScreen: React.FC = () => {
   return (
-    <S.PayScreenContainer>
+    <S.LunchTableScreenContainer>
       <Text size="24" fontFamily="bold">
-        Pay Screen
+        Cafeteria Screen
       </Text>
-    </S.PayScreenContainer>
+    </S.LunchTableScreenContainer>
   );
 };

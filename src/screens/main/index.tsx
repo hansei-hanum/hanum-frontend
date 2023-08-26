@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { CafeteriaScreen, HomeScreen, MoreScreen, PayScreen, ScheduleScreen } from 'src/screens';
+import { LunchTableScreen, HomeScreen, MoreScreen, ScheduleScreen } from 'src/screens';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -39,15 +39,8 @@ export const MainScreen: React.FC = () => {
         }}
       />
       <BottomTab.Screen
-        name="한움페이"
-        component={PayScreen}
-        options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="payment" size={size} color={color} />,
-        }}
-      />
-      <BottomTab.Screen
         name="급식표"
-        component={CafeteriaScreen}
+        component={LunchTableScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="local-restaurant" size={size} color={color} />

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -11,6 +12,8 @@ import {
   PhoneScreen,
   SelfCheckScreen,
   VerifyCodeScreen,
+  MainScreen,
+  HanumPayScreen,
 } from './screens';
 import {
   SpoqaHanSansNeoBold,
@@ -19,7 +22,6 @@ import {
   SpoqaHanSansNeoLight,
   SpoqaHanSansNeoThin,
 } from './assets';
-import { MainScreen } from './screens/main';
 
 const Stack = createStackNavigator();
 
@@ -61,7 +63,7 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Main">
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>
@@ -72,12 +74,11 @@ export const Router: React.FC = () => {
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
           <Stack.Screen name="SelfCheck" component={SelfCheckScreen} />
         </Stack.Group>
-        {/* Common modal screens */}
-        {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Help" component={Help} />
-          <Stack.Screen name="Invite" component={Invite} />
-        </Stack.Group> */}
+        <Stack.Group>
+          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+        </Stack.Group>
       </Stack.Navigator>
+      <StatusBar barStyle="dark-content" />
     </NavigationContainer>
   );
 };
