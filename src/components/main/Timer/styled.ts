@@ -1,25 +1,25 @@
 import styled from '@emotion/native';
 
-export const ScheduleTextWrapper = styled.View`
+export const TimerTextWrapper = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
 `;
 
-export const ScreenScheduleContainer = styled(ScheduleTextWrapper)`
+export const ScreenTimerContainer = styled(TimerTextWrapper)`
   width: 80%;
   justify-content: space-between;
   flex-direction: row;
   height: 80px;
 `;
 
-export const ScreenScheduleLine = styled.View`
+export const ScreenTimerLine = styled.View`
   width: 1px;
   height: 100%;
   background-color: #efefef;
 `;
 
-export const SScheduleTextContainer = styled.View`
+export const TimerTextContainer = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: column;

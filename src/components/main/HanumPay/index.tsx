@@ -23,7 +23,7 @@ export const HanumPayButton: React.FC<HanumPayButton> = ({ onPress, text }) => {
 
 export const HanumPay: React.FC = () => {
   return (
-    <Content icon={PayIcon} name="한움페이" navigateUrl="Main">
+    <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPay">
       <S.HanumPayContainer>
         <Text size="26" fontFamily="bold" color={colors.black}>
           19,000원

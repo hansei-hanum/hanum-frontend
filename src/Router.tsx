@@ -12,6 +12,7 @@ import {
   SelfCheckScreen,
   VerifyCodeScreen,
   MainScreen,
+  HanumPayScreen,
 } from './screens';
 import {
   SpoqaHanSansNeoBold,
@@ -72,10 +73,9 @@ export const Router: React.FC = () => {
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
           <Stack.Screen name="SelfCheck" component={SelfCheckScreen} />
         </Stack.Group>
-        {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Help" component={Help} />
-          <Stack.Screen name="Invite" component={Invite} />
-        </Stack.Group> */}
+        <Stack.Group>
+          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );

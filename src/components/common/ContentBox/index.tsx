@@ -12,10 +12,10 @@ export const ContentBox: React.FC<ContentBoxProps> = ({ children }) => {
         shadowColor: '#B0B9C2',
         shadowOffset: {
           width: 0,
-          height: 4,
+          height: 2,
         },
-        shadowOpacity: 0.28,
-        shadowRadius: 4.65,
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
         elevation: 40,
       }}
     >

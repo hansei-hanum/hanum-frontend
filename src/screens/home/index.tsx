@@ -4,9 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { Logo, LunchTableIcon, PartyIcon } from 'src/assets';
-import { AlertBox, Content, HanumPay, Schedule, Text } from 'src/components';
-import { colors } from 'src/styles';
+import { Logo, PartyIcon } from 'src/assets';
+import { AlertBox, HanumPay, Timer, LunchTable } from 'src/components';
 
 import * as S from './styled';
 
@@ -16,7 +15,7 @@ export const HomeScreen: React.FC = () => {
   return (
     <S.HomeScreenWrapper>
       <S.HomeScreenHeader>
-        <WithLocalSvg width={110} height={40} asset={Logo} />
+        <WithLocalSvg width={105} height={40} asset={Logo} />
         <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
           <Ionicons
             name={notifyClick ? 'notifications' : 'notifications-outline'}
@@ -43,17 +42,8 @@ export const HomeScreen: React.FC = () => {
           navigateUrl="Main"
         />
         <HanumPay />
-        <Schedule />
-        <Content icon={LunchTableIcon} name="급식표" navigateUrl="LunchTable">
-          <S.HomeScreenLunchTableTextContainer>
-            <Text size="15" fontFamily="bold" color={colors.placeholder}>
-              오늘의 급식
-            </Text>
-            <S.HomeScreenLunchTableText>
-              백미밥,카레소스(추가국),등심돈까스, 망고사과샐러드,포기김치,과일음료
-            </S.HomeScreenLunchTableText>
-          </S.HomeScreenLunchTableTextContainer>
-        </Content>
+        <Timer />
+        <LunchTable />
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>
   );
