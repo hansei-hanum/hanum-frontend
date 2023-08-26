@@ -24,6 +24,7 @@ export const VerifyCodeScreen: React.FC = () => {
   const navigate = navigation.navigate as (s: string) => void;
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [lastInputTime, setLastInputTime] = useState<number>(0);
   const [lastResendTime, setLastResendTime] = useState<number>(0);
   const [resend, setResend] = useState({ message: '재전송 하기', color: colors.primary });
@@ -39,7 +40,6 @@ export const VerifyCodeScreen: React.FC = () => {
     const codeValidationRegex = /^\d{6}$/;
     codeValidationRegex.test(newText) ? setIsDisabled(false) : setIsDisabled(true);
     setValue(newText);
-    setLastInputTime(Date.now());
   };
 
   const handleResend = () => {
@@ -56,12 +56,15 @@ export const VerifyCodeScreen: React.FC = () => {
       setLastResendTime(currentTime);
     }, 60 * 1000);
 
+    setLastInputTime(currentTime);
+
     return () => {
       clearInterval(resendClear);
     };
   };
 
   const onSubmit = () => {
+    setIsSubmit(true);
     navigate('Main');
     Toast.show({
       position: 'bottom',
@@ -72,16 +75,14 @@ export const VerifyCodeScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    const intervalId = setInterval(
-      () => {
-        setModalVisible(true);
-      },
-      5 * 60 * 1000,
-    );
-
-    return () => {
-      clearInterval(intervalId);
-    };
+    if (!isSubmit) {
+      setTimeout(
+        () => {
+          setModalVisible(true);
+        },
+        5 * 60 * 1000,
+      );
+    } else return;
   }, [lastInputTime]);
 
   return (
