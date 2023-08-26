@@ -3,10 +3,9 @@ import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 
 import { Logo, PartyIcon } from 'src/assets';
-import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Text } from 'src/components';
+import { AlertBox, HanumPay, Timer, LunchTable, Calendar } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
