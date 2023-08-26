@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity } from 'react-native';
 import {
   CodeField,
@@ -17,29 +17,27 @@ import { Auth, Button, DummyContainer, Modal, Text } from 'src/components';
 import * as S from './styled';
 
 const CELL_COUNT = 6;
-const RESEND_TIME = 60 * 1000; // 1 minute in milliseconds
+const RESEND_TIME = 60 * 1000;
+const RESUCCESS_STATE = { message: '전송되었어요!', color: colors.primary };
+const RESEND_STATE = { message: '재전송 하기', color: colors.primary };
 
 export const VerifyCodeScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const navigate = navigation.navigate as (s: string) => void;
+  const navigate = useNavigation().navigate as (screen: string) => void;
+
   const [value, setValue] = useState('');
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [lastInputTime, setLastInputTime] = useState<number>(0);
-  const [lastResendTime, setLastResendTime] = useState<number>(0);
-  const [resend, setResend] = useState({ message: '재전송 하기', color: colors.primary });
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [lastResendTime, setLastResendTime] = useState(0);
+  const [resend, setResend] = useState(RESEND_STATE);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onChangeText = (text: string) => {
     const newText = checkNumber(text);
     const codeValidationRegex = /^\d{6}$/;
-    codeValidationRegex.test(newText) ? setIsDisabled(false) : setIsDisabled(true);
+    setIsDisabled(!codeValidationRegex.test(newText));
     setValue(newText);
-    setLastInputTime(Date.now());
   };
 
   const handleResend = () => {
@@ -47,14 +45,14 @@ export const VerifyCodeScreen: React.FC = () => {
     if (currentTime - lastResendTime <= RESEND_TIME) {
       setResend({ message: '1분에 한번만 전송 가능해요', color: colors.danger });
     } else {
-      setResend({ message: '전송되었어요!', color: colors.primary });
+      setResend(RESUCCESS_STATE);
       setLastResendTime(currentTime);
     }
 
     const resendClear = setInterval(() => {
-      setResend({ message: '재전송 하기', color: colors.primary });
+      setResend(RESEND_STATE);
       setLastResendTime(currentTime);
-    }, 60 * 1000);
+    }, RESEND_TIME);
 
     return () => {
       clearInterval(resendClear);
@@ -62,40 +60,46 @@ export const VerifyCodeScreen: React.FC = () => {
   };
 
   const onSubmit = () => {
+    setIsSubmit(true);
     navigate('Main');
     Toast.show({
       position: 'bottom',
       type: 'success',
-      text1: 'Hello',
-      text2: 'This is some something 👋',
+      text1: '클라우드보안과 2학년 2반 박찬영님, 환영해요!',
     });
   };
 
+  const intervalId = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
-    const intervalId = setInterval(
-      () => {
-        setModalVisible(true);
-      },
-      5 * 60 * 1000,
-    );
+    if (!isSubmit) {
+      intervalId.current = setInterval(
+        () => {
+          setModalVisible(true);
+        },
+        5 * 60 * 1000,
+      );
+    }
 
     return () => {
-      clearInterval(intervalId);
+      if (intervalId.current) {
+        clearInterval(intervalId.current);
+      }
     };
-  }, [lastInputTime]);
+  }, [isSubmit]);
 
   return (
     <>
       {modalVisible && <DummyContainer />}
       <Auth
-        headerText={`인증 번호를 보냈어요!\n` + `받은 인증 번호를 입력해 주세요`}
+        headerText={`인증 번호를 보냈어요!\n받은 인증 번호를 입력해 주세요`}
         subHeaderText={
           <S.VerifyCodeScreenTextContainer>
             <Text size="16" fontFamily="regular">
               문자가 안 오나요?
             </Text>
             <TouchableOpacity
-              {...(resend.color !== colors.danger ? { activeOpacity: 0.2 } : { activeOpacity: 1 })}
+              activeOpacity={resend.color !== colors.danger ? 0.2 : 1}
               onPress={handleResend}
             >
               <Text size="16" color={resend.color}>
@@ -118,9 +122,7 @@ export const VerifyCodeScreen: React.FC = () => {
           caretHidden={true}
           keyboardType="numeric"
           textContentType="oneTimeCode"
-          rootStyle={{
-            width: '100%',
-          }}
+          rootStyle={{ width: '100%' }}
           renderCell={({ index, symbol, isFocused }) => (
             <S.VerifyCodeScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
               <Text size="20" fontFamily="medium">
@@ -132,7 +134,7 @@ export const VerifyCodeScreen: React.FC = () => {
       </Auth>
       <Modal
         title="인증 시간 초과"
-        text={`인증번호를 입력할 수 있는 시간이 지났어요.\n` + `처음부터 다시 시도해 주세요.`}
+        text={`인증번호를 입력할 수 있는 시간이 지났어요.\n처음부터 다시 시도해 주세요.`}
         modalVisible={modalVisible}
         button={
           <Button onPress={() => setModalVisible(false)} isModalBtn>
