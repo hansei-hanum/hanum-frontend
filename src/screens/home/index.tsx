@@ -4,8 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { Logo, LunchTableIcon, PartyIcon, ScheduleIcon } from 'src/assets';
-import { AlertBox, Content, HanumPay, ScheduleText, Text } from 'src/components';
+import { Logo, LunchTableIcon, PartyIcon } from 'src/assets';
+import { AlertBox, Content, HanumPay, Schedule, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -43,16 +43,7 @@ export const HomeScreen: React.FC = () => {
           navigateUrl="Main"
         />
         <HanumPay />
-        <Content icon={ScheduleIcon} name="시간표" navigateUrl="Schedule">
-          <S.HomeScreenScheduleContainer>
-            <ScheduleText subText="이번 수업" mainText="영어" />
-            <S.HomeScreenScheduleTextWrapper>
-              <ScheduleText subText="이전 수업" mainText="공업" />
-              <S.HomeScreenScheduleLine />
-              <ScheduleText subText="다음 수업" mainText="수학" />
-            </S.HomeScreenScheduleTextWrapper>
-          </S.HomeScreenScheduleContainer>
-        </Content>
+        <Schedule />
         <Content icon={LunchTableIcon} name="급식표" navigateUrl="LunchTable">
           <S.HomeScreenLunchTableTextContainer>
             <Text size="15" fontFamily="bold" color={colors.placeholder}>

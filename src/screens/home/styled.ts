@@ -24,27 +24,6 @@ export const HomeScreenContainer = styled.ScrollView`
   background-color: #fefefe;
 `;
 
-export const HomeScreenScheduleContainer = styled.View`
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  row-gap: 30px;
-`;
-
-export const HomeScreenScheduleTextWrapper = styled(HomeScreenScheduleContainer)`
-  width: 80%;
-  justify-content: space-between;
-  flex-direction: row;
-  height: 100px;
-`;
-
-export const HomeScreenScheduleLine = styled.View`
-  width: 1px;
-  height: 100%;
-  background-color: #efefef;
-`;
-
 export const HomeScreenLunchTableTextContainer = styled.View`
   width: 100%;
   align-items: center;
