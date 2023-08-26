@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Logo, PartyIcon } from 'src/assets';
-import { AlertBox, HanumPay, Timer, LunchTable } from 'src/components';
+import { AlertBox, HanumPay, Timer, LunchTable, Calendar } from 'src/components';
 
 import * as S from './styled';
 
@@ -28,7 +28,7 @@ export const HomeScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 20,
+          paddingTop: 10,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,
@@ -44,6 +44,7 @@ export const HomeScreen: React.FC = () => {
         <HanumPay />
         <Timer />
         <LunchTable />
+        <Calendar />
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>
   );
