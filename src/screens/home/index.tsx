@@ -19,7 +19,7 @@ export const HomeScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 10,
+          paddingTop: 150,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,

@@ -10,7 +10,6 @@ export const HomeScreenContainer = styled.ScrollView`
   flex: 1;
   flex-direction: column;
   background-color: #fefefe;
-  padding-top: 120px;
 `;
 
 export const HomeScreenHeader = styled(BlurView)`
@@ -18,8 +17,8 @@ export const HomeScreenHeader = styled(BlurView)`
   flex-direction: row;
   z-index: 0;
   width: 100%;
-  padding: 20px 20px;
-  padding-top: 70px;
+  padding: 10px 20px;
+  padding-top: 80px;
   align-items: center;
   justify-content: space-between;
 `;
