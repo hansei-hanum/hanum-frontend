@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity } from 'react-native';
 import {
   CodeField,
@@ -17,7 +17,13 @@ import { Auth, Button, DummyContainer, Modal, Text } from 'src/components';
 import * as S from './styled';
 
 const CELL_COUNT = 6;
-const RESEND_TIME = 60 * 1000; // 1 minute in milliseconds
+const RESEND_TIME = 60 * 1000;
+
+export interface UseIntervalProps {
+  callback: () => void;
+  delay: number;
+  active?: boolean;
+}
 
 export const VerifyCodeScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -25,7 +31,6 @@ export const VerifyCodeScreen: React.FC = () => {
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [lastInputTime, setLastInputTime] = useState<number>(0);
   const [lastResendTime, setLastResendTime] = useState<number>(0);
   const [resend, setResend] = useState({ message: '재전송 하기', color: colors.primary });
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -56,8 +61,6 @@ export const VerifyCodeScreen: React.FC = () => {
       setLastResendTime(currentTime);
     }, 60 * 1000);
 
-    setLastInputTime(currentTime);
-
     return () => {
       clearInterval(resendClear);
     };
@@ -74,16 +77,24 @@ export const VerifyCodeScreen: React.FC = () => {
     });
   };
 
+  const intervalId = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     if (!isSubmit) {
-      setTimeout(
+      intervalId.current = setInterval(
         () => {
           setModalVisible(true);
         },
         5 * 60 * 1000,
       );
-    } else return;
-  }, [lastInputTime]);
+    }
+
+    return () => {
+      if (intervalId.current !== null) {
+        clearInterval(intervalId.current);
+      }
+    };
+  }, [isSubmit]);
 
   return (
     <>
