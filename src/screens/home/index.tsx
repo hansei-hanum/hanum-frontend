@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { Logo, PartyIcon, PayIcon, ScheduleIcon } from 'src/assets';
+import { Logo, LunchTableIcon, PartyIcon, PayIcon, ScheduleIcon } from 'src/assets';
 import { AlertBox, Content, PayButton, ScheduleText, Text } from 'src/components';
 import { colors } from 'src/styles';
 
@@ -15,17 +15,27 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <S.HomeScreenWrapper>
-      <S.HomeScreenContainer>
-        <S.HomeScreenTopSection>
-          <WithLocalSvg width={110} height={40} asset={Logo} />
-          <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
-            <Ionicons
-              name={notifyClick ? 'notifications' : 'notifications-outline'}
-              size={28}
-              color={notifyClick ? '#000' : '#AAA'}
-            />
-          </TouchableOpacity>
-        </S.HomeScreenTopSection>
+      <S.HomeScreenHeader>
+        <WithLocalSvg width={110} height={40} asset={Logo} />
+        <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
+          <Ionicons
+            name={notifyClick ? 'notifications' : 'notifications-outline'}
+            size={28}
+            color={notifyClick ? '#000' : '#AAA'}
+          />
+        </TouchableOpacity>
+      </S.HomeScreenHeader>
+      <S.HomeScreenContainer
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingTop: 20,
+          paddingBottom: 40,
+          paddingLeft: 20,
+          paddingRight: 20,
+          rowGap: 20,
+        }}
+      >
         <AlertBox
           icon={PartyIcon}
           mainText="실시간으로 즐기기"
@@ -43,7 +53,7 @@ export const HomeScreen: React.FC = () => {
             </S.HomeScreenPayButtonContainer>
           </S.HomeScreenPayContainer>
         </Content>
-        <Content icon={ScheduleIcon} name="시간표" navigateUrl="Main">
+        <Content icon={ScheduleIcon} name="시간표" navigateUrl="Schedule">
           <S.HomeScreenScheduleContainer>
             <ScheduleText subText="이번 수업" mainText="영어" />
             <S.HomeScreenScheduleTextWrapper>
@@ -52,6 +62,16 @@ export const HomeScreen: React.FC = () => {
               <ScheduleText subText="다음 수업" mainText="수학" />
             </S.HomeScreenScheduleTextWrapper>
           </S.HomeScreenScheduleContainer>
+        </Content>
+        <Content icon={LunchTableIcon} name="급식표" navigateUrl="LunchTable">
+          <S.HomeScreenLunchTableTextContainer>
+            <Text size="15" fontFamily="bold" color={colors.placeholder}>
+              오늘의 급식
+            </Text>
+            <S.HomeScreenLunchTableText>
+              백미밥,카레소스(추가국),등심돈까스, 망고사과샐러드,포기김치,과일음료
+            </S.HomeScreenLunchTableText>
+          </S.HomeScreenLunchTableTextContainer>
         </Content>
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>

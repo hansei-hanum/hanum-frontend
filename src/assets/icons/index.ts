@@ -2,3 +2,4 @@
 export const PartyIcon = require('./party.svg');
 export const PayIcon = require('./pay.svg');
 export const ScheduleIcon = require('./schedule.svg');
+export const LunchTableIcon = require('./lunchTable.svg');

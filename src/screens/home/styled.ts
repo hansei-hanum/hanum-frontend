@@ -1,26 +1,27 @@
-import { Platform } from 'react-native';
-
 import styled from '@emotion/native';
+
+import { colors, fonts } from 'src/styles';
 
 export const HomeScreenWrapper = styled.View`
   flex: 1;
   background-color: #fefefe;
   width: 100%;
-  padding: 50px 20px ${Platform.OS == 'ios' ? '30px' : '20px'} 20px;
+  padding-top: 50px;
 `;
 
-export const HomeScreenContainer = styled.View`
-  flex: 1;
-  flex-direction: column;
-  background-color: #fefefe;
-  row-gap: 40px;
-`;
-
-export const HomeScreenTopSection = styled.View`
+export const HomeScreenHeader = styled.View`
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
+  margin-bottom: 20px;
+`;
+
+export const HomeScreenContainer = styled.ScrollView`
+  flex: 1;
+  flex-direction: column;
+  background-color: #fefefe;
 `;
 
 export const HomeScreenPayContainer = styled.View`
@@ -29,7 +30,9 @@ export const HomeScreenPayContainer = styled.View`
   justify-content: center;
 `;
 
-export const HomeScreenPayButtonContainer = styled(HomeScreenTopSection)`
+export const HomeScreenPayButtonContainer = styled(HomeScreenPayContainer)`
+  flex-direction: row;
+  justify-content: space-between;
   margin-top: 20px;
 `;
 
@@ -52,4 +55,19 @@ export const HomeScreenScheduleLine = styled.View`
   width: 1px;
   height: 100%;
   background-color: #efefef;
+`;
+
+export const HomeScreenLunchTableTextContainer = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  row-gap: 6px;
+  text-align: center;
+`;
+
+export const HomeScreenLunchTableText = styled.Text`
+  text-align: center;
+  font-size: 18px;
+  font-family: ${fonts.bold};
+  color: ${colors.black};
 `;
