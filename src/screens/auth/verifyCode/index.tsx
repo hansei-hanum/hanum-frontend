@@ -8,7 +8,6 @@ import {
 } from 'react-native-confirmation-code-field';
 import Toast from 'react-native-toast-message';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import { checkNumber } from 'src/utils';
@@ -64,7 +63,6 @@ export const VerifyCodeScreen: React.FC = () => {
 
   const onSubmit = () => {
     navigate('Main');
-    AsyncStorage.setItem('isLogin', JSON.stringify('true'));
     Toast.show({
       type: 'success',
       text1: 'Hello',

@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   AuthMainScreen,
@@ -23,13 +21,12 @@ import {
 } from './assets';
 import { MainScreen } from './screens/main';
 
-const stack = createStackNavigator();
+const Stack = createStackNavigator();
 
 SplashScreen.preventAutoHideAsync();
 
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
-  // let isLoggedin = false;
 
   useEffect(() => {
     async function prepare() {
@@ -64,17 +61,23 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <stack.Navigator
-        screenOptions={{ headerShown: false, gestureEnabled: false }}
-        initialRouteName="AuthMain"
-      >
-        <stack.Screen name="Main" component={MainScreen} />
-        <stack.Screen name="AuthMain" component={AuthMainScreen} />
-        <stack.Screen name="Phone" component={PhoneScreen} />
-        <stack.Screen name="Name" component={NameScreen} />
-        <stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
-        <stack.Screen name="SelfCheck" component={SelfCheckScreen} />
-      </stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Group screenOptions={{ gestureEnabled: false }}>
+          <Stack.Screen name="Main" component={MainScreen} />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen name="AuthMain" component={AuthMainScreen} />
+          <Stack.Screen name="Phone" component={PhoneScreen} />
+          <Stack.Screen name="Name" component={NameScreen} />
+          <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
+          <Stack.Screen name="SelfCheck" component={SelfCheckScreen} />
+        </Stack.Group>
+        {/* Common modal screens */}
+        {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen name="Help" component={Help} />
+          <Stack.Screen name="Invite" component={Invite} />
+        </Stack.Group> */}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
