@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Logo, PartyIcon } from 'src/assets';
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar } from 'src/components';
+import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -14,16 +15,6 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <S.HomeScreenWrapper>
-      <S.HomeScreenHeader>
-        <WithLocalSvg width={105} height={40} asset={Logo} />
-        <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
-          <Ionicons
-            name={notifyClick ? 'notifications' : 'notifications-outline'}
-            size={28}
-            color={notifyClick ? '#000' : '#AAA'}
-          />
-        </TouchableOpacity>
-      </S.HomeScreenHeader>
       <S.HomeScreenContainer
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -46,6 +37,16 @@ export const HomeScreen: React.FC = () => {
         <LunchTable />
         <Calendar />
       </S.HomeScreenContainer>
+      <S.HomeScreenHeader intensity={80} tint="light">
+        <WithLocalSvg width={105} height={40} asset={Logo} color={colors.placeholder} />
+        <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
+          <Ionicons
+            name={notifyClick ? 'notifications' : 'notifications-outline'}
+            size={28}
+            color={notifyClick ? '#000' : '#AAA'}
+          />
+        </TouchableOpacity>
+      </S.HomeScreenHeader>
     </S.HomeScreenWrapper>
   );
 };

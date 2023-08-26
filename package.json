@@ -28,6 +28,7 @@
     "@react-navigation/stack": "^6.3.17",
     "@types/react-native-vector-icons": "^6.4.14",
     "expo": "^49.0.7",
+    "expo-blur": "^12.4.1",
     "expo-splash-screen": "^0.20.5",
     "expo-status-bar": "~1.6.0",
     "global": "^4.4.0",
