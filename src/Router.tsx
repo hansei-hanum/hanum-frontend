@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   AuthMainScreen,
@@ -27,6 +29,7 @@ SplashScreen.preventAutoHideAsync();
 
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
+  // let isLoggedin = false;
 
   useEffect(() => {
     async function prepare() {
@@ -61,7 +64,10 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Main">
+      <stack.Navigator
+        screenOptions={{ headerShown: false, gestureEnabled: false }}
+        initialRouteName="AuthMain"
+      >
         <stack.Screen name="Main" component={MainScreen} />
         <stack.Screen name="AuthMain" component={AuthMainScreen} />
         <stack.Screen name="Phone" component={PhoneScreen} />

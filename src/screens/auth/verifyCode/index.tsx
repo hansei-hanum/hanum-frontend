@@ -6,7 +6,9 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import Toast from 'react-native-toast-message';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import { checkNumber } from 'src/utils';
@@ -19,7 +21,8 @@ const CELL_COUNT = 6;
 const RESEND_TIME = 60 * 1000; // 1 minute in milliseconds
 
 export const VerifyCodeScreen: React.FC = () => {
-  const navigate = useNavigation().navigate as (s: string) => void;
+  const navigation = useNavigation();
+  const navigate = navigation.navigate as (s: string) => void;
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [lastInputTime, setLastInputTime] = useState<number>(0);
@@ -60,7 +63,13 @@ export const VerifyCodeScreen: React.FC = () => {
   };
 
   const onSubmit = () => {
-    navigate('Home');
+    navigate('Main');
+    AsyncStorage.setItem('isLogin', JSON.stringify('true'));
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is some something 👋',
+    });
   };
 
   useEffect(() => {

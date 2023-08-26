@@ -36,7 +36,6 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   };
 
   const onPhoneChange = (phone: string) => {
-    console.log(phone);
     const newPhone = checkNumber(phone);
     const phoneRegex = /^010-?\d{4}-?\d{4}$/;
     if (!phoneRegex.test(newPhone)) {
