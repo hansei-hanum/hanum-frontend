@@ -64,6 +64,7 @@ export const VerifyCodeScreen: React.FC = () => {
   const onSubmit = () => {
     navigate('Main');
     Toast.show({
+      position: 'bottom',
       type: 'success',
       text1: 'Hello',
       text2: 'This is some something 👋',

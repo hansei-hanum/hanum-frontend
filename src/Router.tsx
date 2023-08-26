@@ -11,6 +11,7 @@ import {
   PhoneScreen,
   SelfCheckScreen,
   VerifyCodeScreen,
+  MainScreen,
 } from './screens';
 import {
   SpoqaHanSansNeoBold,
@@ -19,7 +20,6 @@ import {
   SpoqaHanSansNeoLight,
   SpoqaHanSansNeoThin,
 } from './assets';
-import { MainScreen } from './screens/main';
 
 const Stack = createStackNavigator();
 
@@ -61,7 +61,7 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="AuthMain">
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>

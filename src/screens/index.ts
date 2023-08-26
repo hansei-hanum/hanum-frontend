@@ -4,3 +4,4 @@ export * from './more';
 export * from './cafeteria';
 export * from './pay';
 export * from './schedule';
+export * from './main';
