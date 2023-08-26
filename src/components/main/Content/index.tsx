@@ -28,7 +28,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
         <S.ContentTopSection>
           <S.ContentIconContainer>
             <WithLocalSvg width={size} height={size} asset={icon} />
-            <Text size="17" fontFamily="bold">
+            <Text size="15" fontFamily="bold">
               {name}
             </Text>
           </S.ContentIconContainer>
