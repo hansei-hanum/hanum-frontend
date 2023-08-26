@@ -24,18 +24,6 @@ export const HomeScreenContainer = styled.ScrollView`
   background-color: #fefefe;
 `;
 
-export const HomeScreenPayContainer = styled.View`
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const HomeScreenPayButtonContainer = styled(HomeScreenPayContainer)`
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 20px;
-`;
-
 export const HomeScreenScheduleContainer = styled.View`
   width: 100%;
   justify-content: center;

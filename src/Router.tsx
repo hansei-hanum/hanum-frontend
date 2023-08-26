@@ -72,7 +72,6 @@ export const Router: React.FC = () => {
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
           <Stack.Screen name="SelfCheck" component={SelfCheckScreen} />
         </Stack.Group>
-        {/* Common modal screens */}
         {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name="Help" component={Help} />
           <Stack.Screen name="Invite" component={Invite} />

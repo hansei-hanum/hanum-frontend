@@ -1,4 +1,4 @@
 export * from './AlertBox';
 export * from './Content';
-export * from './PayButton';
+export * from './HanumPay';
 export * from './ScheduleText';
