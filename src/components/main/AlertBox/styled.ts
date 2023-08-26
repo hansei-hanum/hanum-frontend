@@ -9,7 +9,7 @@ export const AlertBoxContainer = styled.View`
 
 export const AlertBoxContentContainer = styled(AlertBoxContainer)`
   column-gap: 10px;
-  width: fit-content;
+  width: auto;
 `;
 
 export const AlertBoxTextContainer = styled.View`

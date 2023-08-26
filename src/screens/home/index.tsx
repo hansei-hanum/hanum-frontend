@@ -4,8 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { Logo, PartyIcon } from 'src/assets';
-import { AlertBox } from 'src/components';
+import { Logo, PartyIcon, PayIcon } from 'src/assets';
+import { AlertBox, Content, Text } from 'src/components';
 
 import * as S from './styled';
 
@@ -30,6 +30,11 @@ export const HomeScreen: React.FC = () => {
         subText="한세어울림한마당 진행 중!"
         navigateUrl="Main"
       />
+      <Content icon={PayIcon} name="한움페이" navigateUrl="Main">
+        <Text size="13" fontFamily="bold" color="#AAA">
+          한움페이
+        </Text>
+      </Content>
     </S.HomeScreenContainer>
   );
 };
