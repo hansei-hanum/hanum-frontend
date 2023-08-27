@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,8 +11,12 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-export const HomeScreen: React.FC = () => {
+export const HomeScreen: React.FC = ({ navigation }: any) => {
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
+
+  const onPress = () => {
+    navigation.navigate('급식표');
+  };
 
   return (
     <S.HomeScreenWrapper>
@@ -34,7 +39,7 @@ export const HomeScreen: React.FC = () => {
         />
         <HanumPay />
         <Timer />
-        <LunchTable />
+        <LunchTable onPress={onPress} />
         <Calendar />
       </S.HomeScreenContainer>
       <S.HomeScreenHeader intensity={80} tint="light">
