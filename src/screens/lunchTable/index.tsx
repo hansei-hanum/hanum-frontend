@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
+import { Switch } from 'react-native-gesture-handler';
 
 import { Text, LunchBox } from 'src/components';
 import { LunchTableIcon } from 'src/assets';
+import { colors } from 'src/styles';
 
 import * as S from './styled';
 
 export const LunchTableScreen: React.FC = () => {
+  const [notifyClick, setNotifyClick] = useState<boolean>(false);
+
+  const toggleNotifyClick = () => {
+    setNotifyClick(!notifyClick);
+  };
   return (
     <S.LunchTableWrapper>
       <S.LunchTableContainer
@@ -24,6 +31,13 @@ export const LunchTableScreen: React.FC = () => {
           <Text size="18" fontFamily="medium">
             매일 아침 알림 받기
           </Text>
+          <Switch
+            trackColor={{ false: colors.lightGray, true: colors.primary }}
+            thumbColor={notifyClick ? colors.white : colors.white}
+            ios_backgroundColor={colors.lightGray}
+            onValueChange={toggleNotifyClick}
+            value={notifyClick}
+          />
         </S.LunchTableAlertContainer>
         <S.LunchTableBoxContainer>
           <LunchBox
