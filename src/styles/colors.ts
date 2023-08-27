@@ -6,4 +6,5 @@ export const colors = {
   placeholder: '#A3A3A3',
   danger: '#E12525',
   lightGray: '#F5F5F5',
+  background: '#FEFEFE',
 };
