@@ -1,14 +1,25 @@
+import { Animated } from 'react-native';
+
 import styled from '@emotion/native';
 
-export const ContentContainer = styled.View`
+export const ContentWrapper = styled.View`
   flex-direction: column;
+  margin-top: 10px;
+  padding: 16px;
+  padding-top: 0;
 `;
 
-export const ContentTopSection = styled.View`
+export const ContentTopSectionWrapper = styled(Animated.View)`
+  border-radius: 16px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px;
+`;
+
+export const ContentTopSection = styled(Animated.View)`
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 20px;
 `;
 
 export const ContentIconContainer = styled(ContentTopSection)`

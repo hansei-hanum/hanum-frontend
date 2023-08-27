@@ -4,11 +4,13 @@ import * as S from './styled';
 
 export interface ContentBoxProps {
   children: React.ReactNode;
+  isHome?: boolean;
 }
-export const ContentBox: React.FC<ContentBoxProps> = ({ children }) => {
+export const ContentBox: React.FC<ContentBoxProps> = ({ children, isHome }) => {
   return (
     <S.ContentBoxContainer
       style={{
+        padding: isHome ? 0 : 16,
         shadowColor: '#B0B9C2',
         shadowOffset: {
           width: 0,
