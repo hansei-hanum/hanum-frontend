@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
@@ -9,11 +10,14 @@ export interface LunchBoxProps {
   isPrimary: boolean;
   date: string;
   lunch: string;
+  ref: React.Ref<View>;
 }
 
-export const LunchBox: React.FC<LunchBoxProps> = ({ isPrimary, date, lunch }) => {
+export const LunchBox: React.FC<LunchBoxProps> = ({ isPrimary, date, lunch, ref }) => {
+  console.log(ref, 'LunchBox');
   return (
     <S.LunchBoxContainer
+      ref={ref}
       style={{
         backgroundColor: isPrimary ? colors.primary : colors.white,
         shadowColor: '#B0B9C2',
