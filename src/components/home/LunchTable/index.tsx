@@ -8,9 +8,13 @@ import { Content } from '../Content';
 
 import * as S from './styled';
 
-export const LunchTable: React.FC = () => {
+export interface LunchTableProps {
+  onPress: () => void;
+}
+
+export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
   return (
-    <Content icon={LunchTableIcon} name="급식표" navigateUrl="LunchTable">
+    <Content icon={LunchTableIcon} name="급식표" onPress={onPress}>
       <S.LunchTableTextContainer>
         <Text size="15" fontFamily="bold" color={colors.placeholder}>
           오늘의 급식

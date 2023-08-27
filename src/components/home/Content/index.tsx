@@ -14,11 +14,12 @@ import * as S from './styled';
 export interface ContentProps {
   icon: ImageSourcePropType;
   name: string;
-  children: React.ReactNode;
-  navigateUrl: string;
+  children?: React.ReactNode;
+  navigateUrl?: string;
+  onPress?: () => void;
 }
 
-export const Content: React.FC<ContentProps> = ({ icon, name, children, navigateUrl }) => {
+export const Content: React.FC<ContentProps> = ({ icon, name, children, navigateUrl, onPress }) => {
   const navigate = useNavigation().navigate as (screen: string) => void;
   const size = 30;
 
@@ -32,7 +33,10 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
               {name}
             </Text>
           </S.ContentIconContainer>
-          <TouchableOpacity activeOpacity={0.5} onPress={() => navigate(navigateUrl)}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={navigateUrl ? () => navigate(navigateUrl) : onPress}
+          >
             <MaterialIcons name="chevron-right" size={size} color={colors.placeholder} />
           </TouchableOpacity>
         </S.ContentTopSection>

@@ -29,7 +29,7 @@ export const MainScreen: React.FC = () => {
           color: '#000',
         },
       }}
-      initialRouteName="Main"
+      initialRouteName="홈"
     >
       <BottomTab.Screen
         name="홈"
