@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { boxShadow } from 'src/constant';
+import { boxShadow } from 'src/constants';
 
 import * as S from './styled';
 

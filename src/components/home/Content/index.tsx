@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-// import Animated, {
-//   useSharedValue,
-//   withSpring,
-//   useAnimatedStyle,
-//   withTiming,
-// } from 'react-native-reanimated';
-import { ImageSourcePropType, Animated, Easing } from 'react-native';
+import { ImageSourcePropType } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ContentBox, Text } from 'src/components';
 import { colors } from 'src/styles';
+import { usePressingAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -29,36 +24,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
   const navigate = useNavigation().navigate as (screen: string) => void;
   const size = 30;
 
-  const [animation] = useState(new Animated.Value(1)); // 애니메이션 값 초기화
-
-  const handlePressIn = () => {
-    // 버튼을 누를 때 작아지는 애니메이션 적용
-    Animated.timing(animation, {
-      toValue: 0.96, // 작아지는 정도
-      duration: 50,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    // 버튼을 뗄 때 복귀하는 애니메이션 적용
-    Animated.timing(animation, {
-      toValue: 1, // 원래 크기로 복귀
-      duration: 50,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  // 애니메이션 값을 스타일에 적용
-  const animatedStyle = {
-    transform: [{ scale: animation }],
-    backgroundColor: animation.interpolate({
-      inputRange: [0.96, 1], // 작아진 상태와 원래 크기의 중간 값
-      outputRange: [colors.lightGray, colors.white], // 해당 범위에 따른 색깔 변화
-    }),
-  };
+  const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
 
   return (
     <ContentBox isHome>

@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text } from 'src/components';
 import { LunchTableIcon } from 'src/assets';
 import { colors } from 'src/styles';
-import { boxShadow } from 'src/constant';
+import { boxShadow } from 'src/constants';
 
 import * as S from './styled';
 
