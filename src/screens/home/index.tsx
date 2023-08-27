@@ -43,7 +43,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         <Calendar />
       </S.HomeScreenContainer>
       <S.HomeScreenHeader intensity={80} tint="light">
-        <WithLocalSvg width={105} height={40} asset={Logo} color={colors.placeholder} />
+        <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
         <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
           <Ionicons
             name={notifyClick ? 'notifications' : 'notifications-outline'}
