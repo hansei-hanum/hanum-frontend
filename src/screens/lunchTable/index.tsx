@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text } from 'src/components';
 import { LunchTableIcon } from 'src/assets';
 import { colors } from 'src/styles';
+import { boxShadow } from 'src/constant';
 
 import * as S from './styled';
 
@@ -114,17 +115,12 @@ export const LunchTableScreen: React.FC = () => {
           {LUNCH_MAP.map(({ date, lunch, isPrimary }, index) => (
             <S.LunchBoxContainer
               key={index}
-              style={{
-                backgroundColor: isPrimary ? colors.primary : colors.white,
-                shadowColor: '#B0B9C2',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
+              style={[
+                boxShadow,
+                {
+                  backgroundColor: isPrimary ? colors.primary : colors.white,
                 },
-                shadowOpacity: 0.4,
-                shadowRadius: 4,
-                elevation: 40,
-              }}
+              ]}
             >
               <Text size="22" fontFamily="bold" color={isPrimary ? colors.white : colors.black}>
                 {date}

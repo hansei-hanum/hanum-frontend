@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { boxShadow } from 'src/constant';
+
 import * as S from './styled';
 
 export interface ContentBoxProps {
@@ -9,17 +11,12 @@ export interface ContentBoxProps {
 export const ContentBox: React.FC<ContentBoxProps> = ({ children, isHome }) => {
   return (
     <S.ContentBoxContainer
-      style={{
-        padding: isHome ? 0 : 16,
-        shadowColor: '#B0B9C2',
-        shadowOffset: {
-          width: 0,
-          height: 2,
+      style={[
+        boxShadow,
+        {
+          padding: isHome ? 0 : 16,
         },
-        shadowOpacity: 0.4,
-        shadowRadius: 4,
-        elevation: 40,
-      }}
+      ]}
     >
       {children}
     </S.ContentBoxContainer>

@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
+import { boxShadow } from 'src/constant';
 
 import * as S from './styled';
 
@@ -60,21 +61,7 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
       activeOpacity={1}
       onPress={() => navigate(navigateUrl)}
     >
-      <S.AlertBoxWrapper
-        style={[
-          animatedStyle,
-          {
-            shadowColor: '#B0B9C2',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.4,
-            shadowRadius: 4,
-            elevation: 40,
-          },
-        ]}
-      >
+      <S.AlertBoxWrapper style={[animatedStyle, boxShadow]}>
         <S.AlertBoxContainer>
           <S.AlertBoxContentContainer>
             <WithLocalSvg width={size} height={size} asset={icon} />
