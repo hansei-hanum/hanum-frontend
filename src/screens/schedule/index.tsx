@@ -32,6 +32,7 @@ export const ScheduleScreen: React.FC = () => {
       </S.ScheduleScreenDayContainer>
       <S.ScheduleScreenTimeContainer>
         <FlatList
+          style={{ paddingTop: 32 }}
           data={NUMBER_LIST}
           renderItem={({ item }) => (
             <S.ScheduleScreenTime style={{ height: 50 }}>
@@ -44,7 +45,7 @@ export const ScheduleScreen: React.FC = () => {
           scrollEnabled={false}
         />
         <FlatList
-          style={{ backgroundColor: 'rgba(69, 133, 254, 0.10)' }}
+          style={{ backgroundColor: 'rgba(69, 133, 254, 0.10)', paddingTop: 32 }}
           data={CLASS_LIST}
           renderItem={({ item }) => (
             <S.ScheduleScreenTime key={item}>
@@ -57,6 +58,7 @@ export const ScheduleScreen: React.FC = () => {
           scrollEnabled={false}
         />
         <FlatList
+          style={{ paddingTop: 32 }}
           data={CLASS_LIST}
           renderItem={({ item }) => (
             <S.ScheduleScreenTime key={item}>
@@ -69,6 +71,7 @@ export const ScheduleScreen: React.FC = () => {
           scrollEnabled={false}
         />
         <FlatList
+          style={{ paddingTop: 32 }}
           data={CLASS_LIST}
           renderItem={({ item }) => (
             <S.ScheduleScreenTime key={item}>
@@ -81,6 +84,7 @@ export const ScheduleScreen: React.FC = () => {
           scrollEnabled={false}
         />
         <FlatList
+          style={{ paddingTop: 32 }}
           data={CLASS_LIST}
           renderItem={({ item }) => (
             <S.ScheduleScreenTime key={item}>
@@ -93,6 +97,7 @@ export const ScheduleScreen: React.FC = () => {
           scrollEnabled={false}
         />
         <FlatList
+          style={{ paddingTop: 32 }}
           data={CLASS_LIST}
           renderItem={({ item }) => (
             <S.ScheduleScreenTime key={item}>

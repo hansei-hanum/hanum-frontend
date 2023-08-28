@@ -6,7 +6,7 @@ export const ScheduleScreenContainer = styled.View`
   flex: 1;
   padding: 80px 0px 0px 0px;
   background: ${colors.background};
-  row-gap: 30px;
+  row-gap: 10px;
 `;
 
 export const ScheduleScreenHeader = styled.View`
@@ -31,7 +31,8 @@ export const ScheduleScreenDayContainer = styled.View`
   padding-bottom: 18px;
   border-bottom-width: 1px;
   border-bottom-color: ${colors.lightGray};
-  margin-top: 40px;
+  margin-top: 50px;
+  padding-left: 20px;
 `;
 
 export const ScheduleScreenTimeContainer = styled.View`
@@ -39,6 +40,7 @@ export const ScheduleScreenTimeContainer = styled.View`
   flex-direction: row;
   align-items: center;
   padding-right: 10px;
+  padding-bottom: 6px;
 `;
 
 export const ScheduleScreenDay = styled.View`
@@ -46,15 +48,15 @@ export const ScheduleScreenDay = styled.View`
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* padding-right: 16px; */
+  padding-right: 16px;
 `;
 
 export const ScheduleScreenTime = styled.View`
+  flex-grow: 1;
   align-items: center;
-  text-align: center;
   justify-content: center;
-  margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 23px;
   width: 70px;
   height: 50px;
-  /* border: 1px solid red; */
 `;
