@@ -23,32 +23,12 @@ export const ScheduleScreenIconContainer = styled.View`
   column-gap: 6px;
 `;
 
-export const ScheduleScreenDayContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 18px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${colors.lightGray};
-  margin-top: 50px;
-  padding-left: 20px;
-`;
-
 export const ScheduleScreenTimeContainer = styled.View`
   justify-content: center;
   flex-direction: row;
   align-items: center;
   padding-right: 10px;
   padding-bottom: 6px;
-`;
-
-export const ScheduleScreenDay = styled.View`
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding-right: 16px;
 `;
 
 export const ScheduleScreenTime = styled.View`

@@ -6,6 +6,7 @@ import { Text } from 'src/components';
 import { ScheduleIcon } from 'src/assets';
 import { CLASS_LIST, DATE_LIST, NUMBER_LIST } from 'src/constants';
 import { colors } from 'src/styles';
+import { WeekDay } from 'src/components/schedule';
 
 import * as S from './styled';
 
@@ -21,15 +22,7 @@ export const ScheduleScreen: React.FC = () => {
         </S.ScheduleScreenIconContainer>
         <Text size="18">클라우드보안과 2학년 2반</Text>
       </S.ScheduleScreenHeader>
-      <S.ScheduleScreenDayContainer>
-        {DATE_LIST.map((date) => (
-          <S.ScheduleScreenDay key={date}>
-            <Text size="16" fontFamily="bold">
-              {date}
-            </Text>
-          </S.ScheduleScreenDay>
-        ))}
-      </S.ScheduleScreenDayContainer>
+      <WeekDay />
       <S.ScheduleScreenTimeContainer>
         <FlatList
           style={{ paddingTop: 32 }}

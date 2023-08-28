@@ -28,7 +28,7 @@ export const LunchTableAlertContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`;
+`;  
 
 export const LunchTableBoxContainer = styled.View`
   flex-direction: column;
@@ -36,11 +36,17 @@ export const LunchTableBoxContainer = styled.View`
 `;
 
 export const LunchBoxContainer = styled.View`
-  width: 100%;
+  width: 48%;
   min-height: 160px;
   align-items: flex-start;
   justify-content: center;
   padding: 20px;
   border-radius: 20px;
   row-gap: 10px;
+  border: 1px solid red;
+`;
+
+export const LunchBoxWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
 `;

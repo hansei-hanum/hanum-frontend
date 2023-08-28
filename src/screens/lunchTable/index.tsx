@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import { ScrollView, Switch } from 'react-native';
+import { ScrollView, Switch, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -8,61 +8,9 @@ import { Text } from 'src/components';
 import { LunchTableIcon } from 'src/assets';
 import { colors } from 'src/styles';
 import { boxShadow } from 'src/constants';
+import { MEAL_LIST, MealItem } from 'src/constants/meal';
 
 import * as S from './styled';
-
-const LUNCH_MAP = [
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: true,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-  {
-    date: '5/27(수)',
-    lunch: '현미밥, 불고기, 앙기모링, 스슈, 맛있당, 오믈라이스',
-    isPrimary: false,
-  },
-];
 
 export const LunchTableScreen: React.FC = () => {
   const scrollViewRef = useRef<ScrollView>(null);
@@ -76,13 +24,13 @@ export const LunchTableScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    const primaryIndex = LUNCH_MAP.findIndex((item) => item.isPrimary);
-    if (primaryIndex !== -1 && scrollViewRef.current) {
-      setTimeout(() => {
-        const yOffset = primaryIndex * ITEM_HEIGHT;
-        scrollViewRef?.current?.scrollTo({ y: yOffset, animated: true });
-      }, 0);
-    }
+    // const primaryIndex = LUNCH_MAP.findIndex((item) => item.isPrimary);
+    // if (primaryIndex !== -1 && scrollViewRef.current) {
+    //   setTimeout(() => {
+    //     const yOffset = primaryIndex * ITEM_HEIGHT;
+    //     scrollViewRef?.current?.scrollTo({ y: yOffset, animated: true });
+    //   }, 0);
+    // }
   }, [isFocused]);
 
   return (
@@ -112,30 +60,28 @@ export const LunchTableScreen: React.FC = () => {
           />
         </S.LunchTableAlertContainer>
         <S.LunchTableBoxContainer>
-          {LUNCH_MAP.map(({ date, lunch, isPrimary }, index) => (
-            <S.LunchBoxContainer
-              key={index}
-              style={[
-                boxShadow,
-                {
-                  backgroundColor: isPrimary ? colors.primary : colors.white,
-                },
-              ]}
-            >
-              <Text size="20" fontFamily="bold" color={isPrimary ? colors.white : colors.black}>
-                {date}
-              </Text>
-              {lunch.split(',').map((item, index) => (
-                <Text
-                  fontFamily="bold"
-                  key={index}
-                  size="15"
-                  color={isPrimary ? colors.white : colors.black}
-                >
-                  {item}
-                </Text>
-              ))}
-            </S.LunchBoxContainer>
+          {MEAL_LIST.reduce<MealItem[][]>((acc, currentValue, index) => {
+            if (index % 2 === 0) acc.push([currentValue]);
+            else acc[acc.length - 1].push(currentValue);
+            return acc;
+          }, []).map((items) => (
+            <S.LunchBoxWrapper>
+              {items.map((item, index) => {
+                const date = new Date(item.date);
+                return (
+                  <S.LunchBoxContainer key={index} style={[boxShadow]}>
+                    <Text size="20" fontFamily="bold">
+                      {`${date.getMonth() + 1}/${date.getDate()} `}
+                    </Text>
+                    {item.menus.map((item) => (
+                      <Text fontFamily="bold" size="15">
+                        {item.name}
+                      </Text>
+                    ))}
+                  </S.LunchBoxContainer>
+                );
+              })}
+            </S.LunchBoxWrapper>
           ))}
         </S.LunchTableBoxContainer>
       </S.LunchTableContainer>
