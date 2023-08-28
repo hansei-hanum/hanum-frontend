@@ -15,12 +15,13 @@ export const LunchTableContainer = styled.ScrollView`
 
 export const LunchTableHeader = styled(BlurView)`
   position: absolute;
-  flex-direction: row;
+  flex-direction: column;
   z-index: 0;
   width: 100%;
   padding: 10px 20px;
   padding-top: 70px;
-  align-items: center;
+  row-gap: 20;
+  align-items: flex-start;
 `;
 
 export const LunchTableAlertContainer = styled.View`

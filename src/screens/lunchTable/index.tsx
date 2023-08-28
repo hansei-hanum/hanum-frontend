@@ -7,27 +7,27 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text } from 'src/components';
 import { LunchTableIcon } from 'src/assets';
 import { colors } from 'src/styles';
-import { boxShadow } from 'src/constants';
-import { MEAL_LIST, MealItem } from 'src/constants/meal';
-import { WEEKDAY_LIST } from 'src/constants/weekDay';
+import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST } from 'src/constants';
 
 import * as S from './styled';
 
 export const LunchTableScreen: React.FC = () => {
   const scrollViewRef = useRef<ScrollView>(null);
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
+  const [todayLunch, setTodayLunch] = useState<MealItem | null>(null);
 
   const toggleNotifyClick = () => {
     setNotifyClick(!notifyClick);
   };
 
-  const ITEM_HEIGHT = 230;
+  const ITEM_HEIGHT = 150;
   const isFocused = useIsFocused();
 
   useEffect(() => {
     const todayLunch = MEAL_LIST.find((item) => {
       const date = new Date(item.date);
       const nowDate = new Date();
+      setTodayLunch(item);
       return date.getDate() === nowDate.getDate();
     });
     if (todayLunch) {
@@ -52,18 +52,6 @@ export const LunchTableScreen: React.FC = () => {
           rowGap: 25,
         }}
       >
-        <S.LunchTableAlertContainer>
-          <Text size="18" fontFamily="medium">
-            매일 아침 알림 받기
-          </Text>
-          <Switch
-            trackColor={{ false: colors.lightGray, true: colors.primary }}
-            thumbColor={notifyClick ? colors.white : colors.white}
-            ios_backgroundColor={colors.lightGray}
-            onValueChange={toggleNotifyClick}
-            value={notifyClick}
-          />
-        </S.LunchTableAlertContainer>
         <S.LunchTableBoxContainer>
           {MEAL_LIST.reduce<MealItem[][]>((acc, currentValue, index) => {
             if (index % 2 === 0) acc.push([currentValue]);
@@ -73,21 +61,32 @@ export const LunchTableScreen: React.FC = () => {
             <S.LunchBoxWrapper key={index}>
               {items.map((item) => {
                 const date = new Date(item.date);
+                const checkTodayLunch = todayLunch?.date === item.date;
+                const todayLunchText = checkTodayLunch ? colors.white : colors.black;
                 return (
                   <S.LunchBoxContainer
                     key={item.date}
-                    style={[boxShadow, { backgroundColor: colors.white }]}
+                    style={[
+                      boxShadow,
+                      {
+                        backgroundColor: checkTodayLunch ? colors.primary : colors.white,
+                      },
+                    ]}
                   >
-                    <Text size="20" fontFamily="bold">
+                    <Text size="20" fontFamily="bold" color={todayLunchText}>
                       {`${date.getMonth() + 1}/${date.getDate()} (${WEEKDAY_LIST[date.getDay()]})`}
                     </Text>
                     {item.menus.map(({ name, allergys }) => (
                       <View key={name}>
-                        <Text fontFamily="medium" size="16">
+                        <Text fontFamily="medium" size="16" color={todayLunchText}>
                           {name}
                         </Text>
                         {allergys.length > 0 && (
-                          <Text fontFamily="medium" size="12" color={colors.placeholder}>
+                          <Text
+                            fontFamily="medium"
+                            size="12"
+                            color={todayLunchText ? colors.secondary : colors.placeholder}
+                          >
                             {allergys.join(', ')}
                           </Text>
                         )}
@@ -101,10 +100,24 @@ export const LunchTableScreen: React.FC = () => {
         </S.LunchTableBoxContainer>
       </S.LunchTableContainer>
       <S.LunchTableHeader>
-        <WithLocalSvg width={40} height={40} asset={LunchTableIcon} />
-        <Text size="22" fontFamily="bold">
-          급식표
-        </Text>
+        <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
+          <WithLocalSvg width={40} height={40} asset={LunchTableIcon} />
+          <Text size="22" fontFamily="bold">
+            급식표
+          </Text>
+        </View>
+        <S.LunchTableAlertContainer>
+          <Text size="18" fontFamily="medium">
+            매일 아침 알림 받기
+          </Text>
+          <Switch
+            trackColor={{ false: colors.lightGray, true: colors.primary }}
+            thumbColor={notifyClick ? colors.white : colors.white}
+            ios_backgroundColor={colors.lightGray}
+            onValueChange={toggleNotifyClick}
+            value={notifyClick}
+          />
+        </S.LunchTableAlertContainer>
       </S.LunchTableHeader>
     </S.LunchTableWrapper>
   );
