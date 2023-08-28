@@ -122,14 +122,14 @@ export const LunchTableScreen: React.FC = () => {
                 },
               ]}
             >
-              <Text size="22" fontFamily="bold" color={isPrimary ? colors.white : colors.black}>
+              <Text size="20" fontFamily="bold" color={isPrimary ? colors.white : colors.black}>
                 {date}
               </Text>
               {lunch.split(',').map((item, index) => (
                 <Text
                   fontFamily="bold"
                   key={index}
-                  size="16"
+                  size="15"
                   color={isPrimary ? colors.white : colors.black}
                 >
                   {item}

@@ -20,7 +20,7 @@ export const LunchTableHeader = styled(BlurView)`
   width: 100%;
   padding: 10px 20px;
   padding-top: 70px;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 export const LunchTableAlertContainer = styled.View`
@@ -37,7 +37,7 @@ export const LunchTableBoxContainer = styled.View`
 
 export const LunchBoxContainer = styled.View`
   width: 100%;
-  min-height: 200px;
+  min-height: 160px;
   align-items: flex-start;
   justify-content: center;
   padding: 20px;
