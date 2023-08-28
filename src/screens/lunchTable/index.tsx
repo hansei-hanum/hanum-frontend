@@ -9,6 +9,7 @@ import { LunchTableIcon } from 'src/assets';
 import { colors } from 'src/styles';
 import { boxShadow } from 'src/constants';
 import { MEAL_LIST, MealItem } from 'src/constants/meal';
+import { WEEKDAY_LIST } from 'src/constants/weekDay';
 
 import * as S from './styled';
 
@@ -24,13 +25,17 @@ export const LunchTableScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    // const primaryIndex = LUNCH_MAP.findIndex((item) => item.isPrimary);
-    // if (primaryIndex !== -1 && scrollViewRef.current) {
-    //   setTimeout(() => {
-    //     const yOffset = primaryIndex * ITEM_HEIGHT;
-    //     scrollViewRef?.current?.scrollTo({ y: yOffset, animated: true });
-    //   }, 0);
-    // }
+    const todayLunch = MEAL_LIST.find((item) => {
+      const date = new Date(item.date);
+      const nowDate = new Date();
+      return date.getDate() === nowDate.getDate();
+    });
+    if (todayLunch) {
+      setTimeout(() => {
+        const yOffset = MEAL_LIST.indexOf(todayLunch) * ITEM_HEIGHT;
+        scrollViewRef?.current?.scrollTo({ y: yOffset, animated: true });
+      }, 0);
+    }
   }, [isFocused]);
 
   return (
@@ -64,19 +69,29 @@ export const LunchTableScreen: React.FC = () => {
             if (index % 2 === 0) acc.push([currentValue]);
             else acc[acc.length - 1].push(currentValue);
             return acc;
-          }, []).map((items) => (
-            <S.LunchBoxWrapper>
-              {items.map((item, index) => {
+          }, []).map((items, index) => (
+            <S.LunchBoxWrapper key={index}>
+              {items.map((item) => {
                 const date = new Date(item.date);
                 return (
-                  <S.LunchBoxContainer key={index} style={[boxShadow]}>
+                  <S.LunchBoxContainer
+                    key={item.date}
+                    style={[boxShadow, { backgroundColor: colors.white }]}
+                  >
                     <Text size="20" fontFamily="bold">
-                      {`${date.getMonth() + 1}/${date.getDate()} `}
+                      {`${date.getMonth() + 1}/${date.getDate()} (${WEEKDAY_LIST[date.getDay()]})`}
                     </Text>
-                    {item.menus.map((item) => (
-                      <Text fontFamily="bold" size="15">
-                        {item.name}
-                      </Text>
+                    {item.menus.map(({ name, allergys }) => (
+                      <View key={name}>
+                        <Text fontFamily="medium" size="16">
+                          {name}
+                        </Text>
+                        {allergys.length > 0 && (
+                          <Text fontFamily="medium" size="12" color={colors.placeholder}>
+                            {allergys.join(', ')}
+                          </Text>
+                        )}
+                      </View>
                     ))}
                   </S.LunchBoxContainer>
                 );
