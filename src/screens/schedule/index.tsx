@@ -1,8 +1,11 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
+import { FlatList, View } from 'react-native';
 
 import { Text } from 'src/components';
 import { ScheduleIcon } from 'src/assets';
+import { CLASS_LIST, DATE_LIST, NUMBER_LIST } from 'src/constants';
+import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -18,6 +21,90 @@ export const ScheduleScreen: React.FC = () => {
         </S.ScheduleScreenIconContainer>
         <Text size="18">클라우드보안과 2학년 2반</Text>
       </S.ScheduleScreenHeader>
+      <S.ScheduleScreenDayContainer>
+        {DATE_LIST.map((date) => (
+          <S.ScheduleScreenDay key={date}>
+            <Text size="16" fontFamily="bold">
+              {date}
+            </Text>
+          </S.ScheduleScreenDay>
+        ))}
+      </S.ScheduleScreenDayContainer>
+      <S.ScheduleScreenTimeContainer>
+        <FlatList
+          data={NUMBER_LIST}
+          renderItem={({ item }) => (
+            <S.ScheduleScreenTime style={{ height: 50 }}>
+              <Text size="15" fontFamily="medium">
+                {item}
+              </Text>
+            </S.ScheduleScreenTime>
+          )}
+          keyExtractor={(item) => item}
+          scrollEnabled={false}
+        />
+        <FlatList
+          style={{ backgroundColor: 'rgba(69, 133, 254, 0.10)' }}
+          data={CLASS_LIST}
+          renderItem={({ item }) => (
+            <S.ScheduleScreenTime key={item}>
+              <Text size="15" fontFamily="medium" color={colors.black} isCenter>
+                {item}
+              </Text>
+            </S.ScheduleScreenTime>
+          )}
+          keyExtractor={(item) => item}
+          scrollEnabled={false}
+        />
+        <FlatList
+          data={CLASS_LIST}
+          renderItem={({ item }) => (
+            <S.ScheduleScreenTime key={item}>
+              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
+                {item}
+              </Text>
+            </S.ScheduleScreenTime>
+          )}
+          keyExtractor={(item) => item}
+          scrollEnabled={false}
+        />
+        <FlatList
+          data={CLASS_LIST}
+          renderItem={({ item }) => (
+            <S.ScheduleScreenTime key={item}>
+              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
+                {item}
+              </Text>
+            </S.ScheduleScreenTime>
+          )}
+          keyExtractor={(item) => item}
+          scrollEnabled={false}
+        />
+        <FlatList
+          data={CLASS_LIST}
+          renderItem={({ item }) => (
+            <S.ScheduleScreenTime key={item}>
+              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
+                {item}
+              </Text>
+            </S.ScheduleScreenTime>
+          )}
+          keyExtractor={(item) => item}
+          scrollEnabled={false}
+        />
+        <FlatList
+          data={CLASS_LIST}
+          renderItem={({ item }) => (
+            <S.ScheduleScreenTime key={item}>
+              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
+                {item}
+              </Text>
+            </S.ScheduleScreenTime>
+          )}
+          keyExtractor={(item) => item}
+          scrollEnabled={false}
+        />
+      </S.ScheduleScreenTimeContainer>
     </S.ScheduleScreenContainer>
   );
 };
