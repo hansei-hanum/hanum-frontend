@@ -10,12 +10,14 @@ export const ShowMoreScreenContainer = styled.ScrollView`
 export const ShowMoreHeaderScreen = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  padding: 0 10px;
 `;
 
 export const ShowMoreUserContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin: 12px;
 `;
 
 export const ShowMoreUserInfo = styled.View`
