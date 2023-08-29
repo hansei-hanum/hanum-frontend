@@ -43,7 +43,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         <LunchTable onPress={onPress} />
         <Calendar />
       </S.HomeScreenContainer>
-      <S.HomeScreenHeader intensity={80} tint="light">
+      <S.HomeScreenHeader>
         <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
         <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
           <Ionicons

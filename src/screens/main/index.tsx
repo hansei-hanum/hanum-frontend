@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { LunchTableScreen, HomeScreen, MoreScreen, ScheduleScreen } from 'src/screens';
+import { LunchTableScreen, HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -56,7 +56,7 @@ export const MainScreen: React.FC = () => {
       />
       <BottomTab.Screen
         name="더보기"
-        component={MoreScreen}
+        component={ShowMoreScreen}
         options={{
           tabBarIcon: ({ color }) => <MaterialIcons name="menu" size={size} color={color} />,
         }}

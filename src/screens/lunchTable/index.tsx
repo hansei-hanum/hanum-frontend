@@ -20,7 +20,7 @@ export const LunchTableScreen: React.FC = () => {
     setNotifyClick(!notifyClick);
   };
 
-  const ITEM_HEIGHT = Platform.OS === 'ios' ? 160 : 150;
+  const ITEM_HEIGHT = Platform.OS === 'ios' ? 140 : 150;
   const isFocused = useIsFocused();
 
   useEffect(() => {

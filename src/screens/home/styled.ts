@@ -18,9 +18,8 @@ export const HomeScreenContainer = styled.ScrollView`
 export const HomeScreenHeader = styled(BlurView)`
   position: absolute;
   flex-direction: row;
-  z-index: 0;
   width: 100%;
-  padding: 16px 20px;
+  padding: 12px 20px;
   padding-top: ${Platform.OS === 'ios' ? '60px' : '30px'};
   align-items: center;
   justify-content: space-between;

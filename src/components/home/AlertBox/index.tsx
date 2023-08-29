@@ -45,9 +45,7 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
               </Text>
             </S.AlertBoxTextContainer>
           </S.AlertBoxContentContainer>
-          <TouchableOpacity activeOpacity={0.5} onPress={() => navigate(navigateUrl)}>
-            <MaterialIcons name="chevron-right" size={size} color={colors.placeholder} />
-          </TouchableOpacity>
+          <MaterialIcons name="chevron-right" size={size} color={colors.placeholder} />
         </S.AlertBoxContainer>
       </S.AlertBoxWrapper>
     </TouchableOpacity>

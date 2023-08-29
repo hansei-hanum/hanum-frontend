@@ -1,6 +1,6 @@
 export * from './auth';
 export * from './home';
-export * from './more';
+export * from './showMore';
 export * from './lunchTable';
 export * from './hanumPay';
 export * from './schedule';

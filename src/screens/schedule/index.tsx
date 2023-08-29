@@ -1,6 +1,5 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import { Platform } from 'react-native';
 
 import { Text, ClassList, WeekDay } from 'src/components';
 import { ScheduleIcon } from 'src/assets';
@@ -18,7 +17,7 @@ export const ScheduleScreen: React.FC = () => {
             height={headerIconStyle.height}
             asset={ScheduleIcon}
           />
-          <Text size={Platform.OS === 'ios' ? '20' : '16'} fontFamily="bold">
+          <Text size="20" fontFamily="bold">
             시간표
           </Text>
         </S.ScheduleScreenIconContainer>

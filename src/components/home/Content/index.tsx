@@ -42,12 +42,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
                 {name}
               </Text>
             </S.ContentIconContainer>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={navigateUrl ? () => navigate(navigateUrl) : onPress}
-            >
-              <MaterialIcons name="chevron-right" size={size} color={colors.placeholder} />
-            </TouchableOpacity>
+            <MaterialIcons name="chevron-right" size={size} color={colors.placeholder} />
           </S.ContentTopSection>
         </S.ContentTopSectionWrapper>
       </TouchableOpacity>

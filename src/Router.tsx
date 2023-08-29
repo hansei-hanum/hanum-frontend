@@ -21,6 +21,7 @@ import {
   SpoqaHanSansNeoRegular,
   SpoqaHanSansNeoLight,
   SpoqaHanSansNeoThin,
+  TossFaceFontMac,
 } from './assets';
 
 const Stack = createStackNavigator();
@@ -39,6 +40,7 @@ export const Router: React.FC = () => {
           SpoqaHanSansNeoRegular: SpoqaHanSansNeoRegular,
           SpoqaHanSansNeoLight: SpoqaHanSansNeoLight,
           SpoqaHanSansNeoThin: SpoqaHanSansNeoThin,
+          TossFaceFontMac: TossFaceFontMac,
         });
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
