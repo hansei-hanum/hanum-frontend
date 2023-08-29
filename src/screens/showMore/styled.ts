@@ -30,9 +30,10 @@ export const ShowMoreUserImage = styled.Image`
   border-radius: 50%;
   width: 64px;
   height: 64px;
-  border: 1px ${colors.placeholder};
+  border: 1px ${colors.lightGray};
 `;
 
 export const ShowMoreUserNameContainer = styled.View`
   flex-direction: column;
+  /* row-gap: 4px; */
 `;
