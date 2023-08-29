@@ -1,9 +1,8 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { Text } from 'src/components/';
+import { Text } from 'src/components';
 import { colors } from 'src/styles';
-import { NUMBER_LIST } from 'src/constants';
 
 import * as S from './styled';
 

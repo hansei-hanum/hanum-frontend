@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text } from 'src/components';
 import { LunchTableIcon } from 'src/assets';
 import { colors } from 'src/styles';
-import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST } from 'src/constants';
+import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
 
 import * as S from './styled';
 
@@ -106,8 +106,8 @@ export const LunchTableScreen: React.FC = () => {
       <S.LunchTableHeader>
         <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
           <WithLocalSvg
-            width={Platform.OS === 'ios' ? 34 : 30}
-            height={Platform.OS === 'ios' ? 34 : 30}
+            width={headerIconStyle.width}
+            height={headerIconStyle.height}
             asset={LunchTableIcon}
           />
           <Text size="20" fontFamily="bold">

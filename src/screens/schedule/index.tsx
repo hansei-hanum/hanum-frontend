@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 
 import { Text, ClassList, WeekDay } from 'src/components';
 import { ScheduleIcon } from 'src/assets';
-import { CLASS_LIST, NUMBER_LIST } from 'src/constants';
+import { CLASS_LIST, NUMBER_LIST, headerIconStyle } from 'src/constants';
 
 import * as S from './styled';
 
@@ -14,8 +14,8 @@ export const ScheduleScreen: React.FC = () => {
       <S.ScheduleScreenHeader>
         <S.ScheduleScreenIconContainer>
           <WithLocalSvg
-            width={Platform.OS === 'ios' ? 34 : 30}
-            height={Platform.OS === 'ios' ? 34 : 30}
+            width={headerIconStyle.width}
+            height={headerIconStyle.height}
             asset={ScheduleIcon}
           />
           <Text size={Platform.OS === 'ios' ? '20' : '16'} fontFamily="bold">
