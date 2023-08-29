@@ -20,7 +20,7 @@ export const ShowMoreUserContainer = styled(Animated.View)`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 6px;
+  padding: 8px;
   border-radius: 16px;
 `;
 
@@ -32,8 +32,8 @@ export const ShowMoreUserInfo = styled.View`
 
 export const ShowMoreUserImage = styled.Image`
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
+  width: 50px;
+  height: 50px;
   border: 1px ${colors.lightGray};
 `;
 
