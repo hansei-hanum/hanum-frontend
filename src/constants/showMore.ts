@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PartyIcon, PayIcon, ScheduleIcon } from 'src/assets';
 
 export interface Section {
   name: string;

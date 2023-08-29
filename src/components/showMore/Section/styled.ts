@@ -1,3 +1,5 @@
+import { Animated } from 'react-native';
+
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
@@ -15,9 +17,11 @@ export const Section = styled.View`
   row-gap: 20px;
 `;
 
-export const SectionItem = styled.View`
+export const SectionItem = styled(Animated.View)`
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  border-radius: 16px;
 `;
 
 export const SectionIconContainer = styled.View`
