@@ -1,10 +1,10 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import { FlatList, View } from 'react-native';
+import { FlatList, Platform } from 'react-native';
 
 import { Text } from 'src/components';
 import { ScheduleIcon } from 'src/assets';
-import { CLASS_LIST, DATE_LIST, NUMBER_LIST } from 'src/constants';
+import { CLASS_LIST, NUMBER_LIST } from 'src/constants';
 import { colors } from 'src/styles';
 import { WeekDay } from 'src/components/schedule';
 
@@ -15,12 +15,16 @@ export const ScheduleScreen: React.FC = () => {
     <S.ScheduleScreenContainer>
       <S.ScheduleScreenHeader>
         <S.ScheduleScreenIconContainer>
-          <WithLocalSvg width={36} height={36} asset={ScheduleIcon} />
-          <Text size="22" fontFamily="bold">
+          <WithLocalSvg
+            width={Platform.OS === 'ios' ? 34 : 30}
+            height={Platform.OS === 'ios' ? 34 : 30}
+            asset={ScheduleIcon}
+          />
+          <Text size={Platform.OS === 'ios' ? '20' : '16'} fontFamily="bold">
             시간표
           </Text>
         </S.ScheduleScreenIconContainer>
-        <Text size="18">클라우드보안과 2학년 2반</Text>
+        <Text size="17">클라우드보안과 2학년 2반</Text>
       </S.ScheduleScreenHeader>
       <WeekDay />
       <S.ScheduleScreenTimeContainer>

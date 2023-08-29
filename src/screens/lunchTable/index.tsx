@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import { ScrollView, Switch, View } from 'react-native';
+import { Platform, ScrollView, Switch, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -20,7 +20,7 @@ export const LunchTableScreen: React.FC = () => {
     setNotifyClick(!notifyClick);
   };
 
-  const ITEM_HEIGHT = 150;
+  const ITEM_HEIGHT = Platform.OS === 'ios' ? 160 : 150;
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const LunchTableScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 140,
+          paddingTop: Platform.OS === 'ios' ? 190 : 150,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,
@@ -73,19 +73,23 @@ export const LunchTableScreen: React.FC = () => {
                       },
                     ]}
                   >
-                    <Text size="20" fontFamily="bold" color={todayLunchText}>
+                    <Text size="18" fontFamily="bold" color={todayLunchText}>
                       {`${date.getMonth() + 1}/${date.getDate()} (${WEEKDAY_LIST[date.getDay()]})`}
                     </Text>
                     {item.menus.map(({ name, allergys }) => (
                       <View key={name}>
-                        <Text fontFamily="medium" size="16" color={todayLunchText}>
+                        <Text
+                          fontFamily="medium"
+                          size={Platform.OS === 'ios' ? '15' : '14'}
+                          color={todayLunchText}
+                        >
                           {name}
                         </Text>
                         {allergys.length > 0 && (
                           <Text
                             fontFamily="medium"
-                            size="12"
-                            color={todayLunchText ? colors.secondary : colors.placeholder}
+                            size="10"
+                            color={checkTodayLunch ? colors.secondary : colors.placeholder}
                           >
                             {allergys.join(', ')}
                           </Text>
@@ -101,16 +105,21 @@ export const LunchTableScreen: React.FC = () => {
       </S.LunchTableContainer>
       <S.LunchTableHeader>
         <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
-          <WithLocalSvg width={40} height={40} asset={LunchTableIcon} />
-          <Text size="22" fontFamily="bold">
+          <WithLocalSvg
+            width={Platform.OS === 'ios' ? 34 : 30}
+            height={Platform.OS === 'ios' ? 34 : 30}
+            asset={LunchTableIcon}
+          />
+          <Text size="20" fontFamily="bold">
             급식표
           </Text>
         </View>
         <S.LunchTableAlertContainer>
-          <Text size="18" fontFamily="medium">
+          <Text size="17" fontFamily="medium">
             매일 아침 알림 받기
           </Text>
           <Switch
+            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
             trackColor={{ false: colors.lightGray, true: colors.primary }}
             thumbColor={notifyClick ? colors.white : colors.white}
             ios_backgroundColor={colors.lightGray}

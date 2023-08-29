@@ -1,7 +1,7 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType, Platform } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -38,7 +38,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
           <S.ContentTopSection>
             <S.ContentIconContainer>
               <WithLocalSvg width={size} height={size} asset={icon} />
-              <Text size="15" fontFamily="bold">
+              <Text size={Platform.OS === 'ios' ? '15' : '14'} fontFamily="bold">
                 {name}
               </Text>
             </S.ContentIconContainer>

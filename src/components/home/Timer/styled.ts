@@ -10,7 +10,7 @@ export const ScreenTimerContainer = styled(TimerTextWrapper)`
   width: 80%;
   justify-content: space-between;
   flex-direction: row;
-  height: 80px;
+  height: 70px;
 `;
 
 export const ScreenTimerLine = styled.View`
@@ -25,5 +25,5 @@ export const TimerTextContainer = styled.View`
   flex-direction: column;
   width: auto;
   flex-direction: column;
-  row-gap: 6px;
+  row-gap: 2px;
 `;

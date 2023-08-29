@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 import styled from '@emotion/native';
 import { BlurView } from 'expo-blur';
 
@@ -18,9 +20,10 @@ export const LunchTableHeader = styled(BlurView)`
   flex-direction: column;
   z-index: 0;
   width: 100%;
-  padding: 10px 20px;
-  padding-top: 70px;
-  row-gap: 20;
+  padding: 0px 20px;
+  padding-top: ${Platform.OS === 'ios' ? '70px' : '30px'};
+  padding-bottom: ${Platform.OS === 'ios' ? '10px' : 0};
+  row-gap: ${Platform.OS === 'ios' ? '20px' : '10px'};
   align-items: flex-start;
 `;
 
