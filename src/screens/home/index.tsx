@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Platform } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -24,7 +25,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 150,
+          paddingTop: Platform.OS === 'ios' ? 130 : 100,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,

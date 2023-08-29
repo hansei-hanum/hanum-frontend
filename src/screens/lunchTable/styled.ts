@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 import styled from '@emotion/native';
 import { BlurView } from 'expo-blur';
 
@@ -15,11 +17,13 @@ export const LunchTableContainer = styled.ScrollView`
 
 export const LunchTableHeader = styled(BlurView)`
   position: absolute;
-  flex-direction: row;
+  flex-direction: column;
   z-index: 0;
   width: 100%;
-  padding: 10px 20px;
-  padding-top: 70px;
+  padding: 0px 20px;
+  padding-top: ${Platform.OS === 'ios' ? '70px' : '30px'};
+  padding-bottom: ${Platform.OS === 'ios' ? '10px' : 0};
+  row-gap: ${Platform.OS === 'ios' ? '20px' : '10px'};
   align-items: flex-start;
 `;
 
@@ -36,11 +40,16 @@ export const LunchTableBoxContainer = styled.View`
 `;
 
 export const LunchBoxContainer = styled.View`
-  width: 100%;
-  min-height: 200px;
+  width: 48%;
+  min-height: 60px;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px;
   border-radius: 20px;
   row-gap: 10px;
+`;
+
+export const LunchBoxWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
 `;

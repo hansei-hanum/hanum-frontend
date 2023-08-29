@@ -16,7 +16,7 @@ export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
   return (
     <Content icon={LunchTableIcon} name="급식표" onPress={onPress}>
       <S.LunchTableTextContainer>
-        <Text size="15" fontFamily="bold" color={colors.placeholder}>
+        <Text size="15" fontFamily="medium" color={colors.placeholder}>
           오늘의 급식
         </Text>
         <S.LunchTableText>
