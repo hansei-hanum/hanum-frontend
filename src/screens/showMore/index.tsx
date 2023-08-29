@@ -1,10 +1,14 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { Text } from 'src/components';
 import { headerIconStyle } from 'src/constants';
-import { ShowMoreIcon } from 'src/assets';
+import { ShowMoreIcon, UserLogo } from 'src/assets';
+import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -18,7 +22,7 @@ export const ShowMoreScreen: React.FC = () => {
         paddingBottom: 40,
         paddingLeft: 20,
         paddingRight: 20,
-        rowGap: 20,
+        rowGap: 40,
       }}
     >
       <S.ShowMoreHeaderScreen>
@@ -31,6 +35,22 @@ export const ShowMoreScreen: React.FC = () => {
           asset={ShowMoreIcon}
         />
       </S.ShowMoreHeaderScreen>
+      <S.ShowMoreUserContainer>
+        <S.ShowMoreUserInfo>
+          <S.ShowMoreUserImage source={UserLogo} />
+          <S.ShowMoreUserNameContainer>
+            <Text size="18" fontFamily="bold">
+              박찬영
+            </Text>
+            <Text size="16" fontFamily="medium">
+              클라우드보안과 2학년 2반 재학생
+            </Text>
+          </S.ShowMoreUserNameContainer>
+        </S.ShowMoreUserInfo>
+        <TouchableOpacity activeOpacity={0.5}>
+          <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
+        </TouchableOpacity>
+      </S.ShowMoreUserContainer>
     </S.ShowMoreScreenContainer>
   );
 };
