@@ -17,7 +17,8 @@ export const ShowMoreUserContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 12px;
+  margin: 8px;
+  /* border: 1px solid red; */
 `;
 
 export const ShowMoreUserInfo = styled.View`
@@ -35,5 +36,4 @@ export const ShowMoreUserImage = styled.Image`
 
 export const ShowMoreUserNameContainer = styled.View`
   flex-direction: column;
-  /* row-gap: 4px; */
 `;

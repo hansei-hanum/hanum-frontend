@@ -8,7 +8,7 @@ import { colors, fonts } from 'src/styles';
 interface TextProps {
   children: React.ReactNode;
   size: string;
-  fontFamily?: 'bold' | 'medium' | 'regular' | 'light' | 'thin';
+  fontFamily?: keyof typeof fonts;
   color?: string;
   isCenter?: boolean;
 }

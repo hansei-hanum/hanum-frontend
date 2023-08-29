@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Text, Box } from 'src/components';
 import { UserLogo } from 'src/assets';
 import { colors } from 'src/styles';
+import { Section } from 'src/components/showMore/Section';
 
 import * as S from './styled';
 
@@ -32,7 +33,7 @@ export const ShowMoreScreen: React.FC = () => {
           <S.ShowMoreUserInfo>
             <S.ShowMoreUserImage source={UserLogo} />
             <S.ShowMoreUserNameContainer>
-              <Text size="22" fontFamily="bold">
+              <Text size="20" fontFamily="bold">
                 박찬영
               </Text>
               <Text size="15" fontFamily="medium">
@@ -43,6 +44,7 @@ export const ShowMoreScreen: React.FC = () => {
           <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
         </S.ShowMoreUserContainer>
       </Box>
+      <Section />
     </S.ShowMoreScreenContainer>
   );
 };

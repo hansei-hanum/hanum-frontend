@@ -4,4 +4,5 @@ export const fonts = {
   regular: 'SpoqaHanSansNeoRegular',
   light: 'SpoqaHanSansNeoLight',
   thin: 'SpoqaHanSansNeoThin',
+  tossIcon: 'TossFaceFontMac',
 };
