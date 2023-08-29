@@ -1,16 +1,21 @@
 import React from 'react';
 import { Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-import { Text, Box } from 'src/components';
+import { Text, Section } from 'src/components';
 import { UserLogo } from 'src/assets';
 import { colors } from 'src/styles';
-import { Section } from 'src/components/showMore/Section';
+import { usePressingAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
 export const ShowMoreScreen: React.FC = () => {
+  const navigate = useNavigation().navigate as (screen: string) => void;
+  const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
+
   return (
     <S.ShowMoreScreenContainer
       showsVerticalScrollIndicator={false}
@@ -28,8 +33,13 @@ export const ShowMoreScreen: React.FC = () => {
           더 보기
         </Text>
       </S.ShowMoreHeaderScreen>
-      <Box navigateUrl="Main">
-        <S.ShowMoreUserContainer>
+      <TouchableOpacity
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={1}
+        onPress={() => navigate('UserInformation')}
+      >
+        <S.ShowMoreUserContainer style={[animatedStyle]}>
           <S.ShowMoreUserInfo>
             <S.ShowMoreUserImage source={UserLogo} />
             <S.ShowMoreUserNameContainer>
@@ -43,7 +53,7 @@ export const ShowMoreScreen: React.FC = () => {
           </S.ShowMoreUserInfo>
           <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
         </S.ShowMoreUserContainer>
-      </Box>
+      </TouchableOpacity>
       <Section />
     </S.ShowMoreScreenContainer>
   );

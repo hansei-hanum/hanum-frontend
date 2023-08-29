@@ -1,3 +1,5 @@
+import { Animated } from 'react-native';
+
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
@@ -13,12 +15,13 @@ export const ShowMoreHeaderScreen = styled.View`
   padding: 0 10px;
 `;
 
-export const ShowMoreUserContainer = styled.View`
+export const ShowMoreUserContainer = styled(Animated.View)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 8px;
-  /* border: 1px solid red; */
+  width: 100%;
+  padding: 6px;
+  border-radius: 16px;
 `;
 
 export const ShowMoreUserInfo = styled.View`
