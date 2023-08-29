@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Platform } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 

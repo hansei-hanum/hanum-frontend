@@ -30,13 +30,3 @@ export const ScheduleScreenTimeContainer = styled.View`
   padding-right: 10px;
   padding-bottom: 6px;
 `;
-
-export const ScheduleScreenTime = styled.View`
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 23px;
-  width: 70px;
-  height: 50px;
-`;

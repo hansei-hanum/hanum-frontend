@@ -1,12 +1,10 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import { FlatList, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
-import { Text } from 'src/components';
+import { Text, ClassList, WeekDay } from 'src/components';
 import { ScheduleIcon } from 'src/assets';
 import { CLASS_LIST, NUMBER_LIST } from 'src/constants';
-import { colors } from 'src/styles';
-import { WeekDay } from 'src/components/schedule';
 
 import * as S from './styled';
 
@@ -28,84 +26,12 @@ export const ScheduleScreen: React.FC = () => {
       </S.ScheduleScreenHeader>
       <WeekDay />
       <S.ScheduleScreenTimeContainer>
-        <FlatList
-          style={{ paddingTop: 32 }}
-          data={NUMBER_LIST}
-          renderItem={({ item }) => (
-            <S.ScheduleScreenTime style={{ height: 50 }}>
-              <Text size="15" fontFamily="medium">
-                {item}
-              </Text>
-            </S.ScheduleScreenTime>
-          )}
-          keyExtractor={(item) => item}
-          scrollEnabled={false}
-        />
-        <FlatList
-          style={{ backgroundColor: 'rgba(69, 133, 254, 0.10)', paddingTop: 32 }}
-          data={CLASS_LIST}
-          renderItem={({ item }) => (
-            <S.ScheduleScreenTime key={item}>
-              <Text size="15" fontFamily="medium" color={colors.black} isCenter>
-                {item}
-              </Text>
-            </S.ScheduleScreenTime>
-          )}
-          keyExtractor={(item) => item}
-          scrollEnabled={false}
-        />
-        <FlatList
-          style={{ paddingTop: 32 }}
-          data={CLASS_LIST}
-          renderItem={({ item }) => (
-            <S.ScheduleScreenTime key={item}>
-              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
-                {item}
-              </Text>
-            </S.ScheduleScreenTime>
-          )}
-          keyExtractor={(item) => item}
-          scrollEnabled={false}
-        />
-        <FlatList
-          style={{ paddingTop: 32 }}
-          data={CLASS_LIST}
-          renderItem={({ item }) => (
-            <S.ScheduleScreenTime key={item}>
-              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
-                {item}
-              </Text>
-            </S.ScheduleScreenTime>
-          )}
-          keyExtractor={(item) => item}
-          scrollEnabled={false}
-        />
-        <FlatList
-          style={{ paddingTop: 32 }}
-          data={CLASS_LIST}
-          renderItem={({ item }) => (
-            <S.ScheduleScreenTime key={item}>
-              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
-                {item}
-              </Text>
-            </S.ScheduleScreenTime>
-          )}
-          keyExtractor={(item) => item}
-          scrollEnabled={false}
-        />
-        <FlatList
-          style={{ paddingTop: 32 }}
-          data={CLASS_LIST}
-          renderItem={({ item }) => (
-            <S.ScheduleScreenTime key={item}>
-              <Text size="15" fontFamily="medium" color={colors.placeholder} isCenter>
-                {item}
-              </Text>
-            </S.ScheduleScreenTime>
-          )}
-          keyExtractor={(item) => item}
-          scrollEnabled={false}
-        />
+        <ClassList list={NUMBER_LIST} isNumber />
+        <ClassList list={CLASS_LIST} />
+        <ClassList list={CLASS_LIST} isToday />
+        <ClassList list={CLASS_LIST} />
+        <ClassList list={CLASS_LIST} />
+        <ClassList list={CLASS_LIST} />
       </S.ScheduleScreenTimeContainer>
     </S.ScheduleScreenContainer>
   );
