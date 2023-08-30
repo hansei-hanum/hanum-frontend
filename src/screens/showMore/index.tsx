@@ -3,17 +3,16 @@ import { Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
 import { Text, Section } from 'src/components';
 import { UserLogo } from 'src/assets';
 import { colors } from 'src/styles';
-import { usePressingAnimation } from 'src/hooks';
+import { useNavigate, usePressingAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
 export const ShowMoreScreen: React.FC = () => {
-  const navigate = useNavigation().navigate as (screen: string) => void;
+  const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
 
   return (

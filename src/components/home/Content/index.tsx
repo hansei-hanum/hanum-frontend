@@ -3,7 +3,6 @@ import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ImageSourcePropType, Platform } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ContentBox, Text } from 'src/components';

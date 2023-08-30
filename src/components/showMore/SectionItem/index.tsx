@@ -1,10 +1,9 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { usePressingAnimation } from 'src/hooks';
+import { useNavigate, usePressingAnimation } from 'src/hooks';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 
@@ -17,7 +16,7 @@ export interface SectionItemProps {
 }
 
 export const SectionItem: React.FC<SectionItemProps> = ({ name, icon, navigateUrl }) => {
-  const navigate = useNavigation().navigate as (screen: string) => void;
+  const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
 
   return (

@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 
+import { useSetRecoilState } from 'recoil';
+
 import { colors } from 'src/styles';
 import { checkNumber, checkString } from 'src/utils';
+import { useNavigate, usePhone } from 'src/hooks';
+import { authState } from 'src/atoms';
 
 import { Auth } from '../AuthForm';
 
@@ -11,18 +15,16 @@ export interface TextFieldForm {
   title: string;
   placeHolder: string;
   isNameScreen?: boolean;
-  onSubmit: () => void;
 }
 
-export const TextFieldForm: React.FC<TextFieldForm> = ({
-  title,
-  placeHolder,
-  isNameScreen,
-  onSubmit,
-}) => {
+export const TextFieldForm: React.FC<TextFieldForm> = ({ title, placeHolder, isNameScreen }) => {
+  const navigate = useNavigate();
+  const setAuth = useSetRecoilState(authState);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+
+  const { mutate: phoneMutate } = usePhone();
 
   const onNameChange = (text: string) => {
     const newText = checkString(text);
@@ -46,8 +48,23 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
     setPhone(newPhone);
   };
 
+  const onPhoneSubmit = () => {
+    phoneMutate({ phone: phone });
+  };
+
+  const onNameSubmit = () => {
+    console.log(name);
+    setAuth({ name: name, phone: '' });
+    navigate('Phone');
+  };
+
   return (
-    <Auth headerText={`${title}`} bottomText="다음" onPress={onSubmit} isDisabled={isDisabled}>
+    <Auth
+      headerText={`${title}`}
+      bottomText="다음"
+      onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
+      isDisabled={isDisabled}
+    >
       <S.TextFieldFormInput
         onChangeText={isNameScreen ? onNameChange : onPhoneChange}
         value={isNameScreen ? name : phone}

@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
-import { useNavigation } from '@react-navigation/native';
-
 import { Logo } from 'src/assets';
 import { Button, DummyContainer, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
+import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 export const AuthMainScreen: React.FC = () => {
-  const navigate = useNavigation().navigate as (s: string) => void;
+  const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onButtonPress = (navigateUrl: string) => {

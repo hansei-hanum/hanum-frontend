@@ -9,7 +9,6 @@ export const API_SUFFIX = {
 
 export const instance = axios.create({
   baseURL: API_SUFFIX.BASEURL,
-  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
