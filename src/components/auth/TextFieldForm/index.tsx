@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { colors } from 'src/styles';
 import { checkNumber, checkString } from 'src/utils';
 import { useNavigate, usePhone } from 'src/hooks';
 import { authState } from 'src/atoms';
+import { Text } from 'src/components/common';
 
 import { Auth } from '../AuthForm';
 
@@ -19,7 +21,7 @@ export interface TextFieldForm {
 
 export const TextFieldForm: React.FC<TextFieldForm> = ({ title, placeHolder, isNameScreen }) => {
   const navigate = useNavigate();
-  const setAuth = useSetRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authState);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
@@ -53,7 +55,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({ title, placeHolder, isN
   };
 
   const onNameSubmit = () => {
-    setAuth({ name: name, phone: '', errorModal: { ratedLimit: false, externalApi: false } });
+    setAuth({ name: name, phone: '' });
     navigate('Phone');
   };
 
@@ -64,17 +66,24 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({ title, placeHolder, isN
       onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
       isDisabled={isDisabled}
     >
-      <S.TextFieldFormInput
-        onChangeText={isNameScreen ? onNameChange : onPhoneChange}
-        value={isNameScreen ? name : phone}
-        variant="standard"
-        label={placeHolder}
-        keyboardType={isNameScreen ? 'default' : 'numeric'}
-        maxLength={isNameScreen ? 10 : 11}
-        color={colors.placeholder}
-        inputContainerStyle={{ borderBottomColor: colors.placeholder }}
-        inputStyle={{ fontSize: 20 }}
-      />
+      <View style={{ width: '100%' }}>
+        <S.TextFieldFormInput
+          onChangeText={isNameScreen ? onNameChange : onPhoneChange}
+          value={isNameScreen ? name : phone}
+          variant="standard"
+          label={placeHolder}
+          keyboardType={isNameScreen ? 'default' : 'numeric'}
+          maxLength={isNameScreen ? 10 : 11}
+          color={colors.placeholder}
+          inputContainerStyle={{ borderBottomColor: colors.placeholder }}
+          inputStyle={{ fontSize: 20 }}
+        />
+        {!isNameScreen && auth.errorMessage !== '' && (
+          <Text color={colors.danger} size="15">
+            {auth.errorMessage}
+          </Text>
+        )}
+      </View>
     </Auth>
   );
 };
