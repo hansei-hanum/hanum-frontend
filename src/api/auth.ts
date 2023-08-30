@@ -6,7 +6,7 @@ export interface PhoneValue {
 
 export const phone = async ({ phone }: PhoneValue) => {
   const { data } = await instance.post(API_SUFFIX.PHONE, {
-    phone: phone,
+    phone,
   });
   return data;
 };

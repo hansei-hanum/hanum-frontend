@@ -2,9 +2,9 @@ import axios from 'axios';
 
 export const API_SUFFIX = {
   BASEURL: process.env.EXPO_PUBLIC_BASE_URL,
-  REGISTER: '/auth/register',
-  LOGIN: '/auth/login',
-  PHONE: '/auth/phone',
+  REGISTER: '/auth/register/',
+  LOGIN: '/auth/login/',
+  PHONE: '/auth/phone/',
 };
 
 export const instance = axios.create({

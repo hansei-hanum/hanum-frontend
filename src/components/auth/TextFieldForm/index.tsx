@@ -53,8 +53,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({ title, placeHolder, isN
   };
 
   const onNameSubmit = () => {
-    console.log(name);
-    setAuth({ name: name, phone: '' });
+    setAuth({ name: name, phone: '', errorModal: { ratedLimit: false, externalApi: false } });
     navigate('Phone');
   };
 
