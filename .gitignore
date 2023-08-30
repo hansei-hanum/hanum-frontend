@@ -42,3 +42,4 @@ yarn-error.*
 .yarn/cache
 .pnp.*
 *.log
+.env

@@ -10,7 +10,7 @@ export const ScheduleScreenDayContainer = styled.View`
   padding-bottom: 18px;
   border-bottom-width: 1px;
   border-bottom-color: ${colors.lightGray};
-  margin-top: 46px;
+  margin-top: 40px;
   padding-left: 20px;
 `;
 
