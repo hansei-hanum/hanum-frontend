@@ -41,7 +41,8 @@
     "react-native-svg": "13.9.0",
     "react-native-toast-message": "^2.1.6",
     "react-native-vector-icons": "^10.0.0",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

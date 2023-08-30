@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { ContentBox, Text } from 'src/components';
 import { colors } from 'src/styles';
-import { usePressingAnimation } from 'src/hooks';
+import { useNavigate, usePressingAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -21,7 +21,7 @@ export interface ContentProps {
 }
 
 export const Content: React.FC<ContentProps> = ({ icon, name, children, navigateUrl, onPress }) => {
-  const navigate = useNavigation().navigate as (screen: string) => void;
+  const navigate = useNavigate();
   const size = 30;
 
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
