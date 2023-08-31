@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/SpoqaHanSansNeo-Bold.ttf",
+      "sha1": "cb7dc0e5047cf54e5c2a201d02256a6357ffd36f"
+    },
+    {
+      "path": "assets/fonts/SpoqaHanSansNeo-Light.ttf",
+      "sha1": "dcc99a8ec77d521edcfcd571df16efd400b269bd"
+    },
+    {
+      "path": "assets/fonts/SpoqaHanSansNeo-Medium.ttf",
+      "sha1": "c74930efdc92cdd3623389122a08df515c5d5f57"
+    },
+    {
+      "path": "assets/fonts/SpoqaHanSansNeo-Regular.ttf",
+      "sha1": "c00e1b380dab850ca8631085db53a0b97820a1af"
+    },
+    {
+      "path": "assets/fonts/SpoqaHanSansNeo-Thin.ttf",
+      "sha1": "b86043785d0d8f07d6d506a65dc1e10730a00aff"
+    },
+    {
+      "path": "assets/fonts/TossFaceFontMac.ttf",
+      "sha1": "b7210a382641a473a2df1a61594ba44173fe76f1"
+    },
+    {
+      "path": "assets/fonts/index.ts",
+      "sha1": "30a7bcdefec0270f1ac07ae3b44843de2a91915b"
+    }
+  ]
+}
