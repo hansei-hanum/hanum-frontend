@@ -13,7 +13,7 @@ import { checkNumber } from 'src/utils';
 import { colors } from 'src/styles';
 import { Auth, Button, DummyContainer, Modal, Text } from 'src/components';
 import { authState } from 'src/atoms';
-import { useAuth } from 'src/hooks';
+import { useAuth, usePhone } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -32,7 +32,8 @@ export const VerifyCodeScreen: React.FC = () => {
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
   const [modalVisible, setModalVisible] = useState(false);
   const auth = useRecoilValue(authState);
-  const { mutate } = useAuth();
+  const { mutate: mutateAuth } = useAuth();
+  const { mutate: mutatePhone } = usePhone();
 
   const onChangeText = (text: string) => {
     const newText = checkNumber(text);
@@ -47,6 +48,7 @@ export const VerifyCodeScreen: React.FC = () => {
       setResend({ message: '1분에 한번만 전송 가능해요', color: colors.danger });
     } else {
       setResend(RESUCCESS_STATE);
+      mutatePhone({ phone: auth.phone });
       setLastResendTime(currentTime);
     }
 
@@ -62,7 +64,7 @@ export const VerifyCodeScreen: React.FC = () => {
 
   const onSubmit = () => {
     setIsSubmit(true);
-    mutate({ ...auth, code: value });
+    mutateAuth({ ...auth, code: value });
   };
 
   const intervalId = useRef<NodeJS.Timeout | null>(null);

@@ -27,7 +27,7 @@ export const useAuth = (): UseMutationResult<
   return useMutation(
     'useAuth',
     (data) => {
-      if (auth.name !== '') {
+      if (auth.name === '') {
         return login({ ...(data as LoginValues) });
       } else {
         return register({ ...(data as RegisterValues) });
@@ -35,7 +35,7 @@ export const useAuth = (): UseMutationResult<
     },
     {
       onSuccess: async ({ data }) => {
-        await AsyncStorage.setItem('token', data.token);
+        await AsyncStorage.setItem('token', data);
         navigate('Main');
       },
       onError: (error) => {

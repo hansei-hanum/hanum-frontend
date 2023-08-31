@@ -43,7 +43,6 @@ export const phone = async ({ phone }: PhoneValue) => {
 };
 
 export const register = async ({ phone, code, name }: RegisterValues) => {
-  console.log(phone, code, name, 'register');
   const { data } = await instance.post(API_SUFFIX.REGISTER, {
     phone,
     code,
@@ -53,7 +52,6 @@ export const register = async ({ phone, code, name }: RegisterValues) => {
 };
 
 export const login = async ({ phone, code }: LoginValues) => {
-  console.log(phone, code, 'login');
   const { data } = await instance.post(API_SUFFIX.LOGIN, {
     phone,
     code,

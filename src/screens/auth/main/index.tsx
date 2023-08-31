@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
+
+import { useSetRecoilState } from 'recoil';
+import { useIsFocused } from '@react-navigation/native';
 
 import { Logo } from 'src/assets';
 import { Button, DummyContainer, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate } from 'src/hooks';
+import { authState } from 'src/atoms';
 
 import * as S from './styled';
 
 export const AuthMainScreen: React.FC = () => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const setAuth = useSetRecoilState(authState);
 
   const onButtonPress = (navigateUrl: string) => {
     navigate(`${navigateUrl}`);
@@ -19,6 +24,16 @@ export const AuthMainScreen: React.FC = () => {
   };
 
   const fontSize = 16;
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setAuth({
+      name: '',
+      phone: '',
+      errorMessage: '',
+    });
+  }, [isFocused]);
 
   return (
     <>

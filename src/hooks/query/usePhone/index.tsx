@@ -16,7 +16,7 @@ export const usePhone = (): UseMutationResult<
   const navigate = useNavigate();
 
   return useMutation('usePhone', phone, {
-    onSuccess: (variables) => {
+    onSuccess: ({ data }, variables) => {
       setAuth({ ...auth, phone: variables.phone });
       navigate('VerifyCode');
     },
