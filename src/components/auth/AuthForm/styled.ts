@@ -15,7 +15,7 @@ export const AuthContainer = styled.View`
 export const AuthInputContainer = styled.View`
   justify-content: flex-start;
   align-items: flex-start;
-  row-gap: 20px;
+  row-gap: ${Platform.OS == 'ios' ? '20px' : '0px'};
 `;
 
 export const AuthTextContainer = styled.View`
