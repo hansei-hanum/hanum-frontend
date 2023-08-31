@@ -5,6 +5,7 @@ export const API_SUFFIX = {
   REGISTER: '/auth/register/',
   LOGIN: '/auth/login/',
   PHONE: '/auth/phone/',
+  USERS: '/users/',
 };
 
 export const instance = axios.create({

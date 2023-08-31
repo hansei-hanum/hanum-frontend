@@ -59,7 +59,7 @@ export const SelfCheckScreen: React.FC = () => {
           }}
           renderCell={({ index, symbol, isFocused }) => (
             <S.SelfCheckScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
-              <Text size="20" fontFamily="medium">
+              <Text size={20} fontFamily="medium">
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
             </S.SelfCheckScreenInput>

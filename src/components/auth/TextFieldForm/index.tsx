@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { useRecoilState } from 'recoil';
+import { useIsFocused } from '@react-navigation/native';
 
 import { colors } from 'src/styles';
 import { checkNumber, checkString } from 'src/utils';
@@ -64,6 +65,12 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
     setAuth({ name: name, phone: '' });
     navigate('Phone');
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setAuth({ ...auth, errorMessage: '' });
+  }, [isFocused]);
 
   return (
     <Auth
