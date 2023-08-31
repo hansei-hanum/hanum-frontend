@@ -12,7 +12,7 @@ export const Section: React.FC = () => {
     <S.SectionContainer>
       {SHOW_MORE_SECTION_LIST.map(({ name, section }) => (
         <S.Section key={name}>
-          <Text size="18" fontFamily="bold">
+          <Text size={18} fontFamily="bold">
             {name}
           </Text>
           {section.map(({ name, icon, navigateUrl }) => (

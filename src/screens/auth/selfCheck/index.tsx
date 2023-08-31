@@ -6,17 +6,16 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-import { useNavigation } from '@react-navigation/native';
-
 import { Button, DummyContainer, Modal, Text, Auth } from 'src/components';
 import { checkNumber } from 'src/utils';
+import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 const CELL_COUNT = 6;
 
 export const SelfCheckScreen: React.FC = () => {
-  const navigate = useNavigation().navigate as (s: string) => void;
+  const navigate = useNavigate();
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const codeFieldRef = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -60,7 +59,7 @@ export const SelfCheckScreen: React.FC = () => {
           }}
           renderCell={({ index, symbol, isFocused }) => (
             <S.SelfCheckScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
-              <Text size="20" fontFamily="medium">
+              <Text size={20} fontFamily="medium">
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
             </S.SelfCheckScreenInput>

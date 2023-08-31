@@ -17,11 +17,11 @@ export const ScheduleScreen: React.FC = () => {
             height={headerIconStyle.height}
             asset={ScheduleIcon}
           />
-          <Text size="20" fontFamily="bold">
+          <Text size={20} fontFamily="bold">
             시간표
           </Text>
         </S.ScheduleScreenIconContainer>
-        <Text size="17">클라우드보안과 2학년 2반</Text>
+        <Text size={17}>클라우드보안과 2학년 2반</Text>
       </S.ScheduleScreenHeader>
       <WeekDay />
       <S.ScheduleScreenTimeContainer>

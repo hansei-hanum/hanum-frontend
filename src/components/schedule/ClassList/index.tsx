@@ -23,7 +23,7 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
       renderItem={({ item }) => (
         <S.ClassListWrapper key={item}>
           <Text
-            size="15"
+            size={15}
             fontFamily="medium"
             color={isToday || isNumber ? colors.black : colors.placeholder}
             isCenter

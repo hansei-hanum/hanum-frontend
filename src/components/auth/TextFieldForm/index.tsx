@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+
+import { useRecoilState } from 'recoil';
+import { useIsFocused } from '@react-navigation/native';
 
 import { colors } from 'src/styles';
 import { checkNumber, checkString } from 'src/utils';
+import { useNavigate, usePhone } from 'src/hooks';
+import { authState } from 'src/atoms';
+import { Text } from 'src/components/common';
 
 import { Auth } from '../AuthForm';
 
@@ -11,18 +18,22 @@ export interface TextFieldForm {
   title: string;
   placeHolder: string;
   isNameScreen?: boolean;
-  onSubmit: () => void;
+  isPhoneScreen?: boolean;
 }
 
 export const TextFieldForm: React.FC<TextFieldForm> = ({
   title,
   placeHolder,
   isNameScreen,
-  onSubmit,
+  isPhoneScreen,
 }) => {
+  const navigate = useNavigate();
+  const [auth, setAuth] = useRecoilState(authState);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+
+  const { mutate: phoneMutate } = usePhone();
 
   const onNameChange = (text: string) => {
     const newText = checkString(text);
@@ -46,19 +57,46 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
     setPhone(newPhone);
   };
 
+  const onPhoneSubmit = () => {
+    phoneMutate({ phone: phone });
+  };
+
+  const onNameSubmit = () => {
+    setAuth({ name: name, phone: '' });
+    navigate('Phone');
+  };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setAuth({ ...auth, errorMessage: '' });
+  }, [isFocused]);
+
   return (
-    <Auth headerText={`${title}`} bottomText="다음" onPress={onSubmit} isDisabled={isDisabled}>
-      <S.TextFieldFormInput
-        onChangeText={isNameScreen ? onNameChange : onPhoneChange}
-        value={isNameScreen ? name : phone}
-        variant="standard"
-        label={placeHolder}
-        keyboardType={isNameScreen ? 'default' : 'numeric'}
-        maxLength={isNameScreen ? 10 : 11}
-        color={colors.placeholder}
-        inputContainerStyle={{ borderBottomColor: colors.placeholder }}
-        inputStyle={{ fontSize: 20 }}
-      />
+    <Auth
+      headerText={`${title}`}
+      bottomText="다음"
+      onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
+      isDisabled={isDisabled}
+    >
+      <View style={{ width: '100%' }}>
+        <S.TextFieldFormInput
+          onChangeText={isNameScreen ? onNameChange : onPhoneChange}
+          value={isNameScreen ? name : phone}
+          variant="standard"
+          label={placeHolder}
+          keyboardType={isNameScreen ? 'default' : 'numeric'}
+          maxLength={isNameScreen ? 10 : 11}
+          color={colors.placeholder}
+          inputContainerStyle={{ borderBottomColor: colors.placeholder }}
+          inputStyle={{ fontSize: 20 }}
+        />
+        {isPhoneScreen && auth.errorMessage !== '' && (
+          <Text color={colors.danger} size={15}>
+            {auth.errorMessage}
+          </Text>
+        )}
+      </View>
     </Auth>
   );
 };

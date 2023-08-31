@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
-import { useNavigation } from '@react-navigation/native';
+import { useSetRecoilState } from 'recoil';
+import { useIsFocused } from '@react-navigation/native';
 
 import { Logo } from 'src/assets';
 import { Button, DummyContainer, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
+import { useNavigate } from 'src/hooks';
+import { authState } from 'src/atoms';
 
 import * as S from './styled';
 
 export const AuthMainScreen: React.FC = () => {
-  const navigate = useNavigation().navigate as (s: string) => void;
+  const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const setAuth = useSetRecoilState(authState);
 
   const onButtonPress = (navigateUrl: string) => {
     navigate(`${navigateUrl}`);
     setModalVisible(false);
   };
+
+  const fontSize = 16;
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setAuth({
+      name: '',
+      phone: '',
+      errorMessage: '',
+    });
+  }, [isFocused]);
 
   return (
     <>
@@ -25,7 +41,7 @@ export const AuthMainScreen: React.FC = () => {
       <S.AuthMainScreenContainer>
         <S.AuthMainScreenLogoContainer>
           <WithLocalSvg width={180} height={50} asset={Logo} />
-          <Text size="16" fontFamily="bold">
+          <Text size={fontSize} fontFamily="bold">
             한세인 도우미, 한움
           </Text>
         </S.AuthMainScreenLogoContainer>
@@ -35,11 +51,9 @@ export const AuthMainScreen: React.FC = () => {
             회원가입
           </Button>
           <S.AuthMainScreenTextContainer>
-            <Text size="16" fontFamily="bold">
-              교직원이신가요?{' '}
-            </Text>
+            <Text size={fontSize}>교직원이신가요? </Text>
             <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('Staff')}>
-              <Text size="16" fontFamily="bold" color={colors.primary}>
+              <Text size={fontSize} color={colors.primary}>
                 교직원 회원가입 요청
               </Text>
             </TouchableOpacity>

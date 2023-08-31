@@ -23,6 +23,7 @@ import {
   SpoqaHanSansNeoThin,
   TossFaceFontMac,
 } from './assets';
+import { useFetchUser } from './hooks';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ SplashScreen.preventAutoHideAsync();
 
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
+  const { data, isLoading } = useFetchUser();
 
   useEffect(() => {
     async function prepare() {
@@ -54,18 +56,18 @@ export const Router: React.FC = () => {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (isReady) {
+    if (isReady && !isLoading) {
       await SplashScreen.hideAsync();
     }
-  }, [isReady]);
+  }, [isReady, isLoading]);
 
-  if (!isReady) {
+  if (!isReady || isLoading) {
     return null;
   }
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Main">
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'AuthMain'}>
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>

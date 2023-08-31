@@ -8,6 +8,7 @@ import { colors, fonts } from 'src/styles';
 export const AuthContainer = styled.View`
   flex: 1;
   padding: 70px 20px ${Platform.OS == 'ios' ? '30px' : '20px'} 20px;
+  padding-top: ${Platform.OS == 'ios' ? '70px' : '30px'};
   background-color: ${colors.white};
   justify-content: space-between;
 `;

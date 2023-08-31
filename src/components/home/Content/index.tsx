@@ -3,12 +3,11 @@ import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ImageSourcePropType, Platform } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ContentBox, Text } from 'src/components';
 import { colors } from 'src/styles';
-import { usePressingAnimation } from 'src/hooks';
+import { useNavigate, usePressingAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -21,7 +20,7 @@ export interface ContentProps {
 }
 
 export const Content: React.FC<ContentProps> = ({ icon, name, children, navigateUrl, onPress }) => {
-  const navigate = useNavigation().navigate as (screen: string) => void;
+  const navigate = useNavigate();
   const size = 30;
 
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
@@ -38,7 +37,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
           <S.ContentTopSection>
             <S.ContentIconContainer>
               <WithLocalSvg width={size} height={size} asset={icon} />
-              <Text size={Platform.OS === 'ios' ? '15' : '14'} fontFamily="bold">
+              <Text size={Platform.OS === 'ios' ? 15 : 14} fontFamily="bold">
                 {name}
               </Text>
             </S.ContentIconContainer>

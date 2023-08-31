@@ -35,12 +35,12 @@ export const Auth: React.FC<AuthProps> = ({
           <Entypo name="chevron-thin-left" size={28} color="black" style={{ marginBottom: 10 }} />
         </TouchableOpacity>
         <S.AuthTextContainer>
-          <Text size="26" fontFamily="bold">
+          <Text size={26} fontFamily="bold">
             {headerText.split('\n').map((line, index) => (
-              <>
+              <Text size={26} fontFamily="bold" key={line}>
                 {line}
                 {index !== headerText.split('\n').length - 1 && <>{'\n'}</>}
-              </>
+              </Text>
             ))}
           </Text>
           {subHeaderText}
