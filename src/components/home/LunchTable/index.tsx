@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LunchTableIcon } from 'src/assets';
+import { LunchTableIcon } from '../../../../assets/icons';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 

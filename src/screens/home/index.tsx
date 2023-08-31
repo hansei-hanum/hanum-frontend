@@ -4,13 +4,14 @@ import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'react-native';
 
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from "react-native-vector-icons/Ionicons"
 
-import { Logo, PartyIcon } from 'src/assets';
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
+import { PartyIcon } from '../../../assets/icons';
+import { Logo } from '../../../assets/images';
 
 export const HomeScreen: React.FC = ({ navigation }: any) => {
   const [notifyClick, setNotifyClick] = useState<boolean>(false);

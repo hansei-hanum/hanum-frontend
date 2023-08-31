@@ -2,10 +2,10 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { Text, Section } from 'src/components';
-import { UserLogo } from 'src/assets';
+import { UserLogo } from '../../../assets/images';
 import { colors } from 'src/styles';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
 

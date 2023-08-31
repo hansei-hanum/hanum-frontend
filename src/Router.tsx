@@ -3,8 +3,6 @@ import { Platform, StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as Font from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 
 import {
   AuthMainScreen,
@@ -15,19 +13,9 @@ import {
   MainScreen,
   HanumPayScreen,
 } from './screens';
-import {
-  SpoqaHanSansNeoBold,
-  SpoqaHanSansNeoMedium,
-  SpoqaHanSansNeoRegular,
-  SpoqaHanSansNeoLight,
-  SpoqaHanSansNeoThin,
-  TossFaceFontMac,
-} from './assets';
 import { useFetchUser } from './hooks';
 
 const Stack = createStackNavigator();
-
-SplashScreen.preventAutoHideAsync();
 
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
@@ -36,14 +24,6 @@ export const Router: React.FC = () => {
   useEffect(() => {
     async function prepare() {
       try {
-        await Font.loadAsync({
-          SpoqaHanSansNeoBold: SpoqaHanSansNeoBold,
-          SpoqaHanSansNeoMedium: SpoqaHanSansNeoMedium,
-          SpoqaHanSansNeoRegular: SpoqaHanSansNeoRegular,
-          SpoqaHanSansNeoLight: SpoqaHanSansNeoLight,
-          SpoqaHanSansNeoThin: SpoqaHanSansNeoThin,
-          TossFaceFontMac: TossFaceFontMac,
-        });
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
@@ -56,9 +36,7 @@ export const Router: React.FC = () => {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (isReady && !isLoading) {
-      await SplashScreen.hideAsync();
-    }
+
   }, [isReady, isLoading]);
 
   if (!isReady || isLoading) {

@@ -10,7 +10,7 @@ const client = new QueryClient();
 
 LogBox.ignoreAllLogs(true);
 
-export default function App() {
+function App() {
   return (
     <RecoilRoot>
       <QueryClientProvider client={client}>
@@ -20,3 +20,5 @@ export default function App() {
     </RecoilRoot>
   );
 }
+
+export default App;

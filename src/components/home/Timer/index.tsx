@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { TimerIcon } from 'src/assets';
+import { TimerIcon } from '../../../../assets/icons';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 

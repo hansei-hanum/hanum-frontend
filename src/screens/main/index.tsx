@@ -1,7 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import Icons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { LunchTableScreen, HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
@@ -43,7 +44,7 @@ export const MainScreen: React.FC = () => {
         component={LunchTableScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="local-restaurant" size={size} color={color} />
+            <Icons name="local-restaurant" size={size} color={color} />
           ),
         }}
       />
@@ -51,14 +52,14 @@ export const MainScreen: React.FC = () => {
         name="시간표"
         component={ScheduleScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="access-time" size={size} color={color} />,
+          tabBarIcon: ({ color }) => <Icons name="access-time" size={size} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="더보기"
         component={ShowMoreScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="menu" size={size} color={color} />,
+          tabBarIcon: ({ color }) => <Icons name="menu" size={size} color={color} />,
         }}
       />
     </BottomTab.Navigator>

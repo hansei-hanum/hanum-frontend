@@ -18,15 +18,15 @@ export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible 
     <ModalElement animationType="slide" transparent={true} visible={modalVisible}>
       <S.ModalWrapper>
         <S.ModalContainer>
-          <Text size="24" fontFamily="bold">
+          <Text size={24} fontFamily="bold">
             {title}
           </Text>
-          <Text size="16">
+          <Text size={16}>
             {text.split('\n').map((line, index) => (
-              <>
+              <Text size={16} key={line}>
                 {line}
                 {index !== text.split('\n').length - 1 && <>{'\n'}</>}
-              </>
+              </Text>
             ))}
           </Text>
           {button}

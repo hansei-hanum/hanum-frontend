@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 import { Content, Text } from 'src/components';
 import { colors } from 'src/styles';
-import { PayIcon } from 'src/assets';
+import { PayIcon } from '../../../../assets/icons';
 
 import * as S from './styled';
 

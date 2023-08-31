@@ -5,7 +5,7 @@ import { Platform, ScrollView, Switch, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { Text } from 'src/components';
-import { LunchTableIcon } from 'src/assets';
+import { LunchTableIcon } from '../../../assets/icons';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
 

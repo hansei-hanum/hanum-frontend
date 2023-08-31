@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { CalendarIcon } from 'src/assets';
+import { CalendarIcon } from '../../../../assets/icons';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 

@@ -1,7 +1,6 @@
 import { Platform } from 'react-native';
 
 import styled from '@emotion/native';
-import { BlurView } from 'expo-blur';
 
 import { colors } from 'src/styles';
 
@@ -15,7 +14,7 @@ export const LunchTableContainer = styled.ScrollView`
   flex-direction: column;
 `;
 
-export const LunchTableHeader = styled(BlurView)`
+export const LunchTableHeader = styled.View`
   position: absolute;
   flex-direction: column;
   z-index: 0;

@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { Entypo } from '@expo/vector-icons';
+import Entypo from 'react-native-vector-icons/Entypo'
 
 import { Button, Text } from 'src/components';
 
