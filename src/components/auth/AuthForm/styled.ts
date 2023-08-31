@@ -8,6 +8,7 @@ import { colors, fonts } from 'src/styles';
 export const AuthContainer = styled.View`
   flex: 1;
   padding: 70px 20px ${Platform.OS == 'ios' ? '30px' : '20px'} 20px;
+  padding-top: ${Platform.OS == 'ios' ? '70px' : '30px'};
   background-color: ${colors.white};
   justify-content: space-between;
 `;
@@ -15,7 +16,7 @@ export const AuthContainer = styled.View`
 export const AuthInputContainer = styled.View`
   justify-content: flex-start;
   align-items: flex-start;
-  row-gap: ${Platform.OS == 'ios' ? '20px' : '0px'};
+  row-gap: 20px;
 `;
 
 export const AuthTextContainer = styled.View`
