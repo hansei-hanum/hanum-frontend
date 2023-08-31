@@ -73,14 +73,14 @@ export const LunchTableScreen: React.FC = () => {
                       },
                     ]}
                   >
-                    <Text size="18" fontFamily="bold" color={todayLunchText}>
+                    <Text size={18} fontFamily="bold" color={todayLunchText}>
                       {`${date.getMonth() + 1}/${date.getDate()} (${WEEKDAY_LIST[date.getDay()]})`}
                     </Text>
                     {item.menus.map(({ name, allergys }) => (
                       <View key={name}>
                         <Text
                           fontFamily="medium"
-                          size={Platform.OS === 'ios' ? '15' : '14'}
+                          size={Platform.OS === 'ios' ? 15 : 14}
                           color={todayLunchText}
                         >
                           {name}
@@ -88,7 +88,7 @@ export const LunchTableScreen: React.FC = () => {
                         {allergys.length > 0 && (
                           <Text
                             fontFamily="medium"
-                            size="10"
+                            size={10}
                             color={checkTodayLunch ? colors.secondary : colors.placeholder}
                           >
                             {allergys.join(', ')}
@@ -110,12 +110,12 @@ export const LunchTableScreen: React.FC = () => {
             height={headerIconStyle.height}
             asset={LunchTableIcon}
           />
-          <Text size="20" fontFamily="bold">
+          <Text size={20} fontFamily="bold">
             급식표
           </Text>
         </View>
         <S.LunchTableAlertContainer>
-          <Text size="17" fontFamily="medium">
+          <Text size={17} fontFamily="medium">
             매일 아침 알림 받기
           </Text>
           <Switch

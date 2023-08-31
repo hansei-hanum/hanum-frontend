@@ -15,7 +15,7 @@ export interface HanumPayButton {
 export const HanumPayButton: React.FC<HanumPayButton> = ({ onPress, text }) => {
   return (
     <S.HanumPayButton activeOpacity={0.4} onPress={onPress}>
-      <Text size={Platform.OS === 'ios' ? '15' : '14'} fontFamily="bold" color={colors.black}>
+      <Text size={Platform.OS === 'ios' ? 15 : 14} fontFamily="bold" color={colors.black}>
         {text}
       </Text>
     </S.HanumPayButton>
@@ -26,7 +26,7 @@ export const HanumPay: React.FC = () => {
   return (
     <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPay">
       <S.HanumPayContainer>
-        <Text size="24" fontFamily="bold" color={colors.black}>
+        <Text size={24} fontFamily="bold" color={colors.black}>
           19,000원
         </Text>
         <S.HanumPayButtonContainer>

@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import Toast from 'react-native-toast-message';
 
-import { useNavigation } from '@react-navigation/native';
+import { useRecoilValue } from 'recoil';
 
 import { checkNumber } from 'src/utils';
 import { colors } from 'src/styles';
 import { Auth, Button, DummyContainer, Modal, Text } from 'src/components';
+import { authState } from 'src/atoms';
+import { useAuth } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -22,8 +23,6 @@ const RESUCCESS_STATE = { message: '전송되었어요!', color: colors.primary 
 const RESEND_STATE = { message: '재전송 하기', color: colors.primary };
 
 export const VerifyCodeScreen: React.FC = () => {
-  const navigate = useNavigation().navigate as (screen: string) => void;
-
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -32,6 +31,8 @@ export const VerifyCodeScreen: React.FC = () => {
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
   const [modalVisible, setModalVisible] = useState(false);
+  const auth = useRecoilValue(authState);
+  const { mutate } = useAuth();
 
   const onChangeText = (text: string) => {
     const newText = checkNumber(text);
@@ -61,12 +62,7 @@ export const VerifyCodeScreen: React.FC = () => {
 
   const onSubmit = () => {
     setIsSubmit(true);
-    navigate('Main');
-    Toast.show({
-      position: 'bottom',
-      type: 'success',
-      text1: '클라우드보안과 2학년 2반 박찬영님, 환영해요!',
-    });
+    mutate({ ...auth, code: value });
   };
 
   const intervalId = useRef<NodeJS.Timeout | null>(null);
@@ -95,14 +91,14 @@ export const VerifyCodeScreen: React.FC = () => {
         headerText={`인증 번호를 보냈어요!\n받은 인증 번호를 입력해 주세요`}
         subHeaderText={
           <S.VerifyCodeScreenTextContainer>
-            <Text size="16" fontFamily="regular">
+            <Text size={16} fontFamily="regular">
               문자가 안 오나요?
             </Text>
             <TouchableOpacity
               activeOpacity={resend.color !== colors.danger ? 0.2 : 1}
               onPress={handleResend}
             >
-              <Text size="16" color={resend.color}>
+              <Text size={16} color={resend.color}>
                 {' '}
                 {resend.message}
               </Text>
@@ -113,24 +109,31 @@ export const VerifyCodeScreen: React.FC = () => {
         isDisabled={isDisabled}
         onPress={onSubmit}
       >
-        <CodeField
-          ref={ref}
-          {...props}
-          value={value}
-          onChangeText={onChangeText}
-          cellCount={CELL_COUNT}
-          caretHidden={true}
-          keyboardType="numeric"
-          textContentType="oneTimeCode"
-          rootStyle={{ width: '100%' }}
-          renderCell={({ index, symbol, isFocused }) => (
-            <S.VerifyCodeScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
-              <Text size="20" fontFamily="medium">
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            </S.VerifyCodeScreenInput>
+        <View>
+          <CodeField
+            ref={ref}
+            {...props}
+            value={value}
+            onChangeText={onChangeText}
+            cellCount={CELL_COUNT}
+            caretHidden={true}
+            keyboardType="numeric"
+            textContentType="oneTimeCode"
+            rootStyle={{ width: '100%' }}
+            renderCell={({ index, symbol, isFocused }) => (
+              <S.VerifyCodeScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
+                <Text size={20} fontFamily="medium">
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              </S.VerifyCodeScreenInput>
+            )}
+          />
+          {auth.errorMessage && (
+            <Text size={15} color={colors.danger}>
+              {auth.errorMessage}
+            </Text>
           )}
-        />
+        </View>
       </Auth>
       <Modal
         title="인증 시간 초과"

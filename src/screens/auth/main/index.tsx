@@ -18,13 +18,15 @@ export const AuthMainScreen: React.FC = () => {
     setModalVisible(false);
   };
 
+  const fontSize = 16;
+
   return (
     <>
       {modalVisible && <DummyContainer />}
       <S.AuthMainScreenContainer>
         <S.AuthMainScreenLogoContainer>
           <WithLocalSvg width={180} height={50} asset={Logo} />
-          <Text size="16" fontFamily="bold">
+          <Text size={fontSize} fontFamily="bold">
             한세인 도우미, 한움
           </Text>
         </S.AuthMainScreenLogoContainer>
@@ -34,11 +36,9 @@ export const AuthMainScreen: React.FC = () => {
             회원가입
           </Button>
           <S.AuthMainScreenTextContainer>
-            <Text size="16" fontFamily="bold">
-              교직원이신가요?{' '}
-            </Text>
+            <Text size={fontSize}>교직원이신가요? </Text>
             <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('Staff')}>
-              <Text size="16" fontFamily="bold" color={colors.primary}>
+              <Text size={fontSize} color={colors.primary}>
                 교직원 회원가입 요청
               </Text>
             </TouchableOpacity>

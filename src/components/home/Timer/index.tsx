@@ -18,10 +18,10 @@ export interface TimerTextProps {
 export const TimerText: React.FC<TimerTextProps> = ({ subText, mainText }) => {
   return (
     <S.TimerTextContainer>
-      <Text size="14" fontFamily="medium" color={colors.placeholder}>
+      <Text size={14} fontFamily="medium" color={colors.placeholder}>
         {subText}
       </Text>
-      <Text size="20" fontFamily="bold" color={colors.black}>
+      <Text size={20} fontFamily="bold" color={colors.black}>
         {mainText}
       </Text>
     </S.TimerTextContainer>

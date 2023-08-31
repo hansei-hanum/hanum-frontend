@@ -28,7 +28,7 @@ export const ShowMoreScreen: React.FC = () => {
       }}
     >
       <S.ShowMoreHeaderScreen>
-        <Text size="20" fontFamily="bold">
+        <Text size={20} fontFamily="bold">
           더 보기
         </Text>
       </S.ShowMoreHeaderScreen>
@@ -42,10 +42,10 @@ export const ShowMoreScreen: React.FC = () => {
           <S.ShowMoreUserInfo>
             <S.ShowMoreUserImage source={UserLogo} />
             <S.ShowMoreUserNameContainer>
-              <Text size="18" fontFamily="bold">
+              <Text size={18} fontFamily="bold">
                 박찬영
               </Text>
-              <Text size="15" fontFamily="medium">
+              <Text size={18} fontFamily="medium">
                 클라우드보안과 2학년 2반 재학생
               </Text>
             </S.ShowMoreUserNameContainer>

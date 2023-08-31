@@ -10,7 +10,7 @@ import { Content } from '../Content';
 import * as S from './styled';
 
 export const Calendar: React.FC = () => {
-  const fontSize = Platform.OS === 'ios' ? '15' : '14';
+  const fontSize = Platform.OS === 'ios' ? 15 : 14;
   return (
     <Content icon={CalendarIcon} name="시간표" navigateUrl="Calendar">
       <S.CalendarContainer>

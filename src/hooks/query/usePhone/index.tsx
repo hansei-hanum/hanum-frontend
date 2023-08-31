@@ -23,7 +23,6 @@ export const usePhone = (): UseMutationResult<
     onError: (error) => {
       const message = error.response?.data.message;
       if (message === 'RATE_LIMITED') {
-        console.log(message, 'message');
         setAuth({
           ...auth,
           errorMessage:

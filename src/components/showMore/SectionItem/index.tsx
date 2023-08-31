@@ -29,11 +29,11 @@ export const SectionItem: React.FC<SectionItemProps> = ({ name, icon, navigateUr
       <S.SectionItem style={[animatedStyle]}>
         <S.SectionIconContainer>
           <S.SectionIconWrapper>
-            <Text key={name} size="30" fontFamily="tossIcon">
+            <Text key={name} size={30} fontFamily="tossIcon">
               {icon}
             </Text>
           </S.SectionIconWrapper>
-          <Text key={name} size="16">
+          <Text key={name} size={16}>
             {name}
           </Text>
         </S.SectionIconContainer>

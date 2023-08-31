@@ -17,9 +17,15 @@ export interface TextFieldForm {
   title: string;
   placeHolder: string;
   isNameScreen?: boolean;
+  isPhoneScreen?: boolean;
 }
 
-export const TextFieldForm: React.FC<TextFieldForm> = ({ title, placeHolder, isNameScreen }) => {
+export const TextFieldForm: React.FC<TextFieldForm> = ({
+  title,
+  placeHolder,
+  isNameScreen,
+  isPhoneScreen,
+}) => {
   const navigate = useNavigate();
   const [auth, setAuth] = useRecoilState(authState);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -78,8 +84,8 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({ title, placeHolder, isN
           inputContainerStyle={{ borderBottomColor: colors.placeholder }}
           inputStyle={{ fontSize: 20 }}
         />
-        {!isNameScreen && auth.errorMessage !== '' && (
-          <Text color={colors.danger} size="15">
+        {isPhoneScreen && auth.errorMessage !== '' && (
+          <Text color={colors.danger} size={15}>
             {auth.errorMessage}
           </Text>
         )}

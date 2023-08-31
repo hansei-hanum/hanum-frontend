@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 import styled from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';
@@ -16,7 +18,7 @@ export const ButtonElement = styled.TouchableOpacity<{
 `;
 
 export const ButtonText = styled.Text`
-  font-size: 16px;
+  font-size: ${Platform.OS === 'ios' ? '16px' : '14px'};
   font-family: ${fonts.bold};
   color: ${colors.white};
   text-align: center;
