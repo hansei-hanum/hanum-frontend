@@ -1,7 +1,23 @@
 import styled from '@emotion/native';
 
-export const CalendarContainer = styled.SafeAreaView`
+import { colors } from 'src/styles';
+
+export const CalendarWrapper = styled.SafeAreaView`
   flex: 1;
+  background-color: ${colors.background};
+`;
+
+export const CalendarContainer = styled.View`
+  flex: 1;
+  padding: 0 20px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  row-gap: 16px;
+`;
+
+export const CalendarTitleContainer = styled.View`
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  column-gap: 6px;
 `;
