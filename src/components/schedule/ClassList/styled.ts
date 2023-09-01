@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const ClassListWrapper = styled.View`
+export const ClassListWrapper = styled.SafeAreaView`
   flex-grow: 1;
   align-items: center;
   justify-content: center;

@@ -7,7 +7,7 @@ export const AlertBoxWrapper = styled(Animated.View)`
   border-radius: 16px;
 `;
 
-export const AlertBoxContainer = styled.View`
+export const AlertBoxContainer = styled.SafeAreaView`
   width: 100%;
   flex-direction: row;
   align-items: center;
@@ -19,6 +19,6 @@ export const AlertBoxContentContainer = styled(AlertBoxContainer)`
   width: auto;
 `;
 
-export const AlertBoxTextContainer = styled.View`
+export const AlertBoxTextContainer = styled.SafeAreaView`
   row-gap: 3px;
 `;

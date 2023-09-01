@@ -2,14 +2,14 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const ScheduleScreenContainer = styled.View`
+export const ScheduleScreenContainer = styled.SafeAreaView`
   flex: 1;
   padding: 70px 0px 0px 0px;
   background: ${colors.background};
   row-gap: 10px;
 `;
 
-export const ScheduleScreenHeader = styled.View`
+export const ScheduleScreenHeader = styled.SafeAreaView`
   padding-left: 20px;
   flex-direction: column;
   row-gap: 20px;
@@ -17,13 +17,13 @@ export const ScheduleScreenHeader = styled.View`
   justify-content: flex-start;
 `;
 
-export const ScheduleScreenIconContainer = styled.View`
+export const ScheduleScreenIconContainer = styled.SafeAreaView`
   flex-direction: row;
   align-items: center;
   column-gap: 6px;
 `;
 
-export const ScheduleScreenTimeContainer = styled.View`
+export const ScheduleScreenTimeContainer = styled.SafeAreaView`
   justify-content: center;
   flex-direction: row;
   align-items: center;

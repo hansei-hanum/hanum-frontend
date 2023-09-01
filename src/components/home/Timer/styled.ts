@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const TimerTextWrapper = styled.View`
+export const TimerTextWrapper = styled.SafeAreaView`
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -13,13 +13,13 @@ export const ScreenTimerContainer = styled(TimerTextWrapper)`
   height: 70px;
 `;
 
-export const ScreenTimerLine = styled.View`
+export const ScreenTimerLine = styled.SafeAreaView`
   width: 1px;
   height: 100%;
   background-color: #efefef;
 `;
 
-export const TimerTextContainer = styled.View`
+export const TimerTextContainer = styled.SafeAreaView`
   justify-content: center;
   align-items: center;
   flex-direction: column;

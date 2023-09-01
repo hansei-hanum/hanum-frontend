@@ -12,6 +12,7 @@ import {
   VerifyCodeScreen,
   MainScreen,
   HanumPayScreen,
+  CalendarScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 
@@ -56,6 +57,7 @@ export const Router: React.FC = () => {
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+          <Stack.Screen name="Calendar" component={CalendarScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'} />

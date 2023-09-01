@@ -2,7 +2,7 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const AuthMainScreenContainer = styled.View`
+export const AuthMainScreenContainer = styled.SafeAreaView`
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -12,14 +12,14 @@ export const AuthMainScreenContainer = styled.View`
   row-gap: 40px;
 `;
 
-export const AuthMainScreenLogoContainer = styled.View`
+export const AuthMainScreenLogoContainer = styled.SafeAreaView`
   flex-direction: column;
   justify-content: center;
   align-items: center;
   row-gap: 10px;
 `;
 
-export const AuthMainScreenMainSection = styled.View`
+export const AuthMainScreenMainSection = styled.SafeAreaView`
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -27,12 +27,12 @@ export const AuthMainScreenMainSection = styled.View`
   width: 100%;
 `;
 
-export const AuthMainScreenTextContainer = styled.View`
+export const AuthMainScreenTextContainer = styled.SafeAreaView`
   flex-direction: row;
   align-items: center;
 `;
 
-export const AuthMainScreenButtonContainer = styled.View`
+export const AuthMainScreenButtonContainer = styled.SafeAreaView`
   width: 100%;
   flex-direction: row;
   justify-content: space-between;

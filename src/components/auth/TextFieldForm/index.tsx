@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
@@ -79,7 +79,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
       onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
       isDisabled={isDisabled}
     >
-      <View style={{ width: '100%' }}>
+      <SafeAreaView style={{ width: '100%' }}>
         <S.TextFieldFormInput
           onChangeText={isNameScreen ? onNameChange : onPhoneChange}
           value={isNameScreen ? name : phone}
@@ -96,7 +96,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
             {auth.errorMessage}
           </Text>
         )}
-      </View>
+      </SafeAreaView>
     </Auth>
   );
 };

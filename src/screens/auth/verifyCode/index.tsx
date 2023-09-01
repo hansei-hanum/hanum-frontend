@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, SafeAreaView } from 'react-native';
 import {
   CodeField,
   Cursor,
@@ -111,7 +111,7 @@ export const VerifyCodeScreen: React.FC = () => {
         isDisabled={isDisabled}
         onPress={onSubmit}
       >
-        <View>
+        <SafeAreaView>
           <CodeField
             ref={ref}
             {...props}
@@ -135,7 +135,7 @@ export const VerifyCodeScreen: React.FC = () => {
               {auth.errorMessage}
             </Text>
           )}
-        </View>
+        </SafeAreaView>
       </Auth>
       <Modal
         title="인증 시간 초과"

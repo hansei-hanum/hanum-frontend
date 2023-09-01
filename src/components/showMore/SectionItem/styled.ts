@@ -11,13 +11,13 @@ export const SectionItem = styled(Animated.View)`
   border-radius: 16px;
 `;
 
-export const SectionIconContainer = styled.View`
+export const SectionIconContainer = styled.SafeAreaView`
   flex-direction: row;
   align-items: center;
   column-gap: 10px;
 `;
 
-export const SectionIconWrapper = styled.View`
+export const SectionIconWrapper = styled.SafeAreaView`
   padding: 4px;
   border-radius: 10px;
   background-color: ${colors.lightGray};

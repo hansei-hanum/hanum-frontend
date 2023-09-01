@@ -2,13 +2,13 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const ModalWrapper = styled.View`
+export const ModalWrapper = styled.SafeAreaView`
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
 
-export const ModalContainer = styled.View`
+export const ModalContainer = styled.SafeAreaView`
   justify-content: center;
   align-items: center;
   width: 90%;
@@ -18,7 +18,7 @@ export const ModalContainer = styled.View`
   row-gap: 20px;
 `;
 
-export const DummyContainer = styled.View`
+export const DummyContainer = styled.SafeAreaView`
   flex: 1;
   position: absolute;
   z-index: 999;

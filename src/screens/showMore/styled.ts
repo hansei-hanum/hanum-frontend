@@ -9,7 +9,7 @@ export const ShowMoreScreenContainer = styled.ScrollView`
   background-color: ${colors.background};
 `;
 
-export const ShowMoreHeaderScreen = styled.View`
+export const ShowMoreHeaderScreen = styled.SafeAreaView`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 10px;
@@ -24,7 +24,7 @@ export const ShowMoreUserContainer = styled(Animated.View)`
   border-radius: 16px;
 `;
 
-export const ShowMoreUserInfo = styled.View`
+export const ShowMoreUserInfo = styled.SafeAreaView`
   flex-direction: row;
   align-items: center;
   column-gap: 10px;
@@ -37,6 +37,6 @@ export const ShowMoreUserImage = styled.Image`
   border: 1px ${colors.lightGray};
 `;
 
-export const ShowMoreUserNameContainer = styled.View`
+export const ShowMoreUserNameContainer = styled.SafeAreaView`
   flex-direction: column;
 `;
