@@ -12,7 +12,7 @@ import * as S from './styled';
 export const Calendar: React.FC = () => {
   const fontSize = Platform.OS === 'ios' ? 15 : 14;
   return (
-    <Content icon={CalendarIcon} name="시간표" navigateUrl="Calendar">
+    <Content icon={CalendarIcon} name="학사 일정" navigateUrl="Calendar">
       <S.CalendarContainer>
         <S.CalendarTextContainer>
           <Text size={fontSize} fontFamily="medium" color={colors.placeholder}>

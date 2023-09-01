@@ -2,7 +2,7 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const ScheduleScreenContainer = styled.View`
+export const ScheduleScreenContainer = styled.SafeAreaView`
   flex: 1;
   padding: 70px 0px 0px 0px;
   background: ${colors.background};
