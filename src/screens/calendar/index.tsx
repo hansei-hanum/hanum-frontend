@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 
+import koLocale from 'date-fns/locale/ko';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 
-import { Icon, Text } from 'src/components';
+import { ContentBox, Icon, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { CALENDAR_LIST } from 'src/constants';
 
 import * as S from './styled';
+
+LocaleConfig.defaultLocale = 'ko';
 
 export const CalendarScreen: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -32,18 +35,23 @@ export const CalendarScreen: React.FC = () => {
     };
   }, {});
 
+  // const formattedSelectedDate =
+  //   selectedDate &&
+  //   format(new Date(selectedDate), 'MM/dd (eee)', {
+  //     locale: koLocale,
+  //   });
+
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       const today = new Date();
-      const month = today.getMonth() + 1;
-      const day = today.getDate();
-      const formatMonth = month < 10 ? `0${month}` : month;
-      const formatDay = day < 10 ? `0${day}` : day;
-      const todayString = `${today.getFullYear()}-${formatMonth}-${formatDay}`;
+      const formatMonth = (n: number) => (n < 10 ? `0${n}` : n);
+      const formatDay = (n: number) => (n < 10 ? `0${n}` : n);
+      const todayString = `${today.getFullYear()}-${formatMonth(today.getMonth() + 1)}-${formatDay(
+        today.getDate(),
+      )}`;
       setSelectedDate(todayString);
-      console.log(todayString);
     }
   }, [isFocused]);
 
@@ -61,6 +69,7 @@ export const CalendarScreen: React.FC = () => {
         </S.CalendarTitleContainer>
       </S.CalendarHeaderContainer>
       <Calendar
+        locale={'ko'}
         markedDates={{
           ...dotsDate,
           [selectedDate || '']: {
@@ -73,15 +82,31 @@ export const CalendarScreen: React.FC = () => {
           arrowColor: colors.black,
           todayTextColor: colors.primary,
           dotColor: colors.primary,
+          selectedDotColor: colors.white,
         }}
         style={{
           marginTop: 40,
           paddingBottom: 40,
-          borderBottomWidth: 0.6,
+          borderBottomWidth: 0.4,
           borderBottomColor: colors.placeholder,
         }}
-        onDayPress={(day) => setSelectedDate(day.dateString)} // DateData
+        onDayPress={(day) => setSelectedDate(day.dateString)}
       />
+      <S.CalendarScheduleContainer
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: 20,
+        }}
+      >
+        {CALENDAR_LIST.find((item) => item.date === selectedDate)?.contents.map((item) => (
+          <ContentBox style={{ marginTop: 20 }}>
+            <Text size={20} fontFamily="bold" key={item}>
+              {item}
+            </Text>
+          </ContentBox>
+        ))}
+      </S.CalendarScheduleContainer>
     </S.CalendarWrapper>
   );
 };

@@ -21,3 +21,7 @@ export const CalendarTitleContainer = styled.View`
   align-items: center;
   column-gap: 6px;
 `;
+
+export const CalendarScheduleContainer = styled.ScrollView`
+  padding: 0px 20px;
+`;
