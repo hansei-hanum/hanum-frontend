@@ -5,11 +5,12 @@ import { WithLocalSvg } from 'react-native-svg';
 import { useSetRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
 
-import { Logo } from '../../../../assets/images';
 import { Button, DummyContainer, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate } from 'src/hooks';
 import { authState } from 'src/atoms';
+
+import { Logo } from '../../../../assets/images';
 
 import * as S from './styled';
 

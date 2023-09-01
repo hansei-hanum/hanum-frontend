@@ -155,7 +155,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-23T00:00:00',
+    date: '2023-09-01T00:00:00',
     menus: [
       {
         name: '열무냉면',

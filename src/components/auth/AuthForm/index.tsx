@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import { TouchableOpacity } from 'react-native';
 import React from 'react';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import { useNavigation } from '@react-navigation/native';
-import Entypo from 'react-native-vector-icons/Entypo'
 
 import { Button, Text } from 'src/components';
 

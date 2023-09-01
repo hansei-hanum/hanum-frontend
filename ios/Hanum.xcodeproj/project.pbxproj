@@ -9,17 +9,17 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* HanumTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HanumTests.m */; };
 		0C80B921A6F3F58F76C31292 /* libPods-Hanum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Hanum.a */; };
+		0F13CCEC10D94E3EBDA38DAB /* SpoqaHanSansNeo-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D4A0B343B994CFE83403ED6 /* SpoqaHanSansNeo-Medium.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2F01598D8D1445798E66263B /* SpoqaHanSansNeo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3994B6BA7F14CFEB8A101F9 /* SpoqaHanSansNeo-Regular.ttf */; };
+		466FD31F560B4229986F677D /* SpoqaHanSansNeo-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F70960ED0CAB46A2AE140963 /* SpoqaHanSansNeo-Thin.ttf */; };
+		6389F642CBF14FDD927CA6C9 /* TossFaceFontMac.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E25483E9F27342D796F2AC14 /* TossFaceFontMac.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-Hanum-HanumTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Hanum-HanumTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		93446043772C4B32805AF95B /* SpoqaHanSansNeo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB77F07715304FA9800902A7 /* SpoqaHanSansNeo-Bold.ttf */; };
 		B1B42A31277047088D849E94 /* SpoqaHanSansNeo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 670D1FD3DD664596A115C0D0 /* SpoqaHanSansNeo-Light.ttf */; };
-		0F13CCEC10D94E3EBDA38DAB /* SpoqaHanSansNeo-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D4A0B343B994CFE83403ED6 /* SpoqaHanSansNeo-Medium.ttf */; };
-		2F01598D8D1445798E66263B /* SpoqaHanSansNeo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3994B6BA7F14CFEB8A101F9 /* SpoqaHanSansNeo-Regular.ttf */; };
-		466FD31F560B4229986F677D /* SpoqaHanSansNeo-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F70960ED0CAB46A2AE140963 /* SpoqaHanSansNeo-Thin.ttf */; };
-		6389F642CBF14FDD927CA6C9 /* TossFaceFontMac.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E25483E9F27342D796F2AC14 /* TossFaceFontMac.ttf */; };
 		DD95B6BD2C29482CA89F2453 /* index.ts in Resources */ = {isa = PBXBuildFile; fileRef = FBB0F25F10204B24B759A0F9 /* index.ts */; };
 /* End PBXBuildFile section */
 
@@ -47,17 +47,17 @@
 		3B4392A12AC88292D35C810B /* Pods-Hanum.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hanum.debug.xcconfig"; path = "Target Support Files/Pods-Hanum/Pods-Hanum.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-Hanum.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hanum.release.xcconfig"; path = "Target Support Files/Pods-Hanum/Pods-Hanum.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Hanum-HanumTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hanum-HanumTests.debug.xcconfig"; path = "Target Support Files/Pods-Hanum-HanumTests/Pods-Hanum-HanumTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5D4A0B343B994CFE83403ED6 /* SpoqaHanSansNeo-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Medium.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Medium.ttf"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-Hanum.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Hanum.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		670D1FD3DD664596A115C0D0 /* SpoqaHanSansNeo-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Light.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Light.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Hanum/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Hanum-HanumTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hanum-HanumTests.release.xcconfig"; path = "Target Support Files/Pods-Hanum-HanumTests/Pods-Hanum-HanumTests.release.xcconfig"; sourceTree = "<group>"; };
+		BB77F07715304FA9800902A7 /* SpoqaHanSansNeo-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Bold.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Bold.ttf"; sourceTree = "<group>"; };
+		D3994B6BA7F14CFEB8A101F9 /* SpoqaHanSansNeo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Regular.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Regular.ttf"; sourceTree = "<group>"; };
+		E25483E9F27342D796F2AC14 /* TossFaceFontMac.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = TossFaceFontMac.ttf; path = ../assets/fonts/TossFaceFontMac.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		BB77F07715304FA9800902A7 /* SpoqaHanSansNeo-Bold.ttf */ = {isa = PBXFileReference; name = "SpoqaHanSansNeo-Bold.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		670D1FD3DD664596A115C0D0 /* SpoqaHanSansNeo-Light.ttf */ = {isa = PBXFileReference; name = "SpoqaHanSansNeo-Light.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5D4A0B343B994CFE83403ED6 /* SpoqaHanSansNeo-Medium.ttf */ = {isa = PBXFileReference; name = "SpoqaHanSansNeo-Medium.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D3994B6BA7F14CFEB8A101F9 /* SpoqaHanSansNeo-Regular.ttf */ = {isa = PBXFileReference; name = "SpoqaHanSansNeo-Regular.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F70960ED0CAB46A2AE140963 /* SpoqaHanSansNeo-Thin.ttf */ = {isa = PBXFileReference; name = "SpoqaHanSansNeo-Thin.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E25483E9F27342D796F2AC14 /* TossFaceFontMac.ttf */ = {isa = PBXFileReference; name = "TossFaceFontMac.ttf"; path = "../assets/fonts/TossFaceFontMac.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		FBB0F25F10204B24B759A0F9 /* index.ts */ = {isa = PBXFileReference; name = "index.ts"; path = "../assets/fonts/index.ts"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F70960ED0CAB46A2AE140963 /* SpoqaHanSansNeo-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpoqaHanSansNeo-Thin.ttf"; path = "../assets/fonts/SpoqaHanSansNeo-Thin.ttf"; sourceTree = "<group>"; };
+		FBB0F25F10204B24B759A0F9 /* index.ts */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = index.ts; path = ../assets/fonts/index.ts; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,19 +152,8 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3B4392A12AC88292D35C810B /* Pods-Hanum.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-Hanum.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-Hanum-HanumTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-Hanum-HanumTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		A55516CFACBC4E2C82E75EA5 /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				BB77F07715304FA9800902A7 /* SpoqaHanSansNeo-Bold.ttf */,
 				670D1FD3DD664596A115C0D0 /* SpoqaHanSansNeo-Light.ttf */,
@@ -175,8 +164,19 @@
 				FBB0F25F10204B24B759A0F9 /* index.ts */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
 			path = "";
+			sourceTree = "<group>";
+		};
+		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3B4392A12AC88292D35C810B /* Pods-Hanum.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-Hanum.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-Hanum-HanumTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-Hanum-HanumTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 

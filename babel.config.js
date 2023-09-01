@@ -7,10 +7,10 @@ module.exports = {
         cwd: 'babelrc',
         extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js'],
         alias: {
-          'src': './src'
-        }
-      }
+          src: './src',
+        },
+      },
     ],
-    'jest-hoist'
-  ]
+    'jest-hoist',
+  ],
 };

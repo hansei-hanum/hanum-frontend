@@ -1,10 +1,9 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { useNavigate, usePressingAnimation } from 'src/hooks';
-import { Text } from 'src/components';
+import { Icon, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -28,11 +27,7 @@ export const SectionItem: React.FC<SectionItemProps> = ({ name, icon, navigateUr
     >
       <S.SectionItem style={[animatedStyle]}>
         <S.SectionIconContainer>
-          <S.SectionIconWrapper>
-            <Text key={name} size={30} fontFamily="tossIcon">
-              {icon}
-            </Text>
-          </S.SectionIconWrapper>
+          <Icon icon={icon} />
           <Text key={name} size={16}>
             {name}
           </Text>

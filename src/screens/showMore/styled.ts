@@ -31,7 +31,7 @@ export const ShowMoreUserInfo = styled.View`
 `;
 
 export const ShowMoreUserImage = styled.Image`
-  border-radius: 50%;
+  border-radius: 100px;
   width: 56px;
   height: 56px;
   border: 1px ${colors.lightGray};

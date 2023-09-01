@@ -5,9 +5,10 @@ import { Platform, ScrollView, Switch, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { Text } from 'src/components';
-import { LunchTableIcon } from '../../../assets/icons';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
+
+import { LunchTableIcon } from '../../../assets/icons';
 
 import * as S from './styled';
 
@@ -20,17 +21,18 @@ export const LunchTableScreen: React.FC = () => {
     setNotifyClick(!notifyClick);
   };
 
-  const ITEM_HEIGHT = Platform.OS === 'ios' ? 140 : 150;
+  const ITEM_HEIGHT = Platform.OS === 'ios' ? 100 : 150;
   const isFocused = useIsFocused();
 
   useEffect(() => {
     const todayLunch = MEAL_LIST.find((item) => {
       const date = new Date(item.date);
       const nowDate = new Date();
-      setTodayLunch(item);
-      return date.getDate() === nowDate.getDate();
+      const checkTodayLunch = date.getDate() === nowDate.getDate();
+      return checkTodayLunch;
     });
     if (todayLunch) {
+      setTodayLunch(todayLunch);
       setTimeout(() => {
         const yOffset = MEAL_LIST.indexOf(todayLunch) * ITEM_HEIGHT;
         scrollViewRef?.current?.scrollTo({ y: yOffset, animated: true });
@@ -103,7 +105,7 @@ export const LunchTableScreen: React.FC = () => {
           ))}
         </S.LunchTableBoxContainer>
       </S.LunchTableContainer>
-      <S.LunchTableHeader>
+      <S.LunchTableHeader blurType="light" reducedTransparencyFallbackColor="white">
         <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
           <WithLocalSvg
             width={headerIconStyle.width}

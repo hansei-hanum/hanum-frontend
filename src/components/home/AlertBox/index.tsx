@@ -1,7 +1,6 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { ImageSourcePropType, TouchableOpacity } from 'react-native';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { Text } from 'src/components';

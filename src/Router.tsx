@@ -35,9 +35,7 @@ export const Router: React.FC = () => {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-
-  }, [isReady, isLoading]);
+  const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
   if (!isReady || isLoading) {
     return null;
@@ -45,7 +43,7 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'AuthMain'}>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'Main'}>
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>

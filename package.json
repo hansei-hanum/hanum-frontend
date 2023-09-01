@@ -21,6 +21,7 @@
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-native-community/blur": "^4.3.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-material/core": "^1.3.7",
     "@react-navigation/bottom-tabs": "^6.5.8",
@@ -71,7 +72,7 @@
     "eslint-plugin-react-native": "^4.0.0",
     "jest": "^29.2.1",
     "metro-react-native-babel-preset": "0.76.8",
-    "prettier": "^2.4.1",
+    "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"

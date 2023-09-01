@@ -1,8 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
-
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { LunchTableScreen, HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
@@ -43,9 +43,7 @@ export const MainScreen: React.FC = () => {
         name="급식표"
         component={LunchTableScreen}
         options={{
-          tabBarIcon: ({ color }) => (
-            <Icons name="local-restaurant" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Icons name="local-restaurant" size={size} color={color} />,
         }}
       />
       <BottomTab.Screen

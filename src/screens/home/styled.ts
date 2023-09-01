@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 
+import { BlurView } from '@react-native-community/blur';
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
@@ -14,7 +15,7 @@ export const HomeScreenContainer = styled.ScrollView`
   flex-direction: column;
 `;
 
-export const HomeScreenHeader = styled.View`
+export const HomeScreenHeader = styled(BlurView)`
   position: absolute;
   flex-direction: row;
   width: 100%;

@@ -2,8 +2,7 @@ import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ImageSourcePropType, Platform } from 'react-native';
-
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { ContentBox, Text } from 'src/components';
 import { colors } from 'src/styles';

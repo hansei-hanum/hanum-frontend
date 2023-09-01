@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'react-native';
-
-import Ionicons from "react-native-vector-icons/Ionicons"
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar } from 'src/components';
 import { colors } from 'src/styles';
 
-import * as S from './styled';
 import { PartyIcon } from '../../../assets/icons';
 import { Logo } from '../../../assets/images';
+
+import * as S from './styled';
 
 export const HomeScreen: React.FC = ({ navigation }: any) => {
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
@@ -44,7 +44,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         <LunchTable onPress={onPress} />
         <Calendar />
       </S.HomeScreenContainer>
-      <S.HomeScreenHeader>
+      <S.HomeScreenHeader blurType="light" reducedTransparencyFallbackColor="white">
         <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
         <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
           <Ionicons
