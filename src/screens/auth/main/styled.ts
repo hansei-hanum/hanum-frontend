@@ -2,7 +2,7 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const AuthMainScreenContainer = styled.View`
+export const AuthMainScreenContainer = styled.SafeAreaView`
   flex: 1;
   justify-content: center;
   align-items: center;

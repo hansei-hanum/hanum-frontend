@@ -88,7 +88,6 @@ export const VerifyCodeScreen: React.FC = () => {
 
   return (
     <>
-      {modalVisible && <DummyContainer />}
       <Auth
         headerText={`인증 번호를 보냈어요!\n받은 인증 번호를 입력해 주세요`}
         subHeaderText={
@@ -137,16 +136,21 @@ export const VerifyCodeScreen: React.FC = () => {
           )}
         </View>
       </Auth>
-      <Modal
-        title="인증 시간 초과"
-        text={`인증번호를 입력할 수 있는 시간이 지났어요.\n처음부터 다시 시도해 주세요.`}
-        modalVisible={modalVisible}
-        button={
-          <Button onPress={() => setModalVisible(false)} isModalBtn>
-            확인
-          </Button>
-        }
-      />
+      {modalVisible && (
+        <>
+          <DummyContainer />
+          <Modal
+            title="인증 시간 초과"
+            text={`인증번호를 입력할 수 있는 시간이 지났어요.\n처음부터 다시 시도해 주세요.`}
+            modalVisible={modalVisible}
+            button={
+              <Button onPress={() => setModalVisible(false)} isModalBtn>
+                확인
+              </Button>
+            }
+          />
+        </>
+      )}
     </>
   );
 };

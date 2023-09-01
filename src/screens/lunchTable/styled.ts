@@ -5,7 +5,7 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const LunchTableWrapper = styled.View`
+export const LunchTableWrapper = styled.SafeAreaView`
   flex: 1;
   background-color: ${colors.background};
   width: 100%;
