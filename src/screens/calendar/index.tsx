@@ -22,6 +22,7 @@ export const CalendarScreen: React.FC = () => {
             학사일정
           </Text>
         </S.CalendarTitleContainer>
+        <S.CalendarElement />
         <Text size={16}>Calendar Screen</Text>
       </S.CalendarContainer>
     </S.CalendarWrapper>
