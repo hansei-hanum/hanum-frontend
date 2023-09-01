@@ -5,7 +5,7 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const LunchTableWrapper = styled.SafeAreaView`
+export const LunchTableWrapper = styled.View`
   flex: 1;
   background-color: ${colors.background};
   width: 100%;
@@ -27,19 +27,19 @@ export const LunchTableHeader = styled(BlurView)`
   align-items: flex-start;
 `;
 
-export const LunchTableAlertContainer = styled.SafeAreaView`
+export const LunchTableAlertContainer = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const LunchTableBoxContainer = styled.SafeAreaView`
+export const LunchTableBoxContainer = styled.View`
   flex-direction: column;
   row-gap: 30px;
 `;
 
-export const LunchBoxContainer = styled.SafeAreaView`
+export const LunchBoxContainer = styled.View`
   width: 48%;
   min-height: 60px;
   align-items: flex-start;
@@ -49,7 +49,7 @@ export const LunchBoxContainer = styled.SafeAreaView`
   row-gap: 10px;
 `;
 
-export const LunchBoxWrapper = styled.SafeAreaView`
+export const LunchBoxWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;

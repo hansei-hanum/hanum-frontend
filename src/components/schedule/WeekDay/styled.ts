@@ -2,7 +2,7 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const ScheduleScreenDayContainer = styled.SafeAreaView`
+export const ScheduleScreenDayContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -14,7 +14,7 @@ export const ScheduleScreenDayContainer = styled.SafeAreaView`
   padding-left: 20px;
 `;
 
-export const ScheduleScreenDay = styled.SafeAreaView`
+export const ScheduleScreenDay = styled.View`
   flex-grow: 1;
   align-items: center;
   justify-content: center;

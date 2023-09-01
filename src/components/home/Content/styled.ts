@@ -2,7 +2,7 @@ import { Animated } from 'react-native';
 
 import styled from '@emotion/native';
 
-export const ContentWrapper = styled.SafeAreaView`
+export const ContentWrapper = styled.View`
   flex-direction: column;
   margin-top: 10px;
   padding: 16px;

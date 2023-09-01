@@ -5,7 +5,7 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const HomeScreenWrapper = styled.SafeAreaView`
+export const HomeScreenWrapper = styled.View`
   flex: 1;
   background-color: ${colors.background};
   width: 100%;

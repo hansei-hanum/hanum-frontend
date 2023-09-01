@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import { Platform, ScrollView, Switch, SafeAreaView } from 'react-native';
+import { Platform, ScrollView, Switch, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -79,7 +79,7 @@ export const LunchTableScreen: React.FC = () => {
                       {`${date.getMonth() + 1}/${date.getDate()} (${WEEKDAY_LIST[date.getDay()]})`}
                     </Text>
                     {item.menus.map(({ name, allergys }) => (
-                      <SafeAreaView key={name}>
+                      <View key={name}>
                         <Text
                           fontFamily="medium"
                           size={Platform.OS === 'ios' ? 15 : 14}
@@ -96,7 +96,7 @@ export const LunchTableScreen: React.FC = () => {
                             {allergys.join(', ')}
                           </Text>
                         )}
-                      </SafeAreaView>
+                      </View>
                     ))}
                   </S.LunchBoxContainer>
                 );
@@ -106,7 +106,7 @@ export const LunchTableScreen: React.FC = () => {
         </S.LunchTableBoxContainer>
       </S.LunchTableContainer>
       <S.LunchTableHeader blurType="light" reducedTransparencyFallbackColor="white">
-        <SafeAreaView style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
           <WithLocalSvg
             width={headerIconStyle.width}
             height={headerIconStyle.height}
@@ -115,7 +115,7 @@ export const LunchTableScreen: React.FC = () => {
           <Text size={20} fontFamily="bold">
             급식표
           </Text>
-        </SafeAreaView>
+        </View>
         <S.LunchTableAlertContainer>
           <Text size={17} fontFamily="medium">
             매일 아침 알림 받기

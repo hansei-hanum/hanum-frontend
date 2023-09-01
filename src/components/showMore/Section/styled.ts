@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const SectionContainer = styled.SafeAreaView`
+export const SectionContainer = styled.View`
   width: 100%;
   flex-direction: column;
   row-gap: 40px;
@@ -8,7 +8,7 @@ export const SectionContainer = styled.SafeAreaView`
   margin-top: 10px;
 `;
 
-export const Section = styled.SafeAreaView`
+export const Section = styled.View`
   flex-direction: column;
   row-gap: 20px;
 `;

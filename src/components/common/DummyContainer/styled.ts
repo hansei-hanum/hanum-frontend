@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const DummyContainerElement = styled.SafeAreaView`
+export const DummyContainerElement = styled.View`
   position: absolute;
   z-index: 999;
   width: 100%;

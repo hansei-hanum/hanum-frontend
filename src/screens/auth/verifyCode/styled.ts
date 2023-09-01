@@ -2,7 +2,7 @@ import { TextInput } from 'react-native';
 
 import styled from '@emotion/native';
 
-export const VerifyCodeScreenTextContainer = styled.SafeAreaView`
+export const VerifyCodeScreenTextContainer = styled.View`
   flex-direction: row;
   align-items: center;
 `;

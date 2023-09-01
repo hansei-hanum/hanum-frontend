@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';
 
-export const LunchTableTextContainer = styled.SafeAreaView`
+export const LunchTableTextContainer = styled.View`
   width: 100%;
   align-items: center;
   justify-content: center;

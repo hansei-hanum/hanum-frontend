@@ -1,11 +1,11 @@
-import { KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
 
 import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
 
 import { colors, fonts } from 'src/styles';
 
-export const AuthContainer = styled.SafeAreaView`
+export const AuthContainer = styled.View`
   flex: 1;
   padding: 70px 20px ${Platform.OS == 'ios' ? '30px' : '20px'} 20px;
   padding-top: ${Platform.OS == 'ios' ? '70px' : '30px'};
@@ -13,13 +13,13 @@ export const AuthContainer = styled.SafeAreaView`
   justify-content: space-between;
 `;
 
-export const AuthInputContainer = styled.SafeAreaView`
+export const AuthInputContainer = styled.View`
   justify-content: flex-start;
   align-items: flex-start;
   row-gap: 20px;
 `;
 
-export const AuthTextContainer = styled.SafeAreaView`
+export const AuthTextContainer = styled.View`
   flex-direction: column;
   row-gap: 6px;
 `;
@@ -32,7 +32,7 @@ export const AuthInput = styled(TextInput)`
   font-family: ${fonts.medium};
 `;
 
-export const AuthButtonWrapper = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : SafeAreaView)`
+export const AuthButtonWrapper = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`
   width: 100%;
   justify-content: center;
   align-items: center;
