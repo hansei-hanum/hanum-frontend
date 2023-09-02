@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Hanum.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>4539939C243A62556557607AC642BF0B4BE9A904</string>
+				<key>dateExpires</key>
+				<string>2024/08/31</string>
+				<key>type</key>
+				<string>Cloud Managed Apple Distribution</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>buildNumber</key>
+					<string>0.12.0</string>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>4539939C243A62556557607AC642BF0B4BE9A904</string>
+						<key>dateExpires</key>
+						<string>2024/08/31</string>
+						<key>type</key>
+						<string>Cloud Managed Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>hermes.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>663NYARW47</string>
+						<key>name</key>
+						<string>CHANYOUNG PARK</string>
+					</dict>
+					<key>versionNumber</key>
+					<string>0.12.0</string>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>663NYARW47.com.hanowl.hanum</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>663NYARW47</string>
+				<key>get-task-allow</key>
+				<false/>
+			</dict>
+			<key>name</key>
+			<string>Hanum.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>8a8ae29a-2f13-45ac-98a2-e3490f08a3e7</string>
+				<key>dateExpires</key>
+				<string>2024/08/31</string>
+				<key>name</key>
+				<string>iOS Team Ad Hoc Provisioning Profile: com.hanowl.hanum</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>663NYARW47</string>
+				<key>name</key>
+				<string>CHANYOUNG PARK</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>0.1</string>
+		</dict>
+	</array>
+</dict>
+</plist>

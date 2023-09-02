@@ -1,8 +1,8 @@
 export const fonts = {
-  bold: 'SpoqaHanSansNeoBold',
-  medium: 'SpoqaHanSansNeoMedium',
-  regular: 'SpoqaHanSansNeoRegular',
-  light: 'SpoqaHanSansNeoLight',
-  thin: 'SpoqaHanSansNeoThin',
+  bold: 'SpoqaHanSansNeo-Bold',
+  medium: 'SpoqaHanSansNeo-Medium',
+  regular: 'SpoqaHanSansNeo-Regular',
+  light: 'SpoqaHanSansNeo-Light',
+  thin: 'SpoqaHanSansNeo-Thin',
   tossIcon: 'TossFaceFontMac',
 };
