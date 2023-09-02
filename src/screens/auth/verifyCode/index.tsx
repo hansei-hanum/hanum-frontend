@@ -110,7 +110,7 @@ export const VerifyCodeScreen: React.FC = () => {
         isDisabled={isDisabled}
         onPress={onSubmit}
       >
-        <View>
+        <View style={{ flexDirection: 'column', rowGap: 6 }}>
           <CodeField
             ref={ref}
             {...props}

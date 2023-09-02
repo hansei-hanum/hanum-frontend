@@ -20,7 +20,7 @@ export const ShowMoreScreen: React.FC = () => {
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
-        paddingTop: Platform.OS === 'ios' ? 80 : 60,
+        paddingTop: Platform.OS === 'ios' ? 60 : 40,
         paddingBottom: 40,
         paddingLeft: 10,
         paddingRight: 10,

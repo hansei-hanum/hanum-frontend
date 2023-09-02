@@ -101,7 +101,7 @@ export const CalendarScreen: React.FC = () => {
       >
         {CALENDAR_LIST.find((item) => item.date === selectedDate)?.contents.map((item) => (
           <ContentBox style={{ marginTop: 20 }}>
-            <Text size={20} fontFamily="bold" key={item}>
+            <Text size={16} fontFamily="medium" key={item}>
               {item}
             </Text>
           </ContentBox>

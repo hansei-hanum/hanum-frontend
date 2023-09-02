@@ -25,7 +25,7 @@ export const IosHeader = styled(BlurView)`
   flex-direction: row;
   width: 100%;
   padding: 12px 20px;
-  padding-top: ${Platform.OS === 'ios' ? '60px' : '30px'};
+  padding-top: 10%;
   align-items: center;
   justify-content: space-between;
 `;
