@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { WithLocalSvg } from 'react-native-svg';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'react-native';
+import { WithLocalSvg } from 'react-native-svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { TouchableOpacity } from 'react-native';
 
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar } from 'src/components';
 import { colors } from 'src/styles';
@@ -18,6 +18,10 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
 
   const onPress = () => {
     navigation.navigate('급식표');
+  };
+
+  const onNotifyPress = () => {
+    setNotifyClick(!notifyClick);
   };
 
   return (
@@ -44,16 +48,31 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         <LunchTable onPress={onPress} />
         <Calendar />
       </S.HomeScreenContainer>
-      <S.HomeScreenHeader blurType="light" reducedTransparencyFallbackColor="white">
-        <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
-        <TouchableOpacity activeOpacity={0.5} onPress={() => setNotifyClick(!notifyClick)}>
-          <Ionicons
-            name={notifyClick ? 'notifications' : 'notifications-outline'}
-            size={28}
-            color={notifyClick ? '#000' : '#AAA'}
-          />
-        </TouchableOpacity>
-      </S.HomeScreenHeader>
+      {Platform.OS === 'ios' ? (
+        <S.IosHeader blurType="light" reducedTransparencyFallbackColor="white">
+          <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
+          <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
+            <Ionicons
+              name={notifyClick ? 'notifications' : 'notifications-outline'}
+              size={28}
+              color={notifyClick ? '#000' : '#AAA'}
+            />
+          </TouchableOpacity>
+        </S.IosHeader>
+      ) : (
+        <S.AndroidHeaderBlur blurType="light" reducedTransparencyFallbackColor="white">
+          <S.AndroidHeader>
+            <WithLocalSvg width={93} height={40} asset={Logo} />
+            <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
+              <Ionicons
+                name={notifyClick ? 'notifications' : 'notifications-outline'}
+                size={28}
+                color={notifyClick ? '#000' : '#AAA'}
+              />
+            </TouchableOpacity>
+          </S.AndroidHeader>
+        </S.AndroidHeaderBlur>
+      )}
     </S.HomeScreenWrapper>
   );
 };
