@@ -3,7 +3,6 @@ import React from 'react';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 
-import { LunchTableIcon } from '../../../../assets/icons';
 import { Content } from '../Content';
 
 import * as S from './styled';
@@ -14,7 +13,7 @@ export interface LunchTableProps {
 
 export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
   return (
-    <Content icon={LunchTableIcon} name="급식표" onPress={onPress}>
+    <Content icon="🍴" name="급식표" onPress={onPress}>
       <S.LunchTableTextContainer>
         <Text size={15} fontFamily="medium" color={colors.placeholder}>
           오늘의 급식

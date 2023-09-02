@@ -20,6 +20,11 @@ export const SHOW_MORE_SECTION_LIST: ShowMoreSectionItem[] = [
         icon: '📆',
         navigateUrl: 'Calendar',
       },
+      {
+        name: '타이머',
+        icon: '⌚️',
+        navigateUrl: 'Timer',
+      },
     ],
   },
   {

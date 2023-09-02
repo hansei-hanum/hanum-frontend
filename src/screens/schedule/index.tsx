@@ -1,10 +1,7 @@
 import React from 'react';
-import { WithLocalSvg } from 'react-native-svg';
 
 import { Text, ClassList, WeekDay } from 'src/components';
-import { CLASS_LIST, NUMBER_LIST, headerIconStyle } from 'src/constants';
-
-import { ScheduleIcon } from '../../../assets/icons';
+import { CLASS_LIST, NUMBER_LIST } from 'src/constants';
 
 import * as S from './styled';
 
@@ -14,11 +11,9 @@ export const ScheduleScreen: React.FC = () => {
       <S.ScheduleScreenContainer>
         <S.ScheduleScreenHeader>
           <S.ScheduleScreenIconContainer>
-            <WithLocalSvg
-              width={headerIconStyle.width}
-              height={headerIconStyle.height}
-              asset={ScheduleIcon}
-            />
+            <Text size={30} fontFamily="tossIcon">
+              ⏰
+            </Text>
             <Text size={20} fontFamily="bold">
               시간표
             </Text>

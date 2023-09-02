@@ -4,7 +4,6 @@ import { Platform } from 'react-native';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 
-import { CalendarIcon } from '../../../../assets/icons';
 import { Content } from '../Content';
 
 import * as S from './styled';
@@ -12,7 +11,7 @@ import * as S from './styled';
 export const Calendar: React.FC = () => {
   const fontSize = Platform.OS === 'ios' ? 15 : 14;
   return (
-    <Content icon={CalendarIcon} name="학사 일정" navigateUrl="Calendar">
+    <Content icon="📆" name="학사 일정" navigateUrl="Calendar">
       <S.CalendarContainer>
         <S.CalendarTextContainer>
           <Text size={fontSize} fontFamily="medium" color={colors.placeholder}>
