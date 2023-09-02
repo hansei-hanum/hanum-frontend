@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleProp, Text as TextElement, TextStyle } from 'react-native';
+import { StyleProp, Text as TextElement, TextStyle } from 'react-native';
 
 import { css } from '@emotion/native';
 
@@ -22,7 +22,6 @@ export const Text: React.FC<TextProps> = ({
   isCenter,
   style,
 }) => {
-  const fontSize = Platform.OS === 'ios' ? size : size - 2;
   return (
     <TextElement
       style={[

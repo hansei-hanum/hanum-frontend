@@ -17,17 +17,12 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
     <FlatList
       style={{
         backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : colors.white,
-        paddingTop: 32,
+        paddingTop: 20,
       }}
       data={list}
       renderItem={({ item }) => (
         <S.ClassListWrapper key={item}>
-          <Text
-            size={15}
-            fontFamily="medium"
-            color={isToday || isNumber ? colors.black : colors.placeholder}
-            isCenter
-          >
+          <Text size={15} color={isToday || isNumber ? colors.black : colors.placeholder} isCenter>
             {item}
           </Text>
         </S.ClassListWrapper>

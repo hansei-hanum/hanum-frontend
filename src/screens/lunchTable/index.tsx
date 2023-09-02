@@ -81,17 +81,13 @@ export const LunchTableScreen: React.FC = () => {
                     </Text>
                     {item.menus.map(({ name, allergys }) => (
                       <View key={name}>
-                        <Text
-                          fontFamily="medium"
-                          size={Platform.OS === 'ios' ? 15 : 14}
-                          color={todayLunchText}
-                        >
+                        <Text size={15} color={todayLunchText}>
                           {name}
                         </Text>
                         {allergys.length > 0 && (
                           <Text
                             fontFamily="medium"
-                            size={10}
+                            size={11}
                             color={checkTodayLunch ? colors.secondary : colors.placeholder}
                           >
                             {allergys.join(', ')}
