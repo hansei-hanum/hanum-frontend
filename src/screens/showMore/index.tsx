@@ -15,7 +15,6 @@ export const ShowMoreScreen: React.FC = () => {
   const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
   const { data, isLoading } = useFetchUser();
-  console.log(data);
 
   const verifyUser = data?.data.verification;
   const classRoom = verifyUser && verifyUser.classroom;
