@@ -6,7 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { LunchTableScreen, HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
-import { checkHeight, iosCheckHeight } from 'src/utils';
+import { iosCheckHeight } from 'src/utils';
 
 const BottomTab = createBottomTabNavigator();
 

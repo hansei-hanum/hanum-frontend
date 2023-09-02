@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
-import { checkHeight, iosCheckHeight } from 'src/utils';
+import { iosCheckHeight } from 'src/utils';
 
 import { LunchTableIcon } from '../../../assets/icons';
 

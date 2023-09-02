@@ -1,9 +1,7 @@
-import { Platform } from 'react-native';
-
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
-import { checkHeight, iosCheckHeight } from 'src/utils';
+import { iosCheckHeight } from 'src/utils';
 
 export const ScheduleScreenWrapper = styled.SafeAreaView`
   flex: 1;

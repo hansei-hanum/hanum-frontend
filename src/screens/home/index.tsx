@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { Platform } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native';
 
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
-import { checkHeight, responsiveHeight } from 'src/utils';
+import { checkHeight } from 'src/utils';
 
 import { PartyIcon } from '../../../assets/icons';
 import { Logo } from '../../../assets/images';
