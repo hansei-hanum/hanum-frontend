@@ -5,7 +5,7 @@ import { WithLocalSvg } from 'react-native-svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native';
 
-import { AlertBox, HanumPay, Timer, LunchTable, Calendar } from 'src/components';
+import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
 
 import { PartyIcon } from '../../../assets/icons';
@@ -48,31 +48,16 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         <LunchTable onPress={onPress} />
         <Calendar />
       </S.HomeScreenContainer>
-      {Platform.OS === 'ios' ? (
-        <S.HomeScreenIosHeader blurType="light" reducedTransparencyFallbackColor="white">
-          <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
-          <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
-            <Ionicons
-              name={notifyClick ? 'notifications' : 'notifications-outline'}
-              size={28}
-              color={notifyClick ? '#000' : '#AAA'}
-            />
-          </TouchableOpacity>
-        </S.HomeScreenIosHeader>
-      ) : (
-        <S.HomeScreenAndroidHeaderBlur blurType="light" reducedTransparencyFallbackColor="white">
-          <S.HomeScreenAndroidHeader>
-            <WithLocalSvg width={93} height={40} asset={Logo} />
-            <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
-              <Ionicons
-                name={notifyClick ? 'notifications' : 'notifications-outline'}
-                size={28}
-                color={notifyClick ? '#000' : '#AAA'}
-              />
-            </TouchableOpacity>
-          </S.HomeScreenAndroidHeader>
-        </S.HomeScreenAndroidHeaderBlur>
-      )}
+      <Header>
+        <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
+        <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
+          <Ionicons
+            name={notifyClick ? 'notifications' : 'notifications-outline'}
+            size={28}
+            color={notifyClick ? '#000' : '#AAA'}
+          />
+        </TouchableOpacity>
+      </Header>
     </S.HomeScreenWrapper>
   );
 };
