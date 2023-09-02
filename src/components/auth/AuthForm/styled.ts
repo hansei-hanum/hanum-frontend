@@ -1,9 +1,11 @@
-import { KeyboardAvoidingView, Platform, View } from 'react-native';
+import { Dimensions, KeyboardAvoidingView, Platform, View } from 'react-native';
 
 import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
 
 import { colors, fonts } from 'src/styles';
+
+const { width, height } = Dimensions.get('window');
 
 export const AuthWrapper = styled.SafeAreaView`
   flex: 1;
@@ -12,7 +14,9 @@ export const AuthWrapper = styled.SafeAreaView`
 
 export const AuthContainer = styled.View`
   flex: 1;
-  padding: 30px 20px ${Platform.OS == 'ios' ? '30px' : '20px'} 20px;
+  padding: 0 20px;
+  padding-bottom: ${height > 800 ? '0' : '20px'};
+  padding-top: ${height > 800 ? '10px' : '20px'};
   justify-content: space-between;
 `;
 

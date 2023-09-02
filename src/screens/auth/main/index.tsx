@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import { useSetRecoilState } from 'recoil';
