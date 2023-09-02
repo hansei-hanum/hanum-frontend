@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
+import { checkHeight } from 'src/utils';
 
 import { LunchTableIcon } from '../../../assets/icons';
 
@@ -47,7 +48,7 @@ export const LunchTableScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: Platform.OS === 'ios' ? 190 : 120,
+          paddingTop: Platform.OS === 'ios' && checkHeight ? 190 : 120,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,

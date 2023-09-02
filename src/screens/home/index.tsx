@@ -31,7 +31,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: Platform.OS === 'ios' ? responsiveHeight(40) : 60,
+          paddingTop: Platform.OS === 'ios' ? responsiveHeight(40) : 90,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,
