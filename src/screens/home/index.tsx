@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native';
 
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
-import { responsiveHeight } from 'src/utils';
+import { checkHeight, responsiveHeight } from 'src/utils';
 
 import { PartyIcon } from '../../../assets/icons';
 import { Logo } from '../../../assets/images';
@@ -31,7 +31,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: Platform.OS === 'ios' ? responsiveHeight(40) : 90,
+          paddingTop: checkHeight ? 70 : 90,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,

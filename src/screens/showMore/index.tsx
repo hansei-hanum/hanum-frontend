@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Text, Section } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
-import { checkHeight } from 'src/utils';
+import { checkHeight, iosCheckHeight } from 'src/utils';
 
 import { UserLogo } from '../../../assets/images';
 
@@ -20,7 +20,7 @@ export const ShowMoreScreen: React.FC = () => {
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
-        paddingTop: checkHeight ? 26 : 46,
+        paddingTop: iosCheckHeight ? 70 : checkHeight ? 26 : 46,
         paddingBottom: 40,
         paddingLeft: 10,
         paddingRight: 10,

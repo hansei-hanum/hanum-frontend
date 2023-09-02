@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
 
+import { checkHeight } from 'src/utils';
+
 export const AndroidHeaderBlur = styled(BlurView)`
   position: absolute;
   width: 100%;
@@ -25,7 +27,7 @@ export const IosHeader = styled(BlurView)`
   flex-direction: row;
   width: 100%;
   padding: 12px 20px;
-  padding-top: 10%;
+  padding-top: ${checkHeight ? '60px' : '40px'};
   align-items: center;
   justify-content: space-between;
 `;
