@@ -4,7 +4,7 @@ import { Platform, ScrollView, Switch, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { Text } from 'src/components';
+import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
 
@@ -105,61 +105,31 @@ export const LunchTableScreen: React.FC = () => {
           ))}
         </S.LunchTableBoxContainer>
       </S.LunchTableContainer>
-      {Platform.OS === 'ios' ? (
-        <S.LunchTableIosHeader blurType="light" reducedTransparencyFallbackColor="white">
-          <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
-            <WithLocalSvg
-              width={headerIconStyle.width}
-              height={headerIconStyle.height}
-              asset={LunchTableIcon}
-            />
-            <Text size={20} fontFamily="bold">
-              급식표
-            </Text>
-          </View>
-          <S.LunchTableAlertContainer>
-            <Text size={17} fontFamily="medium">
-              매일 아침 알림 받기
-            </Text>
-            <Switch
-              style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
-              trackColor={{ false: colors.lightGray, true: colors.primary }}
-              thumbColor={notifyClick ? colors.white : colors.white}
-              ios_backgroundColor={colors.lightGray}
-              onValueChange={toggleNotifyClick}
-              value={notifyClick}
-            />
-          </S.LunchTableAlertContainer>
-        </S.LunchTableIosHeader>
-      ) : (
-        <S.LunchTableAndroidHeaderBlur blurType="light">
-          <S.HomeScreenAndroidHeader>
-            <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
-              <WithLocalSvg
-                width={headerIconStyle.width}
-                height={headerIconStyle.height}
-                asset={LunchTableIcon}
-              />
-              <Text size={20} fontFamily="bold">
-                급식표
-              </Text>
-            </View>
-            <S.LunchTableAlertContainer>
-              <Text size={17} fontFamily="medium">
-                매일 아침 알림 받기
-              </Text>
-              <Switch
-                style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
-                trackColor={{ false: colors.lightGray, true: colors.primary }}
-                thumbColor={notifyClick ? colors.white : colors.white}
-                ios_backgroundColor={colors.lightGray}
-                onValueChange={toggleNotifyClick}
-                value={notifyClick}
-              />
-            </S.LunchTableAlertContainer>
-          </S.HomeScreenAndroidHeader>
-        </S.LunchTableAndroidHeaderBlur>
-      )}
+      <LunchTableHeader>
+        <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
+          <WithLocalSvg
+            width={headerIconStyle.width}
+            height={headerIconStyle.height}
+            asset={LunchTableIcon}
+          />
+          <Text size={20} fontFamily="bold">
+            급식표
+          </Text>
+        </View>
+        <S.LunchTableAlertContainer>
+          <Text size={17} fontFamily="medium">
+            매일 아침 알림 받기
+          </Text>
+          <Switch
+            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
+            trackColor={{ false: colors.lightGray, true: colors.primary }}
+            thumbColor={notifyClick ? colors.white : colors.white}
+            ios_backgroundColor={colors.lightGray}
+            onValueChange={toggleNotifyClick}
+            value={notifyClick}
+          />
+        </S.LunchTableAlertContainer>
+      </LunchTableHeader>
     </S.LunchTableWrapper>
   );
 };

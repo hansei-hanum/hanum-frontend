@@ -1,6 +1,3 @@
-import { Platform } from 'react-native';
-
-import { BlurView } from '@react-native-community/blur';
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';

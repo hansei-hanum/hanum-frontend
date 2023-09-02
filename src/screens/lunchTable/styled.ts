@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 import { BlurView } from '@react-native-community/blur';
 import styled from '@emotion/native';
 
@@ -21,9 +19,9 @@ export const LunchTableIosHeader = styled(BlurView)`
   z-index: 0;
   width: 100%;
   padding: 0px 20px;
-  padding-top: ${Platform.OS === 'ios' ? '70px' : '30px'};
-  padding-bottom: ${Platform.OS === 'ios' ? '10px' : 0};
-  row-gap: ${Platform.OS === 'ios' ? '20px' : '10px'};
+  padding-top: 70px;
+  padding-bottom: 10px;
+  row-gap: 20px;
   align-items: flex-start;
 `;
 
@@ -38,7 +36,7 @@ export const HomeScreenAndroidHeader = styled.View`
   height: 90px;
   padding: 0 20px;
   padding-bottom: 10px;
-  row-gap: ${Platform.OS === 'ios' ? '20px' : '10px'};
+  row-gap: 10px;
   position: absolute;
   flex-direction: column;
   align-items: flex-start;
