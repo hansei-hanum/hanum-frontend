@@ -4,7 +4,7 @@ import { Platform, ScrollView, Switch, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { Text } from 'src/components';
+import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
 
@@ -47,7 +47,7 @@ export const LunchTableScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: Platform.OS === 'ios' ? 190 : 150,
+          paddingTop: Platform.OS === 'ios' ? 190 : 120,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,
@@ -105,7 +105,7 @@ export const LunchTableScreen: React.FC = () => {
           ))}
         </S.LunchTableBoxContainer>
       </S.LunchTableContainer>
-      <S.LunchTableHeader blurType="light" reducedTransparencyFallbackColor="white">
+      <LunchTableHeader>
         <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
           <WithLocalSvg
             width={headerIconStyle.width}
@@ -129,7 +129,7 @@ export const LunchTableScreen: React.FC = () => {
             value={notifyClick}
           />
         </S.LunchTableAlertContainer>
-      </S.LunchTableHeader>
+      </LunchTableHeader>
     </S.LunchTableWrapper>
   );
 };
