@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Text } from '../Text';
-
 import * as S from './styled';
 
 export interface IconProps {
@@ -10,9 +8,7 @@ export interface IconProps {
 export const Icon: React.FC<IconProps> = ({ icon }) => {
   return (
     <S.IconWrapper>
-      <Text size={30} fontFamily="tossIcon">
-        {icon}
-      </Text>
+      <S.Icon>{icon}</S.Icon>
     </S.IconWrapper>
   );
 };

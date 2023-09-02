@@ -6,6 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { LunchTableScreen, HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
+import { iosCheckHeight } from 'src/utils';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -17,8 +18,8 @@ export const MainScreen: React.FC = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: '#fff',
-          height: Platform.OS == 'ios' ? 80 : 60,
-          paddingBottom: Platform.OS == 'ios' ? 30 : 10,
+          height: iosCheckHeight ? 80 : 64,
+          paddingBottom: iosCheckHeight ? 30 : 10,
         },
         tabBarActiveTintColor: '#000',
         tabBarLabelStyle: {

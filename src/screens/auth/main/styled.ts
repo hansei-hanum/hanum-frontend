@@ -2,12 +2,17 @@ import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
 
-export const AuthMainScreenContainer = styled.SafeAreaView`
+export const AuthMainScreenWrapper = styled.SafeAreaView`
+  flex: 1;
+  width: 100%;
+  background-color: ${colors.white};
+`;
+
+export const AuthMainScreenContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: ${colors.white};
   padding: 0 20px;
   row-gap: 40px;
 `;

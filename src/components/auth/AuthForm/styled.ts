@@ -4,12 +4,18 @@ import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
 
 import { colors, fonts } from 'src/styles';
+import { responsiveHeight } from 'src/utils';
 
-export const AuthContainer = styled.SafeAreaView`
+export const AuthWrapper = styled.SafeAreaView`
   flex: 1;
-  padding: 70px 20px ${Platform.OS == 'ios' ? '30px' : '20px'} 20px;
-  padding-top: ${Platform.OS == 'ios' ? '70px' : '30px'};
   background-color: ${colors.white};
+`;
+
+export const AuthContainer = styled.View`
+  flex: 1;
+  padding: 0 20px;
+  padding-bottom: ${responsiveHeight(20).toString()}px;
+  padding-top: ${responsiveHeight(10).toString()}px;
   justify-content: space-between;
 `;
 

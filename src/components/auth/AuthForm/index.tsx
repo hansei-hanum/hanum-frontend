@@ -29,29 +29,31 @@ export const Auth: React.FC<AuthProps> = ({
   const navigation = useNavigation();
 
   return (
-    <S.AuthContainer>
-      <S.AuthInputContainer>
-        <TouchableOpacity activeOpacity={0.2} onPress={() => navigation.goBack()}>
-          <Entypo name="chevron-thin-left" size={28} color="black" style={{ marginBottom: 10 }} />
-        </TouchableOpacity>
-        <S.AuthTextContainer>
-          <Text size={26} fontFamily="bold">
-            {headerText.split('\n').map((line, index) => (
-              <Text size={26} fontFamily="bold" key={line}>
-                {line}
-                {index !== headerText.split('\n').length - 1 && <>{'\n'}</>}
-              </Text>
-            ))}
-          </Text>
-          {subHeaderText}
-        </S.AuthTextContainer>
-        {children}
-      </S.AuthInputContainer>
-      <S.AuthButtonWrapper behavior="padding" keyboardVerticalOffset={15}>
-        <Button isDisabled={isDisabled} onPress={onPress}>
-          {bottomText}
-        </Button>
-      </S.AuthButtonWrapper>
-    </S.AuthContainer>
+    <S.AuthWrapper>
+      <S.AuthContainer>
+        <S.AuthInputContainer>
+          <TouchableOpacity activeOpacity={0.2} onPress={() => navigation.goBack()}>
+            <Entypo name="chevron-thin-left" size={28} color="black" style={{ marginBottom: 10 }} />
+          </TouchableOpacity>
+          <S.AuthTextContainer>
+            <Text size={26} fontFamily="bold">
+              {headerText.split('\n').map((line, index) => (
+                <Text size={26} fontFamily="bold" key={line}>
+                  {line}
+                  {index !== headerText.split('\n').length - 1 && <>{'\n'}</>}
+                </Text>
+              ))}
+            </Text>
+            {subHeaderText}
+          </S.AuthTextContainer>
+          {children}
+        </S.AuthInputContainer>
+        <S.AuthButtonWrapper behavior="padding" keyboardVerticalOffset={15}>
+          <Button isDisabled={isDisabled} onPress={onPress}>
+            {bottomText}
+          </Button>
+        </S.AuthButtonWrapper>
+      </S.AuthContainer>
+    </S.AuthWrapper>
   );
 };

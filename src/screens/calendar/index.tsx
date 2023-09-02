@@ -85,7 +85,9 @@ export const CalendarScreen: React.FC = () => {
           selectedDotColor: colors.white,
         }}
         style={{
-          marginTop: 40,
+          marginTop: 30,
+          paddingLeft: 20,
+          paddingRight: 20,
           paddingBottom: 40,
           borderBottomWidth: 0.4,
           borderBottomColor: colors.placeholder,
@@ -101,7 +103,7 @@ export const CalendarScreen: React.FC = () => {
       >
         {CALENDAR_LIST.find((item) => item.date === selectedDate)?.contents.map((item) => (
           <ContentBox style={{ marginTop: 20 }}>
-            <Text size={20} fontFamily="bold" key={item}>
+            <Text size={16} fontFamily="medium" key={item}>
               {item}
             </Text>
           </ContentBox>

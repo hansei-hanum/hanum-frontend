@@ -1,18 +1,24 @@
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
+import { iosCheckHeight } from 'src/utils';
 
-export const ScheduleScreenContainer = styled.SafeAreaView`
+export const ScheduleScreenWrapper = styled.SafeAreaView`
   flex: 1;
-  padding: 70px 0px 0px 0px;
   background: ${colors.background};
+`;
+
+export const ScheduleScreenContainer = styled.View`
+  flex: 1;
+  padding-top: ${iosCheckHeight ? '10px' : '26px'};
+  padding-bottom: 20px;
   row-gap: 10px;
 `;
 
 export const ScheduleScreenHeader = styled.View`
   padding-left: 20px;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 10px;
   align-items: flex-start;
   justify-content: flex-start;
 `;

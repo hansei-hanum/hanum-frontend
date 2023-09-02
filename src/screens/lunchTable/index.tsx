@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST, headerIconStyle } from 'src/constants';
+import { iosCheckHeight } from 'src/utils';
 
 import { LunchTableIcon } from '../../../assets/icons';
 
@@ -47,7 +48,7 @@ export const LunchTableScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: Platform.OS === 'ios' ? 190 : 120,
+          paddingTop: iosCheckHeight ? 190 : 120,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,
@@ -80,17 +81,13 @@ export const LunchTableScreen: React.FC = () => {
                     </Text>
                     {item.menus.map(({ name, allergys }) => (
                       <View key={name}>
-                        <Text
-                          fontFamily="medium"
-                          size={Platform.OS === 'ios' ? 15 : 14}
-                          color={todayLunchText}
-                        >
+                        <Text size={15} color={todayLunchText}>
                           {name}
                         </Text>
                         {allergys.length > 0 && (
                           <Text
                             fontFamily="medium"
-                            size={10}
+                            size={11}
                             color={checkTodayLunch ? colors.secondary : colors.placeholder}
                           >
                             {allergys.join(', ')}
