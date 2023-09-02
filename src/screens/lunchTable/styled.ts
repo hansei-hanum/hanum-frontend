@@ -15,7 +15,7 @@ export const LunchTableContainer = styled.ScrollView`
   flex-direction: column;
 `;
 
-export const LunchTableHeader = styled(BlurView)`
+export const LunchTableIosHeader = styled(BlurView)`
   position: absolute;
   flex-direction: column;
   z-index: 0;
@@ -25,6 +25,24 @@ export const LunchTableHeader = styled(BlurView)`
   padding-bottom: ${Platform.OS === 'ios' ? '10px' : 0};
   row-gap: ${Platform.OS === 'ios' ? '20px' : '10px'};
   align-items: flex-start;
+`;
+
+export const LunchTableAndroidHeaderBlur = styled(BlurView)`
+  position: absolute;
+  width: 100%;
+  height: 90px;
+`;
+
+export const HomeScreenAndroidHeader = styled.View`
+  width: 100%;
+  height: 90px;
+  padding: 0 20px;
+  padding-bottom: 10px;
+  row-gap: ${Platform.OS === 'ios' ? '20px' : '10px'};
+  position: absolute;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
 `;
 
 export const LunchTableAlertContainer = styled.View`

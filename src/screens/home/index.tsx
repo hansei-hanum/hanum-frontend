@@ -49,7 +49,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         <Calendar />
       </S.HomeScreenContainer>
       {Platform.OS === 'ios' ? (
-        <S.IosHeader blurType="light" reducedTransparencyFallbackColor="white">
+        <S.HomeScreenIosHeader blurType="light" reducedTransparencyFallbackColor="white">
           <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
           <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
             <Ionicons
@@ -58,10 +58,10 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
               color={notifyClick ? '#000' : '#AAA'}
             />
           </TouchableOpacity>
-        </S.IosHeader>
+        </S.HomeScreenIosHeader>
       ) : (
-        <S.AndroidHeaderBlur blurType="light" reducedTransparencyFallbackColor="white">
-          <S.AndroidHeader>
+        <S.HomeScreenAndroidHeaderBlur blurType="light" reducedTransparencyFallbackColor="white">
+          <S.HomeScreenAndroidHeader>
             <WithLocalSvg width={93} height={40} asset={Logo} />
             <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
               <Ionicons
@@ -70,8 +70,8 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
                 color={notifyClick ? '#000' : '#AAA'}
               />
             </TouchableOpacity>
-          </S.AndroidHeader>
-        </S.AndroidHeaderBlur>
+          </S.HomeScreenAndroidHeader>
+        </S.HomeScreenAndroidHeaderBlur>
       )}
     </S.HomeScreenWrapper>
   );

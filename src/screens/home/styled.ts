@@ -16,13 +16,13 @@ export const HomeScreenContainer = styled.ScrollView`
   flex-direction: column;
 `;
 
-export const AndroidHeaderBlur = styled(BlurView)`
+export const HomeScreenAndroidHeaderBlur = styled(BlurView)`
   position: absolute;
   width: 100%;
   height: 70px;
 `;
 
-export const AndroidHeader = styled.View`
+export const HomeScreenAndroidHeader = styled.View`
   width: 100%;
   height: 70px;
   padding: 0 20px;
@@ -33,7 +33,7 @@ export const AndroidHeader = styled.View`
   justify-content: space-between;
 `;
 
-export const IosHeader = styled(BlurView)`
+export const HomeScreenIosHeader = styled(BlurView)`
   position: absolute;
   flex-direction: row;
   width: 100%;
