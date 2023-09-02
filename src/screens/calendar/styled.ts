@@ -10,6 +10,7 @@ export const CalendarWrapper = styled.SafeAreaView`
 export const CalendarHeaderContainer = styled.View`
   width: 100%;
   padding: 0 20px;
+  padding-top: 26px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
