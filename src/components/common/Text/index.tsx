@@ -28,7 +28,7 @@ export const Text: React.FC<TextProps> = ({
       style={[
         style,
         css`
-          font-size: ${fontSize.toString()}px;
+          font-size: ${size.toString()}px;
           font-family: ${fontFamily ? fonts[fontFamily] : fonts.medium};
           color: ${color ? color : colors.black};
           text-align: ${isCenter ? 'center' : 'auto'};

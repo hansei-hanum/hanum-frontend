@@ -26,6 +26,7 @@ export const AndroidHeader = styled.View`
   padding-bottom: 10px;
   row-gap: 10px;
   position: absolute;
+  border: 1px solid transparent;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;

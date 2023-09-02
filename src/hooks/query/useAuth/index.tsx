@@ -60,6 +60,18 @@ export const useAuth = (): UseMutationResult<
                 '동일 IP로 회원가입을 수차례 요청하여 해당 네트워크에서의 요청이 일시적으로 차단되었습니다.',
             });
             break;
+          case 'ACCOUNT_SUSPENDED':
+            setAuth({
+              ...auth,
+              errorMessage: '이용약관 위반으로 한움 서비스 이용이 일시/영구적으로 제한되었습니다.',
+            });
+            break;
+          case 'USER_NOT_FOUND':
+            setAuth({
+              ...auth,
+              errorMessage: '가입되지 않은 전화번호입니다.',
+            });
+            break;
           default:
             console.log(error, 'error');
             setAuth({ ...auth, errorMessage: '알 수 없는 오류가 발생했습니다.' });
