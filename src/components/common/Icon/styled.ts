@@ -17,6 +17,6 @@ export const Icon = styled.Text`
   font-family: ${fonts.tossIcon};
   color: ${colors.black};
   text-align: center;
-  position: ${Platform.OS === 'ios' ? 'auto' : 'relative'};
+  position: ${Platform.OS === 'ios' ? 'relative' : 'relative'};
   top: ${Platform.OS === 'ios' ? '0px' : '5px'};
 `;

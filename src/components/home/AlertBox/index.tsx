@@ -1,6 +1,5 @@
 import React from 'react';
-import { WithLocalSvg } from 'react-native-svg';
-import { ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { Text } from 'src/components';
@@ -11,7 +10,7 @@ import { useNavigate, usePressingAnimation } from 'src/hooks';
 import * as S from './styled';
 
 export interface AlertBoxProps {
-  icon: ImageSourcePropType;
+  icon: string;
   subText: string;
   mainText: string;
   navigateUrl: string;
@@ -33,7 +32,9 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
       <S.AlertBoxWrapper style={[animatedStyle, boxShadow]}>
         <S.AlertBoxContainer>
           <S.AlertBoxContentContainer>
-            <WithLocalSvg width={size} height={size} asset={icon} />
+            <Text size={size} fontFamily="tossIcon">
+              {icon}
+            </Text>
             <S.AlertBoxTextContainer>
               <Text size={13} fontFamily="medium" color={colors.placeholder}>
                 {subText}

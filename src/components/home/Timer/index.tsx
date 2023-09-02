@@ -5,7 +5,6 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 
-import { TimerIcon } from '../../../../assets/icons';
 import { Content } from '../Content';
 
 import * as S from './styled';
@@ -55,7 +54,7 @@ export const Timer: React.FC = () => {
     onUpdate();
   }, [isFocused]);
   return (
-    <Content icon={TimerIcon} name="시간표" navigateUrl="Timer">
+    <Content icon="⌚️" name="타이머" navigateUrl="Timer">
       <S.TimerTextWrapper>
         <S.ScreenTimerContainer>
           <TimerText subText="점심시간까지" mainText={time.lunch} />
