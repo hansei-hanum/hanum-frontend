@@ -17,6 +17,8 @@ export const ShowMoreScreen: React.FC = () => {
   const { data, isLoading } = useFetchUser();
   console.log(data);
 
+  const verifyUser = data?.data.verification;
+
   return (
     <S.ShowMoreScreenContainer
       showsVerticalScrollIndicator={false}
@@ -56,11 +58,13 @@ export const ShowMoreScreen: React.FC = () => {
                   <Text size={18} fontFamily="bold">
                     {data.data.name}
                   </Text>
-                  {data.data.profile && (
-                    <Text size={18} fontFamily="medium">
-                      {data?.data.profile}
-                    </Text>
-                  )}
+                  <Text
+                    size={14}
+                    fontFamily="medium"
+                    color={verifyUser ? colors.black : colors.danger}
+                  >
+                    {verifyUser ? '인증된 사용자' : '정회원 인증 안 됨'}
+                  </Text>
                 </S.ShowMoreUserNameContainer>
               </S.ShowMoreUserInfo>
               <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
