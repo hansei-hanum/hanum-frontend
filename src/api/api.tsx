@@ -6,7 +6,7 @@ export const API_SUFFIX = {
   LOGIN: '/auth/login/',
   PHONE: '/auth/phone/',
   USERS: '/users/',
-  STUDENT_VERIFY: '/users/@me/verifications/',
+  STUDENT_VERIFY: '/users/@me/verifications',
 };
 
 export const instance = axios.create({
@@ -15,7 +15,6 @@ export const instance = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
 export interface APIResponse<T = unknown> {
   message: string;
   data: T;
@@ -29,6 +28,7 @@ export interface APIErrorResponse {
 export const setAccessToken = (token: string | null) => {
   if (token) {
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    console.log(instance.defaults.headers.common.Authorization);
   } else {
     delete instance.defaults.headers.common.Authorization;
   }

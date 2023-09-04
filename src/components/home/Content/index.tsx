@@ -31,7 +31,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
         activeOpacity={1}
         onPress={navigateUrl ? () => navigate(navigateUrl) : onPress}
       >
-        <S.ContentTopSectionWrapper style={[animatedStyle]}>
+        <S.ContentTopSectionWrapper style={navigateUrl || onPress ? animatedStyle : null}>
           <S.ContentTopSection>
             <S.ContentIconContainer>
               <Text size={30} fontFamily="tossIcon">
@@ -41,7 +41,9 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
                 {name}
               </Text>
             </S.ContentIconContainer>
-            <MaterialIcons name="chevron-right" size={size} color={colors.placeholder} />
+            {navigateUrl || onPress ? (
+              <MaterialIcons name="chevron-right" size={size} color={colors.placeholder} />
+            ) : null}
           </S.ContentTopSection>
         </S.ContentTopSectionWrapper>
       </TouchableOpacity>
