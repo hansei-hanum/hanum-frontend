@@ -3,7 +3,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
-import koLocale from 'date-fns/locale/ko';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 
@@ -34,12 +33,6 @@ export const CalendarScreen: React.FC = () => {
       },
     };
   }, {});
-
-  // const formattedSelectedDate =
-  //   selectedDate &&
-  //   format(new Date(selectedDate), 'MM/dd (eee)', {
-  //     locale: koLocale,
-  //   });
 
   const isFocused = useIsFocused();
 

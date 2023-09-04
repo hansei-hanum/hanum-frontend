@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import styled from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';
+import { isIos } from 'src/utils';
 
 export const IconWrapper = styled.View`
   padding: 4px;
@@ -17,6 +18,6 @@ export const Icon = styled.Text`
   font-family: ${fonts.tossIcon};
   color: ${colors.black};
   text-align: center;
-  position: ${Platform.OS === 'ios' ? 'relative' : 'relative'};
-  top: ${Platform.OS === 'ios' ? '0px' : '5px'};
+  position: ${isIos ? 'relative' : 'relative'};
+  top: ${isIos ? '0px' : '5px'};
 `;

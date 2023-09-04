@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Platform, ScrollView, Switch, View } from 'react-native';
+import { ScrollView, Switch, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
 import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST } from 'src/constants';
-import { iosCheckHeight } from 'src/utils';
+import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 
 import * as S from './styled';
 
@@ -19,7 +19,7 @@ export const LunchTableScreen: React.FC = () => {
     setNotifyClick(!notifyClick);
   };
 
-  const ITEM_HEIGHT = Platform.OS === 'ios' ? 100 : 150;
+  const ITEM_HEIGHT = isIos ? 100 : 150;
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const LunchTableScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: iosCheckHeight ? 190 : 120,
+          paddingTop: iosCheckHeight ? 190 : isAndroid ? 140 : 120,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,

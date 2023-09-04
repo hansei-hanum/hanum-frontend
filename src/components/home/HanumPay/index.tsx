@@ -1,8 +1,8 @@
 import React from 'react';
-import { Platform } from 'react-native';
 
 import { Content, Text } from 'src/components';
 import { colors } from 'src/styles';
+import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
@@ -14,7 +14,7 @@ export interface HanumPayButton {
 export const HanumPayButton: React.FC<HanumPayButton> = ({ onPress, text }) => {
   return (
     <S.HanumPayButton activeOpacity={0.4} onPress={onPress}>
-      <Text size={Platform.OS === 'ios' ? 15 : 14} fontFamily="bold" color={colors.black}>
+      <Text size={isIos ? 15 : 14} fontFamily="bold" color={colors.black}>
         {text}
       </Text>
     </S.HanumPayButton>

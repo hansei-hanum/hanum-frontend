@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { css } from '@emotion/native';
-
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -10,7 +8,7 @@ export interface ButtonProps {
   children: React.ReactNode;
   isSecondary?: boolean;
   isDisabled?: boolean;
-  width?: string;
+  isDanger?: boolean;
   isModalBtn?: boolean;
   onPress?: () => void;
 }
@@ -20,27 +18,23 @@ export const Button: React.FC<ButtonProps> = ({
   isSecondary,
   onPress,
   isDisabled,
-  width,
   isModalBtn,
+  isDanger,
 }) => {
   return (
     <S.ButtonElement
       {...(!isDisabled && { onPress: onPress })}
-      isDisabled={isDisabled}
-      isSecondary={isSecondary}
       activeOpacity={0.8}
-      isModalBtn={isModalBtn}
-      style={css`
-        width: ${width}%;
-      `}
+      style={{
+        width: isModalBtn ? '48%' : '100%',
+        backgroundColor: isSecondary || isDisabled || isDanger ? colors.secondary : colors.primary,
+        borderRadius: isModalBtn ? 16 : 10,
+      }}
     >
       <S.ButtonText
-        style={
-          isSecondary &&
-          css`
-            color: ${colors.black};
-          `
-        }
+        style={{
+          color: isSecondary ? colors.black : isDanger ? colors.danger : colors.white,
+        }}
       >
         {children}
       </S.ButtonText>

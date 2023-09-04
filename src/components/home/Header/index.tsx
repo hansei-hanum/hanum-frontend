@@ -1,5 +1,6 @@
 import React from 'react';
-import { Platform } from 'react-native';
+
+import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
@@ -8,7 +9,7 @@ export interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ children }) => {
-  if (Platform.OS === 'ios') {
+  if (isIos) {
     return (
       <S.IosHeader blurType="light" reducedTransparencyFallbackColor="white">
         {children}
