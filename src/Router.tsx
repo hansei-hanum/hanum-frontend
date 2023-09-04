@@ -8,7 +8,7 @@ import {
   AuthMainScreen,
   NameScreen,
   PhoneScreen,
-  SelfCheckScreen,
+  StudentVerifyScreen,
   VerifyCodeScreen,
   MainScreen,
   HanumPayScreen,
@@ -56,7 +56,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="Phone" component={PhoneScreen} />
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
-          <Stack.Screen name="SelfCheck" component={SelfCheckScreen} />
+          <Stack.Screen name="StudentVerifyScreen" component={StudentVerifyScreen} />
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />

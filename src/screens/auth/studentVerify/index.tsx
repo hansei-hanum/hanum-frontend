@@ -14,7 +14,7 @@ import * as S from './styled';
 
 const CELL_COUNT = 6;
 
-export const SelfCheckScreen: React.FC = () => {
+export const StudentVerifyScreen: React.FC = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -58,11 +58,11 @@ export const SelfCheckScreen: React.FC = () => {
             width: '100%',
           }}
           renderCell={({ index, symbol, isFocused }) => (
-            <S.SelfCheckScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
+            <S.StudentVerifyInput key={index} onLayout={getCellOnLayoutHandler(index)}>
               <Text size={20} fontFamily="medium">
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
-            </S.SelfCheckScreenInput>
+            </S.StudentVerifyInput>
           )}
         />
       </Auth>
