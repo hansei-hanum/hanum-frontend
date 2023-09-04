@@ -1,11 +1,13 @@
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
-import { iosCheckHeight } from 'src/utils';
+import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const UserInfoWrapper = styled.View`
   flex: 1;
-  padding: ${iosCheckHeight ? '70px' : '40px'} 20px 34px 20px;
+  padding: 0 20px;
+  padding-top: ${iosCheckHeight ? '70px' : isAndroid ? '24px' : '40px'};
+  padding-bottom: ${isAndroid ? '10px' : ' 34px'};
   background-color: ${colors.background};
 `;
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Platform } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { ContentBox, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
+import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
@@ -37,7 +37,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
               <Text size={30} fontFamily="tossIcon">
                 {icon}
               </Text>
-              <Text size={Platform.OS === 'ios' ? 15 : 14} fontFamily="bold">
+              <Text size={isIos ? 15 : 14} fontFamily="bold">
                 {name}
               </Text>
             </S.ContentIconContainer>

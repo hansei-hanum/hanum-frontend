@@ -18,12 +18,12 @@ export const IosHeader = styled(BlurView)`
 export const AndroidHeaderBlur = styled(BlurView)`
   position: absolute;
   width: 100%;
-  height: 100px;
+  height: 110px;
 `;
 
 export const AndroidHeader = styled.View`
   width: 100%;
-  height: 100px;
+  height: 110px;
   padding: 0 20px;
   padding-bottom: 10px;
   row-gap: 10px;

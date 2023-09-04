@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +17,7 @@ import {
   UserInfoScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
+import { isIos } from './utils';
 
 const Stack = createStackNavigator();
 
@@ -67,7 +68,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="UserInfo" component={UserInfoScreen} />
         </Stack.Group>
       </Stack.Navigator>
-      <StatusBar barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'} />
+      <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />
     </NavigationContainer>
   );
 };
