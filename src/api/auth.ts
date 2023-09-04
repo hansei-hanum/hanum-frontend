@@ -74,6 +74,7 @@ export const fetchUser = async (): Promise<FetchUserResponse | null> => {
 export const studentCodeVerify = async ({ code }: StudentCodeVerifyValue) => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
+  console.log(token, code);
   setAccessToken(token);
   const { data } = await instance.post(API_SUFFIX.STUDENT_VERIFY, {
     code,

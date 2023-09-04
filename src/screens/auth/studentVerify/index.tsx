@@ -7,8 +7,7 @@ import {
 } from 'react-native-confirmation-code-field';
 
 import { Button, DummyContainer, Modal, Text, Auth } from 'src/components';
-import { checkNumber } from 'src/utils';
-import { useNavigate } from 'src/hooks';
+import { useNavigate, useStudentCodeVerify } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -24,16 +23,17 @@ export const StudentVerifyScreen: React.FC = () => {
     setValue,
   });
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { mutate } = useStudentCodeVerify();
 
   const onChangeText = (text: string) => {
-    const newText = checkNumber(text);
-    const codeValidationRegex = /^\d{6}$/;
-    codeValidationRegex.test(newText) ? setIsDisabled(false) : setIsDisabled(true);
-    setValue(newText);
+    text.length === 6 ? setIsDisabled(false) : setIsDisabled(true);
+    setValue(text);
   };
 
   const onSubmit = () => {
-    setModalVisible(true);
+    console.log(value);
+    mutate({ code: value });
+    // setModalVisible(true);
   };
 
   return (
@@ -52,7 +52,7 @@ export const StudentVerifyScreen: React.FC = () => {
           onChangeText={onChangeText}
           cellCount={CELL_COUNT}
           caretHidden={true}
-          keyboardType="number-pad"
+          keyboardType="default"
           textContentType="oneTimeCode"
           rootStyle={{
             width: '100%',
@@ -66,7 +66,7 @@ export const StudentVerifyScreen: React.FC = () => {
           )}
         />
       </Auth>
-      <Modal
+      {/* <Modal
         title="본인 확인"
         text={
           `본인이 클라우드보안과 1학년 2반 6번이 맞나요?\n` +
@@ -83,7 +83,7 @@ export const StudentVerifyScreen: React.FC = () => {
             확인
           </Button>
         }
-      />
+      /> */}
     </>
   );
 };

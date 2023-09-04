@@ -3,6 +3,7 @@ import { Platform, StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   AuthMainScreen,
@@ -21,6 +22,7 @@ const Stack = createStackNavigator();
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
   const { data, isLoading } = useFetchUser();
+  AsyncStorage.removeItem('token');
 
   useEffect(() => {
     async function prepare() {
