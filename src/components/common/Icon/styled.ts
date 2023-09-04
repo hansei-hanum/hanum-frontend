@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 import styled from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';

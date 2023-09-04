@@ -4,7 +4,6 @@ import { WithLocalSvg } from 'react-native-svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native';
-import WebView from 'react-native-webview';
 
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
