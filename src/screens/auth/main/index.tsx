@@ -76,10 +76,10 @@ export const AuthMainScreen: React.FC = () => {
             modalVisible={modalVisible}
             button={
               <S.AuthMainScreenButtonContainer>
-                <Button onPress={onButtonPress} width="48" isSecondary isModalBtn>
+                <Button onPress={onButtonPress} isSecondary isModalBtn>
                   아니오
                 </Button>
-                <Button onPress={() => onButtonPress(true)} width="48" isModalBtn>
+                <Button onPress={() => onButtonPress(true)} isModalBtn>
                   예!
                 </Button>
               </S.AuthMainScreenButtonContainer>

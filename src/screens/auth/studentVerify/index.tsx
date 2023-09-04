@@ -35,7 +35,7 @@ export const StudentVerifyScreen: React.FC = () => {
 
   return (
     <Auth
-      headerText={`반가워요!\n` + `먼저 인증 코드를 확인할게요`}
+      headerText={`반가워요!\n` + `학생 인증 코드를 확인할게요`}
       bottomText="인증하기"
       isDisabled={isDisabled}
       onPress={onSubmit}

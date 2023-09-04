@@ -4,15 +4,8 @@ import styled from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';
 
-export const ButtonElement = styled.TouchableOpacity<{
-  isSecondary?: boolean;
-  isDisabled?: boolean;
-  isModalBtn?: boolean;
-}>`
+export const ButtonElement = styled.TouchableOpacity`
   width: 100%;
-  border-radius: ${({ isModalBtn }) => (isModalBtn ? '16px' : '10px')};
-  background-color: ${({ isSecondary, isDisabled }) =>
-    isSecondary || isDisabled ? colors.secondary : colors.primary};
   color: ${colors.white};
   padding: 14px 0;
 `;
