@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
 
 import { colors, fonts } from 'src/styles';
-import { iosCheckHeight } from 'src/utils';
+import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const AuthWrapper = styled.SafeAreaView`
   flex: 1;
@@ -14,8 +14,8 @@ export const AuthWrapper = styled.SafeAreaView`
 export const AuthContainer = styled.View`
   flex: 1;
   padding: 0 20px;
-  padding-bottom: ${iosCheckHeight ? '5px' : '10px'};
-  padding-top: ${iosCheckHeight ? '10px' : '20px'};
+  padding-bottom: ${iosCheckHeight ? '5px' : isAndroid ? '15px' : '10px'};
+  padding-top: ${iosCheckHeight ? '10px' : isAndroid ? '25px' : '20px'};
   justify-content: space-between;
 `;
 

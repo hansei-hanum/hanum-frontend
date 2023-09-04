@@ -1,7 +1,6 @@
 import styled from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';
-import { isIos } from 'src/utils';
 
 export const ButtonElement = styled.TouchableOpacity`
   width: 100%;
@@ -10,7 +9,7 @@ export const ButtonElement = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  font-size: ${isIos ? '16px' : '14px'};
+  font-size: 16px;
   font-family: ${fonts.bold};
   color: ${colors.white};
   text-align: center;

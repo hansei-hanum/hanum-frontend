@@ -3,9 +3,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
-import { useFetchUser } from 'src/hooks';
+import { useFetchUser, useNavigate } from 'src/hooks';
 import { colors } from 'src/styles';
 import { formattedDepartment } from 'src/utils';
 
@@ -15,6 +16,7 @@ import * as S from './styled';
 
 export const UserInfoScreen: React.FC = () => {
   const navigation = useNavigation();
+  const navigate = useNavigate();
   const { data, isLoading } = useFetchUser();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
@@ -24,6 +26,11 @@ export const UserInfoScreen: React.FC = () => {
   const grade = verifyUser && verifyUser.grade;
   const department = verifyUser && verifyUser.department;
   const number = verifyUser && verifyUser.number;
+
+  const onLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    navigate('AuthMain');
+  };
 
   const onSubmit = () => {
     setIsSecessionClick(false);
@@ -75,7 +82,9 @@ export const UserInfoScreen: React.FC = () => {
               />
             </S.UserInfoProfileContainer>
             <S.UserInfoButtonContainer>
-              <Button isSecondary>로그아웃</Button>
+              <Button isSecondary onPress={onLogout}>
+                로그아웃
+              </Button>
               <Button isDanger onPress={() => setIsSecessionClick(true)}>
                 회원 탈퇴하기
               </Button>
