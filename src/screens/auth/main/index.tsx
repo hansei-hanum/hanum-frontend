@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
 
 import { Button, DummyContainer, Modal, Text } from 'src/components';
@@ -17,10 +17,11 @@ import * as S from './styled';
 export const AuthMainScreen: React.FC = () => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const setAuth = useSetRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authState);
 
-  const onButtonPress = (navigateUrl: string) => {
-    navigate(`${navigateUrl}`);
+  const onButtonPress = (isCurrentStudent?: boolean) => {
+    isCurrentStudent && setAuth({ ...auth, isCurrentStudent: true });
+    navigate('Name');
     setModalVisible(false);
   };
 
@@ -32,6 +33,7 @@ export const AuthMainScreen: React.FC = () => {
     setAuth({
       name: '',
       phone: '',
+      isCurrentStudent: false,
       errorMessage: '',
     });
   }, [isFocused]);
@@ -74,23 +76,10 @@ export const AuthMainScreen: React.FC = () => {
             modalVisible={modalVisible}
             button={
               <S.AuthMainScreenButtonContainer>
-                <Button
-                  onPress={() => {
-                    onButtonPress('Name');
-                  }}
-                  width="48"
-                  isSecondary
-                  isModalBtn
-                >
+                <Button onPress={onButtonPress} width="48" isSecondary isModalBtn>
                   아니오
                 </Button>
-                <Button
-                  onPress={() => {
-                    onButtonPress('SelfCheck');
-                  }}
-                  width="48"
-                  isModalBtn
-                >
+                <Button onPress={() => onButtonPress(true)} width="48" isModalBtn>
                   예!
                 </Button>
               </S.AuthMainScreenButtonContainer>

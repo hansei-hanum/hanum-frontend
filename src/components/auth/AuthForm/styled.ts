@@ -14,7 +14,7 @@ export const AuthWrapper = styled.SafeAreaView`
 export const AuthContainer = styled.View`
   flex: 1;
   padding: 0 20px;
-  padding-bottom: ${responsiveHeight(20).toString()}px;
+  padding-bottom: ${responsiveHeight(5).toString()}px;
   padding-top: ${responsiveHeight(10).toString()}px;
   justify-content: space-between;
 `;

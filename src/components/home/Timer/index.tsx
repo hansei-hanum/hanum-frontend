@@ -54,7 +54,7 @@ export const Timer: React.FC = () => {
     onUpdate();
   }, [isFocused]);
   return (
-    <Content icon="⌚️" name="타이머" navigateUrl="Timer">
+    <Content icon="⌚️" name="타이머">
       <S.TimerTextWrapper>
         <S.ScreenTimerContainer>
           <TimerText subText="점심시간까지" mainText={time.lunch} />

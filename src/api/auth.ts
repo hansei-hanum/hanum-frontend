@@ -35,6 +35,10 @@ export interface FetchUserResponse {
   };
 }
 
+export interface StudentCodeVerifyValue {
+  code: string;
+}
+
 export const phone = async ({ phone }: PhoneValue) => {
   const { data } = await instance.post(API_SUFFIX.PHONE, {
     phone,
@@ -64,5 +68,15 @@ export const fetchUser = async (): Promise<FetchUserResponse | null> => {
   if (!token) return null;
   setAccessToken(token);
   const { data } = await instance.get(`${API_SUFFIX.USERS}@me/`);
+  return data;
+};
+
+export const studentCodeVerify = async ({ code }: StudentCodeVerifyValue) => {
+  const token = await AsyncStorage.getItem('token');
+  if (!token) return null;
+  setAccessToken(token);
+  const { data } = await instance.post(API_SUFFIX.STUDENT_VERIFY, {
+    code,
+  });
   return data;
 };

@@ -30,13 +30,14 @@ export const useAuth = (): UseMutationResult<
       if (auth.name === '') {
         return login({ ...(data as LoginValues) });
       } else {
+        console.log(auth);
         return register({ ...(data as RegisterValues) });
       }
     },
     {
       onSuccess: async ({ data }) => {
         await AsyncStorage.setItem('token', data);
-        navigate('Main');
+        navigate(auth.isCurrentStudent ? 'StudentVerifyScreen' : 'Main');
       },
       onError: (error) => {
         const message = error.response?.data.message;
