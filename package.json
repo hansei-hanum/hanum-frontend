@@ -3,11 +3,18 @@
   "version": "0.0.1",
   "private": true,
   "repository": "https://github.com/hansei-hanum/hanum-frontend.git",
-  "author": {
-    "name": "GeunWon Choi",
-    "email": "kidjustinchoi@gmail.com",
-    "url": "https://github.com/choi138"
-  },
+  "maintainers": [
+    {
+      "name": "GeunWon Choi",
+      "email": "kidjustinchoi@gmail.com",
+      "url": "https://github.com/choi138"
+    },
+    {
+      "name": "TaeHoon Kim",
+      "email": "qlskssk@gmail.com",
+      "url": "https://github.com/soju06"
+    }
+  ],
   "packageManager": "yarn@3.6.3",
   "scripts": {
     "android": "react-native run-android",
