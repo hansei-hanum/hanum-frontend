@@ -27,13 +27,14 @@ export const Button: React.FC<ButtonProps> = ({
       activeOpacity={0.8}
       style={{
         width: isModalBtn ? '48%' : '100%',
-        backgroundColor: isSecondary || isDisabled || isDanger ? colors.secondary : colors.primary,
+        backgroundColor:
+          isSecondary || isDisabled ? colors.secondary : isDanger ? colors.danger : colors.primary,
         borderRadius: isModalBtn ? 16 : 10,
       }}
     >
       <S.ButtonText
         style={{
-          color: isSecondary ? colors.black : isDanger ? colors.danger : colors.white,
+          color: isSecondary ? colors.black : colors.white,
         }}
       >
         {children}

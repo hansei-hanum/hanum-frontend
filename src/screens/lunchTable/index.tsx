@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, Switch, View } from 'react-native';
+import { WithLocalSvg } from 'react-native-svg';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -7,6 +8,8 @@ import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST } from 'src/constants';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
+
+import { MealIcon } from '../../../assets/icons';
 
 import * as S from './styled';
 
@@ -101,9 +104,7 @@ export const LunchTableScreen: React.FC = () => {
       </S.LunchTableContainer>
       <LunchTableHeader>
         <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
-          <Text size={30} fontFamily="tossIcon">
-            🍴
-          </Text>
+          <WithLocalSvg width={34} height={34} asset={MealIcon} />
           <Text size={20} fontFamily="bold">
             급식표
           </Text>

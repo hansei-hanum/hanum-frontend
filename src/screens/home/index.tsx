@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native';
 
 import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Header } from 'src/components';
@@ -49,13 +50,25 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
       </S.HomeScreenContainer>
       <Header>
         <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
-        <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
-          <Ionicons
-            name={notifyClick ? 'notifications' : 'notifications-outline'}
-            size={28}
-            color={notifyClick ? '#000' : '#AAA'}
-          />
-        </TouchableOpacity>
+        <S.HomeScreenHeaderIconContainer>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              navigation.push('WebView', {
+                url: 'https://pf.kakao.com/_xkMcxdG',
+              });
+            }}
+          >
+            <AntDesign name="customerservice" size={28} color={colors.placeholder} />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.5} onPress={onNotifyPress}>
+            <Ionicons
+              name={notifyClick ? 'notifications' : 'notifications-outline'}
+              size={28}
+              color={notifyClick ? '#000' : '#AAA'}
+            />
+          </TouchableOpacity>
+        </S.HomeScreenHeaderIconContainer>
       </Header>
     </S.HomeScreenWrapper>
   );
