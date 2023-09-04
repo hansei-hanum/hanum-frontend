@@ -6,3 +6,4 @@ export * from './hanumPay';
 export * from './schedule';
 export * from './main';
 export * from './calendar';
+export * from './userInfo';

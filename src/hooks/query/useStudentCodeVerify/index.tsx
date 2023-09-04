@@ -20,6 +20,7 @@ export const useStudentCodeVerify = (): UseMutationResult<
       navigate('Main');
     },
     onError: (error) => {
+      console.log(error.response, 'error');
       const message = error.response?.data.message;
       if (message === 'UNAUTHORIZED') {
         setAuth({

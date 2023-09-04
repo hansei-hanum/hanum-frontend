@@ -28,7 +28,6 @@ export interface APIErrorResponse {
 export const setAccessToken = (token: string | null) => {
   if (token) {
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    console.log(instance.defaults.headers.common.Authorization);
   } else {
     delete instance.defaults.headers.common.Authorization;
   }

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { Text, Section } from 'src/components';
 import { colors } from 'src/styles';
@@ -14,9 +16,10 @@ import * as S from './styled';
 export const ShowMoreScreen: React.FC = () => {
   const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
-  const { data, isLoading } = useFetchUser();
+  const user = useFetchUser();
 
-  const verifyUser = data?.data.verification;
+  const userData = user.data && user.data.data;
+  const verifyUser = userData && userData.verification;
   const classRoom = verifyUser && verifyUser.classroom;
   const grade = verifyUser && verifyUser.grade;
   const department = verifyUser && verifyUser.department;
@@ -35,6 +38,12 @@ export const ShowMoreScreen: React.FC = () => {
     }
   };
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    user.refetch();
+  }, [isFocused]);
+
   return (
     <S.ShowMoreScreenContainer
       showsVerticalScrollIndicator={false}
@@ -47,7 +56,7 @@ export const ShowMoreScreen: React.FC = () => {
         rowGap: 16,
       }}
     >
-      {!isLoading && data && (
+      {!user.isLoading && user.data && (
         <>
           <S.ShowMoreHeaderScreen>
             <Text size={20} fontFamily="bold">
@@ -58,12 +67,12 @@ export const ShowMoreScreen: React.FC = () => {
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             activeOpacity={1}
-            onPress={() => navigate('UserInformation')}
+            onPress={() => navigate('UserInfo')}
           >
             <S.ShowMoreUserContainer style={[animatedStyle]}>
               <S.ShowMoreUserInfo>
                 <S.ShowMoreUserImage
-                  source={data.data.profile ? data.data.profile : UserLogo}
+                  source={userData?.profile ? userData?.profile : UserLogo}
                   style={{
                     resizeMode: 'contain',
                     borderColor: colors.lightGray,
@@ -72,7 +81,7 @@ export const ShowMoreScreen: React.FC = () => {
                 />
                 <S.ShowMoreUserNameContainer>
                   <Text size={18} fontFamily="bold">
-                    {data.data.name}
+                    {userData?.name}
                   </Text>
                   <Text
                     size={14}
