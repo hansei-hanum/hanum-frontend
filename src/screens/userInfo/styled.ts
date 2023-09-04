@@ -41,3 +41,10 @@ export const UserInfoButtonContainer = styled.View`
   justify-content: center;
   row-gap: 14px;
 `;
+
+export const UserInfoModalButtonContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;

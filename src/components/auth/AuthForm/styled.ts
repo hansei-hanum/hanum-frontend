@@ -14,8 +14,8 @@ export const AuthWrapper = styled.SafeAreaView`
 export const AuthContainer = styled.View`
   flex: 1;
   padding: 0 20px;
-  padding-bottom: ${iosCheckHeight ? '10px' : Platform.OS === 'android' ? '10px' : '5px'};
-  padding-top: ${iosCheckHeight ? '20px' : Platform.OS === 'android' ? '20px' : '10px'};
+  padding-bottom: ${iosCheckHeight ? '5px' : '10px'};
+  padding-top: ${iosCheckHeight ? '10px' : '20px'};
   justify-content: space-between;
 `;
 
