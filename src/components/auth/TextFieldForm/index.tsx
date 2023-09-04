@@ -62,7 +62,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   };
 
   const onNameSubmit = () => {
-    setAuth({ name: name, phone: '' });
+    setAuth({ ...auth, name: name, phone: '' });
     navigate('Phone');
   };
 
