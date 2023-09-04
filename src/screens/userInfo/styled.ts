@@ -7,7 +7,6 @@ export const UserInfoContainer = styled.View`
   flex: 1;
   background-color: ${colors.background};
   padding: ${iosCheckHeight ? '70px' : '40px'} 20px 20px 20px;
-  row-gap: 30px;
 `;
 
 export const UserInfoProfile = styled.View`
@@ -15,6 +14,7 @@ export const UserInfoProfile = styled.View`
   align-items: center;
   justify-content: center;
   row-gap: 10px;
+  margin-top: 20px;
 `;
 
 export const UserInfoProfileImage = styled.Image`

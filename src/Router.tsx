@@ -59,7 +59,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="Phone" component={PhoneScreen} />
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
-          <Stack.Screen name="StudentVerifyScreen" component={StudentVerifyScreen} />
+          <Stack.Screen name="StudentVerify" component={StudentVerifyScreen} />
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />
