@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Text, Section } from 'src/components';
 import { colors } from 'src/styles';
 import { useFetchUser, useNavigate, usePressingAnimation } from 'src/hooks';
-import { checkHeight, iosCheckHeight } from 'src/utils';
+import { checkHeight, formattedDepartment, iosCheckHeight } from 'src/utils';
 
 import { UserLogo } from '../../../assets/images';
 
@@ -24,19 +24,6 @@ export const ShowMoreScreen: React.FC = () => {
   const grade = verifyUser && verifyUser.grade;
   const department = verifyUser && verifyUser.department;
   const number = verifyUser && verifyUser.number;
-
-  const formattedDepartment = () => {
-    switch (department) {
-      case 'CLOUD_SECURITY':
-        return '클라우드보안과';
-      case 'NETWORK_SECURITY':
-        return '네트워크보안과';
-      case 'METAVERSE_GAME':
-        return '메타버스게임과';
-      case 'GAME':
-        return '게임과';
-    }
-  };
 
   const isFocused = useIsFocused();
 
@@ -84,12 +71,14 @@ export const ShowMoreScreen: React.FC = () => {
                     {userData?.name}
                   </Text>
                   <Text
-                    size={14}
+                    size={13}
                     fontFamily="medium"
                     color={verifyUser ? colors.black : colors.danger}
                   >
                     {verifyUser
-                      ? `${formattedDepartment()} ${grade}학년 ${classRoom}반 ${number}번 재학생`
+                      ? `${formattedDepartment(
+                          department,
+                        )} ${grade}학년 ${classRoom}반 ${number}번 재학생`
                       : `정회원 인증이 안되어 있어요.`}
                   </Text>
                 </S.ShowMoreUserNameContainer>

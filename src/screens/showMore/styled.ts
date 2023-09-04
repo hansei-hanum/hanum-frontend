@@ -38,4 +38,5 @@ export const ShowMoreUserImage = styled.Image`
 
 export const ShowMoreUserNameContainer = styled.View`
   flex-direction: column;
+  row-gap: 3px;
 `;
