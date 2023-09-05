@@ -1,4 +1,5 @@
 import styled from '@emotion/native';
+import { ContentBox } from 'src/components/common/ContentBox';
 
 import { colors } from 'src/styles';
 import { iosCheckHeight } from 'src/utils';
@@ -25,5 +26,5 @@ export const CalendarTitleContainer = styled.View`
 `;
 
 export const CalendarScheduleContainer = styled.ScrollView`
-  padding: 0px 20px;
+
 `;

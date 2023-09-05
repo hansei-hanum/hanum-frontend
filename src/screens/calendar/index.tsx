@@ -98,11 +98,15 @@ export const CalendarScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
+          paddingTop: 20,
           paddingBottom: 20,
+          paddingLeft: 20,
+          paddingRight: 20,
+          rowGap: 20,
         }}
       >
         {CALENDAR_LIST.find((item) => item.date === selectedDate)?.contents.map((item) => (
-          <ContentBox style={{ marginTop: 20 }}>
+          <ContentBox>
             <Text size={16} fontFamily="medium" key={item}>
               {item}
             </Text>
