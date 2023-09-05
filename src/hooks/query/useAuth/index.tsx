@@ -37,7 +37,7 @@ export const useAuth = (): UseMutationResult<
     {
       onSuccess: async ({ data }) => {
         await AsyncStorage.setItem('token', data);
-        navigate(auth.isCurrentStudent ? 'StudentVerifyScreen' : 'Main');
+        navigate(auth.isCurrentStudent ? 'StudentVerify' : 'Main');
       },
       onError: (error) => {
         const message = error.response?.data.message;

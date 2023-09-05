@@ -1,8 +1,7 @@
-import { Platform } from 'react-native';
-
 import styled from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';
+import { isIos } from 'src/utils';
 
 export const LunchTableTextContainer = styled.View`
   width: 100%;
@@ -14,7 +13,7 @@ export const LunchTableTextContainer = styled.View`
 
 export const LunchTableText = styled.Text`
   text-align: center;
-  font-size: ${Platform.OS === 'ios' ? '16px' : '14px'};
+  font-size: ${isIos ? '16px' : '14px'};
   font-family: ${fonts.bold};
   color: ${colors.black};
 `;

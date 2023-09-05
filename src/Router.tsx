@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,10 +13,17 @@ import {
   MainScreen,
   HanumPayScreen,
   CalendarScreen,
+  UserInfoScreen,
+  WebViewScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
+import { isIos } from './utils';
 
 const Stack = createStackNavigator();
+
+export type RootStackParamList = {
+  WebView: { url: string };
+};
 
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
@@ -51,19 +58,23 @@ export const Router: React.FC = () => {
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>
-        <Stack.Group>
+        <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="AuthMain" component={AuthMainScreen} />
+        </Stack.Group>
+        <Stack.Group>
           <Stack.Screen name="Phone" component={PhoneScreen} />
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
-          <Stack.Screen name="StudentVerifyScreen" component={StudentVerifyScreen} />
+          <Stack.Screen name="StudentVerify" component={StudentVerifyScreen} />
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />
           <Stack.Screen name="Calendar" component={CalendarScreen} />
+          <Stack.Screen name="UserInfo" component={UserInfoScreen} />
+          <Stack.Screen name="WebView" component={WebViewScreen} />
         </Stack.Group>
       </Stack.Navigator>
-      <StatusBar barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'} />
+      <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />
     </NavigationContainer>
   );
 };

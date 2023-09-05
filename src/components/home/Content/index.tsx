@@ -1,16 +1,18 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Platform } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { WithLocalSvg } from 'react-native-svg';
+import { ImageSourcePropType } from 'react-native';
 
 import { ContentBox, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
+import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
 export interface ContentProps {
-  icon: string;
+  icon: string | ImageSourcePropType;
   name: string;
   children?: React.ReactNode;
   navigateUrl?: string;
@@ -34,10 +36,14 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
         <S.ContentTopSectionWrapper style={navigateUrl || onPress ? animatedStyle : null}>
           <S.ContentTopSection>
             <S.ContentIconContainer>
-              <Text size={30} fontFamily="tossIcon">
-                {icon}
-              </Text>
-              <Text size={Platform.OS === 'ios' ? 15 : 14} fontFamily="bold">
+              {typeof icon == 'string' ? (
+                <Text size={30} fontFamily="tossIcon">
+                  {icon}
+                </Text>
+              ) : (
+                <WithLocalSvg width={32} height={32} asset={icon} />
+              )}
+              <Text size={isIos ? 15 : 14} fontFamily="bold">
                 {name}
               </Text>
             </S.ContentIconContainer>
