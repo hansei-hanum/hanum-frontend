@@ -6,8 +6,8 @@ import { useIsFocused } from '@react-navigation/native';
 
 import { Text, Section } from 'src/components';
 import { colors } from 'src/styles';
-import { useFetchUser, useNavigate, usePressingAnimation } from 'src/hooks';
-import { checkHeight, formattedDepartment, iosCheckHeight } from 'src/utils';
+import { useFetchUser, useGetUser, useNavigate, usePressingAnimation } from 'src/hooks';
+import { checkHeight, iosCheckHeight } from 'src/utils';
 
 import { UserLogo } from '../../../assets/images';
 
@@ -18,12 +18,7 @@ export const ShowMoreScreen: React.FC = () => {
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
   const user = useFetchUser();
 
-  const userData = user.data && user.data.data;
-  const verifyUser = userData && userData.verification;
-  const classRoom = verifyUser && verifyUser.classroom;
-  const grade = verifyUser && verifyUser.grade;
-  const department = verifyUser && verifyUser.department;
-  const number = verifyUser && verifyUser.number;
+  const { userLoading, userData, userProfile, verifyUser, formatUser } = useGetUser();
 
   const isFocused = useIsFocused();
 
@@ -43,7 +38,7 @@ export const ShowMoreScreen: React.FC = () => {
         rowGap: 16,
       }}
     >
-      {!user.isLoading && user.data && (
+      {!userLoading && userData && (
         <>
           <S.ShowMoreHeaderScreen>
             <Text size={20} fontFamily="bold">
@@ -59,7 +54,7 @@ export const ShowMoreScreen: React.FC = () => {
             <S.ShowMoreUserContainer style={[animatedStyle]}>
               <S.ShowMoreUserInfo>
                 <S.ShowMoreUserImage
-                  source={userData?.profile ? userData?.profile : UserLogo}
+                  source={userProfile ? userProfile : UserLogo}
                   style={{
                     resizeMode: 'contain',
                     borderColor: colors.lightGray,
@@ -75,11 +70,7 @@ export const ShowMoreScreen: React.FC = () => {
                     fontFamily="medium"
                     color={verifyUser ? colors.black : colors.danger}
                   >
-                    {verifyUser
-                      ? `${formattedDepartment(
-                          department,
-                        )} ${grade}학년 ${classRoom}반 ${number}번 재학생`
-                      : `정회원 인증이 안되어 있어요.`}
+                    {verifyUser ? `${formatUser()}` : '정회원 인증이 안되어 있어요.'}
                   </Text>
                 </S.ShowMoreUserNameContainer>
               </S.ShowMoreUserInfo>

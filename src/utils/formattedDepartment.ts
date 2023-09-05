@@ -1,4 +1,4 @@
-export const formattedDepartment = (department?: string) => {
+export const formattedDepartment = (department?: null | string) => {
   switch (department) {
     case 'CLOUD_SECURITY':
       return '클라우드보안과';

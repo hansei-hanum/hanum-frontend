@@ -21,18 +21,23 @@ export interface RegisterValues extends AuthValues {
 
 export type LoginValues = AuthValues;
 
+export interface VerificationUser {
+  type: 'GRADUATED' | 'STUDENT' | 'TEACHER' | null;
+  department: null | string;
+  grade: null | number;
+  classroom: null | number;
+  number: null | number;
+  valid_until: null | string;
+  graduated_at: null | string;
+}
+
 export interface FetchUserResponse {
   id: string;
   name: string;
   nickname: string;
   created_at: string;
   profile: string;
-  verification: {
-    department: string;
-    grade: number;
-    classroom: number;
-    number: number;
-  };
+  verification: VerificationUser;
 }
 
 export interface StudentCodeVerifyValue {
