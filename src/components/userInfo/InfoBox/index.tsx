@@ -11,7 +11,7 @@ import * as S from './styled';
 export interface InfoBoxProps {
   number: string;
   isVerify: boolean;
-  endDate: string;
+  endDate: string | null;
 }
 
 export const InfoBox: React.FC<InfoBoxProps> = ({ number, isVerify, endDate }) => {
@@ -49,7 +49,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ number, isVerify, endDate }) =
         },
         {
           title: '유효기간',
-          value: endDate,
+          value: endDate ? endDate : '없음',
         },
       ],
     },

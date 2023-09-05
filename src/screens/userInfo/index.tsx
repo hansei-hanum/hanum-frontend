@@ -20,6 +20,10 @@ export const UserInfoScreen: React.FC = () => {
 
   const { userLoading, userData, userProfile, verifyUser, formatUser } = useGetUser();
 
+  const formattedDate = (date: string | null) => {
+    return date && date.split('T')[0];
+  };
+
   const onLogout = async () => {
     await AsyncStorage.removeItem('token');
     navigate('AuthMain');
@@ -61,16 +65,13 @@ export const UserInfoScreen: React.FC = () => {
                   fontFamily="medium"
                   color={verifyUser ? colors.black : colors.danger}
                 >
-                  {/* {verifyUser
-                    ? `${formatUser({ type, department, graduated_at, grade, classRoom, number })}`
-                    : `정회원 인증이 안되어 있어요.`} */}
                   {verifyUser ? `${formatUser()}` : '정회원 인증이 안되어 있어요.'}
                 </Text>
               </S.UserInfoProfile>
               <InfoBox
                 number={'010-3176-0552'}
                 isVerify={verifyUser ? true : false}
-                endDate="없음"
+                endDate={verifyUser ? formattedDate(verifyUser.valid_until) : '없음'}
               />
             </S.UserInfoProfileContainer>
             <S.UserInfoButtonContainer>
