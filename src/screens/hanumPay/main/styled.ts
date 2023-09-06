@@ -14,12 +14,6 @@ export const HanumPayContainer = styled.View`
   row-gap: 36px;
 `;
 
-export const HanumPayHeader = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
 export const HanumPaySection = styled.View`
   flex-direction: column;
   row-gap: 22px;

@@ -5,3 +5,4 @@ export * from './schedule';
 export * from './showMore';
 export * from './lunchTable';
 export * from './userInfo';
+export * from './hanumPay';

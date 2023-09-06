@@ -15,6 +15,7 @@ import {
   CalendarScreen,
   UserInfoScreen,
   WebViewScreen,
+  HanumPayQRScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -51,7 +52,7 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'HanumPay'}>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'Main'}>
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>
@@ -66,6 +67,7 @@ export const Router: React.FC = () => {
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+          <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
           <Stack.Screen name="Calendar" component={CalendarScreen} />
           <Stack.Screen name="UserInfo" component={UserInfoScreen} />
           <Stack.Screen name="WebView" component={WebViewScreen} />
