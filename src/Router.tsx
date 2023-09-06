@@ -51,10 +51,7 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false }}
-        initialRouteName={data ? 'Main' : 'AuthMain'}
-      >
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'HanumPay'}>
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>
