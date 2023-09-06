@@ -23,35 +23,12 @@ export const HanumPayQRScreen: React.FC = () => {
         onRead={onSuccess}
         flashMode={RNCamera.Constants.FlashMode.torch}
         // remove animate
-        fadeIn={false}
+        // fadeIn={false}
         showMarker={true}
-        topContent={
-          <Text style={styles.centerText}>
-            <Text style={styles.textBold}>QR코드</Text>를 스캔해주세요.
-          </Text>
-        }
+        containerStyle={{ borderColor: 'red', borderWidth: 1 }}
+        topContent={<Text>QR코드를 스캔해주세요.</Text>}
         cameraStyle={{ flex: 1, height: '100%', width: '100%' }}
       />
     </S.HanumPayQRWrapper>
   );
 };
-
-const styles = StyleSheet.create({
-  centerText: {
-    flex: 1,
-    fontSize: 18,
-    padding: 32,
-    color: '#777',
-  },
-  textBold: {
-    fontWeight: '500',
-    color: '#000',
-  },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)',
-  },
-  buttonTouchable: {
-    padding: 16,
-  },
-});
