@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { TouchableOpacity } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { format } from 'date-fns';
 
-import { ContentBox, Icon, Text } from 'src/components';
+import { ContentBox, GoBackIcon, Icon, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { CALENDAR_LIST } from 'src/constants';
 
@@ -16,7 +14,6 @@ LocaleConfig.defaultLocale = 'ko';
 
 export const CalendarScreen: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const navigation = useNavigation();
 
   const dotsDate = CALENDAR_LIST.reduce((acc, currentValue) => {
     const date = format(new Date(currentValue.date), 'yyyy-MM-dd');
@@ -51,9 +48,7 @@ export const CalendarScreen: React.FC = () => {
   return (
     <S.CalendarWrapper>
       <S.CalendarHeaderContainer>
-        <TouchableOpacity activeOpacity={0.2} onPress={() => navigation.goBack()}>
-          <Entypo name="chevron-thin-left" size={28} color="black" style={{ marginBottom: 10 }} />
-        </TouchableOpacity>
+        <GoBackIcon size={28} style={{ marginBottom: 10 }} />
         <S.CalendarTitleContainer>
           <Icon icon="📆" />
           <Text size={20} fontFamily="bold">

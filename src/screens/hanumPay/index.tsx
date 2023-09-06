@@ -1,27 +1,16 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
 
-import { useNavigation } from '@react-navigation/native';
-
-import { Button, Text } from 'src/components';
+import { Button, GoBackIcon, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
-  const navigation = useNavigation();
   return (
     <S.HanumPayWrapper>
       <S.HanumPayContainer>
         <S.HanumPayHeader>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.goBack()}
-            style={{ position: 'absolute', left: 0, top: 0 }}
-          >
-            <Entypo name="chevron-thin-left" size={24} />
-          </TouchableOpacity>
+          <GoBackIcon style={{ position: 'absolute', left: 0, top: 0 }} />
           <Text size={18}>한움페이</Text>
         </S.HanumPayHeader>
         <S.HanumPaySection>

@@ -1,11 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import { TouchableOpacity } from 'react-native';
 import React from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
 
-import { useNavigation } from '@react-navigation/native';
-
-import { Button, Text } from 'src/components';
+import { Button, GoBackIcon, Text } from 'src/components';
 
 import * as S from './styled';
 
@@ -26,15 +22,11 @@ export const Auth: React.FC<AuthProps> = ({
   onPress,
   bottomText,
 }) => {
-  const navigation = useNavigation();
-
   return (
     <S.AuthWrapper>
       <S.AuthContainer>
         <S.AuthInputContainer>
-          <TouchableOpacity activeOpacity={0.2} onPress={() => navigation.goBack()}>
-            <Entypo name="chevron-thin-left" size={28} color="black" style={{ marginBottom: 10 }} />
-          </TouchableOpacity>
+          <GoBackIcon size={28} style={{ marginBottom: 10 }} />
           <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (
