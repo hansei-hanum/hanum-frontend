@@ -7,7 +7,6 @@ export const HanumPayQRWrapper = styled.SafeAreaView`
   background-color: ${colors.background};
 `;
 
-export const HanumPayQRContainer = styled.View`
-  flex: 1;
+export const HanumPayQRHeaderWrapper = styled.View`
   padding: 20px;
 `;
