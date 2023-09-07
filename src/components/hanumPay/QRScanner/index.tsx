@@ -8,12 +8,11 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-export const QRScanner: React.FC = () => {
-  const onSuccess = (e: BarCodeReadEvent) => {
-    // 바코드가 감지되면 실행되는 함수
-    console.log(e, 'data');
-  };
+export interface QRScannerProps {
+  onSuccess: (e: BarCodeReadEvent) => void;
+}
 
+export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess }) => {
   const options = {
     onRead: onSuccess,
     showMarker: true,

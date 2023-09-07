@@ -1,6 +1,8 @@
+import { TextInput } from 'react-native';
+
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
+import { colors, fonts } from 'src/styles';
 
 export const HanumPayQRWrapper = styled.SafeAreaView`
   flex: 1;
@@ -11,7 +13,7 @@ export const HanumPayQRHeaderWrapper = styled.View`
   padding: 16px;
 `;
 
-export const PrivacyTabContentContainer = styled.View`
+export const HanumPayQRMoneyContainer = styled.View`
   flex: 1;
   flex-direction: column;
   align-items: center;
@@ -21,14 +23,10 @@ export const PrivacyTabContentContainer = styled.View`
   padding-top: 10px;
 `;
 
-export const PrivacyTabContentTitle = styled.Text`
-  font-size: 24px;
-  font-weight: 600;
-`;
-
-export const PrivacyTabContentWrapper = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  column-gap: 10px;
-  z-index: 90;
+export const TextFieldFormInput = styled(TextInput)`
+  width: 100%;
+  font-size: 18px;
+  font-family: ${fonts.medium};
+  border-bottom-width: 1px;
+  border-bottom-color: ${colors.placeholder};
 `;
