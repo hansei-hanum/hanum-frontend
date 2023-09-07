@@ -7,10 +7,12 @@ import BottomSheet, { useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import { Button, HanumPayHeader, QRScanner, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { checkNumber } from 'src/utils';
+import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 export const HanumPayQRScreen: React.FC = () => {
+  const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [money, setMoney] = useState<string>('');
 
@@ -32,6 +34,7 @@ export const HanumPayQRScreen: React.FC = () => {
     setTimeout(() => {
       setIsActive(false);
     }, 70);
+    navigate('HanumPayStatus');
   };
 
   const onMoneyChange = (money: string) => {
@@ -58,7 +61,11 @@ export const HanumPayQRScreen: React.FC = () => {
                 결제하기
               </Text>
               <Text size={16} isCenter>
-                부스 “사격장"의 QR코드가 인식되었어요!{'\n'}
+                부스{' '}
+                <Text size={16} fontFamily="bold">
+                  “사격장"{' '}
+                </Text>
+                의 QR코드가 인식되었어요!{'\n'}
                 해당 부스에 얼마를 결제할까요?
               </Text>
             </Text.Column>
