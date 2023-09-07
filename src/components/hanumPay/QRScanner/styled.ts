@@ -1,6 +1,7 @@
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
+import { isIos } from 'src/utils';
 
 export const HanumPayQRWrapper = styled.SafeAreaView`
   flex: 1;
@@ -13,7 +14,7 @@ export const HanumPayQRHeaderWrapper = styled.View`
 
 export const HanumPayQRBoxContainer = styled.View`
   position: relative;
-  bottom: 40px;
+  bottom: ${isIos ? '100px' : '60px'};
   row-gap: 10px;
 `;
 
