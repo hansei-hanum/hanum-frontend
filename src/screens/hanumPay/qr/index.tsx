@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Linking, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Linking, PermissionsAndroid, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
@@ -11,7 +11,7 @@ import * as S from './styled';
 export const HanumPayQRScreen: React.FC = () => {
   const onSuccess = (e: any) => {
     // 바코드가 감지되면 실행되는 함수
-    console.log(e, 'data');
+    console.log(typeof e, 'data');
     Linking.openURL(e.data).catch((err) => console.error('An error occured', err));
   };
   return (
@@ -21,12 +21,11 @@ export const HanumPayQRScreen: React.FC = () => {
       </S.HanumPayQRHeaderWrapper>
       <QRCodeScanner
         onRead={onSuccess}
-        flashMode={RNCamera.Constants.FlashMode.torch}
+        flashMode={RNCamera.Constants.FlashMode.auto}
         // remove animate
         // fadeIn={false}
         showMarker={true}
-        containerStyle={{ borderColor: 'red', borderWidth: 1 }}
-        topContent={<Text>QR코드를 스캔해주세요.</Text>}
+        containerStyle={{ flex: 1, height: '100%', borderColor: 'red', borderWidth: 1 }}
         cameraStyle={{ flex: 1, height: '100%', width: '100%' }}
       />
     </S.HanumPayQRWrapper>
