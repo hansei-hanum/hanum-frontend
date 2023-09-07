@@ -1,7 +1,7 @@
-import { View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import React from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { BarCodeReadEvent, RNCamera } from 'react-native-camera';
+import { BarCodeReadEvent } from 'react-native-camera';
 
 import { HanumPayHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
@@ -15,27 +15,31 @@ export const HanumPayQRScreen: React.FC = () => {
   };
   return (
     <S.HanumPayQRWrapper>
-      <S.HanumPayQRHeaderWrapper>
-        <HanumPayHeader title="결제하기" />
+       <S.HanumPayQRHeaderWrapper>
+         <HanumPayHeader title="결제하기" />
       </S.HanumPayQRHeaderWrapper>
-      <QRCodeScanner
+      <SafeAreaView>
+    <QRCodeScanner
         onRead={onSuccess}
-        reactivate={true}
-        flashMode={RNCamera.Constants.FlashMode.auto}
         showMarker={true}
-        containerStyle={{ flex: 1, height: '100%' }}
-        cameraStyle={{ flex: 1, height: '100%', width: '100%' }}
+        // vibration change
+        reactivate={true}
+        reactivateTimeout={0}
+        fadeIn={false}
         customMarker={
-          <View style={{ flexDirection: 'column', rowGap: 10 }}>
-            <Text.Column>
-              <Text size={16} isCenter color={colors.white}>
-                한움페이 결제 QR코드를 {'\n'}아래 상자에 맞춰주세요
-              </Text>
-            </Text.Column>
-            <S.HanumPayQRBox />
-          </View>
-        }
+                <S.HanumPayQRBoxContainer>
+                  <Text.Column>
+                    <Text size={16} isCenter color={colors.white}>
+                      한움페이 결제 QR코드를 {'\n'}아래 상자에 맞춰주세요
+                    </Text>
+                  </Text.Column>
+                  <S.HanumPayQRBox />
+                </S.HanumPayQRBoxContainer>
+              }
       />
-    </S.HanumPayQRWrapper>
+      </SafeAreaView>
+      </S.HanumPayQRWrapper>
   );
 };
+
+
