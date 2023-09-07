@@ -1,25 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native';
 
-import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Header } from 'src/components';
+import { AlertBox, HanumPay, Timer, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight } from 'src/utils';
+import { useNavigate } from 'src/hooks';
 
 import { PartyIcon } from '../../../assets/icons';
 import { Logo } from '../../../assets/images';
 
 import * as S from './styled';
 
-export const HomeScreen: React.FC = ({ navigation }: any) => {
+export const HomeScreen: React.FC = () => {
+  const navigate = useNavigate();
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
-
-  const onPress = () => {
-    navigation.navigate('급식표');
-  };
 
   const onNotifyPress = () => {
     setNotifyClick(!notifyClick);
@@ -46,7 +43,6 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         />
         <HanumPay />
         <Timer />
-        <LunchTable onPress={onPress} />
         <Calendar />
       </S.HomeScreenContainer>
       <Header>
@@ -55,9 +51,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => {
-              navigation.push('WebView', {
-                url: 'https://pf.kakao.com/_xkMcxdG',
-              });
+              navigate('WebView');
             }}
           >
             <AntDesign name="customerservice" size={28} color={colors.placeholder} />

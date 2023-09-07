@@ -8,7 +8,8 @@ import { Router } from 'src/Router';
 
 const client = new QueryClient();
 
-LogBox.ignoreAllLogs(true);
+LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
 
 function App() {
   return (

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { ActivityIndicator } from 'react-native';
@@ -8,12 +7,12 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-export const WebViewScreen: React.FC = ({ route }: any) => {
+export const WebViewScreen: React.FC = () => {
   const [title, setTitle] = useState<string>('읽어들이는 중..');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log(typeof route, 'route type', 'isLoading changed to ' + isLoading);
+    console.log('isLoading changed to ' + isLoading);
   }, [isLoading]);
 
   return (
@@ -27,7 +26,7 @@ export const WebViewScreen: React.FC = ({ route }: any) => {
         </S.HeaderContentWrapper>
       </S.HeaderContainer>
       <WebView
-        source={{ uri: route.params?.url }}
+        source={{ uri: 'https://pf.kakao.com/_xkMcxdG' }}
         onLoad={() => setIsLoading(false)}
         injectedJavaScript="window.ReactNativeWebView.postMessage(document.title)"
         onMessage={(message) => setTitle(message.nativeEvent.data)}
