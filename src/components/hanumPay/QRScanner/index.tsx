@@ -16,7 +16,6 @@ export const QRScanner: React.FC = () => {
 
   const options = {
     onRead: onSuccess,
-    reactivate: true,
     showMarker: true,
     vibrate: false,
     customMarker: (

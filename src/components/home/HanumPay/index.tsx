@@ -4,6 +4,8 @@ import { Content, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
+import { PayIcon } from '../../../../assets/icons';
+
 import * as S from './styled';
 
 export interface HanumPayButton {
@@ -23,7 +25,7 @@ export const HanumPayButton: React.FC<HanumPayButton> = ({ onPress, text }) => {
 
 export const HanumPay: React.FC = () => {
   return (
-    <Content icon="💵" name="한움페이" navigateUrl="HanumPay">
+    <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPay">
       <S.HanumPayContainer>
         <Text size={24} fontFamily="bold" color={colors.black}>
           19,000원

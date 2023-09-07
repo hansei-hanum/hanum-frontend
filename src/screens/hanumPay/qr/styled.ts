@@ -8,18 +8,5 @@ export const HanumPayQRWrapper = styled.SafeAreaView`
 `;
 
 export const HanumPayQRHeaderWrapper = styled.View`
-  padding: 20px;
-`;
-
-export const HanumPayQRBoxContainer = styled.View`
-  position: relative;
-  bottom: 40px;
-  row-gap: 10px;
-`;
-
-export const HanumPayQRBox = styled.View`
-  width: 260px;
-  height: 260px;
-  border-color: white;
-  border-width: 1px;
+  padding: 16px;
 `;

@@ -9,6 +9,7 @@ import { AlertBox, HanumPay, Timer, LunchTable, Calendar, Header } from 'src/com
 import { colors } from 'src/styles';
 import { iosCheckHeight } from 'src/utils';
 
+import { PartyIcon } from '../../../assets/icons';
 import { Logo } from '../../../assets/images';
 
 import * as S from './styled';
@@ -38,7 +39,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         }}
       >
         <AlertBox
-          icon="🎉"
+          icon={PartyIcon}
           mainText="실시간으로 즐기기"
           subText="한세어울림한마당 진행 중!"
           navigateUrl="Main"
