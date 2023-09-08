@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
+import { MealIcon } from 'src/assets';
 
-import { MealIcon } from '../../../../assets/icons';
 import { Content } from '../Content';
 
 import * as S from './styled';

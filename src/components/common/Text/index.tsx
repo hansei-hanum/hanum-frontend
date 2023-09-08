@@ -5,6 +5,18 @@ import { css } from '@emotion/native';
 
 import { colors, fonts } from 'src/styles';
 
+import * as S from './styled';
+
+export interface TextCommonProps {
+  children: React.ReactNode;
+}
+
+export type TextCommonType = TextCommonProps;
+
+export const TextColumnContainer: React.FC<TextCommonType> = ({ children }) => {
+  return <S.TextColumnContainer>{children}</S.TextColumnContainer>;
+};
+
 interface TextProps {
   children: React.ReactNode;
   size: number;
@@ -14,7 +26,7 @@ interface TextProps {
   style?: StyleProp<TextStyle>;
 }
 
-export const Text: React.FC<TextProps> = ({
+export const TextComponent: React.FC<TextProps> = ({
   children,
   size,
   fontFamily,
@@ -38,3 +50,7 @@ export const Text: React.FC<TextProps> = ({
     </TextElement>
   );
 };
+
+export const Text = Object.assign(TextComponent, {
+  Column: TextColumnContainer,
+});

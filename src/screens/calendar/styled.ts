@@ -1,5 +1,4 @@
 import styled from '@emotion/native';
-import { ContentBox } from 'src/components/common/ContentBox';
 
 import { colors } from 'src/styles';
 import { iosCheckHeight } from 'src/utils';
@@ -25,6 +24,4 @@ export const CalendarTitleContainer = styled.View`
   column-gap: 6px;
 `;
 
-export const CalendarScheduleContainer = styled.ScrollView`
-
-`;
+export const CalendarScheduleContainer = styled.ScrollView``;

@@ -8,8 +8,7 @@ import { LunchTableHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow, WEEKDAY_LIST, MealItem, MEAL_LIST } from 'src/constants';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
-
-import { MealIcon } from '../../../assets/icons';
+import { MealIcon } from 'src/assets';
 
 import * as S from './styled';
 

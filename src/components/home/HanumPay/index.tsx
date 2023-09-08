@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Content, Text } from 'src/components';
+import { Button, Content, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
+import { useNavigate } from 'src/hooks';
+import { PayIcon } from 'src/assets';
 
 import * as S from './styled';
 
@@ -22,16 +24,14 @@ export const HanumPayButton: React.FC<HanumPayButton> = ({ onPress, text }) => {
 };
 
 export const HanumPay: React.FC = () => {
+  const navigate = useNavigate();
   return (
-    <Content icon="💵" name="한움페이" navigateUrl="HanumPay">
+    <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPay">
       <S.HanumPayContainer>
         <Text size={24} fontFamily="bold" color={colors.black}>
           19,000원
         </Text>
-        <S.HanumPayButtonContainer>
-          <HanumPayButton text="결제" onPress={() => console.log('결제')} />
-          <HanumPayButton text="송금" onPress={() => console.log('송금')} />
-        </S.HanumPayButtonContainer>
+        <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
       </S.HanumPayContainer>
     </Content>
   );
