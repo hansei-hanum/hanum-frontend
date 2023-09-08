@@ -8,8 +8,8 @@ import { AlertBox, HanumPay, Timer, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight } from 'src/utils';
 import { useNavigate } from 'src/hooks';
+import { PartyIcon } from 'src/assets';
 
-import { PartyIcon } from '../../../assets/icons';
 import { Logo } from '../../../assets/images';
 
 import * as S from './styled';

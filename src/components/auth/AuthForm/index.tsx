@@ -24,7 +24,7 @@ export const Auth: React.FC<AuthProps> = ({
 }) => {
   return (
     <S.AuthWrapper>
-      <S.AuthContainer>
+      <S.AuthContainer behavior="padding" keyboardVerticalOffset={15}>
         <S.AuthInputContainer>
           <GoBackIcon size={28} style={{ marginBottom: 10 }} />
           <S.AuthTextContainer>
@@ -40,7 +40,7 @@ export const Auth: React.FC<AuthProps> = ({
           </S.AuthTextContainer>
           {children}
         </S.AuthInputContainer>
-        <S.AuthButtonWrapper behavior="padding" keyboardVerticalOffset={15}>
+        <S.AuthButtonWrapper>
           <Button isDisabled={isDisabled} onPress={onPress}>
             {bottomText}
           </Button>

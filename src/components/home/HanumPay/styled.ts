@@ -4,8 +4,10 @@ import { colors } from 'src/styles';
 
 export const HanumPayContainer = styled.View`
   width: 100%;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  row-gap: 20px;
 `;
 
 export const HanumPayButtonContainer = styled(HanumPayContainer)`

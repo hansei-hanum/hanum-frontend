@@ -3,8 +3,7 @@ import { WithLocalSvg } from 'react-native-svg';
 
 import { Text, ClassList, WeekDay } from 'src/components';
 import { CLASS_LIST, NUMBER_LIST } from 'src/constants';
-
-import { ScheduleIcon } from '../../../assets/icons';
+import { ScheduleIcon } from 'src/assets';
 
 import * as S from './styled';
 

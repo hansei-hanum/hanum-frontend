@@ -3,9 +3,9 @@ import React from 'react';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
+import { CalendarIcon } from 'src/assets';
 
 import { Content } from '../Content';
-import { CalendarIcon } from '../../../../assets/icons';
 
 import * as S from './styled';
 

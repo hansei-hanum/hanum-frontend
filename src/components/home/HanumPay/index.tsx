@@ -4,8 +4,7 @@ import { Button, Content, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 import { useNavigate } from 'src/hooks';
-
-import { PayIcon } from '../../../../assets/icons';
+import { PayIcon } from 'src/assets';
 
 import * as S from './styled';
 
