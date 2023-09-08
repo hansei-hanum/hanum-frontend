@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { LunchTableScreen, HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
+import { HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
 
 const BottomTab = createBottomTabNavigator();
@@ -38,13 +38,6 @@ export const MainScreen: React.FC = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="급식표"
-        component={LunchTableScreen}
-        options={{
-          tabBarIcon: ({ color }) => <Icons name="local-restaurant" size={size} color={color} />,
         }}
       />
       <BottomTab.Screen
