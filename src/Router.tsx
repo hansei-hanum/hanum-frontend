@@ -72,7 +72,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="WebView" component={WebViewScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="HanumPay" component={HanumPayStatusScreen} />
+          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
           <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
           <Stack.Screen name="HanumPayStatus" component={HanumPayStatusScreen} />
         </Stack.Group>

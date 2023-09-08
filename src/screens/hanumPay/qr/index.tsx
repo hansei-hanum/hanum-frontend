@@ -3,11 +3,13 @@ import { Easing } from 'react-native-reanimated';
 import { BarCodeReadEvent } from 'react-native-camera';
 
 import BottomSheet, { useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
+import { useSetRecoilState } from 'recoil';
 
 import { Button, HanumPayHeader, QRScanner, Text } from 'src/components';
 import { colors } from 'src/styles';
-import { checkNumber } from 'src/utils';
+import { checkNumber, formattedMoney } from 'src/utils';
 import { useNavigate } from 'src/hooks';
+import { hanumPayState } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -15,6 +17,8 @@ export const HanumPayQRScreen: React.FC = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [money, setMoney] = useState<string>('');
+  const [isDisabled, setIsDisabled] = useState(true);
+  const setHanumPay = useSetRecoilState(hanumPayState);
 
   /** 바코드가 감지되면 실행되는 함수 */
   const onSuccess = (e: BarCodeReadEvent) => {
@@ -30,15 +34,22 @@ export const HanumPayQRScreen: React.FC = () => {
   });
 
   const onSubmit = () => {
+    const formattingMoney = formattedMoney(money);
     bottomSheetRef.current?.close();
     setTimeout(() => {
       setIsActive(false);
     }, 70);
+    setHanumPay({
+      money: formattingMoney,
+      status: true,
+      message: '남은 한움페이 잔액은 9,000원이에요.',
+    });
     navigate('HanumPayStatus');
   };
 
   const onMoneyChange = (money: string) => {
     const newMoney = checkNumber(money);
+    if (newMoney.length > 0) setIsDisabled(false);
     setMoney(newMoney);
   };
 
@@ -76,7 +87,9 @@ export const HanumPayQRScreen: React.FC = () => {
               onChangeText={onMoneyChange}
               value={money}
             />
-            <Button onPress={onSubmit}>결제하기</Button>
+            <Button isDisabled={isDisabled} onPress={onSubmit}>
+              결제하기
+            </Button>
           </S.HanumPayQRMoneyContainer>
         </BottomSheet>
       )}
