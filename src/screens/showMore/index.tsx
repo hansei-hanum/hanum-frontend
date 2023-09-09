@@ -38,13 +38,13 @@ export const ShowMoreScreen: React.FC = () => {
         rowGap: 16,
       }}
     >
+      <S.ShowMoreHeaderScreen>
+        <Text size={20} fontFamily="bold">
+          더 보기
+        </Text>
+      </S.ShowMoreHeaderScreen>
       {!userLoading && userData && (
         <>
-          <S.ShowMoreHeaderScreen>
-            <Text size={20} fontFamily="bold">
-              더 보기
-            </Text>
-          </S.ShowMoreHeaderScreen>
           <TouchableOpacity
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}

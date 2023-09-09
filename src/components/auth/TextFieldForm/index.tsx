@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
 
 import { colors } from 'src/styles';
-import { checkNumber, checkString } from 'src/utils';
+import { checkNumber, checkString, isAndroid } from 'src/utils';
 import { useNavigate, usePhone } from 'src/hooks';
 import { authState } from 'src/atoms';
 import { Text } from 'src/components/common';
@@ -89,7 +89,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
             keyboardType={isNameScreen ? 'default' : 'numeric'}
             maxLength={isNameScreen ? 10 : 11}
             color={colors.placeholder}
-            inputContainerStyle={{ paddingTop: 10 }}
+            inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
             inputStyle={{ fontSize: 20 }}
           />
         </S.TextFieldFormInputWrapper>
