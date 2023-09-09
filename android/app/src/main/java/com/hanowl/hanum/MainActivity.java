@@ -1,4 +1,4 @@
-package com.hanum;
+package com.hanowl.hanum;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

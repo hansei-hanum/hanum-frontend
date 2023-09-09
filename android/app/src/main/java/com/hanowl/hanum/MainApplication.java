@@ -1,4 +1,4 @@
-package com.hanum;
+package com.hanowl.hanum;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
