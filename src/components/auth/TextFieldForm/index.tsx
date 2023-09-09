@@ -80,17 +80,19 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
       isDisabled={isDisabled}
     >
       <View style={{ flexDirection: 'column', rowGap: 10 }}>
-        <S.TextFieldFormInput
-          onChangeText={isNameScreen ? onNameChange : onPhoneChange}
-          value={isNameScreen ? name : phone}
-          variant="standard"
-          label={placeHolder}
-          keyboardType={isNameScreen ? 'default' : 'numeric'}
-          maxLength={isNameScreen ? 10 : 11}
-          color={colors.placeholder}
-          inputContainerStyle={{ borderBottomColor: colors.placeholder }}
-          inputStyle={{ fontSize: 20 }}
-        />
+        <S.TextFieldFormInputWrapper>
+          <S.TextFieldFormInput
+            onChangeText={isNameScreen ? onNameChange : onPhoneChange}
+            value={isNameScreen ? name : phone}
+            variant="standard"
+            label={placeHolder}
+            keyboardType={isNameScreen ? 'default' : 'numeric'}
+            maxLength={isNameScreen ? 10 : 11}
+            color={colors.placeholder}
+            inputContainerStyle={{ paddingTop: 10 }}
+            inputStyle={{ fontSize: 20 }}
+          />
+        </S.TextFieldFormInputWrapper>
         {isPhoneScreen && auth.errorMessage !== '' && (
           <Text color={colors.danger} size={15}>
             {auth.errorMessage}
