@@ -14,7 +14,7 @@ import {
   AuthResponse,
 } from 'src/api';
 import { authState } from 'src/atoms';
-import { useNavigate } from 'src/hooks';
+import { useFetchUser, useNavigate } from 'src/hooks';
 
 export const useAuth = (): UseMutationResult<
   APIResponse<AuthResponse>,
@@ -23,6 +23,7 @@ export const useAuth = (): UseMutationResult<
 > => {
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
+  const userProfile = useFetchUser();
 
   return useMutation(
     'useAuth',
@@ -38,6 +39,7 @@ export const useAuth = (): UseMutationResult<
       onSuccess: async ({ data }) => {
         await AsyncStorage.setItem('token', data);
         navigate(auth.isCurrentStudent ? 'StudentVerify' : 'Main');
+        userProfile.refetch();
       },
       onError: (error) => {
         const message = error.response?.data.message;
@@ -57,14 +59,14 @@ export const useAuth = (): UseMutationResult<
           case 'RATE_LIMITED':
             setAuth({
               ...auth,
-              errorMessage:
-                '요청이 너무 빨라요. 잠시 후에 다시 시도해주세요.',
+              errorMessage: '요청이 너무 빨라요. 잠시 후에 다시 시도해주세요.',
             });
             break;
           case 'ACCOUNT_SUSPENDED':
             setAuth({
               ...auth,
-              errorMessage: '이용약관 위반으로 이용제한 조치된 계정이에요.\n자세한 사항은 문의하기를 통해 문의해주세요.',
+              errorMessage:
+                '이용약관 위반으로 이용제한 조치된 계정이에요.\n자세한 사항은 문의하기를 통해 문의해주세요.',
             });
             break;
           case 'USER_NOT_FOUND':
@@ -75,7 +77,11 @@ export const useAuth = (): UseMutationResult<
             break;
           default:
             console.log(error, 'error');
-            setAuth({ ...auth, errorMessage: '알 수 없는 문제가 발생했어요.\n문제가 지속되면 문의하기를 통해 문의해주세요.' });
+            setAuth({
+              ...auth,
+              errorMessage:
+                '알 수 없는 문제가 발생했어요.\n문제가 지속되면 문의하기를 통해 문의해주세요.',
+            });
             break;
         }
       },

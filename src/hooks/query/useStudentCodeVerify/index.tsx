@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, studentCodeVerify, StudentCodeVerifyValue } from 'src/api';
 import { authState } from 'src/atoms';
-import { useNavigate } from 'src/hooks';
+import { useFetchUser, useNavigate } from 'src/hooks';
 
 export const useStudentCodeVerify = (): UseMutationResult<
   APIResponse<null>,
@@ -14,9 +14,11 @@ export const useStudentCodeVerify = (): UseMutationResult<
 > => {
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
+  const userProfile = useFetchUser();
 
   return useMutation('useStudentCodeVerify', studentCodeVerify, {
     onSuccess: () => {
+      userProfile.refetch();
       navigate('Main');
     },
     onError: (error) => {

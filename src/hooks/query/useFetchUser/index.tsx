@@ -1,27 +1,40 @@
 import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, FetchUserResponse, fetchUser } from 'src/api';
+import { userProfileState } from 'src/atoms';
 
 export const useFetchUser = (): UseQueryResult<
   APIResponse<FetchUserResponse>,
   AxiosError<APIErrorResponse>
 > => {
+  const setProfile = useSetRecoilState(userProfileState);
   return useQuery('useFetchUser', fetchUser, {
+    onSuccess: (data) => {
+      if (data) {
+        setProfile({
+          created_at: data.data.created_at,
+          id: data.data.id,
+          name: data.data.name,
+          phone: data.data.phone,
+          profile: data.data.profile,
+          verification: data.data.verification,
+        });
+      }
+    },
     onError: (error) => {
       console.log(error);
     },
-    staleTime: 1000 * 60 * 60 * 24,
+    staleTime: Infinity,
     retry: 0,
   });
 };
 
 export const useGetUser = () => {
-  const { data, isLoading } = useFetchUser();
-  const userData = data && data.data;
-  const userLoading = isLoading;
-  const verifyUser = userData && userData.verification;
+  const useProfile = useRecoilValue(userProfileState);
+  const verifyUser = useProfile.verification;
   const type = verifyUser ? verifyUser.type : null;
   const classroom = verifyUser ? verifyUser.classroom : null;
   const grade = verifyUser ? verifyUser.grade : null;
@@ -54,9 +67,8 @@ export const useGetUser = () => {
   };
 
   return {
-    userData,
-    userLoading,
-    userProfile: userData?.profile,
+    userData: useProfile,
+    userProfile: useProfile.profile,
     verifyUser,
     formatUser,
   };

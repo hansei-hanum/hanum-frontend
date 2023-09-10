@@ -8,8 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
 import { useGetUser, useNavigate } from 'src/hooks';
 import { colors } from 'src/styles';
-
-import { UserLogo } from '../../../assets/images';
+import { UserLogo } from 'src/assets/';
 
 import * as S from './styled';
 
@@ -18,10 +17,14 @@ export const UserInfoScreen: React.FC = () => {
   const navigate = useNavigate();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
-  const { userLoading, userData, userProfile, verifyUser, formatUser } = useGetUser();
+  const { userData, userProfile, verifyUser, formatUser } = useGetUser();
 
   const formattedDate = (date: string | null) => {
     return date && date.split('T')[0];
+  };
+
+  const formattedPhone = (phone: string) => {
+    return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
   };
 
   const onLogout = async () => {
@@ -37,7 +40,7 @@ export const UserInfoScreen: React.FC = () => {
   return (
     <>
       <S.UserInfoWrapper>
-        {!userLoading && userData && (
+        {userData && (
           <S.UserInfoContainer>
             <S.UserInfoProfileContainer>
               <TouchableOpacity activeOpacity={0.2} onPress={() => navigation.goBack()}>
@@ -58,7 +61,7 @@ export const UserInfoScreen: React.FC = () => {
                   }}
                 />
                 <Text size={20} fontFamily="bold">
-                  {userData?.name}
+                  {userData.name}
                 </Text>
                 <Text
                   size={15}
@@ -69,8 +72,8 @@ export const UserInfoScreen: React.FC = () => {
                 </Text>
               </S.UserInfoProfile>
               <InfoBox
-                number={'010-3176-0552'}
-                isVerify={verifyUser ? true : false}
+                number={formattedPhone(userData.phone)}
+                isVerify={verifyUser ? formatUser() : ''}
                 endDate={verifyUser ? formattedDate(verifyUser.valid_until) : '없음'}
               />
             </S.UserInfoProfileContainer>
