@@ -7,11 +7,13 @@ import { colors, fonts } from 'src/styles';
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const AuthWrapper = styled.SafeAreaView`
+  width: 100%;
   flex: 1;
   background-color: ${colors.white};
 `;
 
-export const AuthContainer = styled.View`
+export const AuthContainer = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`
+  width: 100%;
   flex: 1;
   padding: 0 20px;
   padding-bottom: ${iosCheckHeight ? '5px' : isAndroid ? '15px' : '10px'};
@@ -38,7 +40,7 @@ export const AuthInput = styled(TextInput)`
   font-family: ${fonts.medium};
 `;
 
-export const AuthButtonWrapper = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`
+export const AuthButtonWrapper = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;

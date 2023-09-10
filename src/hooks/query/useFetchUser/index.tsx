@@ -3,7 +3,6 @@ import { UseQueryResult, useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, FetchUserResponse, fetchUser } from 'src/api';
-import { formattedDepartment } from 'src/utils';
 
 export const useFetchUser = (): UseQueryResult<
   APIResponse<FetchUserResponse>,
@@ -29,6 +28,19 @@ export const useGetUser = () => {
   const department = verifyUser ? verifyUser.department : null;
   const number = verifyUser ? verifyUser.number : null;
   const graduated_at = verifyUser ? verifyUser.graduated_at : null;
+
+  const formattedDepartment = (department: null | string) => {
+    switch (department) {
+      case 'CLOUD_SECURITY':
+        return '클라우드보안과';
+      case 'NETWORK_SECURITY':
+        return '네트워크보안과';
+      case 'METAVERSE_GAME':
+        return '메타버스게임과';
+      case 'GAME':
+        return '게임과';
+    }
+  };
 
   const formatUser = () => {
     switch (type) {

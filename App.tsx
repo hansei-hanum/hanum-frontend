@@ -14,7 +14,7 @@ import { Notifier, Easing } from 'react-native-notifier';
 
 const client = new QueryClient();
 
-LogBox.ignoreAllLogs(true);
+LogBox.ignoreAllLogs();
 
 function App() {
 

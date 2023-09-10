@@ -1,7 +1,7 @@
 import styled from '@emotion/native';
 
-export const HanumPayScreenContainer = styled.SafeAreaView`
-  flex: 1;
+export const HanumPayHeader = styled.View`
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 `;

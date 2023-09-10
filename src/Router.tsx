@@ -15,6 +15,8 @@ import {
   CalendarScreen,
   UserInfoScreen,
   WebViewScreen,
+  HanumPayQRScreen,
+  HanumPayStatusScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -68,10 +70,14 @@ export const Router: React.FC = () => {
           <Stack.Screen name="StudentVerify" component={StudentVerifyScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
           <Stack.Screen name="Calendar" component={CalendarScreen} />
           <Stack.Screen name="UserInfo" component={UserInfoScreen} />
           <Stack.Screen name="WebView" component={WebViewScreen} />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+          <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
+          <Stack.Screen name="HanumPayStatus" component={HanumPayStatusScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

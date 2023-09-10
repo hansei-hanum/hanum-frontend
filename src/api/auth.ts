@@ -73,6 +73,7 @@ export const fetchUser = async (): Promise<FetchUserResponse | null> => {
   if (!token) return null;
   setAccessToken(token);
   const { data } = await instance.get(`${API_SUFFIX.USERS}@me/`);
+  console.log(data);
   return data;
 };
 

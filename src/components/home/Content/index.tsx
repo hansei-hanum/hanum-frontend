@@ -12,7 +12,7 @@ import { isIos } from 'src/utils';
 import * as S from './styled';
 
 export interface ContentProps {
-  icon: string | ImageSourcePropType;
+  icon: ImageSourcePropType;
   name: string;
   children?: React.ReactNode;
   navigateUrl?: string;
@@ -36,13 +36,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
         <S.ContentTopSectionWrapper style={navigateUrl || onPress ? animatedStyle : null}>
           <S.ContentTopSection>
             <S.ContentIconContainer>
-              {typeof icon == 'string' ? (
-                <Text size={30} fontFamily="tossIcon">
-                  {icon}
-                </Text>
-              ) : (
-                <WithLocalSvg width={32} height={32} asset={icon} />
-              )}
+              <WithLocalSvg width={32} height={32} asset={icon} />
               <Text size={isIos ? 15 : 14} fontFamily="bold">
                 {name}
               </Text>

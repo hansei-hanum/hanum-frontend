@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
 
 import { colors } from 'src/styles';
-import { checkNumber, checkString } from 'src/utils';
+import { checkNumber, checkString, isAndroid } from 'src/utils';
 import { useNavigate, usePhone } from 'src/hooks';
 import { authState } from 'src/atoms';
 import { Text } from 'src/components/common';
@@ -79,18 +79,20 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
       onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
       isDisabled={isDisabled}
     >
-      <View style={{ flexDirection: 'column', rowGap: 6, width: '100%' }}>
-        <S.TextFieldFormInput
-          onChangeText={isNameScreen ? onNameChange : onPhoneChange}
-          value={isNameScreen ? name : phone}
-          variant="standard"
-          label={placeHolder}
-          keyboardType={isNameScreen ? 'default' : 'numeric'}
-          maxLength={isNameScreen ? 10 : 11}
-          color={colors.placeholder}
-          inputContainerStyle={{ borderBottomColor: colors.placeholder }}
-          inputStyle={{ fontSize: 20 }}
-        />
+      <View style={{ flexDirection: 'column', rowGap: 10 }}>
+        <S.TextFieldFormInputWrapper>
+          <S.TextFieldFormInput
+            onChangeText={isNameScreen ? onNameChange : onPhoneChange}
+            value={isNameScreen ? name : phone}
+            variant="standard"
+            label={placeHolder}
+            keyboardType={isNameScreen ? 'default' : 'numeric'}
+            maxLength={isNameScreen ? 10 : 11}
+            color={colors.placeholder}
+            inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
+            inputStyle={{ fontSize: 20 }}
+          />
+        </S.TextFieldFormInputWrapper>
         {isPhoneScreen && auth.errorMessage !== '' && (
           <Text color={colors.danger} size={15}>
             {auth.errorMessage}
