@@ -9,5 +9,4 @@ export const StudentVerifyInput = styled(TextInput)`
   border-radius: 12px;
   font-size: 20px;
   background-color: #f4f4f5;
-  margin-top: 20px;
 `;

@@ -26,16 +26,16 @@ export const usePhone = (): UseMutationResult<
         setAuth({
           ...auth,
           errorMessage:
-            '동일 IP로 인증을 수차례 요청하여 해당 네트워크에서의 메시지 발송 요청이 일시적으로 차단되었습니다.',
+            '요청이 너무 빨라요. 잠시 후에 다시 시도해주세요.',
         });
       } else if (message === 'EXTERNAL_API_EXCEPTION') {
         setAuth({
           ...auth,
-          errorMessage: '메시지 발송 서버가 응답하지 않아 메시지를 발송할 수 없습니다.',
+          errorMessage: '내부 오류로 인해 인증번호를 보낼 수 없어요.\n문제가 지속되면 문의하기를 통해 문의해주세요.',
         });
       } else {
         console.log(error, 'error');
-        setAuth({ ...auth, errorMessage: '알 수 없는 오류가 발생했습니다.' });
+        setAuth({ ...auth, errorMessage: '알 수 없는 문제가 발생했어요.\n문제가 지속되면 문의하기를 통해 문의해주세요.' });
       }
     },
     retry: 0,

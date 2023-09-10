@@ -45,37 +45,37 @@ export const useAuth = (): UseMutationResult<
           case 'ALREADY_REGISTERED':
             setAuth({
               ...auth,
-              errorMessage: '이미 가입된 전화번호입니다. 로그인을 진행해주세요.',
+              errorMessage: '이미 가입되어 있어요. 로그인을 해주세요.',
             });
             break;
           case 'INVALID_VERIFICATION_CODE':
             setAuth({
               ...auth,
-              errorMessage: '인증 번호가 틀립니다.',
+              errorMessage: '인증번호가 잘못되었어요',
             });
             break;
           case 'RATE_LIMITED':
             setAuth({
               ...auth,
               errorMessage:
-                '동일 IP로 회원가입을 수차례 요청하여 해당 네트워크에서의 요청이 일시적으로 차단되었습니다.',
+                '요청이 너무 빨라요. 잠시 후에 다시 시도해주세요.',
             });
             break;
           case 'ACCOUNT_SUSPENDED':
             setAuth({
               ...auth,
-              errorMessage: '이용약관 위반으로 한움 서비스 이용이 일시/영구적으로 제한되었습니다.',
+              errorMessage: '이용약관 위반으로 이용제한 조치된 계정이에요.\n자세한 사항은 문의하기를 통해 문의해주세요.',
             });
             break;
           case 'USER_NOT_FOUND':
             setAuth({
               ...auth,
-              errorMessage: '가입되지 않은 전화번호입니다.',
+              errorMessage: '가입 이력이 없어요. 회원가입을 진행해주세요.',
             });
             break;
           default:
             console.log(error, 'error');
-            setAuth({ ...auth, errorMessage: '알 수 없는 오류가 발생했습니다.' });
+            setAuth({ ...auth, errorMessage: '알 수 없는 문제가 발생했어요.\n문제가 지속되면 문의하기를 통해 문의해주세요.' });
             break;
         }
       },

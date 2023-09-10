@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const API_SUFFIX = {
-  BASEURL: 'http://52.78.121.2:8000',
+  BASEURL: 'https://account.hanum.us',
   REGISTER: '/auth/register/',
   LOGIN: '/auth/login/',
   PHONE: '/auth/phone/',
