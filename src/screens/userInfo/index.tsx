@@ -65,7 +65,7 @@ export const UserInfoScreen: React.FC = () => {
                   fontFamily="medium"
                   color={verifyUser ? colors.black : colors.danger}
                 >
-                  {verifyUser ? `${formatUser()}` : '정회원 인증이 안되어 있어요.'}
+                  {verifyUser ? `${formatUser()}` : '정회원 인증 안 됨'}
                 </Text>
               </S.UserInfoProfile>
               <InfoBox
