@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import { useRecoilState } from 'recoil';
@@ -11,8 +11,11 @@ import { useNavigate } from 'src/hooks';
 import { authState } from 'src/atoms';
 
 import { Logo } from '../../../../assets/images';
+import messaging from '@react-native-firebase/messaging';
 
 import * as S from './styled';
+import { PermissionsAndroid } from 'react-native';
+import { Notifier, Easing } from 'react-native-notifier';
 
 export const AuthMainScreen: React.FC = () => {
   const navigate = useNavigate();
