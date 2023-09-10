@@ -10,9 +10,7 @@ export const WeekDay: React.FC = () => {
     <S.ScheduleScreenDayContainer>
       {DATE_LIST.map((date) => (
         <S.ScheduleScreenDay key={date}>
-          <Text size={16} fontFamily="bold">
-            {date}
-          </Text>
+          <Text size={16}>{date}</Text>
         </S.ScheduleScreenDay>
       ))}
     </S.ScheduleScreenDayContainer>

@@ -95,16 +95,7 @@ export const UserInfoScreen: React.FC = () => {
             title="회원 탈퇴하기"
             text={`탈퇴를 진행하려면 메인 페이지에서 지원을 요청해주세요`}
             modalVisible={isSecessionClick}
-            button={
-              <S.UserInfoModalButtonContainer>
-                <Button onPress={() => setIsSecessionClick(false)} isSecondary isModalBtn>
-                  취소
-                </Button>
-                <Button onPress={onSubmit} isModalBtn isDanger>
-                  확인
-                </Button>
-              </S.UserInfoModalButtonContainer>
-            }
+            button={<Button onPress={onSubmit}>확인</Button>}
           />
         </>
       )}
