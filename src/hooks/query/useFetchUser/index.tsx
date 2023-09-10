@@ -39,7 +39,6 @@ export const useGetUser = () => {
   const classroom = verifyUser ? verifyUser.classroom : null;
   const grade = verifyUser ? verifyUser.grade : null;
   const department = verifyUser ? verifyUser.department : null;
-  const number = verifyUser ? verifyUser.number : null;
   const graduated_at = verifyUser ? verifyUser.graduated_at : null;
 
   const formattedDepartment = (department: null | string) => {
@@ -60,7 +59,7 @@ export const useGetUser = () => {
       case 'GRADUATED':
         return `${formattedDepartment(department)} ${graduated_at}년도 졸업생`;
       case 'STUDENT':
-        return `${formattedDepartment(department)} ${grade}학년 ${classroom}반 ${number}번 재학생`;
+        return `${formattedDepartment(department)} ${grade}학년 ${classroom}반 재학생`;
       case 'TEACHER':
         return `한세사이버보안고등학교 교직원`;
     }

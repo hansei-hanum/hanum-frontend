@@ -6,6 +6,7 @@ export const API_SUFFIX = {
   LOGIN: '/auth/login/',
   PHONE: '/auth/phone/',
   USERS: '/users/',
+  KEYS: '/keys/',
   STUDENT_VERIFY: '/users/@me/verifications',
 };
 
