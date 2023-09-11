@@ -6,8 +6,12 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
+import { useRecoilValue } from 'recoil';
+
 import { Text, Auth, DummyContainer, Modal, Button } from 'src/components';
 import { useStudentCodeVerify } from 'src/hooks';
+import { studentVerifyState } from 'src/atoms';
+import { formattedDepartment } from 'src/utils';
 
 import * as S from './styled';
 
@@ -23,6 +27,7 @@ export const StudentVerifyScreen: React.FC = () => {
     setValue,
   });
   const { mutate } = useStudentCodeVerify();
+  const studentVerify = useRecoilValue(studentVerifyState);
 
   const onChangeText = (text: string) => {
     text.length === 6 ? setIsDisabled(false) : setIsDisabled(true);
@@ -35,7 +40,6 @@ export const StudentVerifyScreen: React.FC = () => {
   };
 
   const onSubmit = () => {
-    console.log(value);
     mutate({ code: value, isCheck: false });
     setModalVisible(false);
   };
@@ -73,10 +77,12 @@ export const StudentVerifyScreen: React.FC = () => {
         <>
           <DummyContainer />
           <Modal
-            title="정회원 가입 안내"
+            title="본인 확인"
             text={
-              `한움의 일부 서비스는 인증된 재학생, 졸업생, 교직원만 사용할 수 있어요.\n` +
-              `인증을 위해서는 배포된 개인용 인증 코드가 필요해요. 인증 코드를 가지고 계신가요?`
+              `${formattedDepartment(studentVerify.department)} ${studentVerify.grade}학년 ${
+                studentVerify.classroom
+              }반 ${studentVerify.number}번 학생이 맞나요? \n` +
+              `본인과 정보가 다를 경우 반드시 문의를 통해 정정해주세요. 그렇지 않을 경우 나중에 계정이 이용 제한될 수도 있어요.`
             }
             modalVisible={modalVisible}
             button={

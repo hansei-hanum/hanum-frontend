@@ -5,6 +5,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, FetchUserResponse, fetchUser } from 'src/api';
 import { userProfileState } from 'src/atoms';
+import { formattedDepartment } from 'src/utils';
 
 export const useFetchUser = (): UseQueryResult<
   APIResponse<FetchUserResponse>,
@@ -40,19 +41,6 @@ export const useGetUser = () => {
   const grade = verifyUser ? verifyUser.grade : null;
   const department = verifyUser ? verifyUser.department : null;
   const graduated_at = verifyUser ? verifyUser.graduated_at : null;
-
-  const formattedDepartment = (department: null | string) => {
-    switch (department) {
-      case 'CLOUD_SECURITY':
-        return '클라우드보안과';
-      case 'NETWORK_SECURITY':
-        return '네트워크보안과';
-      case 'METAVERSE_GAME':
-        return '메타버스게임과';
-      case 'GAME':
-        return '게임과';
-    }
-  };
 
   const formatUser = () => {
     switch (type) {

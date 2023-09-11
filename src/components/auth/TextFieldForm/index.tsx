@@ -79,7 +79,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
       onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
       isDisabled={isDisabled}
     >
-      <View style={{ flexDirection: 'column', rowGap: 10 }}>
+      <View style={{ flexDirection: 'column', rowGap: isAndroid ? 10 : 0 }}>
         <S.TextFieldFormInputWrapper>
           <S.TextFieldFormInput
             onChangeText={isNameScreen ? onNameChange : onPhoneChange}

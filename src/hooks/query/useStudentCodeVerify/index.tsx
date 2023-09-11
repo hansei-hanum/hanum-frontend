@@ -1,10 +1,10 @@
 import { UseMutationResult, useMutation } from 'react-query';
 
 import { AxiosError } from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, studentCodeVerify, StudentCodeVerifyValue } from 'src/api';
-import { authState } from 'src/atoms';
+import { authState, studentVerifyState } from 'src/atoms';
 import { useFetchUser, useNavigate } from 'src/hooks';
 
 export const useStudentCodeVerify = (): UseMutationResult<
@@ -13,16 +13,24 @@ export const useStudentCodeVerify = (): UseMutationResult<
   StudentCodeVerifyValue
 > => {
   const [auth, setAuth] = useRecoilState(authState);
+  const setStudentVerify = useSetRecoilState(studentVerifyState);
   const navigate = useNavigate();
   const userProfile = useFetchUser();
 
   return useMutation('useStudentCodeVerify', studentCodeVerify, {
-    onSuccess: () => {
+    onSuccess: ({ data }, variables) => {
       userProfile.refetch();
-      navigate('Main');
+      variables.isCheck
+        ? setStudentVerify({
+            department: data.department,
+            grade: data.grade,
+            classroom: data.classroom,
+            number: data.number,
+            isUsed: data.isUsed,
+          })
+        : navigate('Main');
     },
     onError: (error) => {
-      console.log(error.response, 'error');
       const message = error.response?.data.message;
       if (message === 'UNAUTHORIZED') {
         setAuth({

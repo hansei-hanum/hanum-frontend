@@ -29,6 +29,7 @@ export interface VerificationUser {
   number: null | number;
   valid_until: null | string;
   graduated_at: null | string;
+  isUsed?: boolean;
 }
 
 export interface FetchUserResponse {
@@ -81,14 +82,15 @@ export const studentCodeVerify = async ({ code, isCheck }: StudentCodeVerifyValu
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
+  console.log(token);
+  console.log(`${API_SUFFIX.KEYS}${code}/`);
   if (isCheck) {
+    const { data } = await instance.get(`${API_SUFFIX.KEYS}${code}/`);
+    return data;
+  } else {
     const { data } = await instance.post(API_SUFFIX.STUDENT_VERIFY, {
       code,
     });
-    return data;
-  } else {
-    const { data } = await instance.post(`${API_SUFFIX.KEYS}${code}/`);
-    console.log(data);
     return data;
   }
 };
