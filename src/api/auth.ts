@@ -82,8 +82,6 @@ export const studentCodeVerify = async ({ code, isCheck }: StudentCodeVerifyValu
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
-  console.log(token);
-  console.log(`${API_SUFFIX.KEYS}${code}/`);
   if (isCheck) {
     const { data } = await instance.get(`${API_SUFFIX.KEYS}${code}/`);
     return data;

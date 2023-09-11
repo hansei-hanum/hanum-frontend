@@ -31,7 +31,6 @@ export const useAuth = (): UseMutationResult<
       if (auth.name === '') {
         return login({ ...(data as LoginValues) });
       } else {
-        console.log(auth);
         return register({ ...(data as RegisterValues) });
       }
     },

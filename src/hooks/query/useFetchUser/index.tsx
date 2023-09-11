@@ -53,10 +53,22 @@ export const useGetUser = () => {
     }
   };
 
+  const userType = () => {
+    switch (type) {
+      case 'GRADUATED':
+        return '졸업생';
+      case 'STUDENT':
+        return '재학생';
+      case 'TEACHER':
+        return '교직원';
+    }
+  };
+
   return {
     userData: useProfile,
     userProfile: useProfile.profile,
     verifyUser,
     formatUser,
+    userType,
   };
 };

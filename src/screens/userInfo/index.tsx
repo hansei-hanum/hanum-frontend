@@ -17,7 +17,7 @@ export const UserInfoScreen: React.FC = () => {
   const navigate = useNavigate();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
-  const { userData, userProfile, verifyUser, formatUser } = useGetUser();
+  const { userData, userProfile, verifyUser, formatUser, userType } = useGetUser();
 
   const formattedDate = (date: string | null) => {
     return date && date.split('T')[0];
@@ -73,7 +73,7 @@ export const UserInfoScreen: React.FC = () => {
               </S.UserInfoProfile>
               <InfoBox
                 number={formattedPhone(userData.phone)}
-                isVerify={verifyUser ? formatUser() : ''}
+                isVerify={verifyUser ? userType() : ''}
                 endDate={verifyUser ? formattedDate(verifyUser.valid_until) : '없음'}
               />
             </S.UserInfoProfileContainer>
