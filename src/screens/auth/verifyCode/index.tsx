@@ -55,7 +55,7 @@ export const VerifyCodeScreen: React.FC = () => {
           caretHidden={true}
           keyboardType="numeric"
           textContentType="oneTimeCode"
-          rootStyle={{ width: '100%' }}
+          rootStyle={{ width: '100%', marginBottom: 10 }}
           renderCell={({ index, symbol, isFocused }) => (
             <S.VerifyCodeScreenInput key={index} onLayout={getCellOnLayoutHandler(index)}>
               <Text size={20} fontFamily="medium">

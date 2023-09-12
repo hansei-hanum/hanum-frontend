@@ -92,8 +92,8 @@ export const UserInfoScreen: React.FC = () => {
         <>
           <DummyContainer />
           <Modal
-            title="회원 탈퇴하기"
-            text={`탈퇴를 진행하려면 메인 페이지에서 지원을 요청해주세요`}
+            title="탈퇴 절차 안내"
+            text={`이 계정은 탈퇴하기 전에 확인할 사항이 있어요.\n이 계정을 탈퇴하기 위해선 메인 페이지 > 문의하기를 통해 문의해주세요.`}
             modalVisible={isSecessionClick}
             button={<Button onPress={onSubmit}>확인</Button>}
           />

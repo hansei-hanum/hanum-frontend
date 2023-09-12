@@ -25,7 +25,7 @@ export const AuthMainScreen: React.FC = () => {
     setModalVisible(false);
   };
 
-  const fontSize = 16;
+  const fontSize = 15;
 
   const isFocused = useIsFocused();
 
@@ -43,8 +43,8 @@ export const AuthMainScreen: React.FC = () => {
       <S.AuthMainScreenWrapper>
         <S.AuthMainScreenContainer>
           <S.AuthMainScreenLogoContainer>
-            <WithLocalSvg width={180} height={50} asset={Logo} />
-            <Text size={fontSize} fontFamily="bold">
+            <WithLocalSvg width={198} height={55} asset={Logo} />
+            <Text size={17} fontFamily="bold">
               한세인 도우미, 한움
             </Text>
           </S.AuthMainScreenLogoContainer>
