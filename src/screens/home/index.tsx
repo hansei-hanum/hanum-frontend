@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Alert, Linking, TouchableOpacity } from 'react-native';
 
 import { AlertBox, HanumPay, Timer, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight } from 'src/utils';
-import { useNavigate } from 'src/hooks';
 import { PartyIcon } from 'src/assets';
 
 import { Logo } from '../../../assets/images';
@@ -15,8 +13,6 @@ import { Logo } from '../../../assets/images';
 import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <S.HomeScreenWrapper>
       <S.HomeScreenContainer
@@ -46,7 +42,7 @@ export const HomeScreen: React.FC = () => {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => {
-              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch((err) =>
+              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
                 Alert.alert(
                   '문의하기',
                   '카카오톡이 설치되어 있지 않아요. 문의하기를 이용하려면 카카오톡을 설치해주세요.',

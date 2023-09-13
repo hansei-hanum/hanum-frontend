@@ -82,9 +82,11 @@ export const HanumPayQRScreen: React.FC = () => {
             </Text.Column>
             <S.TextFieldFormInput
               placeholderTextColor={colors.placeholder}
-              placeholder="결제할 금액을 입력해주세요."
+              variant="standard"
+              label="결제 금액"
               keyboardType="numeric"
               onChangeText={onMoneyChange}
+              color={colors.placeholder}
               value={money}
             />
             <Button isDisabled={isDisabled} onPress={onSubmit}>

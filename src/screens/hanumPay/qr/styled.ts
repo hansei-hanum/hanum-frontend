@@ -1,8 +1,10 @@
-import { TextInput } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 
 import styled from '@emotion/native';
+import { TextInput } from '@react-native-material/core';
 
 import { colors, fonts } from 'src/styles';
+import { isIos } from 'src/utils';
 
 export const HanumPayQRWrapper = styled.SafeAreaView`
   flex: 1;
@@ -13,7 +15,7 @@ export const HanumPayQRHeaderWrapper = styled.View`
   padding: 16px;
 `;
 
-export const HanumPayQRMoneyContainer = styled.View`
+export const HanumPayQRMoneyContainer = styled.KeyboardAvoidingView`
   flex: 1;
   flex-direction: column;
   align-items: center;
@@ -27,6 +29,4 @@ export const TextFieldFormInput = styled(TextInput)`
   width: 100%;
   font-size: 18px;
   font-family: ${fonts.medium};
-  border-bottom-width: 1px;
-  border-bottom-color: ${colors.placeholder};
 `;

@@ -14,7 +14,7 @@ export const HanumPayQRHeaderWrapper = styled.View`
 
 export const HanumPayQRBoxContainer = styled.View`
   position: relative;
-  bottom: ${isIos ? '10px' : '60px'};
+  bottom: ${isIos ? '10px' : '36px'};
   row-gap: 10px;
 `;
 
