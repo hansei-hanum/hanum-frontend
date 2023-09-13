@@ -35,6 +35,7 @@ function App() {
       console.log('FCM Token:', await messaging().getToken());
     }
   }
+  
 
   const messageListener = async () => {
     await messaging().onMessage(async (remoteMessage) => {
@@ -51,6 +52,9 @@ function App() {
   useEffect(() => {
     requestUserPermission();
     messageListener();
+    messaging()
+      .subscribeToTopic("announcement")
+      .then(() => console.log("전체 공지사항 채널 구독 성공"));
   }, []);
 
   return (
