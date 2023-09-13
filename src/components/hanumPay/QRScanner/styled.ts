@@ -22,6 +22,8 @@ export const HanumPayQrBox = styled.View`
   flex-direction: column;
   justify-content: space-between;
   row-gap: 90px;
+  width: 200px;
+  height: 200px;
 `;
 
 export const HanumPayQrBoxContainer = styled.View`

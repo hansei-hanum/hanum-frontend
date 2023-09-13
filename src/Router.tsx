@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar, View, Image as RNImage } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
-const SplashImage = require('../assets/images/splash.png');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   AuthMainScreen,
@@ -22,7 +22,8 @@ import {
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
-import { Image } from 'react-native-svg';
+
+const SplashImage = require('../assets/images/splash.png');
 
 const Stack = createStackNavigator();
 
@@ -45,15 +46,28 @@ export const Router: React.FC = () => {
       }
     }
 
+    if (!data) {
+      AsyncStorage.removeItem('token');
+    }
+
     prepare();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
   if (!isReady || isLoading) {
-    return <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#FFFFFF"}}>
-      <RNImage source={SplashImage} style={{resizeMode: "center"}}/>
-    </View>
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#FFFFFF',
+        }}
+      >
+        <RNImage source={SplashImage} style={{ resizeMode: 'center' }} />
+      </View>
+    );
   }
 
   return (
@@ -68,7 +82,7 @@ export const Router: React.FC = () => {
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="AuthMain" component={AuthMainScreen} />
         </Stack.Group>
-        <Stack.Group>
+        <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Phone" component={PhoneScreen} />
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />

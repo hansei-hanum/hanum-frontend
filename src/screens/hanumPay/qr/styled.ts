@@ -1,10 +1,7 @@
-import { KeyboardAvoidingView, View } from 'react-native';
-
 import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
 
 import { colors, fonts } from 'src/styles';
-import { isIos } from 'src/utils';
 
 export const HanumPayQRWrapper = styled.SafeAreaView`
   flex: 1;
