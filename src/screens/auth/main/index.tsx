@@ -31,9 +31,9 @@ export const AuthMainScreen: React.FC = () => {
 
   const isFocused = useIsFocused();
 
-  if (userData.name === '') {
-    AsyncStorage.removeItem('token');
-  }
+  // if (userData.name === '') {
+  //   AsyncStorage.removeItem('token');
+  // }
 
   useEffect(() => {
     setAuth({

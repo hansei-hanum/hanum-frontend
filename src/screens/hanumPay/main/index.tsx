@@ -3,12 +3,14 @@ import React from 'react';
 import { Button, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { HanumPayHeader } from 'src/components/hanumPay';
-import { useNavigate } from 'src/hooks';
+import { useGetPayDetail, useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
   const navigate = useNavigate();
+  const { data } = useGetPayDetail();
+  console.log(data, 'data');
   return (
     <S.HanumPayWrapper>
       <S.HanumPayContainer>

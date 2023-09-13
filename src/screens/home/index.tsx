@@ -1,11 +1,15 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Alert, Linking, TouchableOpacity } from 'react-native';
+import { useEffect } from 'react';
+import { Notifier } from 'react-native-notifier';
+import { Alert, Linking, PermissionsAndroid, TouchableOpacity } from 'react-native';
+
+import messaging from '@react-native-firebase/messaging';
 
 import { AlertBox, HanumPay, Timer, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
-import { iosCheckHeight } from 'src/utils';
+import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { PartyIcon } from 'src/assets';
 
 import { Logo } from '../../../assets/images';
@@ -13,6 +17,45 @@ import { Logo } from '../../../assets/images';
 import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
+  async function requestUserPermission() {
+    let isGranted = false;
+
+    if (isIos) {
+      const authStatus = await messaging().requestPermission();
+      isGranted =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    } else if (isAndroid) {
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+      const authStatus = await messaging().hasPermission();
+      isGranted = authStatus === messaging.AuthorizationStatus.AUTHORIZED;
+    }
+
+    if (isGranted) {
+      console.log('User has notification permissions granted.');
+      console.log('FCM Token:', await messaging().getToken());
+    }
+  }
+
+  const messageListener = async () => {
+    await messaging().onMessage(async (remoteMessage) => {
+      await Notifier.showNotification({
+        title: remoteMessage.notification?.title || '알림',
+        description: remoteMessage.notification?.body,
+        duration: 3000,
+        showAnimationDuration: 500,
+        hideOnPress: false,
+      });
+    });
+  };
+
+  useEffect(() => {
+    requestUserPermission();
+    messageListener();
+    messaging()
+      .subscribeToTopic('announcement')
+      .then(() => console.log('전체 공지사항 채널 구독 성공'));
+  }, []);
   return (
     <S.HomeScreenWrapper>
       <S.HomeScreenContainer
