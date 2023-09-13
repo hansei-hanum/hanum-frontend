@@ -11,6 +11,7 @@ export const ScheduleScreenDayContainer = styled.View`
   border-bottom-color: ${colors.lightGray};
   margin-top: 50px;
   padding-left: 20px;
+  padding-bottom: 10px;
 `;
 
 export const ScheduleScreenDay = styled.View`
