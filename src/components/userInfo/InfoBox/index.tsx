@@ -10,7 +10,7 @@ import * as S from './styled';
 
 export interface InfoBoxProps {
   number: string;
-  isVerify: boolean;
+  isVerify?: string;
   endDate: string | null;
 }
 
@@ -31,21 +31,22 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ number, isVerify, endDate }) =
       fields: [
         {
           title: '분류',
-          value: isVerify ? (
-            '재학생'
-          ) : (
-            <TouchableOpacity activeOpacity={0.4} onPress={() => navigate('StudentVerify')}>
-              <Text size={15} fontFamily="medium" color={colors.primary}>
-                인증 필요
-                <Entypo
-                  name="chevron-thin-right"
-                  size={16}
-                  color={colors.primary}
-                  style={{ marginBottom: 10 }}
-                />
-              </Text>
-            </TouchableOpacity>
-          ),
+          value:
+            isVerify !== '' ? (
+              isVerify
+            ) : (
+              <TouchableOpacity activeOpacity={0.4} onPress={() => navigate('StudentVerify')}>
+                <Text size={15} fontFamily="medium" color={colors.primary}>
+                  인증 필요
+                  <Entypo
+                    name="chevron-thin-right"
+                    size={16}
+                    color={colors.primary}
+                    style={{ marginBottom: 10 }}
+                  />
+                </Text>
+              </TouchableOpacity>
+            ),
         },
         {
           title: '유효기간',

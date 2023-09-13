@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, View, Image as RNImage } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+const SplashImage = require('../assets/images/splash.png');
 
 import {
   AuthMainScreen,
@@ -20,6 +22,7 @@ import {
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
+import { Image } from 'react-native-svg';
 
 const Stack = createStackNavigator();
 
@@ -48,7 +51,9 @@ export const Router: React.FC = () => {
   const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
   if (!isReady || isLoading) {
-    return null;
+    return <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#FFFFFF"}}>
+      <RNImage source={SplashImage} style={{resizeMode: "center"}}/>
+    </View>
   }
 
   return (

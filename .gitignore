@@ -71,3 +71,5 @@ yarn.lock
 
 .env
 package-lock.json
+ios/Podfile.lock
+*.lock

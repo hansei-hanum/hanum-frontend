@@ -16,8 +16,8 @@ export const AuthContainer = styled(Platform.OS == 'ios' ? KeyboardAvoidingView 
   width: 100%;
   flex: 1;
   padding: 0 20px;
-  padding-bottom: ${iosCheckHeight ? '5px' : isAndroid ? '15px' : '10px'};
-  padding-top: ${iosCheckHeight ? '10px' : isAndroid ? '25px' : '20px'};
+  margin-bottom: ${iosCheckHeight ? '5px' : isAndroid ? '15px' : '14px'};
+  margin-top: ${iosCheckHeight ? '10px' : isAndroid ? '25px' : '20px'};
   justify-content: space-between;
 `;
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Platform, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import { useRecoilState } from 'recoil';
@@ -11,11 +11,8 @@ import { useNavigate } from 'src/hooks';
 import { authState } from 'src/atoms';
 
 import { Logo } from '../../../../assets/images';
-import messaging from '@react-native-firebase/messaging';
 
 import * as S from './styled';
-import { PermissionsAndroid } from 'react-native';
-import { Notifier, Easing } from 'react-native-notifier';
 
 export const AuthMainScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -28,7 +25,7 @@ export const AuthMainScreen: React.FC = () => {
     setModalVisible(false);
   };
 
-  const fontSize = 16;
+  const fontSize = 15;
 
   const isFocused = useIsFocused();
 
@@ -46,8 +43,8 @@ export const AuthMainScreen: React.FC = () => {
       <S.AuthMainScreenWrapper>
         <S.AuthMainScreenContainer>
           <S.AuthMainScreenLogoContainer>
-            <WithLocalSvg width={180} height={50} asset={Logo} />
-            <Text size={fontSize} fontFamily="bold">
+            <WithLocalSvg width={198} height={55} asset={Logo} />
+            <Text size={17} fontFamily="bold">
               한세인 도우미, 한움
             </Text>
           </S.AuthMainScreenLogoContainer>

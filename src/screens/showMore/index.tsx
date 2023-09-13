@@ -1,30 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { useIsFocused } from '@react-navigation/native';
-
 import { Text, Section } from 'src/components';
 import { colors } from 'src/styles';
-import { useFetchUser, useGetUser, useNavigate, usePressingAnimation } from 'src/hooks';
+import { useGetUser, useNavigate, usePressingAnimation } from 'src/hooks';
 import { checkHeight, iosCheckHeight } from 'src/utils';
-
-import { UserLogo } from '../../../assets/images';
+import { UserLogo } from 'src/assets';
 
 import * as S from './styled';
 
 export const ShowMoreScreen: React.FC = () => {
   const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
-  const user = useFetchUser();
 
-  const { userLoading, userData, userProfile, verifyUser, formatUser } = useGetUser();
-
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    user.refetch();
-  }, [isFocused]);
+  const { userData, userProfile, verifyUser, formatUser } = useGetUser();
 
   return (
     <S.ShowMoreScreenContainer
@@ -43,7 +33,7 @@ export const ShowMoreScreen: React.FC = () => {
           더 보기
         </Text>
       </S.ShowMoreHeaderScreen>
-      {!userLoading && userData && (
+      {userData && (
         <>
           <TouchableOpacity
             onPressIn={handlePressIn}

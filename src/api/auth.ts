@@ -29,22 +29,25 @@ export interface VerificationUser {
   number: null | number;
   valid_until: null | string;
   graduated_at: null | string;
+  isUsed?: boolean;
 }
 
 export interface FetchUserResponse {
-  id: string;
+  id: number;
   name: string;
-  nickname: string;
+  phone: string;
   created_at: string;
-  profile: string;
-  verification: VerificationUser;
+  profile: string | null;
+  verification: VerificationUser | null;
 }
 
 export interface StudentCodeVerifyValue {
   code: string;
+  isCheck: boolean;
 }
 
 export const phone = async ({ phone }: PhoneValue) => {
+  console.log(API_SUFFIX.PHONE);
   const { data } = await instance.post(API_SUFFIX.PHONE, {
     phone,
   });
@@ -68,21 +71,25 @@ export const login = async ({ phone, code }: LoginValues) => {
   return data;
 };
 
-export const fetchUser = async (): Promise<FetchUserResponse | null> => {
+export const fetchUser = async () => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
   const { data } = await instance.get(`${API_SUFFIX.USERS}@me/`);
-  console.log(data);
   return data;
 };
 
-export const studentCodeVerify = async ({ code }: StudentCodeVerifyValue) => {
+export const studentCodeVerify = async ({ code, isCheck }: StudentCodeVerifyValue) => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
-  const { data } = await instance.post(API_SUFFIX.STUDENT_VERIFY, {
-    code,
-  });
-  return data;
+  if (isCheck) {
+    const { data } = await instance.get(`${API_SUFFIX.KEYS}${code}/`);
+    return data;
+  } else {
+    const { data } = await instance.post(API_SUFFIX.STUDENT_VERIFY, {
+      code,
+    });
+    return data;
+  }
 };

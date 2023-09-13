@@ -14,7 +14,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --fix --cache",
-    "format": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write"
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
+    "postinstall": "npx react-native setup-ios-permissions && npx pod-install ios"
   },
   "dependencies": {
     "@emotion/native": "^11.11.0",
@@ -103,6 +104,9 @@
       "react-native-permissions": "^3.9.0"
     }
   },
+  "reactNativePermissionsIOS": [
+    "Camera"
+  ],
   "engines": {
     "node": ">=16"
   }

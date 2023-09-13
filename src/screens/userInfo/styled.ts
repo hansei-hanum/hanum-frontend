@@ -7,7 +7,7 @@ export const UserInfoWrapper = styled.View`
   flex: 1;
   padding: 0 20px;
   padding-top: ${iosCheckHeight ? '70px' : isAndroid ? '24px' : '40px'};
-  padding-bottom: ${isAndroid ? '10px' : ' 34px'};
+  padding-bottom: ${isAndroid ? '10px' : iosCheckHeight ? '34px' : '10px'};
   background-color: ${colors.background};
 `;
 
@@ -40,11 +40,4 @@ export const UserInfoButtonContainer = styled.View`
   align-items: center;
   justify-content: center;
   row-gap: 14px;
-`;
-
-export const UserInfoModalButtonContainer = styled.View`
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 `;

@@ -21,7 +21,9 @@ export const AuthMainScreenLogoContainer = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 10px;
+  row-gap: 5px;
+  flex: 1;
+  padding-top: 80px;
 `;
 
 export const AuthMainScreenMainSection = styled.View`
@@ -30,6 +32,7 @@ export const AuthMainScreenMainSection = styled.View`
   align-items: center;
   row-gap: 12px;
   width: 100%;
+  padding-bottom: 10px;
 `;
 
 export const AuthMainScreenTextContainer = styled.View`
