@@ -24,13 +24,28 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess }) => {
             한움페이 결제 QR코드를 {'\n'}아래 상자에 맞춰주세요
           </Text>
         </Text.Column>
-        <S.HanumPayQRBox />
+        <S.HanumPayQrBox>
+          <S.HanumPayQrBoxContainer>
+            <S.HanumPayQRBoxLeftTop />
+            <S.HanumPayQRBoxRightTop />
+          </S.HanumPayQrBoxContainer>
+          <S.HanumPayQrBoxContainer>
+            <S.HanumPayQRBoxLeftBottom />
+            <S.HanumPayQRBoxRightBottom />
+          </S.HanumPayQrBoxContainer>
+        </S.HanumPayQrBox>
       </S.HanumPayQRBoxContainer>
     ),
   };
 
   if (isIos) {
-    return <QRCodeScanner {...options} />;
+    return (
+      <QRCodeScanner
+        {...options}
+        containerStyle={{ flex: 1, height: '100%' }}
+        cameraStyle={{ flex: 1, height: '100%', width: '100%' }}
+      />
+    );
   } else {
     return (
       <QRCodeScanner

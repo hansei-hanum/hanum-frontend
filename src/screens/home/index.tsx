@@ -43,14 +43,18 @@ export const HomeScreen: React.FC = () => {
       <Header>
         <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
         <S.HomeScreenHeaderIconContainer>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => {
-                Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch((err) =>
-                  Alert.alert("문의하기", "카카오톡이 설치되어 있지 않아요. 문의하기를 이용하려면 카카오톡을 설치해주세요.", [{ text: "확인" }]),
-                );
-              }}
-            >
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch((err) =>
+                Alert.alert(
+                  '문의하기',
+                  '카카오톡이 설치되어 있지 않아요. 문의하기를 이용하려면 카카오톡을 설치해주세요.',
+                  [{ text: '확인' }],
+                ),
+              );
+            }}
+          >
             <AntDesign name="customerservice" size={28} color={colors.placeholder} />
           </TouchableOpacity>
         </S.HomeScreenHeaderIconContainer>

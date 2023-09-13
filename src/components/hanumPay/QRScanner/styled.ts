@@ -14,13 +14,49 @@ export const HanumPayQRHeaderWrapper = styled.View`
 
 export const HanumPayQRBoxContainer = styled.View`
   position: relative;
-  bottom: ${isIos ? '100px' : '60px'};
+  bottom: ${isIos ? '10px' : '60px'};
   row-gap: 10px;
 `;
 
-export const HanumPayQRBox = styled.View`
-  width: 260px;
-  height: 260px;
+export const HanumPayQrBox = styled.View`
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 90px;
+`;
+
+export const HanumPayQrBoxContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const HanumPayQRBoxLeftTop = styled.View`
+  width: 30px;
+  height: 30px;
   border-color: white;
-  border-width: 1px;
+  border-left-width: 5px;
+  border-top-width: 5px;
+`;
+
+export const HanumPayQRBoxRightTop = styled.View`
+  width: 30px;
+  height: 30px;
+  border-color: white;
+  border-right-width: 5px;
+  border-top-width: 5px;
+`;
+
+export const HanumPayQRBoxLeftBottom = styled.View`
+  width: 30px;
+  height: 30px;
+  border-color: white;
+  border-left-width: 5px;
+  border-bottom-width: 5px;
+`;
+
+export const HanumPayQRBoxRightBottom = styled.View`
+  width: 30px;
+  height: 30px;
+  border-color: white;
+  border-right-width: 5px;
+  border-bottom-width: 5px;
 `;
