@@ -47,7 +47,6 @@ export interface StudentCodeVerifyValue {
 }
 
 export const phone = async ({ phone }: PhoneValue) => {
-  console.log('phone');
   const { data } = await instance.post(API_SUFFIX.PHONE, {
     phone,
   });

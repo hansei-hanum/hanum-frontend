@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button, DummyContainer, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate } from 'src/hooks';
-import { authState } from 'src/atoms';
+import { authState, userProfileState } from 'src/atoms';
 
 import { Logo } from '../../../../assets/images';
 
@@ -18,6 +19,7 @@ export const AuthMainScreen: React.FC = () => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [auth, setAuth] = useRecoilState(authState);
+  const userData = useRecoilValue(userProfileState);
 
   const onButtonPress = (isCurrentStudent?: boolean) => {
     isCurrentStudent && setAuth({ ...auth, isCurrentStudent: true });
@@ -28,6 +30,10 @@ export const AuthMainScreen: React.FC = () => {
   const fontSize = 15;
 
   const isFocused = useIsFocused();
+
+  if (userData.name === '') {
+    AsyncStorage.removeItem('token');
+  }
 
   useEffect(() => {
     setAuth({
