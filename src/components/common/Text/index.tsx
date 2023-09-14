@@ -42,7 +42,7 @@ export const TextComponent: React.FC<TextProps> = ({
           font-size: ${size.toString()}px;
           font-family: ${fontFamily ? fonts[fontFamily] : fonts.medium};
           color: ${color ? color : colors.black};
-          text-align: ${isCenter ? 'center' : 'auto'};
+          text-align: ${isCenter ? 'center' : 'left'};
         `,
       ]}
     >

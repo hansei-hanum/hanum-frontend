@@ -17,7 +17,7 @@ export const HanumPayQRMoneyContainer = styled.KeyboardAvoidingView`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  row-gap: 20px;
+  row-gap: 24px;
   padding: 20px;
   padding-top: 10px;
 `;

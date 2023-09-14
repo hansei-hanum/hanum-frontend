@@ -3,30 +3,33 @@ import { UseMutationResult, useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { useRecoilState } from 'recoil';
 
-import { APIErrorResponse, APIResponse, payment, PayMentValues } from 'src/api';
+import { APIErrorResponse, APIResponse, payment, PaymentValues } from 'src/api';
 import { hanumPayState } from 'src/atoms';
-import { useGetPayDetail, useNavigate } from 'src/hooks';
+import { useGetPaymentDetail, useNavigate } from 'src/hooks';
+import { formattedMoney } from 'src/utils';
 
 export const usePayment = (): UseMutationResult<
   APIResponse<{ balanceAmount: number }>,
   AxiosError<APIErrorResponse>,
-  PayMentValues
+  PaymentValues
 > => {
   const [hanumPay, setHanumPay] = useRecoilState(hanumPayState);
   const navigate = useNavigate();
-  const getPayDetail = useGetPayDetail();
+  const getPaymentDetail = useGetPaymentDetail();
 
   return useMutation('usePayment', payment, {
-    onSuccess: ({ data }) => {
-      getPayDetail.refetch();
-      setHanumPay({
-        ...hanumPay,
-        status: true,
-        message: `남은 한움페이 잔액은 ${data.balanceAmount}원이에요.`,
-      });
+    onSuccess: ({ balanceAmount }) => {
+      const checkAmount = balanceAmount > 999 ? formattedMoney(balanceAmount) : balanceAmount;
+      getPaymentDetail.refetch();
       navigate('HanumPayStatus');
+      setHanumPay({
+        money: checkAmount,
+        status: true,
+        message: `남은 한움페이 잔액은 ${checkAmount}원이에요.`,
+      });
     },
     onError: (error) => {
+      console.log(error.response, 'error');
       const message = error.response?.data.message;
       switch (message) {
         case 'NOT_ALLOWED':

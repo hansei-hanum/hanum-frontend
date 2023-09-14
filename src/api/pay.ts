@@ -20,7 +20,7 @@ export interface GetPaymentDetailResponse extends GetPaymentAmountResponse {
   ];
 }
 
-export interface PayMentValues {
+export interface PaymentValues {
   boothId: number;
   amount: number;
 }
@@ -34,7 +34,7 @@ export const getPaymentDetail = async () => {
   return data;
 };
 
-export const payment = async ({ boothId, amount }: PayMentValues) => {
+export const payment = async ({ boothId, amount }: PaymentValues) => {
   const { data } = await payInstance.post(API_SUFFIX.PAYMENT, {
     boothId,
     amount,

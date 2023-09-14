@@ -15,6 +15,7 @@ export interface QRScannerProps {
 export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess }) => {
   const options = {
     onRead: onSuccess,
+
     showMarker: true,
     vibrate: false,
     customMarker: (
