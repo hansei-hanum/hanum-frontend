@@ -2,13 +2,13 @@ import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 
-import { APIErrorResponse, APIResponse, getPayDetail, GetPayDetailResponse } from 'src/api';
+import { APIErrorResponse, APIResponse, getPaymentDetail, GetPaymentDetailResponse } from 'src/api';
 
-export const useGetPayDetail = (): UseQueryResult<
-  APIResponse<GetPayDetailResponse>,
+export const useGetPaymentDetail = (): UseQueryResult<
+  APIResponse<GetPaymentDetailResponse>,
   AxiosError<APIErrorResponse>
 > => {
-  return useQuery('useGetPayDetail', getPayDetail, {
+  return useQuery('useGetPaymentDetail', getPaymentDetail, {
     onError: (error) => {
       console.log(error, 'error');
     },

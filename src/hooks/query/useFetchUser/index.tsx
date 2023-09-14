@@ -15,7 +15,6 @@ export const useFetchUser = (): UseQueryResult<
   const setProfile = useSetRecoilState(userProfileState);
   return useQuery('useFetchUser', fetchUser, {
     onSuccess: (data) => {
-      console.log(data, 'data');
       if (data) {
         setProfile({
           created_at: data.data.created_at,
@@ -27,8 +26,9 @@ export const useFetchUser = (): UseQueryResult<
         });
       }
     },
-    onError: (error) => {
+    onError: async (error) => {
       console.log(error, 'error');
+      await AsyncStorage.removeItem('token');
     },
     staleTime: Infinity,
     retry: 0,

@@ -9,8 +9,9 @@ export const API_SUFFIX = {
   USERS: '/users/',
   KEYS: '/keys/',
   STUDENT_VERIFY: '/users/@me/verifications',
-  GET_PAY_DETAIL: '/eoullim/balance/detail',
+  PAYMENT_DETAIL: '/eoullim/balance/detail',
   PAYMENT: '/eoullim/balance/payment',
+  PAYMENT_AMOUNT: '/eoullim/balance/amount',
 };
 
 export const authInstance = axios.create({
@@ -39,10 +40,10 @@ export interface APIErrorResponse {
 
 export const setAccessToken = (token: string | null) => {
   if (token) {
-    // authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
     payInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {
-    // delete authInstance.defaults.headers.common.Authorization;
+    delete authInstance.defaults.headers.common.Authorization;
     delete payInstance.defaults.headers.common.Authorization;
   }
 };

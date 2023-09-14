@@ -2,8 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { API_SUFFIX, payInstance, setAccessToken } from './api';
 
-export interface GetPayDetailResponse {
+export interface GetPaymentAmountResponse {
   balanceAmount: number;
+}
+
+export interface GetPaymentDetailResponse extends GetPaymentAmountResponse {
   payments: [
     {
       id: number;
@@ -22,11 +25,12 @@ export interface PayMentValues {
   amount: number;
 }
 
-export const getPayDetail = async () => {
+export const getPaymentDetail = async () => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
-  const { data } = await payInstance.get(`${API_SUFFIX.GET_PAY_DETAIL}?page=1&limit=400`);
+
+  const { data } = await payInstance.get(`${API_SUFFIX.PAYMENT_DETAIL}?page=1&limit=400`);
   return data;
 };
 
@@ -35,5 +39,14 @@ export const payment = async ({ boothId, amount }: PayMentValues) => {
     boothId,
     amount,
   });
+  return data;
+};
+
+export const getPaymentAmount = async () => {
+  const token = await AsyncStorage.getItem('token');
+  if (!token) return null;
+  setAccessToken(token);
+
+  const { data } = await payInstance.get(API_SUFFIX.PAYMENT_AMOUNT);
   return data;
 };
