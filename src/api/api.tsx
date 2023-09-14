@@ -39,10 +39,10 @@ export interface APIErrorResponse {
 
 export const setAccessToken = (token: string | null) => {
   if (token) {
-    authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    // authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
     payInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {
-    delete authInstance.defaults.headers.common.Authorization;
+    // delete authInstance.defaults.headers.common.Authorization;
     delete payInstance.defaults.headers.common.Authorization;
   }
 };

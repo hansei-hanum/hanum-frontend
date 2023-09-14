@@ -10,7 +10,7 @@ export const useGetPayDetail = (): UseQueryResult<
 > => {
   return useQuery('useGetPayDetail', getPayDetail, {
     onError: (error) => {
-      console.log(error);
+      console.log(error, 'error');
     },
     staleTime: Infinity,
     retry: 0,

@@ -2,6 +2,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { APIErrorResponse, APIResponse, FetchUserResponse, fetchUser } from 'src/api';
 import { userProfileState } from 'src/atoms';
@@ -14,6 +15,7 @@ export const useFetchUser = (): UseQueryResult<
   const setProfile = useSetRecoilState(userProfileState);
   return useQuery('useFetchUser', fetchUser, {
     onSuccess: (data) => {
+      console.log(data, 'data');
       if (data) {
         setProfile({
           created_at: data.data.created_at,
@@ -26,7 +28,7 @@ export const useFetchUser = (): UseQueryResult<
       }
     },
     onError: (error) => {
-      console.log(error);
+      console.log(error, 'error');
     },
     staleTime: Infinity,
     retry: 0,

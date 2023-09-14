@@ -35,11 +35,6 @@ export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
   const { data, isLoading } = useFetchUser();
 
-  console.log(data, 'user data');
-  // if (!data) {
-  //   AsyncStorage.removeItem('token');
-  // }
-
   useEffect(() => {
     async function prepare() {
       try {

@@ -75,6 +75,7 @@ export const fetchUser = async () => {
   if (!token) return null;
   setAccessToken(token);
   const { data } = await authInstance.get(`${API_SUFFIX.USERS}@me/`);
+  console.log(data, 'fetch user data');
   return data;
 };
 

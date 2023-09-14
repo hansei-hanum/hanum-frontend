@@ -24,10 +24,9 @@ export interface PayMentValues {
 
 export const getPayDetail = async () => {
   const token = await AsyncStorage.getItem('token');
-  console.log('token', token);
   if (!token) return null;
   setAccessToken(token);
-  const { data } = await payInstance.get(API_SUFFIX.GET_PAY_DETAIL);
+  const { data } = await payInstance.get(`${API_SUFFIX.GET_PAY_DETAIL}?page=1&limit=400`);
   return data;
 };
 

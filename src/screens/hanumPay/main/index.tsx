@@ -10,7 +10,7 @@ import * as S from './styled';
 export const HanumPayScreen: React.FC = () => {
   const navigate = useNavigate();
   const { data } = useGetPayDetail();
-  console.log(data, 'data');
+
   return (
     <S.HanumPayWrapper>
       <S.HanumPayContainer>
@@ -21,7 +21,7 @@ export const HanumPayScreen: React.FC = () => {
               한움페이 잔액
             </Text>
             <Text size={28} fontFamily="bold">
-              9,000원
+              {data?.data.balanceAmount}
             </Text>
           </Text.Column>
           <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
