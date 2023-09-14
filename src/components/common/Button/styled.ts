@@ -6,6 +6,7 @@ export const ButtonElement = styled.TouchableOpacity`
   width: 100%;
   color: ${colors.white};
   padding: 14px 0;
+  z-index: 999;
 `;
 
 export const ButtonText = styled.Text`

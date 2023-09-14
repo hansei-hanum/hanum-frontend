@@ -12,9 +12,9 @@ export interface GetPaymentDetailResponse extends GetPaymentAmountResponse {
       id: number;
       paidAmount: number | null;
       refundedAmount: number | null;
-      status: string;
-      paidTime: string | null;
-      refundedTime: string | null;
+      status: 'paid' | 'refunded';
+      paidTime: string;
+      refundedTime: string;
       boothName: string;
     },
   ];

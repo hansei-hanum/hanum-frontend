@@ -29,7 +29,7 @@ export const HanumPay: React.FC = () => {
   const balanceAmount = data?.data?.balanceAmount;
 
   return (
-    <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPay">
+    <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPayMain">
       <S.HanumPayContainer>
         <Text size={24} fontFamily="bold" color={colors.black}>
           {balanceAmount ? formattedMoney(balanceAmount.toString()) : '0'}원

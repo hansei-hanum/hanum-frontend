@@ -9,7 +9,7 @@ import { useGetPaymentDetail, useNavigate } from 'src/hooks';
 import { formattedMoney } from 'src/utils';
 
 export const usePayment = (): UseMutationResult<
-  APIResponse<{ balanceAmount: number }>,
+  APIResponse<{ balanceAmount: number; transaction: { transferAmount: number } }>,
   AxiosError<APIErrorResponse>,
   PaymentValues
 > => {
@@ -18,18 +18,22 @@ export const usePayment = (): UseMutationResult<
   const getPaymentDetail = useGetPaymentDetail();
 
   return useMutation('usePayment', payment, {
-    onSuccess: ({ balanceAmount }) => {
-      const checkAmount = balanceAmount > 999 ? formattedMoney(balanceAmount) : balanceAmount;
+    onSuccess: ({ data }) => {
+      const transFerAmount = data.transaction.transferAmount;
+      const balanceAmount = data.balanceAmount;
       getPaymentDetail.refetch();
       navigate('HanumPayStatus');
       setHanumPay({
-        money: checkAmount,
+        money: transFerAmount > 999 ? formattedMoney(transFerAmount) : transFerAmount,
         status: true,
-        message: `남은 한움페이 잔액은 ${checkAmount}원이에요.`,
+        message: `남은 한움페이 잔액은 ${
+          balanceAmount > 999 ? formattedMoney(balanceAmount) : balanceAmount
+        }원이에요.`,
       });
     },
     onError: (error) => {
-      console.log(error.response, 'error');
+      console.log(error, 'error');
+      navigate('HanumPayStatus');
       const message = error.response?.data.message;
       switch (message) {
         case 'NOT_ALLOWED':

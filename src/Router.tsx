@@ -18,6 +18,7 @@ import {
   WebViewScreen,
   HanumPayQRScreen,
   HanumPayStatusScreen,
+  HanumPayMainScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -89,9 +90,10 @@ export const Router: React.FC = () => {
           <Stack.Screen name="WebView" component={WebViewScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+          <Stack.Screen name="HanumPayMain" component={HanumPayMainScreen} />
           <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
           <Stack.Screen name="HanumPayStatus" component={HanumPayStatusScreen} />
+          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

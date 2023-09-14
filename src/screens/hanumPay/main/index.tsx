@@ -7,10 +7,18 @@ import { formattedMoney } from 'src/utils';
 
 import * as S from './styled';
 
-export const HanumPayScreen: React.FC = () => {
+export const HanumPayMainScreen: React.FC = () => {
   const navigate = useNavigate();
   const { data } = useGetPaymentDetail();
   const paymentData = data?.data;
+
+  const formattedTime = (now: Date, hour: number, minute: number) => {
+    const minutes = now.getHours() * 60 + now.getMinutes(); // 현재 시간을 분으로 환산
+    const targetMinutes = hour * 60 + minute; // 목표 시간을 분으로 환산
+    const diff = minutes - targetMinutes; // 목표 시간과 현재 시간의 차이
+    const diffHour = Math.floor(diff / 60) > 0 ? `${Math.floor(diff / 60)}시간` : '';
+    return `${diffHour} ${diff % 60}분 전`;
+  };
 
   return (
     <S.HanumPayWrapper>
@@ -29,24 +37,52 @@ export const HanumPayScreen: React.FC = () => {
             </Text>
           </Text.Column>
           <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
-          <S.HanumUsageHistory>
+          <S.HanumUseAgeHistory>
             <Text size={18}>이용내역</Text>
-            {paymentData?.payments && paymentData.payments.length > 0 ? (
-              <S.HanumUsageDetails>
-                <Text.Column>
-                  <Text size={17}>충전</Text>
-                  <Text size={15} color={colors.placeholder}>
-                    학생회 환전소
-                  </Text>
-                </Text.Column>
-                <Text size={18} color={colors.black}>
-                  10,000원
-                </Text>
-              </S.HanumUsageDetails>
-            ) : (
-              <Text size={16}>아직 이용내역이 없어요.</Text>
-            )}
-          </S.HanumUsageHistory>
+            <S.HanumUseAgeContainer
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                flexDirection: 'column',
+                paddingBottom: 580,
+                rowGap: 20,
+              }}
+            >
+              {paymentData?.payments && paymentData.payments.length > 0 ? (
+                paymentData.payments.map(
+                  ({
+                    status,
+                    id,
+                    boothName,
+                    paidAmount,
+                    refundedAmount,
+                    paidTime,
+                    refundedTime,
+                  }) => {
+                    const isPaid = status === 'paid';
+                    const historyTime = new Date(isPaid ? paidTime : refundedTime);
+                    const hour = historyTime.getHours();
+                    const minute = historyTime.getMinutes();
+                    return (
+                      <S.HanumUseAgeDetails key={id}>
+                        <Text.Column>
+                          <Text size={17}>{boothName}</Text>
+                          <Text size={15} color={colors.placeholder}>
+                            {formattedTime(new Date(), hour, minute)}
+                          </Text>
+                        </Text.Column>
+                        <Text size={18} color={colors.black}>
+                          {isPaid ? paidAmount : refundedAmount}원
+                        </Text>
+                      </S.HanumUseAgeDetails>
+                    );
+                  },
+                )
+              ) : (
+                <Text size={16}>아직 이용내역이 없어요.</Text>
+              )}
+            </S.HanumUseAgeContainer>
+          </S.HanumUseAgeHistory>
         </S.HanumPaySection>
       </S.HanumPayContainer>
     </S.HanumPayWrapper>
