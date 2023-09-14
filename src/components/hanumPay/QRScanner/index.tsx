@@ -15,7 +15,6 @@ export interface QRScannerProps {
 export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess }) => {
   const options = {
     onRead: onSuccess,
-
     showMarker: true,
     vibrate: false,
     customMarker: (
@@ -43,6 +42,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess }) => {
     return (
       <QRCodeScanner
         {...options}
+        fadeIn={false}
         containerStyle={{ flex: 1, height: '100%' }}
         cameraStyle={{ flex: 1, height: '100%', width: '100%' }}
       />

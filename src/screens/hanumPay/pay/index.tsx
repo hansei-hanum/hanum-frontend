@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Auth, Text } from 'src/components';
+import { Auth } from 'src/components';
 import { colors } from 'src/styles';
 import { checkNumber, isAndroid } from 'src/utils';
 import { usePayment } from 'src/hooks';
@@ -9,7 +9,6 @@ import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
   const [money, setMoney] = useState<string>('');
-  const [boothId, setBoothId] = useState<null | number>(null);
   const [isDisabled, setIsDisabled] = useState(true);
 
   const { mutate } = usePayment();
