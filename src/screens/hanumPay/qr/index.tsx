@@ -5,7 +5,14 @@ import { Linking } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { Button, DummyContainer, HanumPayHeader, Modal, QRScanner, Text } from 'src/components';
+import {
+  Button,
+  DummyContainer,
+  HanumPayHeader,
+  Modal,
+  QRScanner,
+  QRScannerBox,
+} from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -39,29 +46,7 @@ export const HanumPayQRScreen: React.FC = () => {
       <S.HanumPayQRHeaderWrapper>
         <HanumPayHeader title="결제하기" />
       </S.HanumPayQRHeaderWrapper>
-      {permissionNotfound ? (
-        <S.HanumPayQRBoxWrapper>
-          <S.HanumPayQRBoxContainer>
-            <Text.Column>
-              <Text size={16} isCenter color={colors.white}>
-                한움페이 결제 QR코드를 {'\n'}아래 상자에 맞춰주세요
-              </Text>
-            </Text.Column>
-            <S.HanumPayQrBox>
-              <S.HanumPayQrBoxContainer>
-                <S.HanumPayQRBoxLeftTop />
-                <S.HanumPayQRBoxRightTop />
-              </S.HanumPayQrBoxContainer>
-              <S.HanumPayQrBoxContainer>
-                <S.HanumPayQRBoxLeftBottom />
-                <S.HanumPayQRBoxRightBottom />
-              </S.HanumPayQrBoxContainer>
-            </S.HanumPayQrBox>
-          </S.HanumPayQRBoxContainer>
-        </S.HanumPayQRBoxWrapper>
-      ) : (
-        <QRScanner onSuccess={onSuccess} />
-      )}
+      {permissionNotfound ? <QRScannerBox /> : <QRScanner onSuccess={onSuccess} />}
       {modalVisible && (
         <>
           <DummyContainer />
