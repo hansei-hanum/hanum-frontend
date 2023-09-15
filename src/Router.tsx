@@ -4,7 +4,6 @@ import { StatusBar, View, Image as RNImage } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   AuthMainScreen,
@@ -19,6 +18,7 @@ import {
   WebViewScreen,
   HanumPayQRScreen,
   HanumPayStatusScreen,
+  HanumPayMainScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -34,10 +34,6 @@ export type RootStackParamList = {
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
   const { data, isLoading } = useFetchUser();
-
-  if (!data) {
-    AsyncStorage.removeItem('token');
-  }
 
   useEffect(() => {
     async function prepare() {
@@ -94,9 +90,10 @@ export const Router: React.FC = () => {
           <Stack.Screen name="WebView" component={WebViewScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+          <Stack.Screen name="HanumPayMain" component={HanumPayMainScreen} />
           <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
           <Stack.Screen name="HanumPayStatus" component={HanumPayStatusScreen} />
+          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

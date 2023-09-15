@@ -17,12 +17,3 @@ export const ModalContainer = styled.View`
   padding: 14px;
   row-gap: 20px;
 `;
-
-export const DummyContainer = styled.View`
-  flex: 1;
-  position: absolute;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-`;

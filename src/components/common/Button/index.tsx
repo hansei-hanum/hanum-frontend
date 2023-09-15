@@ -1,44 +1,65 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { colors } from 'src/styles';
+import { usePressingAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
 export interface ButtonProps {
   children: React.ReactNode;
-  isSecondary?: boolean;
+  backgroundColor?: string;
+  textColor?: string;
   isDisabled?: boolean;
-  isDanger?: boolean;
   isModalBtn?: boolean;
   onPress?: () => void;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const ButtonElement: React.FC<ButtonProps> = ({
   children,
-  isSecondary,
   onPress,
   isDisabled,
   isModalBtn,
-  isDanger,
+  backgroundColor,
+  textColor,
 }) => {
+  const { handlePressIn, handlePressOut, buttonAnimatedStyle } = usePressingAnimation();
+
   return (
-    <S.ButtonElement
+    <TouchableOpacity
       {...(!isDisabled && { onPress: onPress })}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       activeOpacity={0.8}
-      style={{
+      containerStyle={{
         width: isModalBtn ? '48%' : '100%',
-        backgroundColor:
-          isSecondary || isDisabled ? colors.secondary : isDanger ? colors.danger : colors.primary,
+      }}
+      style={{
+        ...buttonAnimatedStyle,
+        backgroundColor: backgroundColor ? backgroundColor : colors.primary,
         borderRadius: isModalBtn ? 16 : 10,
+        paddingVertical: 14,
       }}
     >
       <S.ButtonText
         style={{
-          color: isSecondary ? colors.black : colors.white,
+          color: textColor ? textColor : colors.white,
         }}
       >
         {children}
       </S.ButtonText>
-    </S.ButtonElement>
+    </TouchableOpacity>
   );
 };
+
+export interface ButtonContainerProps {
+  children: React.ReactNode;
+}
+
+export const ButtonContainer: React.FC<ButtonContainerProps> = ({ children }) => {
+  return <S.ButtonContainer>{children}</S.ButtonContainer>;
+};
+
+export const Button = Object.assign(ButtonElement, {
+  Container: ButtonContainer,
+});

@@ -1,99 +1,103 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { Easing } from 'react-native-reanimated';
-import { BarCodeReadEvent } from 'react-native-camera';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from 'react';
+import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import { Linking } from 'react-native';
 
-import BottomSheet, { useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import { useSetRecoilState } from 'recoil';
 
-import { Button, HanumPayHeader, QRScanner, Text } from 'src/components';
+import {
+  Button,
+  DummyContainer,
+  HanumPayHeader,
+  Modal,
+  QRScanner,
+  QRScannerBox,
+} from 'src/components';
 import { colors } from 'src/styles';
-import { checkNumber, formattedMoney } from 'src/utils';
-import { useNavigate } from 'src/hooks';
-import { hanumPayState } from 'src/atoms';
+import { boothState } from 'src/atoms';
 
 import * as S from './styled';
 
 export const HanumPayQRScreen: React.FC = () => {
-  const navigate = useNavigate();
-  const [isActive, setIsActive] = useState(false);
-  const [money, setMoney] = useState<string>('');
-  const [isDisabled, setIsDisabled] = useState(true);
-  const setHanumPay = useSetRecoilState(hanumPayState);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const setBooth = useSetRecoilState(boothState);
+
+  const navigation = useNavigation();
 
   /** 바코드가 감지되면 실행되는 함수 */
-  const onSuccess = (e: BarCodeReadEvent) => {
-    console.log(e, 'data');
-    setIsActive(true);
+  const onSuccess = ({ data }: any) => {
+    console.log('onSuccess', data);
+    if (typeof data.id === 'number' && typeof data.name === 'string') {
+      setBooth({
+        id: data.id,
+        name: data.name,
+      });
+    } else {
+      return null;
+    }
+    console.log(data);
   };
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['34%', '34%'], []);
 
-  const animationConfigs = useBottomSheetTimingConfigs({
-    duration: 300,
-    easing: Easing.out(Easing.exp),
-  });
+  const closeModal = () => {
+    setModalVisible(false);
+    navigation.goBack();
+  };
 
-  const onSubmit = () => {
-    const formattingMoney = formattedMoney(money);
-    bottomSheetRef.current?.close();
-    setTimeout(() => {
-      setIsActive(false);
-    }, 70);
-    setHanumPay({
-      money: formattingMoney,
-      status: true,
-      message: '남은 한움페이 잔액은 9,000원이에요.',
+  useEffect(() => {
+    request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
+      if (result === RESULTS.GRANTED) {
+      } else if (result === RESULTS.DENIED) {
+        setModalVisible(true);
+      } else if (result === RESULTS.BLOCKED) {
+        setModalVisible(true);
+      }
     });
-    navigate('HanumPayStatus');
-  };
-
-  const onMoneyChange = (money: string) => {
-    const newMoney = checkNumber(money);
-    if (newMoney.length > 0) setIsDisabled(false);
-    setMoney(newMoney);
-  };
+  }, []);
 
   return (
     <S.HanumPayQRWrapper>
       <S.HanumPayQRHeaderWrapper>
         <HanumPayHeader title="결제하기" />
       </S.HanumPayQRHeaderWrapper>
-      <QRScanner onSuccess={onSuccess} />
-      {isActive && (
-        <BottomSheet
-          ref={bottomSheetRef}
-          snapPoints={snapPoints}
-          index={0}
-          animationConfigs={animationConfigs}
-        >
-          <S.HanumPayQRMoneyContainer>
-            <Text.Column>
-              <Text size={20} fontFamily="bold" isCenter>
-                결제하기
-              </Text>
-              <Text size={16} isCenter>
-                부스{' '}
-                <Text size={16} fontFamily="bold">
-                  “사격장"{' '}
-                </Text>
-                의 QR코드가 인식되었어요!{'\n'}
-                해당 부스에 얼마를 결제할까요?
-              </Text>
-            </Text.Column>
-            <S.TextFieldFormInput
-              placeholderTextColor={colors.placeholder}
-              variant="standard"
-              label="결제 금액"
-              keyboardType="numeric"
-              onChangeText={onMoneyChange}
-              color={colors.placeholder}
-              value={money}
-            />
-            <Button isDisabled={isDisabled} onPress={onSubmit}>
-              결제하기
-            </Button>
-          </S.HanumPayQRMoneyContainer>
-        </BottomSheet>
+      {modalVisible ? (
+        <QRScannerBox.Permission>
+          <QRScannerBox />
+        </QRScannerBox.Permission>
+      ) : (
+        <QRScanner onSuccess={onSuccess} />
+      )}
+      {modalVisible && (
+        <>
+          <DummyContainer />
+          <Modal
+            title="카메라 접근 권한 설정"
+            text={
+              '한움페이 결제 기능을 사용하려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
+            }
+            button={
+              <Button.Container>
+                <Button
+                  onPress={closeModal}
+                  isModalBtn
+                  backgroundColor={colors.secondary}
+                  textColor={colors.black}
+                >
+                  취소
+                </Button>
+                <Button
+                  onPress={() => {
+                    Linking.openSettings();
+                  }}
+                  isModalBtn
+                >
+                  설정
+                </Button>
+              </Button.Container>
+            }
+            modalVisible={true}
+          />
+        </>
       )}
     </S.HanumPayQRWrapper>
   );

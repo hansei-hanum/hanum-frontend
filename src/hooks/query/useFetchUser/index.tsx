@@ -2,6 +2,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { APIErrorResponse, APIResponse, FetchUserResponse, fetchUser } from 'src/api';
 import { userProfileState } from 'src/atoms';
@@ -25,8 +26,9 @@ export const useFetchUser = (): UseQueryResult<
         });
       }
     },
-    onError: (error) => {
-      console.log(error);
+    onError: async (error) => {
+      console.log(error, 'error');
+      await AsyncStorage.removeItem('token');
     },
     staleTime: Infinity,
     retry: 0,

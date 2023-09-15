@@ -2,6 +2,7 @@
 import React from 'react';
 
 import { Button, GoBackIcon, Text } from 'src/components';
+import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -41,7 +42,11 @@ export const Auth: React.FC<AuthProps> = ({
           {children}
         </S.AuthInputContainer>
         <S.AuthButtonWrapper>
-          <Button isDisabled={isDisabled} onPress={onPress}>
+          <Button
+            isDisabled={isDisabled}
+            onPress={onPress}
+            backgroundColor={isDisabled ? colors.secondary : colors.primary}
+          >
             {bottomText}
           </Button>
         </S.AuthButtonWrapper>

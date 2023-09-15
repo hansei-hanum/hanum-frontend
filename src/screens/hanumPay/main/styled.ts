@@ -8,7 +8,8 @@ export const HanumPayWrapper = styled.SafeAreaView`
 `;
 
 export const HanumPayContainer = styled.View`
-  flex: 1;
+  width: 100%;
+  /* flex: 1; */
   padding: 20px;
   flex-direction: column;
   row-gap: 36px;
@@ -21,11 +22,20 @@ export const HanumPaySection = styled.View`
   align-items: flex-start;
 `;
 
-export const HanumUsageHistory = styled(HanumPaySection)`
+export const HanumUseAgeHistory = styled(HanumPaySection)`
+  width: 100%;
+  height: 100%;
   row-gap: 16px;
 `;
 
-export const HanumUsageDetails = styled.View`
+export const HanumUseAgeContainer = styled.ScrollView`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  flex-direction: column;
+`;
+
+export const HanumUseAgeDetails = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;

@@ -16,6 +16,6 @@ export const StatusScreenContainer = styled.View`
 `;
 
 export const StatusScreenLottie = styled(LottieView)`
-  width: 160px;
-  height: 160px;
+  width: 130px;
+  height: 130px;
 `;

@@ -12,7 +12,7 @@ export const usePressingAnimation = () => {
       toValue: 0.96, // 작아지는 정도
       duration: 50,
       easing: Easing.linear,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   };
 
@@ -22,7 +22,7 @@ export const usePressingAnimation = () => {
       toValue: 1, // 원래 크기로 복귀
       duration: 50,
       easing: Easing.linear,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   };
 
@@ -35,5 +35,9 @@ export const usePressingAnimation = () => {
     }),
   };
 
-  return { animatedStyle, handlePressIn, handlePressOut };
+  const buttonAnimatedStyle = {
+    transform: [{ scale: animation }],
+  };
+
+  return { animatedStyle, buttonAnimatedStyle, handlePressIn, handlePressOut };
 };

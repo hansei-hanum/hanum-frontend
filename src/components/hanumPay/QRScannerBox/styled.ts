@@ -3,13 +3,11 @@ import styled from '@emotion/native';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
-export const HanumPayQRWrapper = styled.SafeAreaView`
+export const HanumPayQRBoxPermission = styled.View`
   flex: 1;
-  background-color: ${colors.background};
-`;
-
-export const HanumPayQRHeaderWrapper = styled.View`
-  padding: 20px;
+  background-color: ${colors.black};
+  justify-content: center;
+  align-items: center;
 `;
 
 export const HanumPayQRBoxContainer = styled.View`
