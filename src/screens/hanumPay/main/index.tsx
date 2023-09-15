@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Text, HanumPayHeader } from 'src/components';
 import { colors } from 'src/styles';
 import { useGetPaymentDetail, useNavigate } from 'src/hooks';
-import { formattedMoney } from 'src/utils';
+import { formattedMoney, isIos } from 'src/utils';
 
 import * as S from './styled';
 
@@ -44,7 +44,7 @@ export const HanumPayMainScreen: React.FC = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{
                 flexDirection: 'column',
-                paddingBottom: 580,
+                paddingBottom: isIos ? 580 : 590,
                 rowGap: 20,
               }}
             >
