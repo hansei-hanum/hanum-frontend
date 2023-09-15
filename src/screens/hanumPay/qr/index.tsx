@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { BarCodeReadEvent } from 'react-native-camera';
 import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { Linking } from 'react-native';
 
@@ -26,13 +26,20 @@ export const HanumPayQRScreen: React.FC = () => {
   const navigation = useNavigation();
 
   /** 바코드가 감지되면 실행되는 함수 */
-  const onSuccess = ({ data }: BarCodeReadEvent) => {
-    setBooth(JSON.parse(data));
+  const onSuccess = ({ data }: any) => {
+    console.log('onSuccess', data);
+    if (typeof data.id === 'number' && typeof data.name === 'string') {
+      setBooth({
+        id: data.id,
+        name: data.name,
+      });
+    } else {
+      return null;
+    }
     console.log(data);
   };
 
   const closeModal = () => {
-    console.log('closeModal');
     setModalVisible(false);
     navigation.goBack();
   };
@@ -40,12 +47,9 @@ export const HanumPayQRScreen: React.FC = () => {
   useEffect(() => {
     request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
       if (result === RESULTS.GRANTED) {
-        console.log('permission granted');
       } else if (result === RESULTS.DENIED) {
-        console.log('permission denied');
         setModalVisible(true);
       } else if (result === RESULTS.BLOCKED) {
-        console.log('permission blocked');
         setModalVisible(true);
       }
     });
