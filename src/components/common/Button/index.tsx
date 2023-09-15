@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { colors } from 'src/styles';
+import { usePressingAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -22,14 +23,19 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   backgroundColor,
   textColor,
 }) => {
+  const { handlePressIn, handlePressOut, buttonAnimatedStyle } = usePressingAnimation();
+
   return (
     <TouchableOpacity
       {...(!isDisabled && { onPress: onPress })}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       activeOpacity={0.8}
       containerStyle={{
         width: isModalBtn ? '48%' : '100%',
       }}
       style={{
+        ...buttonAnimatedStyle,
         backgroundColor: backgroundColor ? backgroundColor : colors.primary,
         borderRadius: isModalBtn ? 16 : 10,
         paddingVertical: 14,

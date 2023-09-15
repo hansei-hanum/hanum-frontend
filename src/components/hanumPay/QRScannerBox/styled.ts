@@ -3,7 +3,7 @@ import styled from '@emotion/native';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
-export const HanumPayQRBoxWrapper = styled.View`
+export const HanumPayQRBoxPermission = styled.View`
   flex: 1;
   background-color: ${colors.black};
   justify-content: center;

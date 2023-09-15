@@ -4,6 +4,7 @@ import { PERMISSIONS } from 'react-native-permissions';
 import { Linking } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+import { useSetRecoilState } from 'recoil';
 
 import {
   Button,
@@ -14,6 +15,7 @@ import {
   QRScannerBox,
 } from 'src/components';
 import { colors } from 'src/styles';
+import { boothState } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -22,11 +24,13 @@ export const HanumPayQRScreen: React.FC = () => {
     PERMISSIONS.ANDROID.CAMERA === undefined || PERMISSIONS.IOS.CAMERA === undefined;
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const setBooth = useSetRecoilState(boothState);
 
   const navigation = useNavigation();
 
   /** 바코드가 감지되면 실행되는 함수 */
   const onSuccess = ({ data }: BarCodeReadEvent) => {
+    setBooth(JSON.parse(data));
     console.log(data);
   };
 
@@ -46,7 +50,13 @@ export const HanumPayQRScreen: React.FC = () => {
       <S.HanumPayQRHeaderWrapper>
         <HanumPayHeader title="결제하기" />
       </S.HanumPayQRHeaderWrapper>
-      {permissionNotfound ? <QRScannerBox /> : <QRScanner onSuccess={onSuccess} />}
+      {permissionNotfound ? (
+        <QRScannerBox.Permission>
+          <QRScannerBox />
+        </QRScannerBox.Permission>
+      ) : (
+        <QRScanner onSuccess={onSuccess} />
+      )}
       {modalVisible && (
         <>
           <DummyContainer />

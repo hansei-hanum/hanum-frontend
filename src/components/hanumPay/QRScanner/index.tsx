@@ -22,7 +22,6 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess }) => {
     return (
       <QRCodeScanner
         {...options}
-        fadeIn={false}
         containerStyle={{ flex: 1, height: '100%' }}
         cameraStyle={{ flex: 1, height: '100%', width: '100%' }}
       />
