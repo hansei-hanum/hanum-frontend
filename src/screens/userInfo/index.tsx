@@ -78,10 +78,14 @@ export const UserInfoScreen: React.FC = () => {
               />
             </S.UserInfoProfileContainer>
             <S.UserInfoButtonContainer>
-              <Button isSecondary onPress={onLogout}>
+              <Button
+                backgroundColor={colors.secondary}
+                textColor={colors.black}
+                onPress={onLogout}
+              >
                 로그아웃
               </Button>
-              <Button isDanger onPress={() => setIsSecessionClick(true)}>
+              <Button backgroundColor={colors.danger} onPress={() => setIsSecessionClick(true)}>
                 회원 탈퇴하기
               </Button>
             </S.UserInfoButtonContainer>

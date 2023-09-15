@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BarCodeReadEvent } from 'react-native-camera';
-import { PERMISSIONS } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 import { Linking } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -20,9 +20,6 @@ import { boothState } from 'src/atoms';
 import * as S from './styled';
 
 export const HanumPayQRScreen: React.FC = () => {
-  const permissionNotfound =
-    PERMISSIONS.ANDROID.CAMERA === undefined || PERMISSIONS.IOS.CAMERA === undefined;
-
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const setBooth = useSetRecoilState(boothState);
 
@@ -40,17 +37,38 @@ export const HanumPayQRScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (permissionNotfound) {
-      setModalVisible(true);
-    }
-  }, [PERMISSIONS]);
+    const checkCameraPermission = async () => {
+      console.log('checkCameraPermission');
+      const result = await check(PERMISSIONS.ANDROID.CAMERA);
+
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          setModalVisible(true);
+          console.log('This feature is not available (on this device / in this context)');
+          break;
+        case RESULTS.DENIED:
+          setModalVisible(true);
+          console.log('The permission has not been requested / is denied but requestable');
+          break;
+        case RESULTS.LIMITED:
+          setModalVisible(true);
+          console.log('The permission is limited: some actions are possible');
+          break;
+        case RESULTS.BLOCKED:
+          setModalVisible(true);
+          console.log('The permission is denied and not requestable anymore');
+          break;
+      }
+    };
+    checkCameraPermission();
+  }, []);
 
   return (
     <S.HanumPayQRWrapper>
       <S.HanumPayQRHeaderWrapper>
         <HanumPayHeader title="결제하기" />
       </S.HanumPayQRHeaderWrapper>
-      {permissionNotfound ? (
+      {modalVisible ? (
         <QRScannerBox.Permission>
           <QRScannerBox />
         </QRScannerBox.Permission>
