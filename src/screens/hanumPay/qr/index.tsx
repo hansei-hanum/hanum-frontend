@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BarCodeReadEvent } from 'react-native-camera';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { Linking } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -32,35 +32,23 @@ export const HanumPayQRScreen: React.FC = () => {
   };
 
   const closeModal = () => {
+    console.log('closeModal');
     setModalVisible(false);
     navigation.goBack();
   };
 
   useEffect(() => {
-    const checkCameraPermission = async () => {
-      console.log('checkCameraPermission');
-      const result = await check(PERMISSIONS.ANDROID.CAMERA);
-
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          setModalVisible(true);
-          console.log('This feature is not available (on this device / in this context)');
-          break;
-        case RESULTS.DENIED:
-          setModalVisible(true);
-          console.log('The permission has not been requested / is denied but requestable');
-          break;
-        case RESULTS.LIMITED:
-          setModalVisible(true);
-          console.log('The permission is limited: some actions are possible');
-          break;
-        case RESULTS.BLOCKED:
-          setModalVisible(true);
-          console.log('The permission is denied and not requestable anymore');
-          break;
+    request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
+      if (result === RESULTS.GRANTED) {
+        console.log('permission granted');
+      } else if (result === RESULTS.DENIED) {
+        console.log('permission denied');
+        setModalVisible(true);
+      } else if (result === RESULTS.BLOCKED) {
+        console.log('permission blocked');
+        setModalVisible(true);
       }
-    };
-    checkCameraPermission();
+    });
   }, []);
 
   return (
