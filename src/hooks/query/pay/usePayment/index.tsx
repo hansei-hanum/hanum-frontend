@@ -24,10 +24,10 @@ export const usePayment = (): UseMutationResult<
       getPaymentDetail.refetch();
       navigate('HanumPayStatus');
       setHanumPay({
-        money: transFerAmount > 999 ? formattedMoney(transFerAmount) : transFerAmount,
+        money: transFerAmount > 999 ? formattedMoney(`${transFerAmount}`) : transFerAmount,
         status: true,
         message: `남은 한움페이 잔액은 ${
-          balanceAmount > 999 ? formattedMoney(balanceAmount) : balanceAmount
+          balanceAmount > 999 ? formattedMoney(`${balanceAmount}`) : balanceAmount
         }원이에요.`,
       });
     },

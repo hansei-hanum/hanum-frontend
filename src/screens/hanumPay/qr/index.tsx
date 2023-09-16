@@ -55,10 +55,11 @@ export const HanumPayQRScreen: React.FC = () => {
 
   useEffect(() => {
     request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
-      if (result === RESULTS.GRANTED) {
-      } else if (result === RESULTS.DENIED) {
-        setModalVisible(true);
-      } else if (result === RESULTS.BLOCKED) {
+      if (
+        result === RESULTS.DENIED ||
+        result === RESULTS.BLOCKED ||
+        result === RESULTS.UNAVAILABLE
+      ) {
         setModalVisible(true);
       }
     });
