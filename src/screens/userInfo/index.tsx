@@ -3,19 +3,18 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
-import { useDisConnectNotification, useGetUser, useNavigate } from 'src/hooks';
+import { useGetUser, useNavigate } from 'src/hooks';
 import { colors } from 'src/styles';
 import { UserLogo } from 'src/assets/';
+import { disconnectNotification } from 'src/api';
 
 import * as S from './styled';
 
 export const UserInfoScreen: React.FC = () => {
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const { mutate } = useDisConnectNotification();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
   const { userData, userProfile, verifyUser, formatUser, userType } = useGetUser();
@@ -28,9 +27,8 @@ export const UserInfoScreen: React.FC = () => {
     return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
   };
 
-  const onLogout = async () => {
-    await AsyncStorage.removeItem('token');
-    mutate;
+  const onLogout = () => {
+    disconnectNotification();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

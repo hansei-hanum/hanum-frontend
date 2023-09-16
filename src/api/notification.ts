@@ -19,6 +19,6 @@ export const disconnectNotification = async () => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
-  const { data } = await instance.delete(API_SUFFIX.NOTIFICATION);
-  return data;
+  await instance.delete(API_SUFFIX.NOTIFICATION);
+  await AsyncStorage.removeItem('token');
 };
