@@ -3,6 +3,7 @@ import { UseMutationResult, useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { useRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
 import {
   APIErrorResponse,
@@ -23,6 +24,7 @@ export const useAuth = (): UseMutationResult<
 > => {
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
+  const navigation = useNavigation();
   const userProfile = useFetchUser();
 
   return useMutation(
@@ -37,7 +39,16 @@ export const useAuth = (): UseMutationResult<
     {
       onSuccess: async ({ data }) => {
         await AsyncStorage.setItem('token', data);
-        navigate(auth.isCurrentStudent ? 'StudentVerify' : 'Main');
+        if (auth.isCurrentStudent) {
+          navigate('StudentVerify');
+        } else {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'Main' }],
+            }),
+          );
+        }
         userProfile.refetch();
       },
       onError: (error) => {

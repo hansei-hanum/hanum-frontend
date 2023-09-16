@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
@@ -31,6 +31,12 @@ export const UserInfoScreen: React.FC = () => {
   const onLogout = async () => {
     await AsyncStorage.removeItem('token');
     mutate;
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AuthMain' }],
+      }),
+    );
     navigate('AuthMain');
   };
 
