@@ -1,4 +1,6 @@
-import { API_SUFFIX, instance } from './api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { API_SUFFIX, instance, setAccessToken } from './api';
 
 export interface ConnectNotificationValue {
   token: string;
@@ -14,6 +16,9 @@ export const connectNotification = async ({ token, platform }: ConnectNotificati
 };
 
 export const disconnectNotification = async () => {
+  const token = await AsyncStorage.getItem('token');
+  if (!token) return null;
+  setAccessToken(token);
   const { data } = await instance.delete(API_SUFFIX.NOTIFICATION);
   return data;
 };

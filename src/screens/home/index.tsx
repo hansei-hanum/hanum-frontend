@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
@@ -7,7 +7,16 @@ import { Alert, Linking, PermissionsAndroid, TouchableOpacity } from 'react-nati
 
 import messaging from '@react-native-firebase/messaging';
 
-import { AlertBox, HanumPay, Timer, Calendar, Header } from 'src/components';
+import {
+  AlertBox,
+  HanumPay,
+  Timer,
+  Calendar,
+  Header,
+  DummyContainer,
+  Modal,
+  Button,
+} from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { PartyIcon } from 'src/assets';
@@ -18,6 +27,8 @@ import { Logo } from '../../../assets/images';
 import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [messageSent, setMessageSent] = useState<boolean>(false);
   const { mutate } = useConnectNotification();
 
   const requestUserPermission = async () => {
@@ -41,6 +52,7 @@ export const HomeScreen: React.FC = () => {
   };
 
   const messageListener = async () => {
+    console.log('Before setting up message listener');
     await messaging().onMessage(async (remoteMessage) => {
       await Notifier.showNotification({
         title: remoteMessage.notification?.title || '알림',
@@ -49,7 +61,9 @@ export const HomeScreen: React.FC = () => {
         showAnimationDuration: 500,
         hideOnPress: false,
       });
+      setMessageSent(true);
     });
+    console.log('After setting up message listener');
   };
 
   useEffect(() => {
@@ -58,7 +72,14 @@ export const HomeScreen: React.FC = () => {
     messaging()
       .subscribeToTopic('announcement')
       .then(() => console.log('전체 공지사항 채널 구독 성공'));
+    if (
+      (messageSent && messaging.AuthorizationStatus.NOT_DETERMINED) ||
+      (messageSent && messaging.AuthorizationStatus.DENIED)
+    ) {
+      setModalVisible(true);
+    }
   }, []);
+
   return (
     <S.HomeScreenWrapper>
       <S.HomeScreenContainer
@@ -101,6 +122,17 @@ export const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         </S.HomeScreenHeaderIconContainer>
       </Header>
+      {modalVisible && (
+        <>
+          <DummyContainer />
+          <Modal
+            title="알림 권한"
+            text="알림 수신을 위해서는 시스템 설정에서 알림 수신을 허용해주세요."
+            modalVisible={modalVisible}
+            button={<Button onPress={() => setModalVisible(false)}>확인</Button>}
+          />
+        </>
+      )}
     </S.HomeScreenWrapper>
   );
 };
