@@ -10,3 +10,8 @@ export const StudentVerifyInput = styled(TextInput)`
   font-size: 20px;
   background-color: #f4f4f5;
 `;
+
+export const StudentVerifyTextContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;

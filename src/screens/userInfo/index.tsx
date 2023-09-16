@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
-import { useGetUser, useNavigate } from 'src/hooks';
+import { useGetUser, useInitNavigate, useNavigate } from 'src/hooks';
 import { colors } from 'src/styles';
 import { UserLogo } from 'src/assets/';
 import { disconnectNotification } from 'src/api';
@@ -15,6 +15,7 @@ import * as S from './styled';
 export const UserInfoScreen: React.FC = () => {
   const navigation = useNavigation();
   const navigate = useNavigate();
+  const { initNavigate } = useInitNavigate();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
   const { userData, userProfile, verifyUser, formatUser, userType } = useGetUser();
@@ -29,12 +30,7 @@ export const UserInfoScreen: React.FC = () => {
 
   const onLogout = () => {
     disconnectNotification();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'AuthMain' }],
-      }),
-    );
+    initNavigate('AuthMain');
   };
 
   const onSubmit = () => {

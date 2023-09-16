@@ -5,11 +5,12 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import { TouchableOpacity } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
 
 import { Text, Auth, DummyContainer, Modal, Button } from 'src/components';
-import { useStudentCodeVerify } from 'src/hooks';
+import { useInitNavigate, useStudentCodeVerify } from 'src/hooks';
 import { studentVerifyState } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
 import { colors } from 'src/styles';
@@ -27,8 +28,12 @@ export const StudentVerifyScreen: React.FC = () => {
     value,
     setValue,
   });
+
   const { mutate } = useStudentCodeVerify();
+
   const studentVerify = useRecoilValue(studentVerifyState);
+
+  const { initNavigate } = useInitNavigate();
 
   const onChangeText = (text: string) => {
     text.length === 6 ? setIsDisabled(false) : setIsDisabled(true);
@@ -49,6 +54,24 @@ export const StudentVerifyScreen: React.FC = () => {
     <>
       <Auth
         headerText={`재학생 인증 코드를\n` + `입력해주세요`}
+        subHeaderText={
+          <S.StudentVerifyTextContainer>
+            <Text size={15} color={colors.placeholder}>
+              아직 인증 코드가 없나요?
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                initNavigate('Main');
+              }}
+              activeOpacity={0.5}
+            >
+              <Text size={15} color={colors.primary}>
+                {' '}
+                나중에 하기
+              </Text>
+            </TouchableOpacity>
+          </S.StudentVerifyTextContainer>
+        }
         bottomText="인증하기"
         isDisabled={isDisabled}
         onPress={onCheckSubmit}
@@ -80,10 +103,12 @@ export const StudentVerifyScreen: React.FC = () => {
           <Modal
             title="본인 확인"
             text={
-              `${formattedDepartment(studentVerify.department)} ${studentVerify.grade}학년 ${
-                studentVerify.classroom
-              }반 ${studentVerify.number}번 학생이 맞나요? \n` +
-              `본인과 정보가 다를 경우 반드시 문의를 통해 정정해주세요. 그렇지 않을 경우 나중에 계정이 이용 제한될 수도 있어요.`
+              studentVerify.department && studentVerify.grade && studentVerify.classroom
+                ? `${formattedDepartment(studentVerify.department)} ${studentVerify.grade}학년 ${
+                    studentVerify.classroom
+                  }반 ${studentVerify.number}번 학생이 맞나요? \n` +
+                  `본인과 정보가 다를 경우 반드시 문의를 통해 정정해주세요. 그렇지 않을 경우 나중에 계정이 이용 제한될 수도 있어요.`
+                : `인증 코드가 잘못되었어요. \n` + `인증 코드를 다시 확인해주세요.`
             }
             modalVisible={modalVisible}
             button={
