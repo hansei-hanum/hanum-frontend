@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
-import { useGetUser, useNavigate } from 'src/hooks';
+import { useDisConnectNotification, useGetUser, useNavigate } from 'src/hooks';
 import { colors } from 'src/styles';
 import { UserLogo } from 'src/assets/';
 
@@ -15,6 +15,7 @@ import * as S from './styled';
 export const UserInfoScreen: React.FC = () => {
   const navigation = useNavigation();
   const navigate = useNavigate();
+  const { mutate } = useDisConnectNotification();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
   const { userData, userProfile, verifyUser, formatUser, userType } = useGetUser();
@@ -29,6 +30,7 @@ export const UserInfoScreen: React.FC = () => {
 
   const onLogout = async () => {
     await AsyncStorage.removeItem('token');
+    mutate;
     navigate('AuthMain');
   };
 

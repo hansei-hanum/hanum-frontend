@@ -12,3 +12,8 @@ export const connectNotification = async ({ token, platform }: ConnectNotificati
   });
   return data;
 };
+
+export const disconnectNotification = async () => {
+  const { data } = await instance.delete(API_SUFFIX.NOTIFICATION);
+  return data;
+};

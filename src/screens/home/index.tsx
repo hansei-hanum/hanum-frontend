@@ -11,7 +11,7 @@ import { AlertBox, HanumPay, Timer, Calendar, Header } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { PartyIcon } from 'src/assets';
-import { useConnectNotification } from 'src/hooks/query/useConnectNotification';
+import { useConnectNotification } from 'src/hooks';
 
 import { Logo } from '../../../assets/images';
 
@@ -19,7 +19,8 @@ import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
   const { mutate } = useConnectNotification();
-  async function requestUserPermission() {
+
+  const requestUserPermission = async () => {
     let isGranted = false;
 
     if (isIos) {
@@ -37,7 +38,7 @@ export const HomeScreen: React.FC = () => {
       const token = await messaging().getToken();
       mutate({ token: token, platform: isIos ? 'IOS' : 'ANDROID' });
     }
-  }
+  };
 
   const messageListener = async () => {
     await messaging().onMessage(async (remoteMessage) => {

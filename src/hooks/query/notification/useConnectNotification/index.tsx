@@ -11,14 +11,11 @@ import {
 } from 'src/api';
 
 export const useConnectNotification = (): UseMutationResult<
-  APIResponse<any>,
+  APIResponse<null>,
   AxiosError<APIErrorResponse>,
   ConnectNotificationValue
 > => {
   return useMutation('useConnectNotification', connectNotification, {
-    onSuccess: ({ data }) => {
-      console.log(data);
-    },
     onError: (error) => {
       console.log(error);
     },
