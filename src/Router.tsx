@@ -4,6 +4,7 @@ import { StatusBar, View, Image as RNImage } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SplashScreen from 'react-native-splash-screen';
 
 import {
   AuthMainScreen,
@@ -51,19 +52,8 @@ export const Router: React.FC = () => {
 
   const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
-  if (!isReady || isLoading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#FFFFFF',
-        }}
-      >
-        <RNImage source={SplashImage} style={{ resizeMode: 'center' }} />
-      </View>
-    );
+  if (isReady) {
+    SplashScreen.hide();
   }
 
   return (
@@ -72,15 +62,19 @@ export const Router: React.FC = () => {
         screenOptions={{ headerShown: false }}
         initialRouteName={data ? 'Main' : 'AuthMain'}
       >
-        <Stack.Group>
+        <Stack.Group screenOptions={{ gestureEnabled: false }}>
+          <Stack.Screen name="Main" component={MainScreen} />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="AuthMain" component={AuthMainScreen} />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen name="Phone" component={PhoneScreen} />
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
           <Stack.Screen name="StudentVerify" component={StudentVerifyScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="Main" component={MainScreen} />
           <Stack.Screen name="Calendar" component={CalendarScreen} />
           <Stack.Screen name="UserInfo" component={UserInfoScreen} />
           <Stack.Screen name="WebView" component={WebViewScreen} />
