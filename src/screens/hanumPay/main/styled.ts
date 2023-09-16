@@ -10,7 +10,6 @@ export const HanumPayWrapper = styled.SafeAreaView`
 
 export const HanumPayContainer = styled.View`
   width: 100%;
-  /* flex: 1; */
   padding: 20px;
   flex-direction: column;
   row-gap: 36px;
