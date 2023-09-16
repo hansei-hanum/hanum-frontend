@@ -37,7 +37,7 @@
     "expo-splash-screen": "^0.20.5",
     "expo-status-bar": "~1.6.0",
     "global": "^4.4.0",
-    "lottie-react-native": "^6.2.0",
+    "lottie-react-native": "^6.3.0",
     "moment": "^2.29.4",
     "patch-package": "^8.0.0",
     "path": "^0.12.7",

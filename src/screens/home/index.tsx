@@ -54,6 +54,7 @@ export const HomeScreen: React.FC = () => {
   const messageListener = async () => {
     console.log('Before setting up message listener');
     await messaging().onMessage(async (remoteMessage) => {
+      console.log('FCM Message Data:', remoteMessage);
       await Notifier.showNotification({
         title: remoteMessage.notification?.title || '알림',
         description: remoteMessage.notification?.body,
