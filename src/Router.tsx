@@ -62,7 +62,7 @@ export const Router: React.FC = () => {
         screenOptions={{ headerShown: false }}
         initialRouteName={data ? 'Main' : 'AuthMain'}
       >
-        <Stack.Group screenOptions={{ gestureEnabled: false }}>
+        <Stack.Group>
           <Stack.Screen name="AuthMain" component={AuthMainScreen} />
           <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Group>

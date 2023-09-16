@@ -35,7 +35,6 @@ export const UserInfoScreen: React.FC = () => {
         routes: [{ name: 'AuthMain' }],
       }),
     );
-    navigate('AuthMain');
   };
 
   const onSubmit = () => {
