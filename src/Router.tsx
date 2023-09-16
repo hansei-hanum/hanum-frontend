@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, View, Image as RNImage } from 'react-native';
+import { StatusBar } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SplashScreen from 'react-native-splash-screen';
 
 import {
   AuthMainScreen,
@@ -23,8 +23,6 @@ import {
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
-
-const SplashImage = require('../assets/images/splash.png');
 
 const Stack = createStackNavigator();
 
@@ -52,8 +50,10 @@ export const Router: React.FC = () => {
 
   const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
-  if (isReady) {
+  if (isReady && !isLoading) {
     SplashScreen.hide();
+  } else if (!isReady || isLoading) {
+    return null;
   }
 
   return (
@@ -64,15 +64,13 @@ export const Router: React.FC = () => {
       >
         <Stack.Group>
           <Stack.Screen name="AuthMain" component={AuthMainScreen} />
-          <Stack.Screen name="Main" component={MainScreen} />
-        </Stack.Group>
-        <Stack.Group>
           <Stack.Screen name="Phone" component={PhoneScreen} />
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
           <Stack.Screen name="StudentVerify" component={StudentVerifyScreen} />
         </Stack.Group>
         <Stack.Group>
+          <Stack.Screen name="Main" component={MainScreen} />
           <Stack.Screen name="Calendar" component={CalendarScreen} />
           <Stack.Screen name="UserInfo" component={UserInfoScreen} />
           <Stack.Screen name="WebView" component={WebViewScreen} />
