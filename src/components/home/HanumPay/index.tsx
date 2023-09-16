@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 
 import { Button, Content, Text } from 'src/components';
 import { colors } from 'src/styles';
@@ -25,15 +26,19 @@ export const HanumPayButton: React.FC<HanumPayButton> = ({ onPress, text }) => {
 
 export const HanumPay: React.FC = () => {
   const navigate = useNavigate();
-  const { data } = useGetPaymentAmount();
+  const { isLoading, data } = useGetPaymentAmount();
   const balanceAmount = data?.data?.balanceAmount;
 
   return (
     <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPayMain">
       <S.HanumPayContainer>
-        <Text size={24} fontFamily="bold" color={colors.black}>
-          {balanceAmount ? formattedMoney(balanceAmount.toString()) : '0'}원
-        </Text>
+        {!isLoading ? (
+          <Text size={24} fontFamily="bold" color={colors.black}>
+            {balanceAmount ? formattedMoney(balanceAmount.toString()) : '0'}원
+          </Text>
+        ) : (
+          <ActivityIndicator size={26} color={colors.primary} />
+        )}
         <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
       </S.HanumPayContainer>
     </Content>

@@ -16,6 +16,7 @@ import {
 } from 'src/components';
 import { colors } from 'src/styles';
 import { boothState } from 'src/atoms';
+import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -24,19 +25,27 @@ export const HanumPayQRScreen: React.FC = () => {
   const setBooth = useSetRecoilState(boothState);
 
   const navigation = useNavigation();
+  const navigate = useNavigate();
 
   /** 바코드가 감지되면 실행되는 함수 */
   const onSuccess = ({ data }: any) => {
-    console.log('onSuccess', data);
-    if (typeof data.id === 'number' && typeof data.name === 'string') {
-      setBooth({
-        id: data.id,
-        name: data.name,
-      });
-    } else {
+    try {
+      console.log('data', data);
+      data = JSON.parse(data);
+      if (typeof data.id === 'number' && typeof data.name === 'string') {
+        console.log('data', data);
+        setBooth({
+          id: data.id,
+          name: data.name,
+        });
+        navigate('HanumPay');
+      } else {
+        return null;
+      }
+    } catch (e) {
+      console.log(e);
       return null;
     }
-    console.log(data);
   };
 
   const closeModal = () => {
