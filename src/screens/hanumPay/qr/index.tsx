@@ -65,17 +65,19 @@ export const HanumPayQRScreen: React.FC = () => {
   }, []);
 
   return (
-    <S.HanumPayQRWrapper>
-      <S.HanumPayQRHeaderWrapper>
-        <HanumPayHeader title="결제하기" />
-      </S.HanumPayQRHeaderWrapper>
-      {modalVisible ? (
-        <QRScannerBox.Permission>
-          <QRScannerBox />
-        </QRScannerBox.Permission>
-      ) : (
-        <QRScanner onSuccess={onSuccess} />
-      )}
+    <>
+      <S.HanumPayQRWrapper>
+        <S.HanumPayQRHeaderWrapper>
+          <HanumPayHeader title="결제하기" />
+        </S.HanumPayQRHeaderWrapper>
+        {modalVisible ? (
+          <QRScannerBox.Permission>
+            <QRScannerBox />
+          </QRScannerBox.Permission>
+        ) : (
+          <QRScanner onSuccess={onSuccess} />
+        )}
+      </S.HanumPayQRWrapper>
       {modalVisible && (
         <>
           <DummyContainer />
@@ -108,6 +110,6 @@ export const HanumPayQRScreen: React.FC = () => {
           />
         </>
       )}
-    </S.HanumPayQRWrapper>
+    </>
   );
 };

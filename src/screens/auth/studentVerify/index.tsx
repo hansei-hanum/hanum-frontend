@@ -12,6 +12,7 @@ import { Text, Auth, DummyContainer, Modal, Button } from 'src/components';
 import { useStudentCodeVerify } from 'src/hooks';
 import { studentVerifyState } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
+import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -86,14 +87,19 @@ export const StudentVerifyScreen: React.FC = () => {
             }
             modalVisible={modalVisible}
             button={
-              <S.StudentVerifyButtonContainer>
-                <Button onPress={() => setModalVisible(false)} isSecondary isModalBtn>
+              <Button.Container>
+                <Button
+                  onPress={() => setModalVisible(false)}
+                  backgroundColor={colors.secondary}
+                  textColor={colors.black}
+                  isModalBtn
+                >
                   아니오
                 </Button>
                 <Button onPress={onSubmit} isModalBtn>
                   예!
                 </Button>
-              </S.StudentVerifyButtonContainer>
+              </Button.Container>
             }
           />
         </>
