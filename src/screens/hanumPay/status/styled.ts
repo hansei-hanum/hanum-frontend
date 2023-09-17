@@ -6,6 +6,8 @@ import { colors } from 'src/styles';
 export const StatusScreenWrapper = styled.SafeAreaView`
   flex: 1;
   background-color: ${colors.background};
+  justify-content: space-between;
+  padding: 20px;
 `;
 
 export const StatusScreenContainer = styled.View`

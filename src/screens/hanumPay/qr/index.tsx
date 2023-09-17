@@ -55,27 +55,30 @@ export const HanumPayQRScreen: React.FC = () => {
 
   useEffect(() => {
     request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
-      if (result === RESULTS.GRANTED) {
-      } else if (result === RESULTS.DENIED) {
-        setModalVisible(true);
-      } else if (result === RESULTS.BLOCKED) {
+      if (
+        result === RESULTS.DENIED ||
+        result === RESULTS.BLOCKED ||
+        result === RESULTS.UNAVAILABLE
+      ) {
         setModalVisible(true);
       }
     });
   }, []);
 
   return (
-    <S.HanumPayQRWrapper>
-      <S.HanumPayQRHeaderWrapper>
-        <HanumPayHeader title="결제하기" />
-      </S.HanumPayQRHeaderWrapper>
-      {modalVisible ? (
-        <QRScannerBox.Permission>
-          <QRScannerBox />
-        </QRScannerBox.Permission>
-      ) : (
-        <QRScanner onSuccess={onSuccess} />
-      )}
+    <>
+      <S.HanumPayQRWrapper>
+        <S.HanumPayQRHeaderWrapper>
+          <HanumPayHeader title="결제하기" />
+        </S.HanumPayQRHeaderWrapper>
+        {modalVisible ? (
+          <QRScannerBox.Permission>
+            <QRScannerBox />
+          </QRScannerBox.Permission>
+        ) : (
+          <QRScanner onSuccess={onSuccess} />
+        )}
+      </S.HanumPayQRWrapper>
       {modalVisible && (
         <>
           <DummyContainer />
@@ -108,6 +111,6 @@ export const HanumPayQRScreen: React.FC = () => {
           />
         </>
       )}
-    </S.HanumPayQRWrapper>
+    </>
   );
 };

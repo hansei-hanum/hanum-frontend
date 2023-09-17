@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const API_SUFFIX = {
   HANUM_PAY_BASEURL: 'https://pay.hanum.us',
-  AUTH_BASEURL: 'https://account.hanum.us',
+  HANUM_BASEURL: 'https://account.hanum.us',
   REGISTER: '/auth/register/',
   LOGIN: '/auth/login/',
   PHONE: '/auth/phone/',
@@ -12,10 +12,11 @@ export const API_SUFFIX = {
   PAYMENT_DETAIL: '/eoullim/balance/detail',
   PAYMENT: '/eoullim/balance/payment',
   PAYMENT_AMOUNT: '/eoullim/balance/amount',
+  NOTIFICATION: '/users/@me/tokens/fcm/',
 };
 
-export const authInstance = axios.create({
-  baseURL: API_SUFFIX.AUTH_BASEURL,
+export const instance = axios.create({
+  baseURL: API_SUFFIX.HANUM_BASEURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -40,10 +41,10 @@ export interface APIErrorResponse {
 
 export const setAccessToken = (token: string | null) => {
   if (token) {
-    authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     payInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {
-    delete authInstance.defaults.headers.common.Authorization;
+    delete instance.defaults.headers.common.Authorization;
     delete payInstance.defaults.headers.common.Authorization;
   }
 };

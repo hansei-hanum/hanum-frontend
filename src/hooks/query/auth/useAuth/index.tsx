@@ -14,7 +14,7 @@ import {
   AuthResponse,
 } from 'src/api';
 import { authState } from 'src/atoms';
-import { useFetchUser, useNavigate } from 'src/hooks';
+import { useFetchUser, useInitNavigate, useNavigate } from 'src/hooks';
 
 export const useAuth = (): UseMutationResult<
   APIResponse<AuthResponse>,
@@ -23,6 +23,7 @@ export const useAuth = (): UseMutationResult<
 > => {
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
+  const { initNavigate } = useInitNavigate();
   const userProfile = useFetchUser();
 
   return useMutation(
@@ -37,7 +38,11 @@ export const useAuth = (): UseMutationResult<
     {
       onSuccess: async ({ data }) => {
         await AsyncStorage.setItem('token', data);
-        navigate(auth.isCurrentStudent ? 'StudentVerify' : 'Main');
+        if (auth.isCurrentStudent) {
+          navigate('StudentVerify');
+        } else {
+          initNavigate('Main');
+        }
         userProfile.refetch();
       },
       onError: (error) => {

@@ -39,33 +39,35 @@ export const AuthMainScreen: React.FC = () => {
   }, [isFocused]);
 
   return (
-    <S.AuthMainScreenWrapper>
-      <S.AuthMainScreenContainer>
-        <S.AuthMainScreenLogoContainer>
-          <WithLocalSvg width={198} height={55} asset={Logo} />
-          <Text size={17} fontFamily="bold">
-            한세인 도우미, 한움
-          </Text>
-        </S.AuthMainScreenLogoContainer>
-        <S.AuthMainScreenMainSection>
-          <Button onPress={() => navigate('Phone')}>로그인</Button>
-          <Button
-            textColor={colors.black}
-            backgroundColor={colors.secondary}
-            onPress={() => setModalVisible(true)}
-          >
-            회원가입
-          </Button>
-          <S.AuthMainScreenTextContainer>
-            <Text size={fontSize}>교직원이신가요? </Text>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('Staff')}>
-              <Text size={fontSize} color={colors.primary}>
-                교직원 회원가입 요청
-              </Text>
-            </TouchableOpacity>
-          </S.AuthMainScreenTextContainer>
-        </S.AuthMainScreenMainSection>
-      </S.AuthMainScreenContainer>
+    <>
+      <S.AuthMainScreenWrapper>
+        <S.AuthMainScreenContainer>
+          <S.AuthMainScreenLogoContainer>
+            <WithLocalSvg width={198} height={55} asset={Logo} />
+            <Text size={17} fontFamily="bold">
+              한세인 도우미, 한움
+            </Text>
+          </S.AuthMainScreenLogoContainer>
+          <S.AuthMainScreenMainSection>
+            <Button onPress={() => navigate('Phone')}>로그인</Button>
+            <Button
+              textColor={colors.black}
+              backgroundColor={colors.secondary}
+              onPress={() => setModalVisible(true)}
+            >
+              회원가입
+            </Button>
+            <S.AuthMainScreenTextContainer>
+              <Text size={fontSize}>교직원이신가요? </Text>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('Staff')}>
+                <Text size={fontSize} color={colors.primary}>
+                  교직원 회원가입 요청
+                </Text>
+              </TouchableOpacity>
+            </S.AuthMainScreenTextContainer>
+          </S.AuthMainScreenMainSection>
+        </S.AuthMainScreenContainer>
+      </S.AuthMainScreenWrapper>
       {modalVisible && (
         <>
           <DummyContainer />
@@ -77,7 +79,7 @@ export const AuthMainScreen: React.FC = () => {
             }
             modalVisible={modalVisible}
             button={
-              <S.AuthMainScreenButtonContainer>
+              <Button.Container>
                 <Button
                   onPress={onButtonPress}
                   textColor={colors.black}
@@ -89,11 +91,11 @@ export const AuthMainScreen: React.FC = () => {
                 <Button onPress={() => onButtonPress(true)} isModalBtn>
                   예!
                 </Button>
-              </S.AuthMainScreenButtonContainer>
+              </Button.Container>
             }
           />
         </>
       )}
-    </S.AuthMainScreenWrapper>
+    </>
   );
 };

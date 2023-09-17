@@ -1,12 +1,14 @@
 import { useRecoilValue } from 'recoil';
 
-import { Text } from 'src/components';
+import { Button, Text } from 'src/components';
 import { FailedLottie, SuccessLottie } from 'src/assets';
 import { hanumPayState } from 'src/atoms';
+import { useInitNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 export const HanumPayStatusScreen: React.FC = () => {
+  const { initNavigate } = useInitNavigate();
   const hanumPay = useRecoilValue(hanumPayState);
   return (
     <S.StatusScreenWrapper>
@@ -26,6 +28,7 @@ export const HanumPayStatusScreen: React.FC = () => {
           </Text>
         </Text.Column>
       </S.StatusScreenContainer>
+      <Button onPress={() => initNavigate('Main')}>확인</Button>
     </S.StatusScreenWrapper>
   );
 };

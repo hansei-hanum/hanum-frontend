@@ -11,9 +11,7 @@ export const StudentVerifyInput = styled(TextInput)`
   background-color: #f4f4f5;
 `;
 
-export const StudentVerifyButtonContainer = styled.View`
-  width: 100%;
+export const StudentVerifyTextContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
 `;
