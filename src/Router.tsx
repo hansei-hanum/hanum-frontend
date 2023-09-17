@@ -20,6 +20,7 @@ import {
   HanumPayQRScreen,
   HanumPayStatusScreen,
   HanumPayMainScreen,
+  TeacherVerifyScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -68,6 +69,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
           <Stack.Screen name="StudentVerify" component={StudentVerifyScreen} />
+          <Stack.Screen name="TeacherVerify" component={TeacherVerifyScreen} />
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="Main" component={MainScreen} />
