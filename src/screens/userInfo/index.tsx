@@ -111,8 +111,15 @@ export const UserInfoScreen: React.FC = () => {
             modalVisible={isSecessionClick}
             button={
               <Button.Container>
-                <Button onPress={() => setIsSecessionClick(false)}>취소</Button>
-                <Button onPress={onSubmit} backgroundColor={colors.danger}>
+                <Button
+                  onPress={() => setIsSecessionClick(false)}
+                  backgroundColor={colors.lightGray}
+                  textColor={colors.white}
+                  isModalBtn
+                >
+                  취소
+                </Button>
+                <Button onPress={onSubmit} backgroundColor={colors.danger} isModalBtn>
                   확인
                 </Button>
               </Button.Container>
