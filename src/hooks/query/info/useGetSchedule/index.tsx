@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse } from 'src/api';
-import { getSchedule } from 'src/api/info';
+import { GetScheduleResponse, getSchedule } from 'src/api/info';
 
 export const useGetSchedule = (): UseQueryResult<
-  APIResponse<any>,
+  APIResponse<GetScheduleResponse[]>,
   AxiosError<APIErrorResponse>
 > => {
   return useQuery('schedule', getSchedule, {
