@@ -5,12 +5,13 @@ import { ScrollView } from 'react-native';
 import { Text, ClassList, WeekDay } from 'src/components';
 import { NUMBER_LIST } from 'src/constants';
 import { ScheduleIcon } from 'src/assets';
-import { useGetTimeTable } from 'src/hooks';
+import { useGetTimeTable, useGetUser } from 'src/hooks';
 
 import * as S from './styled';
 
 export const ScheduleScreen: React.FC = () => {
   const { data } = useGetTimeTable();
+  const { classroom, grade, department } = useGetUser();
 
   const checkToday = (date: string) => {
     const today = new Date().getDay();
@@ -29,7 +30,9 @@ export const ScheduleScreen: React.FC = () => {
               시간표
             </Text>
           </S.ScheduleScreenIconContainer>
-          <Text size={17}>클라우드보안과 2학년 2반</Text>
+          <Text size={17}>
+            {department} {grade}학년 {classroom}반
+          </Text>
         </S.ScheduleScreenHeader>
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
           <WeekDay />

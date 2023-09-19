@@ -29,9 +29,8 @@ export const ScheduleScreenIconContainer = styled.View`
 `;
 
 export const ScheduleScreenTimeContainer = styled.View`
-  justify-content: center;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   padding-right: 10px;
   padding-bottom: 6px;
 `;

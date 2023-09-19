@@ -53,7 +53,7 @@ export const TeacherVerifyScreen: React.FC = () => {
         </S.TeacherVerifyHeaderWrapper>
         {modalVisible ? (
           <QRScannerBox.Permission>
-            <QRScannerBox />
+            <QRScannerBox text={'교직원 인증 비콘 QR코드를\n' + '아래 상자에 맞춰주세요'} />
           </QRScannerBox.Permission>
         ) : (
           <QRScanner onSuccess={onSuccess} />
