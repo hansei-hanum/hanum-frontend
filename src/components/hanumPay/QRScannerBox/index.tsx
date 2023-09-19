@@ -5,7 +5,7 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-// const QRScannerContent: React.FC = () => {
+const QRScannerContent: React.FC = () => {
   return (
     <S.HanumPayQRBoxContainer>
       <Text.Column>
