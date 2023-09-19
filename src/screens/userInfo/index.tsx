@@ -110,9 +110,12 @@ export const UserInfoScreen: React.FC = () => {
             text={modalContent}
             modalVisible={isSecessionClick}
             button={
-              <Button onPress={onSubmit} backgroundColor={colors.danger}>
-                확인
-              </Button>
+              <Button.Container>
+                <Button onPress={() => setIsSecessionClick(false)}>취소</Button>
+                <Button onPress={onSubmit} backgroundColor={colors.danger}>
+                  확인
+                </Button>
+              </Button.Container>
             }
           />
         </>
