@@ -7,19 +7,9 @@ import { Alert, Linking, PermissionsAndroid, TouchableOpacity } from 'react-nati
 
 import messaging from '@react-native-firebase/messaging';
 
-import {
-  AlertBox,
-  HanumPay,
-  Timer,
-  Calendar,
-  Header,
-  DummyContainer,
-  Modal,
-  Button,
-} from 'src/components';
+import { Timer, Calendar, Header, DummyContainer, Modal, Button } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
-import { PartyIcon } from 'src/assets';
 import { useConnectNotification } from 'src/hooks';
 
 import { Logo } from '../../../assets/images';

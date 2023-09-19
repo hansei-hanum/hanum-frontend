@@ -22,15 +22,18 @@ export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible,
           <Text size={24} fontFamily="bold">
             {title}
           </Text>
-          {linkText}
-          <Text size={16}>
-            {text?.split('\n').map((line, index) => (
-              <Text size={16} key={line}>
-                {line}
-                {index !== text.split('\n').length - 1 && <>{'\n'}</>}
-              </Text>
-            ))}
-          </Text>
+          {linkText ? (
+            <>{linkText}</>
+          ) : (
+            <Text size={16}>
+              {text?.split('\n').map((line, index) => (
+                <Text size={16} key={line}>
+                  {line}
+                  {index !== text.split('\n').length - 1 && <>{'\n'}</>}
+                </Text>
+              ))}
+            </Text>
+          )}
           {button}
         </S.ModalContainer>
       </S.ModalWrapper>

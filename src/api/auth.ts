@@ -92,3 +92,8 @@ export const studentCodeVerify = async ({ code, isCheck }: StudentCodeVerifyValu
     return data;
   }
 };
+
+export const deleteUser = async () => {
+  await authInstance.delete(`${API_SUFFIX.USERS}@me/`);
+  await AsyncStorage.removeItem('token');
+};
