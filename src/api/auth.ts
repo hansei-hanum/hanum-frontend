@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { API_SUFFIX, instance, setAccessToken } from './api';
+import { API_SUFFIX, authInstance, setAccessToken } from './api';
 
 export interface PhoneValue {
   phone: string;
@@ -47,14 +47,14 @@ export interface StudentCodeVerifyValue {
 }
 
 export const phone = async ({ phone }: PhoneValue) => {
-  const { data } = await instance.post(API_SUFFIX.PHONE, {
+  const { data } = await authInstance.post(API_SUFFIX.PHONE, {
     phone,
   });
   return data;
 };
 
 export const register = async ({ phone, code, name }: RegisterValues) => {
-  const { data } = await instance.post(API_SUFFIX.REGISTER, {
+  const { data } = await authInstance.post(API_SUFFIX.REGISTER, {
     phone,
     code,
     name,
@@ -63,7 +63,7 @@ export const register = async ({ phone, code, name }: RegisterValues) => {
 };
 
 export const login = async ({ phone, code }: LoginValues) => {
-  const { data } = await instance.post(API_SUFFIX.LOGIN, {
+  const { data } = await authInstance.post(API_SUFFIX.LOGIN, {
     phone,
     code,
   });
@@ -74,7 +74,7 @@ export const fetchUser = async () => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
-  const { data } = await instance.get(`${API_SUFFIX.USERS}@me/`);
+  const { data } = await authInstance.get(`${API_SUFFIX.USERS}@me/`);
   return data;
 };
 
@@ -83,12 +83,17 @@ export const studentCodeVerify = async ({ code, isCheck }: StudentCodeVerifyValu
   if (!token) return null;
   setAccessToken(token);
   if (isCheck) {
-    const { data } = await instance.get(`${API_SUFFIX.KEYS}${code}/`);
+    const { data } = await authInstance.get(`${API_SUFFIX.KEYS}${code}/`);
     return data;
   } else {
-    const { data } = await instance.post(API_SUFFIX.STUDENT_VERIFY, {
+    const { data } = await authInstance.post(API_SUFFIX.STUDENT_VERIFY, {
       code,
     });
     return data;
   }
+};
+
+export const deleteUser = async () => {
+  await authInstance.delete(`${API_SUFFIX.USERS}@me/`);
+  await AsyncStorage.removeItem('token');
 };

@@ -8,12 +8,13 @@ import * as S from './styled';
 
 export interface ModalProps {
   title: string;
-  text: string;
+  linkText?: React.ReactNode;
+  text?: string;
   button: React.ReactNode;
   modalVisible: boolean;
 }
 
-export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible }) => {
+export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible, linkText }) => {
   return (
     <ModalElement animationType="slide" transparent={true} visible={modalVisible}>
       <S.ModalWrapper>
@@ -21,14 +22,18 @@ export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible 
           <Text size={24} fontFamily="bold">
             {title}
           </Text>
-          <Text size={16}>
-            {text.split('\n').map((line, index) => (
-              <Text size={16} key={line}>
-                {line}
-                {index !== text.split('\n').length - 1 && <>{'\n'}</>}
-              </Text>
-            ))}
-          </Text>
+          {linkText ? (
+            <>{linkText}</>
+          ) : (
+            <Text size={16}>
+              {text?.split('\n').map((line, index) => (
+                <Text size={16} key={line}>
+                  {line}
+                  {index !== text.split('\n').length - 1 && <>{'\n'}</>}
+                </Text>
+              ))}
+            </Text>
+          )}
           {button}
         </S.ModalContainer>
       </S.ModalWrapper>

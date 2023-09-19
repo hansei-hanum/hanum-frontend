@@ -73,7 +73,7 @@ export const HanumPayQRScreen: React.FC = () => {
         </S.HanumPayQRHeaderWrapper>
         {modalVisible ? (
           <QRScannerBox.Permission>
-            <QRScannerBox />
+            <QRScannerBox text={'한움페이 결제 QR코드를\n' + '아래 상자에 맞춰주세요'} />
           </QRScannerBox.Permission>
         ) : (
           <QRScanner onSuccess={onSuccess} />

@@ -5,16 +5,24 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
-import { useGetUser, useInitNavigate, useNavigate } from 'src/hooks';
+import { useGetUser, useInitNavigate } from 'src/hooks';
 import { colors } from 'src/styles';
 import { UserLogo } from 'src/assets/';
-import { disconnectNotification } from 'src/api';
+import { deleteUser, disconnectNotification } from 'src/api';
 
 import * as S from './styled';
 
+const modalContent = `회원 탈퇴를 진행하면 즉시 모든 한움 서비스의 제공이 중단되고, 모든 개인정보는 즉시 파기됩니다.
+  이에 따라 그동안 이용하셨던 한움 서비스는 다음과 같이 처리됩니다.
+
+  - 사용한 재학생 인증 코드는 복구되지 않으며, 추후 동일 코드로 재가입하실 수 없습니다.
+
+  회원탈퇴를 진행하면 위와 같은 사항에 동의하신 것으로 간주되며, “회원탈퇴" 버튼을 누르신 순간 이 결정은 돌이킬 수 없게 됩니다.
+
+  정말로 계속하시겠습니까?`;
+
 export const UserInfoScreen: React.FC = () => {
   const navigation = useNavigation();
-  const navigate = useNavigate();
   const { initNavigate } = useInitNavigate();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
@@ -35,7 +43,8 @@ export const UserInfoScreen: React.FC = () => {
 
   const onSubmit = () => {
     setIsSecessionClick(false);
-    navigate('Main');
+    deleteUser();
+    initNavigate('AuthMain');
   };
 
   return (
@@ -98,9 +107,13 @@ export const UserInfoScreen: React.FC = () => {
           <DummyContainer />
           <Modal
             title="탈퇴 절차 안내"
-            text={`이 계정은 탈퇴하기 전에 확인할 사항이 있어요.\n이 계정을 탈퇴하기 위해선 메인 페이지 > 문의하기를 통해 문의해주세요.`}
+            text={modalContent}
             modalVisible={isSecessionClick}
-            button={<Button onPress={onSubmit}>확인</Button>}
+            button={
+              <Button onPress={onSubmit} backgroundColor={colors.danger}>
+                확인
+              </Button>
+            }
           />
         </>
       )}

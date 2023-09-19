@@ -5,12 +5,16 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-const QRScannerContent: React.FC = () => {
+export interface QRScannerProps {
+  text: string;
+}
+
+const QRScannerContent: React.FC<QRScannerProps> = ({ text }) => {
   return (
     <S.HanumPayQRBoxContainer>
       <Text.Column>
         <Text size={16} isCenter color={colors.white}>
-          한움페이 결제 QR코드를 {'\n'}아래 상자에 맞춰주세요
+          {text}
         </Text>
       </Text.Column>
       <S.HanumPayQrBox>

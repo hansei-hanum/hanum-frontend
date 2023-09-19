@@ -39,3 +39,10 @@ export const AuthMainScreenTextContainer = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+
+export const AuthMainTextColumn = styled.View`
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  row-gap: 4px;
+`;

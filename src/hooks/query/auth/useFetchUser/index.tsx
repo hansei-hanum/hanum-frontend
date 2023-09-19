@@ -69,6 +69,9 @@ export const useGetUser = () => {
   return {
     userData: useProfile,
     userProfile: useProfile.profile,
+    classroom,
+    grade,
+    department: formattedDepartment(department),
     verifyUser,
     formatUser,
     userType,
