@@ -1,8 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
+
+export const API_BASEURLS = {
+  PAY: 'https://pay.hanum.us',
+  AUTH: 'https://account.hanum.us',
+  INFO: 'https://info.hanum.us',
+};
 
 export const API_SUFFIX = {
-  HANUM_PAY_BASEURL: 'https://pay.hanum.us',
-  HANUM_BASEURL: 'https://account.hanum.us',
   REGISTER: '/auth/register/',
   LOGIN: '/auth/login/',
   PHONE: '/auth/phone/',
@@ -13,21 +17,27 @@ export const API_SUFFIX = {
   PAYMENT: '/eoullim/balance/payment',
   PAYMENT_AMOUNT: '/eoullim/balance/amount',
   NOTIFICATION: '/users/@me/tokens/fcm/',
+  SCHEDULE: '/schedule/',
 };
 
-export const instance = axios.create({
-  baseURL: API_SUFFIX.HANUM_BASEURL,
+const baseConfig = {
   headers: {
     'Content-Type': 'application/json',
   },
-});
+};
 
-export const payInstance = axios.create({
-  baseURL: API_SUFFIX.HANUM_PAY_BASEURL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export const createAxiosInstance = (baseURL: string): AxiosInstance => {
+  const instance = axios.create({
+    baseURL,
+    ...baseConfig,
+  });
+
+  return instance;
+};
+
+export const authInstance = createAxiosInstance(API_BASEURLS.AUTH);
+export const payInstance = createAxiosInstance(API_BASEURLS.PAY);
+export const infoInstance = createAxiosInstance(API_BASEURLS.INFO);
 
 export interface APIResponse<T = unknown> {
   message: string;
@@ -40,11 +50,13 @@ export interface APIErrorResponse {
 }
 
 export const setAccessToken = (token: string | null) => {
-  if (token) {
-    instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    payInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-  } else {
-    delete instance.defaults.headers.common.Authorization;
-    delete payInstance.defaults.headers.common.Authorization;
-  }
+  const instances = [authInstance, payInstance, infoInstance];
+
+  instances.forEach((instance) => {
+    if (token) {
+      instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    } else {
+      delete instance.defaults.headers.common.Authorization;
+    }
+  });
 };

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { API_SUFFIX, instance, setAccessToken } from './api';
+import { API_SUFFIX, authInstance, setAccessToken } from './api';
 
 export interface ConnectNotificationValue {
   token: string;
@@ -8,7 +8,7 @@ export interface ConnectNotificationValue {
 }
 
 export const connectNotification = async ({ token, platform }: ConnectNotificationValue) => {
-  const { data } = await instance.post(API_SUFFIX.NOTIFICATION, {
+  const { data } = await authInstance.post(API_SUFFIX.NOTIFICATION, {
     token,
     platform,
   });
@@ -19,6 +19,6 @@ export const disconnectNotification = async () => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);
-  await instance.delete(API_SUFFIX.NOTIFICATION);
+  await authInstance.delete(API_SUFFIX.NOTIFICATION);
   await AsyncStorage.removeItem('token');
 };
