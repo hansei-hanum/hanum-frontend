@@ -3,13 +3,13 @@ import { UseQueryResult, useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse } from 'src/api';
-import { GetInfoResponse, getSchedule } from 'src/api/info';
+import { GetInfoResponse, getTimeTable } from 'src/api/info';
 
-export const useGetSchedule = (): UseQueryResult<
+export const useGetTimeTable = (): UseQueryResult<
   APIResponse<GetInfoResponse[]>,
   AxiosError<APIErrorResponse>
 > => {
-  return useQuery('schedule', getSchedule, {
+  return useQuery('timetable', getTimeTable, {
     onError: (error) => {
       console.log(error);
     },

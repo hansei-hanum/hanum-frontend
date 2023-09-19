@@ -3,12 +3,12 @@ import { UseQueryResult, useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse } from 'src/api';
-import { GetMonthScheduleValue, GetScheduleResponse, getMonthSchedule } from 'src/api/info';
+import { GetMonthScheduleValue, GetInfoResponse, getMonthSchedule } from 'src/api/info';
 
 export const useGetMonthSchedule = ({
   month,
 }: GetMonthScheduleValue): UseQueryResult<
-  APIResponse<GetScheduleResponse[]>,
+  APIResponse<GetInfoResponse[]>,
   AxiosError<APIErrorResponse>
 > => {
   return useQuery('schedule', () => getMonthSchedule({ month }), {

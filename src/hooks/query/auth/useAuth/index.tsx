@@ -12,6 +12,7 @@ import {
   login,
   register,
   AuthResponse,
+  setAccessToken,
 } from 'src/api';
 import { authState } from 'src/atoms';
 import { useFetchUser, useInitNavigate, useNavigate } from 'src/hooks';
@@ -38,6 +39,7 @@ export const useAuth = (): UseMutationResult<
     {
       onSuccess: async ({ data }) => {
         await AsyncStorage.setItem('token', data);
+        setAccessToken(data);
         if (auth.isCurrentStudent) {
           navigate('StudentVerify');
         } else {

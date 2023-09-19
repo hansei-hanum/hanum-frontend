@@ -3,12 +3,22 @@ import { WithLocalSvg } from 'react-native-svg';
 import { ScrollView } from 'react-native';
 
 import { Text, ClassList, WeekDay } from 'src/components';
-import { CLASS_LIST, NUMBER_LIST } from 'src/constants';
+import { NUMBER_LIST } from 'src/constants';
 import { ScheduleIcon } from 'src/assets';
+import { useGetTimeTable } from 'src/hooks';
 
 import * as S from './styled';
 
 export const ScheduleScreen: React.FC = () => {
+  const { data } = useGetTimeTable();
+
+  const checkToday = (date: string) => {
+    const today = new Date().getDay();
+    const day = new Date(date).getDay();
+
+    return today === day;
+  };
+
   return (
     <S.ScheduleScreenWrapper>
       <S.ScheduleScreenContainer>
@@ -25,11 +35,9 @@ export const ScheduleScreen: React.FC = () => {
           <WeekDay />
           <S.ScheduleScreenTimeContainer>
             <ClassList list={NUMBER_LIST} isNumber />
-            <ClassList list={CLASS_LIST} />
-            <ClassList list={CLASS_LIST} isToday />
-            <ClassList list={CLASS_LIST} />
-            <ClassList list={CLASS_LIST} />
-            <ClassList list={CLASS_LIST} />
+            {data?.data.map((item) => (
+              <ClassList key={item.date} list={item.data} isToday={checkToday(item.date)} />
+            ))}
           </S.ScheduleScreenTimeContainer>
         </ScrollView>
       </S.ScheduleScreenContainer>

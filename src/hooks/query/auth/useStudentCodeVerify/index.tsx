@@ -35,7 +35,7 @@ export const useStudentCodeVerify = (): UseMutationResult<
       if (message === 'UNAUTHORIZED') {
         setAuth({
           ...auth,
-          errorMessage: '로그인 토큰이 만료되었거나, 존재하지 않습니다.',
+          errorMessage: '로그인 토큰이 만료되었거나, 존재하지 않아요.',
         });
       } else {
         console.log(error, 'error');

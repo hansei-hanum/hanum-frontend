@@ -18,6 +18,7 @@ export const API_SUFFIX = {
   PAYMENT_AMOUNT: '/eoullim/balance/amount',
   NOTIFICATION: '/users/@me/tokens/fcm/',
   SCHEDULE: '/schedule/',
+  TIMETABLE: '/timetable/',
 };
 
 const baseConfig = {

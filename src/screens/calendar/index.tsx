@@ -7,7 +7,7 @@ import { ActivityIndicator } from '@react-native-material/core';
 
 import { ContentBox, GoBackIcon, Icon, Text } from 'src/components';
 import { colors } from 'src/styles';
-import { useGetMonthSchedule } from 'src/hooks/query/info/useGetMonthSchedule';
+import { useGetMonthSchedule } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -85,6 +85,10 @@ export const CalendarScreen: React.FC = () => {
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    monthSchedule.refetch();
+  }, [month]);
+
   return (
     <S.CalendarWrapper>
       <S.CalendarHeaderContainer>
@@ -130,7 +134,6 @@ export const CalendarScreen: React.FC = () => {
             }}
             onMonthChange={({ month }) => {
               setMonth(month.toString());
-              monthSchedule.refetch();
             }}
             onDayPress={(day) => {
               setSelectedDate(day.dateString);
@@ -147,7 +150,7 @@ export const CalendarScreen: React.FC = () => {
               rowGap: 20,
             }}
           >
-            {monthSchedule.data?.data
+            {mothScheduleData?.data
               .find(({ date }) => format(new Date(date), 'yyyy-MM-dd') === selectedDate)
               ?.data.map((item) => (
                 <ContentBox>

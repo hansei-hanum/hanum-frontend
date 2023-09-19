@@ -11,7 +11,7 @@ import { useRecoilValue } from 'recoil';
 
 import { Text, Auth, DummyContainer, Modal, Button } from 'src/components';
 import { useInitNavigate, useStudentCodeVerify } from 'src/hooks';
-import { studentVerifyState } from 'src/atoms';
+import { authState, studentVerifyState } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
 import { colors } from 'src/styles';
 
@@ -32,6 +32,7 @@ export const StudentVerifyScreen: React.FC = () => {
   const { mutate } = useStudentCodeVerify();
 
   const studentVerify = useRecoilValue(studentVerifyState);
+  const authValue = useRecoilValue(authState);
 
   const { initNavigate } = useInitNavigate();
 
@@ -108,7 +109,7 @@ export const StudentVerifyScreen: React.FC = () => {
                     studentVerify.classroom
                   }반 ${studentVerify.number}번 학생이 맞나요? \n` +
                   `본인과 정보가 다를 경우 반드시 문의를 통해 정정해주세요. 그렇지 않을 경우 나중에 계정이 이용 제한될 수도 있어요.`
-                : `인증 코드가 잘못되었어요. \n` + `인증 코드를 다시 확인해주세요.`
+                : `${authValue.errorMessage}`
             }
             modalVisible={modalVisible}
             button={
