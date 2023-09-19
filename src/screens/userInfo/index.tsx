@@ -114,7 +114,7 @@ export const UserInfoScreen: React.FC = () => {
                 <Button
                   onPress={() => setIsSecessionClick(false)}
                   backgroundColor={colors.lightGray}
-                  textColor={colors.white}
+                  textColor={colors.black}
                   isModalBtn
                 >
                   취소
