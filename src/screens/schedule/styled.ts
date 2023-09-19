@@ -11,7 +11,6 @@ export const ScheduleScreenWrapper = styled.SafeAreaView`
 export const ScheduleScreenContainer = styled.View`
   flex: 1;
   padding-top: ${iosCheckHeight ? '10px' : '26px'};
-  padding-bottom: 20px;
 `;
 
 export const ScheduleScreenHeader = styled.View`
@@ -32,5 +31,4 @@ export const ScheduleScreenTimeContainer = styled.View`
   flex-direction: row;
   align-items: flex-start;
   padding-right: 10px;
-  padding-bottom: 6px;
 `;
