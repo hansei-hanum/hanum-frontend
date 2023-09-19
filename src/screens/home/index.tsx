@@ -95,13 +95,6 @@ export const HomeScreen: React.FC = () => {
             rowGap: 20,
           }}
         >
-          <AlertBox
-            icon={PartyIcon}
-            mainText="실시간으로 즐기기"
-            subText="한세어울림한마당 진행 중!"
-            navigateUrl="Main"
-          />
-          <HanumPay />
           <Timer />
           <Calendar />
         </S.HomeScreenContainer>
