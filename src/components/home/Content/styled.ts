@@ -18,7 +18,7 @@ export const ContentTopSectionWrapper = styled(Animated.View)`
 
 export const ContentTopSection = styled(Animated.View)`
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
 `;
 

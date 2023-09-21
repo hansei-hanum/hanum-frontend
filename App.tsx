@@ -3,6 +3,7 @@ import { LogBox } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { NotifierWrapper } from 'react-native-notifier';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import CodePush from "react-native-code-push";
 
 import { RecoilRoot } from 'recoil';
 
@@ -27,4 +28,4 @@ function App() {
   );
 }
 
-export default App;
+export default CodePush(App);

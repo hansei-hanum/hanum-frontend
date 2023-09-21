@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, TouchableOpacity } from 'react-native';
+import { Linking, TouchableOpacity, Image } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import { useRecoilState } from 'recoil';
@@ -47,9 +47,10 @@ export const AuthMainScreen: React.FC = () => {
       <S.AuthMainScreenWrapper>
         <S.AuthMainScreenContainer>
           <S.AuthMainScreenLogoContainer>
-            <WithLocalSvg width={198} height={55} asset={Logo} />
+            {/* <WithLocalSvg width={198} height={55} asset={Logo} /> */}
+            <Image source={Logo} style={{ width: 198, height: 55, resizeMode: 'contain' }} />
             <Text size={17} fontFamily="bold">
-              한세인 도우미, 한움
+              한세인의 도우미, 한움
             </Text>
           </S.AuthMainScreenLogoContainer>
           <S.AuthMainScreenMainSection>

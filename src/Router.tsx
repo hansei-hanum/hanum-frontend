@@ -24,6 +24,7 @@ import {
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
+import { useCodePush } from './hooks'
 
 const Stack = createStackNavigator();
 
@@ -51,7 +52,9 @@ export const Router: React.FC = () => {
 
   const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
-  if (isReady && !isLoading) {
+  const [isUpdating, syncProgress] = useCodePush();
+
+  if (isReady && !isLoading && !isUpdating) {
     SplashScreen.hide();
   } else if (!isReady || isLoading) {
     return null;

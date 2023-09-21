@@ -4,7 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { WithLocalSvg } from 'react-native-svg';
 import { ImageSourcePropType } from 'react-native';
 
-import { ContentBox, Text } from 'src/components';
+import { ContentBox, Text, Icon } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
 import { isIos } from 'src/utils';
@@ -12,7 +12,7 @@ import { isIos } from 'src/utils';
 import * as S from './styled';
 
 export interface ContentProps {
-  icon: ImageSourcePropType;
+  icon: string;
   name: string;
   children?: React.ReactNode;
   navigateUrl?: string;
@@ -36,7 +36,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
         <S.ContentTopSectionWrapper style={navigateUrl || onPress ? animatedStyle : null}>
           <S.ContentTopSection>
             <S.ContentIconContainer>
-              <WithLocalSvg width={32} height={32} asset={icon} />
+              <Icon icon={icon} includeBackground={false}/>
               <Text size={isIos ? 15 : 14} fontFamily="bold">
                 {name}
               </Text>

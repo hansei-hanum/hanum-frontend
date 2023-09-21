@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>CodePushDeploymentKey</key>
+	<string>MawHx0hKTe7OOGPr55FlWJb__r1IaX09yN5F0</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ko</string>
 	<key>CFBundleDisplayName</key>

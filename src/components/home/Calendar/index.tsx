@@ -27,7 +27,7 @@ export const Calendar: React.FC = () => {
   };
 
   return (
-    <Content icon={CalendarIcon} name="학사 일정" navigateUrl="Calendar">
+    <Content icon="📆" name="학사일정" navigateUrl="Calendar">
       <S.CalendarContainer>
         {isLoading ? (
           <ActivityIndicator size={26} />

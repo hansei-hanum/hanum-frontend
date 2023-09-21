@@ -1,9 +1,10 @@
 import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
+import { View } from 'react-native';
 
 import { checkHeight } from 'src/utils';
 
-export const AndroidHeaderBlur = styled(BlurView)`
+export const AndroidHeaderBlur = styled(View)`
   position: absolute;
   width: 100%;
   height: 70px;

@@ -94,7 +94,7 @@ export const CalendarScreen: React.FC = () => {
       <S.CalendarHeaderContainer>
         <GoBackIcon size={28} style={{ marginBottom: 10 }} />
         <S.CalendarTitleContainer>
-          <Icon icon="📆" />
+          <Icon icon="📆" includeBackground={false}/>
           <Text size={20} fontFamily="bold">
             학사일정
           </Text>

@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply plugin: "com.google.gms.google-services"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -92,6 +93,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
@@ -100,7 +109,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -122,6 +131,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    implementation project(':react-native-splash-screen')
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

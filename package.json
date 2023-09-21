@@ -46,6 +46,7 @@
     "react-native-asset": "^2.1.1",
     "react-native-calendars": "^1.1300.0",
     "react-native-camera": "^4.2.1",
+    "react-native-code-push": "^8.1.0",
     "react-native-confirmation-code-field": "^7.3.1",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-notifier": "^1.9.0",

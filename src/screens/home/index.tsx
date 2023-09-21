@@ -3,11 +3,11 @@ import { WithLocalSvg } from 'react-native-svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
-import { Alert, Linking, PermissionsAndroid, TouchableOpacity } from 'react-native';
+import { Alert, Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 
-import { Timer, Calendar, Header, DummyContainer, Modal, Button } from 'src/components';
+import { Timer, Calendar, Header, DummyContainer, Modal, Button, HanumPay } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
@@ -89,17 +89,14 @@ export const HomeScreen: React.FC = () => {
           <Calendar />
         </S.HomeScreenContainer>
         <Header>
-          <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} />
+          {/* <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} /> */}
+          <Image source={Logo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
           <S.HomeScreenHeaderIconContainer>
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => {
                 Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
-                  Alert.alert(
-                    '문의하기',
-                    '카카오톡이 설치되어 있지 않아요. 문의하기를 이용하려면 카카오톡을 설치해주세요.',
-                    [{ text: '확인' }],
-                  ),
+                  Linking.openURL('https://pf.kakao.com/_xkMcxdG')
                 );
               }}
             >

@@ -17,7 +17,8 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
     );
   } else {
     return (
-      <S.AndroidHeaderBlur blurType="light">
+      // <S.AndroidHeaderBlur blurType="light">
+      <S.AndroidHeaderBlur>
         <S.AndroidHeader>{children}</S.AndroidHeader>
       </S.AndroidHeaderBlur>
     );

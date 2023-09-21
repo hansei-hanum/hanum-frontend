@@ -14,6 +14,7 @@ export const SectionItem = styled(Animated.View)`
 export const SectionIconContainer = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   column-gap: 10px;
 `;
 
