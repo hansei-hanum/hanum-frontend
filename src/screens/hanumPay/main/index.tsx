@@ -1,17 +1,20 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import { Button, Text, HanumPayHeader } from 'src/components';
+import { Button, Text, HanumPayHeader, AuthFailedModal } from 'src/components';
 import { colors } from 'src/styles';
-import { useGetPaymentDetail, useNavigate } from 'src/hooks';
+import { useCheckUserType, useGetPaymentDetail, useNavigate } from 'src/hooks';
 import { formattedMoney, isIos } from 'src/utils';
 
 import * as S from './styled';
 
 export const HanumPayMainScreen: React.FC = () => {
   const navigate = useNavigate();
+
   const { isLoading, data } = useGetPaymentDetail();
   const paymentData = data?.data;
+
+  const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
 
   const formattedTime = (now: Date, hour: number, minute: number) => {
     const minutes = now.getHours() * 60 + now.getMinutes(); // 현재 시간을 분으로 환산
@@ -21,79 +24,83 @@ export const HanumPayMainScreen: React.FC = () => {
     return `${diffHour} ${diff % 60}분 전`;
   };
 
-  return (
-    <S.HanumPayWrapper>
-      <S.HanumPayContainer>
-        <HanumPayHeader title="한움페이" />
-        <S.HanumPaySection>
-          <Text.Column>
-            <Text size={14} color={colors.placeholder}>
-              한움페이 잔액
-            </Text>
-            {!isLoading ? (
-              <Text size={28} fontFamily="bold">
-                {paymentData?.balanceAmount
-                  ? formattedMoney(paymentData.balanceAmount.toString())
-                  : '0'}
-                원
+  if (isStudent) {
+    return (
+      <S.HanumPayWrapper>
+        <S.HanumPayContainer>
+          <HanumPayHeader title="한움페이" />
+          <S.HanumPaySection>
+            <Text.Column>
+              <Text size={14} color={colors.placeholder}>
+                한움페이 잔액
               </Text>
-            ) : (
-              <ActivityIndicator size={26} color={colors.primary} />
-            )}
-          </Text.Column>
-          <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
-          <S.HanumUseAgeHistory>
-            <Text size={18}>이용내역</Text>
-            {!isLoading ? (
-              <S.HanumUseAgeContainer
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                  flexDirection: 'column',
-                  paddingBottom: isIos ? 580 : 590,
-                  rowGap: 20,
-                }}
-              >
-                {paymentData?.payments && paymentData.payments.length > 0 ? (
-                  paymentData.payments.map(
-                    ({
-                      status,
-                      id,
-                      boothName,
-                      paidAmount,
-                      refundedAmount,
-                      paidTime,
-                      refundedTime,
-                    }) => {
-                      const isPaid = status === 'paid';
-                      const historyTime = new Date(isPaid ? paidTime : refundedTime);
-                      const hour = historyTime.getHours();
-                      const minute = historyTime.getMinutes();
-                      return (
-                        <S.HanumUseAgeDetails key={id}>
-                          <Text.Column>
-                            <Text size={17}>{boothName}</Text>
-                            <Text size={15} color={colors.placeholder}>
-                              {formattedTime(new Date(), hour, minute)}
+              {!isLoading ? (
+                <Text size={28} fontFamily="bold">
+                  {paymentData?.balanceAmount
+                    ? formattedMoney(paymentData.balanceAmount.toString())
+                    : '0'}
+                  원
+                </Text>
+              ) : (
+                <ActivityIndicator size={26} color={colors.primary} />
+              )}
+            </Text.Column>
+            <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
+            <S.HanumUseAgeHistory>
+              <Text size={18}>이용내역</Text>
+              {!isLoading ? (
+                <S.HanumUseAgeContainer
+                  showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{
+                    flexDirection: 'column',
+                    paddingBottom: isIos ? 580 : 590,
+                    rowGap: 20,
+                  }}
+                >
+                  {paymentData?.payments && paymentData.payments.length > 0 ? (
+                    paymentData.payments.map(
+                      ({
+                        status,
+                        id,
+                        boothName,
+                        paidAmount,
+                        refundedAmount,
+                        paidTime,
+                        refundedTime,
+                      }) => {
+                        const isPaid = status === 'paid';
+                        const historyTime = new Date(isPaid ? paidTime : refundedTime);
+                        const hour = historyTime.getHours();
+                        const minute = historyTime.getMinutes();
+                        return (
+                          <S.HanumUseAgeDetails key={id}>
+                            <Text.Column>
+                              <Text size={17}>{boothName}</Text>
+                              <Text size={15} color={colors.placeholder}>
+                                {formattedTime(new Date(), hour, minute)}
+                              </Text>
+                            </Text.Column>
+                            <Text size={18} color={colors.black}>
+                              {isPaid ? paidAmount : refundedAmount}원
                             </Text>
-                          </Text.Column>
-                          <Text size={18} color={colors.black}>
-                            {isPaid ? paidAmount : refundedAmount}원
-                          </Text>
-                        </S.HanumUseAgeDetails>
-                      );
-                    },
-                  )
-                ) : (
-                  <Text size={16}>아직 이용내역이 없어요.</Text>
-                )}
-              </S.HanumUseAgeContainer>
-            ) : (
-              <ActivityIndicator size={26} color={colors.primary} />
-            )}
-          </S.HanumUseAgeHistory>
-        </S.HanumPaySection>
-      </S.HanumPayContainer>
-    </S.HanumPayWrapper>
-  );
+                          </S.HanumUseAgeDetails>
+                        );
+                      },
+                    )
+                  ) : (
+                    <Text size={16}>아직 이용내역이 없어요.</Text>
+                  )}
+                </S.HanumUseAgeContainer>
+              ) : (
+                <ActivityIndicator size={26} color={colors.primary} />
+              )}
+            </S.HanumUseAgeHistory>
+          </S.HanumPaySection>
+        </S.HanumPayContainer>
+      </S.HanumPayWrapper>
+    );
+  } else {
+    <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />;
+  }
 };

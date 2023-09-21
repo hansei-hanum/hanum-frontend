@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSetRecoilState } from 'recoil';
 
 import {
+  AuthFailedModal,
   Button,
   DummyContainer,
   HanumPayHeader,
@@ -16,13 +17,14 @@ import {
 } from 'src/components';
 import { colors } from 'src/styles';
 import { boothState } from 'src/atoms';
-import { useNavigate } from 'src/hooks';
+import { useCheckUserType, useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 export const HanumPayQRScreen: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [cameraModal, setCameraModal] = useState<boolean>(false);
   const setBooth = useSetRecoilState(boothState);
+  const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
 
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -49,7 +51,7 @@ export const HanumPayQRScreen: React.FC = () => {
   };
 
   const closeModal = () => {
-    setModalVisible(false);
+    setCameraModal(false);
     navigation.goBack();
   };
 
@@ -60,57 +62,61 @@ export const HanumPayQRScreen: React.FC = () => {
         result === RESULTS.BLOCKED ||
         result === RESULTS.UNAVAILABLE
       ) {
-        setModalVisible(true);
+        setCameraModal(true);
       }
     });
   }, []);
 
-  return (
-    <>
-      <S.HanumPayQRWrapper>
-        <S.HanumPayQRHeaderWrapper>
-          <HanumPayHeader title="결제하기" />
-        </S.HanumPayQRHeaderWrapper>
-        {modalVisible ? (
-          <QRScannerBox.Permission>
-            <QRScannerBox />
-          </QRScannerBox.Permission>
-        ) : (
-          <QRScanner onSuccess={onSuccess} />
+  if (isStudent) {
+    return (
+      <>
+        <S.HanumPayQRWrapper>
+          <S.HanumPayQRHeaderWrapper>
+            <HanumPayHeader title="결제하기" />
+          </S.HanumPayQRHeaderWrapper>
+          {cameraModal ? (
+            <QRScannerBox.Permission>
+              <QRScannerBox />
+            </QRScannerBox.Permission>
+          ) : (
+            <QRScanner onSuccess={onSuccess} />
+          )}
+        </S.HanumPayQRWrapper>
+        {cameraModal && (
+          <>
+            <DummyContainer />
+            <Modal
+              title="카메라 접근 권한 설정"
+              text={
+                '한움페이 결제 기능을 사용하려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
+              }
+              button={
+                <Button.Container>
+                  <Button
+                    onPress={closeModal}
+                    isModalBtn
+                    backgroundColor={colors.secondary}
+                    textColor={colors.black}
+                  >
+                    취소
+                  </Button>
+                  <Button
+                    onPress={() => {
+                      Linking.openSettings();
+                    }}
+                    isModalBtn
+                  >
+                    설정
+                  </Button>
+                </Button.Container>
+              }
+              modalVisible={true}
+            />
+          </>
         )}
-      </S.HanumPayQRWrapper>
-      {modalVisible && (
-        <>
-          <DummyContainer />
-          <Modal
-            title="카메라 접근 권한 설정"
-            text={
-              '한움페이 결제 기능을 사용하려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
-            }
-            button={
-              <Button.Container>
-                <Button
-                  onPress={closeModal}
-                  isModalBtn
-                  backgroundColor={colors.secondary}
-                  textColor={colors.black}
-                >
-                  취소
-                </Button>
-                <Button
-                  onPress={() => {
-                    Linking.openSettings();
-                  }}
-                  isModalBtn
-                >
-                  설정
-                </Button>
-              </Button.Container>
-            }
-            modalVisible={true}
-          />
-        </>
-      )}
-    </>
-  );
+      </>
+    );
+  } else {
+    return <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />;
+  }
 };
