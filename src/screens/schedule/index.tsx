@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 import { ScrollView } from 'react-native';
 
 import { ActivityIndicator } from '@react-native-material/core';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
 
-import { Text, ClassList, WeekDay, Modal, Button, DummyContainer } from 'src/components';
+import { Text, ClassList, WeekDay, AuthFailedModal } from 'src/components';
 import { NUMBER_LIST } from 'src/constants';
 import { ScheduleIcon } from 'src/assets';
-import { useGetTimeTable, useGetUser } from 'src/hooks';
+import { useCheckUserType, useGetTimeTable, useGetUser } from 'src/hooks';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
 
 export const ScheduleScreen: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const navigation = useNavigation();
   const { data, isLoading } = useGetTimeTable();
-  const { classroom, grade, department, verifyUser } = useGetUser();
+
+  const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
+
+  const { classroom, grade, department } = useGetUser();
 
   const checkToday = (date: string) => {
     const today = new Date().getDay();
@@ -26,15 +26,7 @@ export const ScheduleScreen: React.FC = () => {
     return today === day;
   };
 
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    if (isFocused && !verifyUser) {
-      setModalVisible(true);
-    }
-  }, [isFocused]);
-
-  if (verifyUser) {
+  if (isStudent) {
     return (
       <S.ScheduleScreenWrapper>
         <S.ScheduleScreenContainer>
@@ -71,27 +63,6 @@ export const ScheduleScreen: React.FC = () => {
       </S.ScheduleScreenWrapper>
     );
   } else {
-    return (
-      <>
-        <DummyContainer />
-        <Modal
-          modalVisible={modalVisible}
-          title="인증 실패"
-          text={
-            '시간표 서비스는 재학생만 이용할 수 있어요.\n' +
-            '만약 재학생이라면 프로필에서 재학생 인증을 진행하고 다시 시도해보세요.'
-          }
-          button={
-            <Button
-              onPress={() => {
-                navigation.goBack(), setModalVisible(false);
-              }}
-            >
-              확인
-            </Button>
-          }
-        />
-      </>
-    );
+    return <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />;
   }
 };
