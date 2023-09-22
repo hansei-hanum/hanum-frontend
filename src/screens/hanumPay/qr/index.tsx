@@ -67,7 +67,7 @@ export const HanumPayQRScreen: React.FC = () => {
     });
   }, []);
 
-  if (isStudent) {
+  if (!isStudent) {
     return (
       <>
         <S.HanumPayQRWrapper>
@@ -117,6 +117,15 @@ export const HanumPayQRScreen: React.FC = () => {
       </>
     );
   } else {
-    return <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />;
+    return (
+      <>
+        <S.HanumPayQRWrapper>
+          <S.HanumPayQRHeaderWrapper>
+            <HanumPayHeader title="결제하기" />
+          </S.HanumPayQRHeaderWrapper>
+        </S.HanumPayQRWrapper>
+        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      </>
+    );
   }
 };

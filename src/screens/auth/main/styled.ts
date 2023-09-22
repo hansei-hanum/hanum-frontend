@@ -40,9 +40,6 @@ export const AuthMainScreenTextContainer = styled.View`
   align-items: center;
 `;
 
-export const AuthMainTextColumn = styled.View`
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  row-gap: 4px;
+export const AuthMainTextRow = styled.View`
+  flex-direction: row;
 `;

@@ -80,8 +80,8 @@ export const AuthMainScreen: React.FC = () => {
             title={isAgreeModal ? '약관 동의' : '정회원 가입 안내'}
             linkText={
               isAgreeModal ? (
-                <S.AuthMainTextColumn>
-                  <S.AuthMainScreenTextContainer>
+                <Text size={16}>
+                  <S.AuthMainTextRow>
                     <TouchableOpacity
                       activeOpacity={0.8}
                       onPress={() => Linking.openURL('https://privacy.hanum.us/')}
@@ -91,10 +91,9 @@ export const AuthMainScreen: React.FC = () => {
                       </Text>
                     </TouchableOpacity>
                     <Text size={16}>을 자세히 읽어 보십시오.</Text>
-                  </S.AuthMainScreenTextContainer>
-                  <Text size={16}>가입을 계속 진행하면 한움의 개인정보처리방침에</Text>
-                  <Text size={16}>동의하는 것으로 간주됩니다.</Text>
-                </S.AuthMainTextColumn>
+                  </S.AuthMainTextRow>
+                  가입을 계속 진행하면 한움의 개인정보처리방침에 동의하는 것으로 간주됩니다.
+                </Text>
               ) : (
                 <Text size={16}>
                   한움의 일부 서비스는 인증된 재학생, 졸업생, 교직원만 사용할 수 있어요.{`\n`}

@@ -85,6 +85,7 @@ export const HomeScreen: React.FC = () => {
             rowGap: 20,
           }}
         >
+          <HanumPay />
           <Timer />
           <Calendar />
         </S.HomeScreenContainer>

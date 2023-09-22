@@ -24,7 +24,7 @@ export const HanumPayMainScreen: React.FC = () => {
     return `${diffHour} ${diff % 60}분 전`;
   };
 
-  if (isStudent) {
+  if (!isStudent) {
     return (
       <S.HanumPayWrapper>
         <S.HanumPayContainer>
@@ -101,6 +101,15 @@ export const HanumPayMainScreen: React.FC = () => {
       </S.HanumPayWrapper>
     );
   } else {
-    <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />;
+    return (
+      <>
+        <S.HanumPayWrapper>
+          <S.HanumPayContainer>
+            <HanumPayHeader title="한움페이" />
+          </S.HanumPayContainer>
+        </S.HanumPayWrapper>
+        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      </>
+    );
   }
 };
