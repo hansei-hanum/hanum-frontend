@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageSourcePropType, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { WithLocalSvg } from 'react-native-svg';
+import { Image } from 'react-native';
 
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
@@ -33,7 +33,7 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
       <S.AlertBoxWrapper style={[animatedStyle, boxShadow]}>
         <S.AlertBoxContainer>
           <S.AlertBoxContentContainer>
-            <WithLocalSvg width={32} height={32} asset={icon} />
+            <Image style={{ width: 32, height: 32, resizeMode: 'contain' }} source={icon} />
             <S.AlertBoxTextContainer>
               <Text size={13} fontFamily="medium" color={colors.placeholder}>
                 {subText}

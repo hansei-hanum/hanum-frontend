@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as S from './styled';
-import { Text } from 'react-native-svg';
 
 export interface IconProps {
   icon: string;

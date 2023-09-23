@@ -21,10 +21,11 @@ import {
   HanumPayStatusScreen,
   HanumPayMainScreen,
   TeacherVerifyScreen,
+  EoullimMainScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
-import { useCodePush } from './hooks'
+import { useCodePush } from './hooks';
 
 const Stack = createStackNavigator();
 
@@ -52,7 +53,7 @@ export const Router: React.FC = () => {
 
   const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
-  const [isUpdating, syncProgress] = useCodePush();
+  const [isUpdating] = useCodePush();
 
   if (isReady && !isLoading && !isUpdating) {
     SplashScreen.hide();
@@ -85,6 +86,9 @@ export const Router: React.FC = () => {
           <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
           <Stack.Screen name="HanumPayStatus" component={HanumPayStatusScreen} />
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen name="EoullimMain" component={EoullimMainScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

@@ -1,8 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { WithLocalSvg } from 'react-native-svg';
-import { ImageSourcePropType } from 'react-native';
 
 import { ContentBox, Text, Icon } from 'src/components';
 import { colors } from 'src/styles';
@@ -36,7 +34,7 @@ export const Content: React.FC<ContentProps> = ({ icon, name, children, navigate
         <S.ContentTopSectionWrapper style={navigateUrl || onPress ? animatedStyle : null}>
           <S.ContentTopSection>
             <S.ContentIconContainer>
-              <Icon icon={icon} includeBackground={false}/>
+              <Icon icon={icon} includeBackground={false} />
               <Text size={isIos ? 15 : 14} fontFamily="bold">
                 {name}
               </Text>
