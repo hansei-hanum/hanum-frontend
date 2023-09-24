@@ -1,26 +1,6 @@
 import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
 
-import { colors } from 'src/styles';
-
-export const EoullimWrapper = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${colors.background};
-`;
-
-export const EoullimContainer = styled.ImageBackground`
-  flex: 1;
-  padding: 20px;
-  row-gap: 30px;
-`;
-
-export const EoullimBoxContainer = styled.View`
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 export const EoullimBoxWrapper = styled.TouchableOpacity`
   width: 164px;
   height: 214px;

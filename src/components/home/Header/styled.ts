@@ -1,6 +1,7 @@
+import { View } from 'react-native';
+
 import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
-import { View } from 'react-native';
 
 import { checkHeight } from 'src/utils';
 
