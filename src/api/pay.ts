@@ -35,6 +35,8 @@ export const getPaymentDetail = async () => {
 };
 
 export const payment = async ({ boothId, amount }: PaymentValues) => {
+  console.log(boothId, amount, await AsyncStorage.getItem('token'));
+  
   const { data } = await payInstance.post(API_SUFFIX.PAYMENT, {
     boothId,
     amount,
