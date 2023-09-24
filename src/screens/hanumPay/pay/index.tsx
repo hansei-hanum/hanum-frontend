@@ -30,7 +30,7 @@ export const HanumPayScreen: React.FC = () => {
     <Auth
       isDisabled={isDisabled}
       onPress={onSubmit}
-      headerText={`${boothInfo.name} 부스가 인식되었어요` + '\n얼마를 결제할까요?'}
+      headerText={`${boothInfo.name}에` + '\n얼마를 결제할까요?'}
       bottomText="결제하기"
     >
       <S.TextFieldFormInput
