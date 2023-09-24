@@ -67,7 +67,7 @@ export const HanumPayQRScreen: React.FC = () => {
     });
   }, []);
 
-  if (!isStudent) {
+  if (isStudent) {
     return (
       <>
         <S.HanumPayQRWrapper>

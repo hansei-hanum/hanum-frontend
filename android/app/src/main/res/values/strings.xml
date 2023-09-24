@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">한움</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">bKuWnAEUaewHdJCMag3dWlrZw5Z-f_TqYS74L</string>
 </resources>
