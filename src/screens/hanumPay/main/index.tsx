@@ -24,7 +24,7 @@ export const HanumPayMainScreen: React.FC = () => {
     return `${diffHour} ${diff % 60}분 전`;
   };
 
-  if (!isStudent) {
+  if (isStudent) {
     return (
       <S.HanumPayWrapper>
         <S.HanumPayContainer>
