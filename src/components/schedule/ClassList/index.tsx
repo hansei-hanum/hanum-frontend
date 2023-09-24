@@ -13,9 +13,6 @@ export interface ClassListProps {
 }
 
 export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber }) => {
-  if (list.map((item) => item).join('*')) {
-    console.log(list.map((item) => item).join('*'));
-  }
   return (
     <FlatList
       style={{
