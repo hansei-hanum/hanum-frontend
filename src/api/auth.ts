@@ -79,6 +79,9 @@ export const fetchUser = async () => {
 };
 
 export const studentCodeVerify = async ({ code, isCheck }: StudentCodeVerifyValue) => {
+  const token = await AsyncStorage.getItem('token');
+  if (!token) return null;
+  setAccessToken(token);
   if (isCheck) {
     const { data } = await authInstance.get(`${API_SUFFIX.KEYS}${code}/`);
     return data;

@@ -22,6 +22,7 @@ import {
   HanumPayMainScreen,
   TeacherVerifyScreen,
   EoullimMainScreen,
+  EoullimVote,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -63,7 +64,10 @@ export const Router: React.FC = () => {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'EoullimMain'}>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName={data ? 'Main' : 'AuthMain'}
+      >
         <Stack.Group>
           <Stack.Screen name="AuthMain" component={AuthMainScreen} />
           <Stack.Screen name="Phone" component={PhoneScreen} />
@@ -86,6 +90,7 @@ export const Router: React.FC = () => {
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="EoullimMain" component={EoullimMainScreen} />
+          <Stack.Screen name="EoullimVote" component={EoullimVote} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

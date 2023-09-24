@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Linking, TouchableOpacity, Image } from 'react-native';
-import { WithLocalSvg } from 'react-native-svg';
 
 import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';

@@ -153,7 +153,7 @@ export const CalendarScreen: React.FC = () => {
             {mothScheduleData?.data
               .find(({ date }) => format(new Date(date), 'yyyy-MM-dd') === selectedDate)
               ?.data.map((item) => (
-                <ContentBox>
+                <ContentBox key={item}>
                   <Text size={16} fontFamily="medium" key={item}>
                     {item}
                   </Text>

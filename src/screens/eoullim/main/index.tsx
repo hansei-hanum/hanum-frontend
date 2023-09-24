@@ -10,16 +10,16 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-const EollimList = [
+const EoullimList = [
   {
     title: '행사일정 보기',
     icon: '📆',
-    navigateUrl: 'EollimSchedule',
+    navigateUrl: 'EoullimSchedule',
   },
   {
     title: '공연 투표하기',
     icon: '🗳️',
-    navigateUrl: 'EollimVote',
+    navigateUrl: 'EoullimVote',
   },
 ];
 
@@ -36,7 +36,7 @@ export const EoullimMainScreen: React.FC = () => {
           박찬영님 반가워요 👋 {'\n'}즐거운 축제 되세요!
         </Text>
         <S.EoullimBoxContainer>
-          {EollimList.map(({ icon, title, navigateUrl }) => (
+          {EoullimList.map(({ icon, title, navigateUrl }) => (
             <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
           ))}
         </S.EoullimBoxContainer>

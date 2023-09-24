@@ -10,7 +10,7 @@ const QRScannerContent: React.FC = () => {
     <S.HanumPayQRBoxContainer>
       <Text.Column>
         <Text size={16} isCenter color={colors.white}>
-        결제 QR코드를 {'\n'}아래 상자에 맞춰주세요
+          결제 QR코드를 {'\n'}아래 상자에 맞춰주세요
         </Text>
       </Text.Column>
       <S.HanumPayQrBox>
