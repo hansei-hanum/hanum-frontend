@@ -15,9 +15,15 @@ export const StatusScreenContainer = styled.View`
   justify-content: center;
   align-items: center;
   row-gap: 20px;
+  padding: 20px;
 `;
 
 export const StatusScreenLottie = styled(LottieView)`
   width: 130px;
   height: 130px;
 `;
+
+export const StatusButtonWrapper = styled.View`
+  margin-left: 20px;
+  margin-right: 20px;
+`

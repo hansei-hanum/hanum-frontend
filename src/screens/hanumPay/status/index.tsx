@@ -28,7 +28,9 @@ export const HanumPayStatusScreen: React.FC = () => {
           </Text>
         </Text.Column>
       </S.StatusScreenContainer>
-      <Button onPress={() => initNavigate('Main')}>확인</Button>
+      <S.StatusButtonWrapper>
+        <Button onPress={() => initNavigate('Main')}>확인</Button>
+      </S.StatusButtonWrapper>
     </S.StatusScreenWrapper>
   );
 };
