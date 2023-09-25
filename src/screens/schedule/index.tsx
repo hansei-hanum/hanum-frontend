@@ -20,6 +20,7 @@ export const ScheduleScreen: React.FC = () => {
   const { classroom, grade, department } = useGetUser();
 
   const checkToday = (date: string) => {
+    console.log(date);
     const today = new Date().getDay();
     const day = new Date(date).getDay();
 

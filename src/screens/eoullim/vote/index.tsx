@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react';
 
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
-import { Button, EoullimHeader, EoullimVoteComponent, Modal, Text } from 'src/components';
+import { Button, EoullimVoteComponent, GoBackIcon, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
 
 const VOTE_LIST = ["최근원 학생의 '썸'", "조치원 학생의 '썸'", '응 몰라 학생의 너검무검'];
 
-const endTime = '2023-09-25T15:59:00';
-
 export const EoullimVoteScreen: React.FC = () => {
+  const now = new Date();
+  const startTime = new Date('2023-09-26T07:49:00');
+  const endTime = new Date('2023-09-26T08:13:00');
+  const voteTime = now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
   const [isProceeding, setIsProceeding] = useState<boolean>(true);
   const [isImminent, setIsImminent] = useState<boolean>(false);
-  const [voteTime, setVoteTime] = useState<string>('');
+  const [voteLeftTime, setVoteLeftTime] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -45,26 +47,16 @@ export const EoullimVoteScreen: React.FC = () => {
 
   const onUpdate = () => {
     const now = new Date();
-    const time = getTimeRemaining(now, +endTime.slice(11, 13), +endTime.slice(14, 16));
-    setVoteTime(time);
+    const time = getTimeRemaining(now, +endTime.getHours(), +endTime.getMinutes());
+    setVoteLeftTime(time);
     setIsProceeding(time === '-' ? false : true);
-  };
-
-  const CheckTime = () => {
-    const now = new Date();
-    const currentTime = now.toISOString().slice(0, 19);
-    const startTime = '2023-09-25T15:49:00';
-    if (currentTime <= startTime || currentTime >= endTime) {
-      console.log(currentTime, startTime, endTime);
-      setModalVisible(true);
-    }
   };
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
-      CheckTime();
+      !voteTime && setModalVisible(true);
       setInterval(onUpdate, 1000);
       onUpdate();
     }
@@ -72,9 +64,9 @@ export const EoullimVoteScreen: React.FC = () => {
 
   return (
     <S.EoullimVoteWrapper>
-      {!modalVisible ? (
+      {voteTime ? (
         <S.EoullimVoteContainer>
-          <EoullimHeader />
+          <GoBackIcon />
           <S.EoullimVoteHeader>
             <S.EoullimVoteStatusContainer>
               <S.EoullimVoteStatusCircle
@@ -103,7 +95,7 @@ export const EoullimVoteScreen: React.FC = () => {
                   투표 종료까지
                 </Text>
                 <Text size={40} fontFamily="bold" color={isImminent ? colors.danger : colors.black}>
-                  {voteTime}
+                  {voteLeftTime}
                 </Text>
               </S.EoullimVoteTimeContainer>
               <S.EoullimVoteList>
@@ -127,7 +119,8 @@ export const EoullimVoteScreen: React.FC = () => {
           button={
             <Button
               onPress={() => {
-                navigation.goBack(), setModalVisible(false);
+                navigation.goBack();
+                setModalVisible(false);
               }}
             >
               확인

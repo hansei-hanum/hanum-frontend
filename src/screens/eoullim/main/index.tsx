@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthFailedModal, EoullimBox, EoullimHeader, Text } from 'src/components';
+import { AuthFailedModal, EoullimBox, GoBackIcon, Text } from 'src/components';
 import { EoullimPoster } from 'src/assets';
 import { colors } from 'src/styles';
 import { useCheckUserType, useGetUser } from 'src/hooks';
@@ -28,7 +28,7 @@ export const EoullimMainScreen: React.FC = () => {
     <S.EoullimWrapper>
       {verifyUser ? (
         <S.EoullimContainer source={EoullimPoster}>
-          <EoullimHeader isMain />
+          <GoBackIcon isWhite />
           <Text size={24} fontFamily="bold" color={colors.white}>
             {userData.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
           </Text>
