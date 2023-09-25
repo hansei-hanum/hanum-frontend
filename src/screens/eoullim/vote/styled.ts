@@ -13,6 +13,13 @@ export const EoullimVoteContainer = styled.View`
   row-gap: 24px;
 `;
 
+export const EoullimVoteHeader = styled.View`
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  row-gap: 12px;
+`;
+
 export const EoullimVoteStatusContainer = styled.View`
   padding: 8px;
   border-radius: 20px;
@@ -32,7 +39,14 @@ export const EoullimVoteStatusCircle = styled.View`
 `;
 
 export const EoullimVoteTimeContainer = styled.View`
-  flex: 0.3;
+  flex: 0.6;
   justify-content: center;
   align-items: center;
+`;
+
+export const EoullimVoteList = styled.View`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 6px;
 `;

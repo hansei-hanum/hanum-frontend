@@ -18,4 +18,6 @@ export const HomeScreenHeaderIconContainer = styled.View`
   align-items: center;
   justify-content: flex-end;
   column-gap: 20px;
+  position: relative;
+  bottom: 8px;
 `;

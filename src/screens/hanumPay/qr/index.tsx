@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
 import { Linking } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useSetRecoilState } from 'recoil';
 
 import {
@@ -54,17 +54,22 @@ export const HanumPayQRScreen: React.FC = () => {
     navigation.goBack();
   };
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
-      if (
-        result === RESULTS.DENIED ||
-        result === RESULTS.BLOCKED ||
-        result === RESULTS.UNAVAILABLE
-      ) {
+    check(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
+      console.log('qwer', result);
+      if (result === RESULTS.BLOCKED) {
         setCameraModal(true);
+      } else {
+        request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
+          if (result !== RESULTS.GRANTED) {
+            setCameraModal(true);
+          }
+        });
       }
     });
-  }, []);
+  }, [isFocused]);
 
   if (isStudent) {
     return (
