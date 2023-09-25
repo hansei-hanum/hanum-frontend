@@ -31,7 +31,6 @@ export const HanumPayQRScreen: React.FC = () => {
   /** 바코드가 감지되면 실행되는 함수 */
   const onSuccess = ({ data }: any) => {
     try {
-      console.log('data', data);
       data = JSON.parse(data);
       if (typeof data.id === 'number' && typeof data.name === 'string') {
         console.log('data', data);

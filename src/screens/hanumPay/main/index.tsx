@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { Button, Text, HanumPayHeader, AuthFailedModal } from 'src/components';
 import { colors } from 'src/styles';
@@ -11,8 +13,9 @@ import * as S from './styled';
 export const HanumPayMainScreen: React.FC = () => {
   const navigate = useNavigate();
 
-  const { isLoading, data } = useGetPaymentDetail();
-  const paymentData = data?.data;
+  const payData = useGetPaymentDetail();
+  const paymentData = payData.data?.data;
+  const paymentLoading = payData.isLoading;
 
   const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
 
@@ -24,6 +27,14 @@ export const HanumPayMainScreen: React.FC = () => {
     return `${diffHour} ${diff % 60}분 전`;
   };
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      payData.refetch();
+    }
+  }, [isFocused]);
+
   if (isStudent) {
     return (
       <S.HanumPayWrapper>
@@ -34,7 +45,7 @@ export const HanumPayMainScreen: React.FC = () => {
               <Text size={14} color={colors.placeholder}>
                 한움페이 잔액
               </Text>
-              {!isLoading ? (
+              {!paymentLoading ? (
                 <Text size={28} fontFamily="bold">
                   {paymentData?.balanceAmount
                     ? formattedMoney(paymentData.balanceAmount.toString())
@@ -48,7 +59,7 @@ export const HanumPayMainScreen: React.FC = () => {
             <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
             <S.HanumUseAgeHistory>
               <Text size={18}>이용내역</Text>
-              {!isLoading ? (
+              {!paymentLoading ? (
                 <S.HanumUseAgeContainer
                   showsVerticalScrollIndicator={false}
                   showsHorizontalScrollIndicator={false}

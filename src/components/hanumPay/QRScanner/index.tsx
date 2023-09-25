@@ -16,6 +16,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess, isTeacherVerify
     onRead: onSuccess,
     showMarker: true,
     vibrate: false,
+    reactivate: true,
     customMarker: <QRScannerBox isTeacherVerify={isTeacherVerify} />,
   };
 
