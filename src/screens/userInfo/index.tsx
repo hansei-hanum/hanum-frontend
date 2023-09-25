@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { Button, DummyContainer, InfoBox, Modal, Text } from 'src/components';
+import { Button, InfoBox, Modal, Text } from 'src/components';
 import { useGetUser, useInitNavigate } from 'src/hooks';
 import { colors } from 'src/styles';
 import { UserLogo } from 'src/assets/';
@@ -103,29 +103,26 @@ export const UserInfoScreen: React.FC = () => {
         )}
       </S.UserInfoWrapper>
       {isSecessionClick && (
-        <>
-          <DummyContainer />
-          <Modal
-            title="탈퇴 절차 안내"
-            text={modalContent}
-            modalVisible={isSecessionClick}
-            button={
-              <Button.Container>
-                <Button
-                  onPress={() => setIsSecessionClick(false)}
-                  backgroundColor={colors.lightGray}
-                  textColor={colors.black}
-                  isModalBtn
-                >
-                  취소
-                </Button>
-                <Button onPress={onSubmit} backgroundColor={colors.danger} isModalBtn>
-                  확인
-                </Button>
-              </Button.Container>
-            }
-          />
-        </>
+        <Modal
+          title="탈퇴 절차 안내"
+          text={modalContent}
+          modalVisible={isSecessionClick}
+          button={
+            <Button.Container>
+              <Button
+                onPress={() => setIsSecessionClick(false)}
+                backgroundColor={colors.lightGray}
+                textColor={colors.black}
+                isModalBtn
+              >
+                취소
+              </Button>
+              <Button onPress={onSubmit} backgroundColor={colors.danger} isModalBtn>
+                확인
+              </Button>
+            </Button.Container>
+          }
+        />
       )}
     </>
   );

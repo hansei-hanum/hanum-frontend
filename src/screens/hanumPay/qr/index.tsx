@@ -9,7 +9,6 @@ import { useSetRecoilState } from 'recoil';
 import {
   AuthFailedModal,
   Button,
-  DummyContainer,
   HanumPayHeader,
   Modal,
   QRScanner,
@@ -83,36 +82,33 @@ export const HanumPayQRScreen: React.FC = () => {
           )}
         </S.HanumPayQRWrapper>
         {cameraModal && (
-          <>
-            <DummyContainer />
-            <Modal
-              title="카메라 접근 권한 설정"
-              text={
-                '한움페이 결제 기능을 사용하려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
-              }
-              button={
-                <Button.Container>
-                  <Button
-                    onPress={closeModal}
-                    isModalBtn
-                    backgroundColor={colors.secondary}
-                    textColor={colors.black}
-                  >
-                    취소
-                  </Button>
-                  <Button
-                    onPress={() => {
-                      Linking.openSettings();
-                    }}
-                    isModalBtn
-                  >
-                    설정
-                  </Button>
-                </Button.Container>
-              }
-              modalVisible={true}
-            />
-          </>
+          <Modal
+            title="카메라 접근 권한 설정"
+            text={
+              '한움페이 결제 기능을 사용하려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
+            }
+            button={
+              <Button.Container>
+                <Button
+                  onPress={closeModal}
+                  isModalBtn
+                  backgroundColor={colors.secondary}
+                  textColor={colors.black}
+                >
+                  취소
+                </Button>
+                <Button
+                  onPress={() => {
+                    Linking.openSettings();
+                  }}
+                  isModalBtn
+                >
+                  설정
+                </Button>
+              </Button.Container>
+            }
+            modalVisible={true}
+          />
         )}
       </>
     );
@@ -124,7 +120,11 @@ export const HanumPayQRScreen: React.FC = () => {
             <HanumPayHeader title="결제하기" />
           </S.HanumPayQRHeaderWrapper>
         </S.HanumPayQRWrapper>
-        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <AuthFailedModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          isStudent={true}
+        />
       </>
     );
   }

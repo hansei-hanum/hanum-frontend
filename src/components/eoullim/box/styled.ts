@@ -2,8 +2,8 @@ import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
 
 export const EoullimBoxWrapper = styled.TouchableOpacity`
-  width: 164px;
-  height: 214px;
+  width: 170px;
+  height: 216px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;

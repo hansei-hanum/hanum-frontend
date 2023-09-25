@@ -28,7 +28,7 @@ export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl
         <Text size={54} fontFamily="bold">
           {icon}
         </Text>
-        <Text size={18} fontFamily="bold">
+        <Text size={19} fontFamily="bold">
           {title}
         </Text>
       </S.EoullimBoxTextContainer>

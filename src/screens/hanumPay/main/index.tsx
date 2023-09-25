@@ -108,7 +108,11 @@ export const HanumPayMainScreen: React.FC = () => {
             <HanumPayHeader title="한움페이" />
           </S.HanumPayContainer>
         </S.HanumPayWrapper>
-        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <AuthFailedModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          isStudent={true}
+        />
       </>
     );
   }
