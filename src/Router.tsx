@@ -22,7 +22,8 @@ import {
   HanumPayMainScreen,
   TeacherVerifyScreen,
   EoullimMainScreen,
-  EoullimVote,
+  EoullimVoteScreen,
+  EoullimTimeTableScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -90,7 +91,8 @@ export const Router: React.FC = () => {
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="EoullimMain" component={EoullimMainScreen} />
-          <Stack.Screen name="EoullimVote" component={EoullimVote} />
+          <Stack.Screen name="EoullimVote" component={EoullimVoteScreen} />
+          <Stack.Screen name="EoullimTimeTable" component={EoullimTimeTableScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

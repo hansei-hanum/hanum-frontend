@@ -11,7 +11,7 @@ const EoullimList = [
   {
     title: '행사일정 보기',
     icon: '📆',
-    navigateUrl: 'EoullimSchedule',
+    navigateUrl: 'EoullimTimeTable',
   },
   {
     title: '공연 투표하기',

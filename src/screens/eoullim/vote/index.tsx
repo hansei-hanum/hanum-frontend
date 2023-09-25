@@ -9,7 +9,7 @@ import * as S from './styled';
 
 const VOTE_LIST = ["최근원 학생의 '썸'", "조치원 학생의 '썸'", '응 몰라 학생의 너검무검'];
 
-export const EoullimVote: React.FC = () => {
+export const EoullimVoteScreen: React.FC = () => {
   const [isProceeding, setIsProceeding] = useState<boolean>(true);
   const [isImminent, setIsImminent] = useState<boolean>(false);
   const [voteTime, setVoteTime] = useState<string>('');
@@ -40,7 +40,7 @@ export const EoullimVote: React.FC = () => {
 
   const onUpdate = () => {
     const now = new Date();
-    const time = getTimeRemaining(now, 13, 19);
+    const time = getTimeRemaining(now, 16, 19);
     setVoteTime(time);
     setIsProceeding(time === '-' ? false : true);
   };
@@ -62,7 +62,7 @@ export const EoullimVote: React.FC = () => {
               style={{ backgroundColor: isProceeding ? colors.green : colors.brown }}
             />
             <Text size={15} fontFamily="bold">
-              {isProceeding ? '투표 진행 중' : '투표 종료 됨'}
+              {isProceeding ? '투표 진행 중' : '투표 종료'}
             </Text>
           </S.EoullimVoteStatusContainer>
           <Text.Column>
@@ -90,6 +90,7 @@ export const EoullimVote: React.FC = () => {
             <S.EoullimVoteList>
               {VOTE_LIST.map((name) => (
                 <EoullimVoteComponent
+                  key={name}
                   name={name}
                   isSelect={selectedItem === name ? true : false}
                   onPress={() => handleItemClick(name)}
