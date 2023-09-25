@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useNavigate, usePressingAnimation } from 'src/hooks';
-import { Text } from 'src/components';
+import { Icon, Text } from 'src/components';
 
 import * as S from './styled';
 
@@ -23,11 +23,9 @@ export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl
       activeOpacity={0.9}
       style={{ ...scaleAnimatedStyle }}
     >
-      <S.EoullimBox blurType="light" reducedTransparencyFallbackColor="white" />
+      <S.EoullimBox blurType="light" blurAmount={1} reducedTransparencyFallbackColor="white" />
       <S.EoullimBoxTextContainer>
-        <Text size={52} fontFamily="bold">
-          {icon}
-        </Text>
+        <Icon size={60} icon={icon} includeBackground={false} />
         <Text size={18} fontFamily="bold">
           {title}
         </Text>

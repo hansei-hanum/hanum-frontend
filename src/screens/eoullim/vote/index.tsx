@@ -40,7 +40,7 @@ export const EoullimVoteScreen: React.FC = () => {
 
   const onUpdate = () => {
     const now = new Date();
-    const time = getTimeRemaining(now, 16, 19);
+    const time = getTimeRemaining(now, 1, 0);
     setVoteTime(time);
     setIsProceeding(time === '-' ? false : true);
   };

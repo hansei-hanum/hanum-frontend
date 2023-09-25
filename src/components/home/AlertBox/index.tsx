@@ -1,9 +1,8 @@
 import React from 'react';
-import { ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Image } from 'react-native';
 
-import { Text } from 'src/components';
+import { Icon, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { boxShadow } from 'src/constants';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
@@ -11,7 +10,7 @@ import { useNavigate, usePressingAnimation } from 'src/hooks';
 import * as S from './styled';
 
 export interface AlertBoxProps {
-  icon: ImageSourcePropType;
+  icon: string;
   subText: string;
   mainText: string;
   navigateUrl: string;
@@ -33,7 +32,7 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
       <S.AlertBoxWrapper style={[animatedStyle, boxShadow]}>
         <S.AlertBoxContainer>
           <S.AlertBoxContentContainer>
-            <Image style={{ width: 32, height: 32, resizeMode: 'contain' }} source={icon} />
+            <Icon icon={icon} includeBackground={false} />
             <S.AlertBoxTextContainer>
               <Text size={13} fontFamily="medium" color={colors.placeholder}>
                 {subText}

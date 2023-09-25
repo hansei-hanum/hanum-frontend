@@ -1,9 +1,11 @@
 import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
 
+import { fonts } from 'src/styles';
+
 export const EoullimBoxWrapper = styled.TouchableOpacity`
-  width: 160px;
-  height: 216px;
+  flex: 0.47;
+  height: 180px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -14,7 +16,7 @@ export const EoullimBoxWrapper = styled.TouchableOpacity`
 export const EoullimBox = styled(BlurView)`
   width: 180px;
   height: 220px;
-  background-color: rgba(245, 245, 245, 0.8);
+  background-color: rgba(248, 248, 248, 0.8);
   align-items: center;
   justify-content: center;
   border-radius: 16px;
@@ -23,7 +25,11 @@ export const EoullimBox = styled(BlurView)`
 
 export const EoullimBoxTextContainer = styled.View`
   flex-direction: column;
-  row-gap: 12px;
   align-items: center;
   justify-content: center;
+`;
+
+export const EoullimBoxIcon = styled.Text`
+  font-family: ${fonts.tossIcon};
+  font-size: 50px;
 `;
