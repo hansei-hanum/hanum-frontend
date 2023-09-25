@@ -10,6 +10,7 @@ export const EoullimWrapper = styled.SafeAreaView`
 export const EoullimContainer = styled.ImageBackground`
   flex: 1;
   padding: 20px;
+  padding-top: 50px;
   row-gap: 30px;
 `;
 

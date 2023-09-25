@@ -10,6 +10,7 @@ export const EoullimVoteWrapper = styled.SafeAreaView`
 export const EoullimVoteContainer = styled.View`
   flex: 1;
   padding: 20px;
+  padding-top: 0px;
   row-gap: 24px;
 `;
 

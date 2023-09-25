@@ -2,6 +2,7 @@ import styled from '@emotion/native';
 import LottieView from 'lottie-react-native';
 
 import { colors } from 'src/styles';
+import { isIos } from 'src/utils';
 
 export const StatusScreenWrapper = styled.SafeAreaView`
   flex: 1;
@@ -24,6 +25,5 @@ export const StatusScreenLottie = styled(LottieView)`
 `;
 
 export const StatusButtonWrapper = styled.View`
-  margin-left: 20px;
-  margin-right: 20px;
+margin: ${isIos ? '0 20px': '0'};
 `

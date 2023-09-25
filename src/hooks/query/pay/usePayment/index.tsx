@@ -56,7 +56,7 @@ export const usePayment = (): UseMutationResult<
       setHanumPay({
         ...hanumPay,
         status: false,
-        message: ErrorMessages[message ?? ''] || '결제에 실패했습니다.',
+        message: ErrorMessages[message ?? ''] || '알 수 없는 오류가 발생했어요.',
       });
     },
     retry: 0,

@@ -11,8 +11,8 @@ const VOTE_LIST = ["최근원 학생의 '썸'", "조치원 학생의 '썸'", '�
 
 export const EoullimVoteScreen: React.FC = () => {
   const now = new Date();
-  const startTime = new Date('2023-09-26T07:49:00');
-  const endTime = new Date('2023-09-26T08:13:00');
+  const startTime = new Date('2023-09-26T08:30:00');
+  const endTime = new Date('2023-09-26T09:13:00');
   const voteTime = now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
   const [isProceeding, setIsProceeding] = useState<boolean>(true);
   const [isImminent, setIsImminent] = useState<boolean>(false);
@@ -63,8 +63,9 @@ export const EoullimVoteScreen: React.FC = () => {
   }, [isFocused]);
 
   return (
-    <S.EoullimVoteWrapper>
-      {voteTime ? (
+    <>
+    {voteTime ? (
+        <S.EoullimVoteWrapper>
         <S.EoullimVoteContainer>
           <CommonHeader />
           <S.EoullimVoteHeader>
@@ -111,6 +112,7 @@ export const EoullimVoteScreen: React.FC = () => {
             </>
           )}
         </S.EoullimVoteContainer>
+        </S.EoullimVoteWrapper>
       ) : (
         <Modal
           title="투표 "
@@ -128,6 +130,7 @@ export const EoullimVoteScreen: React.FC = () => {
           }
         />
       )}
-    </S.EoullimVoteWrapper>
+    
+    </>
   );
 };

@@ -25,7 +25,7 @@ export const EoullimMainScreen: React.FC = () => {
   const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
 
   return (
-    <S.EoullimWrapper>
+    <>
       {verifyUser ? (
         <S.EoullimContainer source={EoullimPoster}>
           <CommonHeader isWhite />
@@ -45,6 +45,6 @@ export const EoullimMainScreen: React.FC = () => {
           isStudent={false}
         />
       )}
-    </S.EoullimWrapper>
+      </>
   );
 };
