@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { Linking, TouchableOpacity, Image } from 'react-native';
 
 import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
@@ -14,8 +14,6 @@ import { Logo } from '../../../../assets/images';
 import * as S from './styled';
 
 export const AuthMainScreen: React.FC = () => {
-  const windowWidth = Dimensions.get('window').width;
-  console.log(windowWidth);
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState({
     isAgreeModal: false,

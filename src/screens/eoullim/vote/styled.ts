@@ -10,7 +10,7 @@ export const EoullimVoteWrapper = styled.SafeAreaView`
 export const EoullimVoteContainer = styled.View`
   flex: 1;
   padding: 20px;
-  row-gap: 20px;
+  row-gap: 24px;
 `;
 
 export const EoullimVoteStatusContainer = styled.View`
@@ -29,4 +29,10 @@ export const EoullimVoteStatusCircle = styled.View`
   height: 16px;
   border-radius: 20px;
   background-color: ${colors.green};
+`;
+
+export const EoullimVoteTimeContainer = styled.View`
+  flex: 0.3;
+  justify-content: center;
+  align-items: center;
 `;
