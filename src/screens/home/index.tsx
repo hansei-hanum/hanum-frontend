@@ -6,7 +6,7 @@ import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-nati
 
 import messaging from '@react-native-firebase/messaging';
 
-import { Timer, Calendar, Header, HanumPay, AlertBox } from 'src/components';
+import { Timer, Calendar, HomeHeader, HanumPay, AlertBox } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
@@ -79,7 +79,7 @@ export const HomeScreen: React.FC = () => {
         <Timer />
         <Calendar />
       </S.HomeScreenContainer>
-      <Header>
+      <HomeHeader>
         <Image source={Logo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
         <S.HomeScreenHeaderIconContainer>
           <TouchableOpacity
@@ -93,7 +93,7 @@ export const HomeScreen: React.FC = () => {
             <AntDesign name="customerservice" size={28} color={colors.placeholder} />
           </TouchableOpacity>
         </S.HomeScreenHeaderIconContainer>
-      </Header>
+      </HomeHeader>
     </S.HomeScreenWrapper>
   );
 };

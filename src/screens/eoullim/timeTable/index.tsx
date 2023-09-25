@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { EoullimTimeTable } from 'src/assets';
-import { GoBackIcon, Text } from 'src/components';
+import { CommonHeader, Text } from 'src/components';
 
 import * as S from './styled';
 
@@ -16,7 +16,7 @@ export const EoullimTimeTableScreen: React.FC = () => {
           rowGap: 10,
         }}
       >
-        <GoBackIcon />
+        <CommonHeader />
         <Text size={22} fontFamily="bold" isCenter>
           행사일정
         </Text>

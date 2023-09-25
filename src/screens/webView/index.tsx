@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { ActivityIndicator } from 'react-native';
 
-import { GoBackIcon, Text } from 'src/components';
+import { CommonHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -18,7 +18,7 @@ export const WebViewScreen: React.FC = () => {
   return (
     <S.WebViewSafeContainer>
       <S.HeaderContainer>
-        <GoBackIcon style={{ position: 'absolute', left: 0, top: 0 }} />
+        <CommonHeader style={{ position: 'absolute', left: 0, top: 0 }} />
         <S.HeaderContentWrapper>
           <Text size={18} fontFamily="bold">
             {title}

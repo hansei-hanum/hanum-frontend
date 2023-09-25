@@ -6,13 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 
 import { colors } from 'src/styles';
 
-export interface GoBackIconProps {
+export interface CommonHeaderProps {
   size?: number;
   style?: StyleProp<TextStyle>;
   isWhite?: boolean;
 }
 
-export const GoBackIcon: React.FC<GoBackIconProps> = ({ size = 26, style, isWhite }) => {
+export const CommonHeader: React.FC<CommonHeaderProps> = ({ size = 28, style, isWhite }) => {
   const navigation = useNavigation();
 
   return (

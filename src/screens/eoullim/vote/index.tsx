@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
-import { Button, EoullimVoteComponent, GoBackIcon, Modal, Text } from 'src/components';
+import { Button, EoullimVoteComponent, CommonHeader, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -66,7 +66,7 @@ export const EoullimVoteScreen: React.FC = () => {
     <S.EoullimVoteWrapper>
       {voteTime ? (
         <S.EoullimVoteContainer>
-          <GoBackIcon />
+          <CommonHeader />
           <S.EoullimVoteHeader>
             <S.EoullimVoteStatusContainer>
               <S.EoullimVoteStatusCircle
