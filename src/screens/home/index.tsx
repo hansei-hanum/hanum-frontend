@@ -70,12 +70,12 @@ export const HomeScreen: React.FC = () => {
           rowGap: 20,
         }}
       >
-        <AlertBox
+        {/* <AlertBox
           navigateUrl="EoullimMain"
           icon={EoullimIcon}
           subText="한세어울림한마당 진행 중!"
           mainText="실시간으로 즐기기"
-        />
+        /> */}
         <HanumPay />
         <Timer />
         <Calendar />
