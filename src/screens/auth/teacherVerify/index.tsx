@@ -46,10 +46,10 @@ export const TeacherVerifyScreen: React.FC = () => {
         </S.TeacherVerifyHeaderWrapper>
         {modalVisible ? (
           <QRScannerBox.Permission>
-            <QRScannerBox />
+            <QRScannerBox isTeacherVerify={true} />
           </QRScannerBox.Permission>
         ) : (
-          <QRScanner onSuccess={onSuccess} />
+          <QRScanner onSuccess={onSuccess} isTeacherVerify />
         )}
       </S.TeacherVerifyWrapper>
       {modalVisible && (

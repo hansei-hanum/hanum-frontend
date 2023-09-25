@@ -11,7 +11,7 @@ export const useCheckUserType = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if ((isFocused && isStudent) || (isFocused && verifyUser)) {
+    if ((isFocused && !isStudent) || (isFocused && !verifyUser)) {
       setModalVisible(true);
     }
   }, [isFocused]);

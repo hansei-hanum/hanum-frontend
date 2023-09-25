@@ -16,7 +16,6 @@ export const EoullimContainer = styled.ImageBackground`
 export const EoullimBoxContainer = styled.View`
   width: 100%;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  column-gap: 16px;
 `;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, TouchableOpacity, Image } from 'react-native';
+import { Linking, TouchableOpacity, Image, Dimensions } from 'react-native';
 
 import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
@@ -14,6 +14,8 @@ import { Logo } from '../../../../assets/images';
 import * as S from './styled';
 
 export const AuthMainScreen: React.FC = () => {
+  const windowWidth = Dimensions.get('window').width;
+  console.log(windowWidth);
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState({
     isAgreeModal: false,
@@ -46,7 +48,6 @@ export const AuthMainScreen: React.FC = () => {
       <S.AuthMainScreenWrapper>
         <S.AuthMainScreenContainer>
           <S.AuthMainScreenLogoContainer>
-            {/* <WithLocalSvg width={198} height={55} asset={Logo} /> */}
             <Image source={Logo} style={{ width: 198, height: 55, resizeMode: 'contain' }} />
             <Text size={17} fontFamily="bold">
               한세인의 도우미, 한움
@@ -83,16 +84,16 @@ export const AuthMainScreen: React.FC = () => {
                     activeOpacity={0.8}
                     onPress={() => Linking.openURL('https://privacy.hanum.us/')}
                   >
-                    <Text size={16} color={colors.primary}>
+                    <Text size={15} color={colors.primary}>
                       한움의 개인정보처리방침
                     </Text>
                   </TouchableOpacity>
-                  <Text size={16}>을 자세히 읽어 보십시오.</Text>
+                  <Text size={15}>을 자세히 읽어 보십시오.</Text>
                 </S.AuthMainTextRow>
                 가입을 계속 진행하면 한움의 개인정보처리방침에 동의하는 것으로 간주됩니다.
               </Text>
             ) : (
-              <Text size={16}>
+              <Text size={15}>
                 한움의 일부 서비스는 인증된 재학생, 졸업생, 교직원만 사용할 수 있어요.{`\n`}
                 인증을 위해서는 배포된 개인용 인증 코드가 필요해요. 인증 코드를 가지고 계신가요?
               </Text>

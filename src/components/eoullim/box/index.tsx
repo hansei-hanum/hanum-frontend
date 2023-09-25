@@ -25,10 +25,10 @@ export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl
     >
       <S.EoullimBox blurType="light" reducedTransparencyFallbackColor="white" />
       <S.EoullimBoxTextContainer>
-        <Text size={54} fontFamily="bold">
+        <Text size={52} fontFamily="bold">
           {icon}
         </Text>
-        <Text size={19} fontFamily="bold">
+        <Text size={18} fontFamily="bold">
           {title}
         </Text>
       </S.EoullimBoxTextContainer>

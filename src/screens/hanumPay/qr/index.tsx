@@ -75,7 +75,7 @@ export const HanumPayQRScreen: React.FC = () => {
           </S.HanumPayQRHeaderWrapper>
           {cameraModal ? (
             <QRScannerBox.Permission>
-              <QRScannerBox />
+              <QRScannerBox isTeacherVerify={false} />
             </QRScannerBox.Permission>
           ) : (
             <QRScanner onSuccess={onSuccess} />
