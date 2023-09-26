@@ -15,7 +15,7 @@ export interface EoullimVoteResponse {
   startAt: string;
   endAt: string;
   fields: [{ id: number; value: string }];
-  myVotes?: [{ id: number; voteId: number }];
+  myVote?: { id: number; fieldId: number };
   total: number;
 }
 
@@ -32,9 +32,11 @@ export const eoullimGetLuckyDraw = async () => {
 };
 
 export const eoullimVote = async ({ fieldId, id }: EoullimVoteValue) => {
+  console.log(fieldId, id);
   const { data } = await festivalInstance.post(`${API_SUFFIX.EOULLIM_VOTE}${id}`, {
     fieldId,
   });
+  console.log(data, 'data');
   return data;
 };
 

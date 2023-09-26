@@ -13,5 +13,6 @@ export const useGetVote = (): UseQueryResult<
       console.log(error);
     },
     retry: 0,
+    staleTime: Infinity,
   });
 };
