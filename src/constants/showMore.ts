@@ -30,11 +30,11 @@ export const SHOW_MORE_SECTION_LIST: ShowMoreSectionItem[] = [
         icon: '💳',
         navigateUrl: 'HanumPayMain',
       },
-      // {
-      //   name: '2023 한세어울림한마당',
-      //   icon: '🎉',
-      //   navigateUrl: 'HanseiFestival',
-      // },
+      {
+        name: '2023 한세어울림한마당',
+        icon: '🎉',
+        navigateUrl: 'EoullimMain',
+      },
     ],
   },
 ];
