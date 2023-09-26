@@ -12,7 +12,7 @@ export const useGetPaymentDetail = (): UseQueryResult<
     onError: (error) => {
       console.log(error, 'error');
     },
-    staleTime: Infinity,
+    staleTime: 1000 * 10,
     retry: 0,
   });
 };

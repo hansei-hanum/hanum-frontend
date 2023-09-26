@@ -41,7 +41,6 @@ export const EoullimVoteStatusCircle = styled.View`
 `;
 
 export const EoullimVoteTimeContainer = styled.View`
-  flex: 0.6;
   justify-content: center;
   align-items: center;
 `;

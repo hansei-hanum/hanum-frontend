@@ -12,7 +12,6 @@ import * as S from './styled';
 
 export const EoullimStatusScreen: React.FC = () => {
   const luckyNumber = useRecoilValue(luckyNumberState);
-  console.log(luckyNumber, 'asdf');
   const { userData } = useGetUser();
   const message =
     luckyNumber.number > 0
