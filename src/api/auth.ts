@@ -41,7 +41,7 @@ export interface FetchUserResponse {
   verification: VerificationUser | null;
 }
 
-export interface StudentCodeVerifyValue {
+export interface MemberVerifyValue {
   code: string;
   isCheck: boolean;
 }
@@ -78,7 +78,7 @@ export const fetchUser = async () => {
   return data;
 };
 
-export const studentCodeVerify = async ({ code, isCheck }: StudentCodeVerifyValue) => {
+export const memberVerify = async ({ code, isCheck }: MemberVerifyValue) => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);

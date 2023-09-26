@@ -8,10 +8,11 @@ import {
 import { TouchableOpacity } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
+import { useNavigation } from '@react-navigation/native';
 
 import { Text, Auth, Modal, Button } from 'src/components';
-import { useInitNavigate, useStudentCodeVerify } from 'src/hooks';
-import { authState, studentVerifyState } from 'src/atoms';
+import { useInitNavigate, useMemberVerify } from 'src/hooks';
+import { authState, meberVerifyState } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
 import { colors } from 'src/styles';
 
@@ -19,7 +20,7 @@ import * as S from './styled';
 
 const CELL_COUNT = 6;
 
-export const StudentVerifyScreen: React.FC = () => {
+export const VerifyScreen: React.FC = () => {
   const [value, setValue] = useState('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -29,9 +30,11 @@ export const StudentVerifyScreen: React.FC = () => {
     setValue,
   });
 
-  const { mutate } = useStudentCodeVerify();
+  const navigation = useNavigation();
 
-  const studentVerify = useRecoilValue(studentVerifyState);
+  const { mutate } = useMemberVerify();
+
+  const memberVerify = useRecoilValue(meberVerifyState);
   const authValue = useRecoilValue(authState);
 
   const { initNavigate } = useInitNavigate();
@@ -54,7 +57,7 @@ export const StudentVerifyScreen: React.FC = () => {
   return (
     <>
       <Auth
-        headerText={`재학생 인증 코드를\n` + `입력해주세요`}
+        headerText={`정회원 인증 코드를\n` + `입력해주세요`}
         subHeaderText={
           <S.StudentVerifyTextContainer>
             <Text size={15} color={colors.placeholder}>
@@ -102,28 +105,40 @@ export const StudentVerifyScreen: React.FC = () => {
         <Modal
           title="본인 확인"
           text={
-            studentVerify.department && studentVerify.grade && studentVerify.classroom
-              ? `${formattedDepartment(studentVerify.department)} ${studentVerify.grade}학년 ${
-                  studentVerify.classroom
-                }반 ${studentVerify.number}번 학생이 맞나요? \n` +
-                `본인과 정보가 다를 경우 반드시 문의를 통해 정정해주세요. 그렇지 않을 경우 나중에 계정이 이용 제한될 수도 있어요.`
+            memberVerify.type === 'TEACHER'
+              ? `한세사이버보안고등학교 교직원이 맞으신가요?`
+              : memberVerify.department && memberVerify.grade && memberVerify.classroom
+              ? `${formattedDepartment(memberVerify.department)} ${memberVerify.grade}학년 ${
+                  memberVerify.classroom
+                }반 ${memberVerify.number}번 학생이 맞나요?`
               : `${authValue.errorMessage}`
           }
           modalVisible={modalVisible}
           button={
-            <Button.Container>
+            authValue.errorMessage === '' ? (
+              <Button.Container>
+                <Button
+                  onPress={() => setModalVisible(false)}
+                  backgroundColor={colors.secondary}
+                  textColor={colors.black}
+                  isModalBtn
+                >
+                  아니오
+                </Button>
+                <Button onPress={onSubmit} isModalBtn>
+                  예!
+                </Button>
+              </Button.Container>
+            ) : (
               <Button
-                onPress={() => setModalVisible(false)}
-                backgroundColor={colors.secondary}
-                textColor={colors.black}
-                isModalBtn
+                onPress={() => {
+                  setModalVisible(false);
+                  navigation.goBack();
+                }}
               >
-                아니오
+                확인
               </Button>
-              <Button onPress={onSubmit} isModalBtn>
-                예!
-              </Button>
-            </Button.Container>
+            )
           }
         />
       )}

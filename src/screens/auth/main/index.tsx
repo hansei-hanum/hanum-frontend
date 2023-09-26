@@ -28,8 +28,6 @@ export const AuthMainScreen: React.FC = () => {
     setModalVisible({ isAgreeModal: false, isCurrentStudentModal: false });
   };
 
-  const fontSize = 15;
-
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -60,14 +58,6 @@ export const AuthMainScreen: React.FC = () => {
             >
               회원가입
             </Button>
-            <S.AuthMainScreenTextContainer>
-              <Text size={fontSize}>교직원이신가요? </Text>
-              <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('TeacherVerify')}>
-                <Text size={fontSize} color={colors.primary}>
-                  교직원 회원가입 요청
-                </Text>
-              </TouchableOpacity>
-            </S.AuthMainScreenTextContainer>
           </S.AuthMainScreenMainSection>
         </S.AuthMainScreenContainer>
       </S.AuthMainScreenWrapper>

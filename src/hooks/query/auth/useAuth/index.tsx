@@ -41,7 +41,7 @@ export const useAuth = (): UseMutationResult<
         await AsyncStorage.setItem('token', data);
         setAccessToken(data);
         if (auth.isCurrentStudent) {
-          navigate('StudentVerify');
+          navigate('Verify');
         } else {
           initNavigate('Main');
         }

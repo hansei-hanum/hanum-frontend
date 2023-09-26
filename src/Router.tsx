@@ -10,7 +10,7 @@ import {
   AuthMainScreen,
   NameScreen,
   PhoneScreen,
-  StudentVerifyScreen,
+  VerifyScreen,
   VerifyCodeScreen,
   MainScreen,
   HanumPayScreen,
@@ -20,7 +20,6 @@ import {
   HanumPayQRScreen,
   HanumPayStatusScreen,
   HanumPayMainScreen,
-  TeacherVerifyScreen,
   EoullimMainScreen,
   EoullimVoteScreen,
   EoullimTimeTableScreen,
@@ -76,8 +75,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="Phone" component={PhoneScreen} />
           <Stack.Screen name="Name" component={NameScreen} />
           <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
-          <Stack.Screen name="StudentVerify" component={StudentVerifyScreen} />
-          <Stack.Screen name="TeacherVerify" component={TeacherVerifyScreen} />
+          <Stack.Screen name="Verify" component={VerifyScreen} />
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen name="Main" component={MainScreen} />
@@ -96,7 +94,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="EoullimVote" component={EoullimVoteScreen} />
           <Stack.Screen name="EoullimTimeTable" component={EoullimTimeTableScreen} />
           <Stack.Screen name="EoullimRaffle" component={EoullimRaffleScreen} />
-          <Stack.Screen name='EoullimStatus' component={EoullimStatusScreen} />
+          <Stack.Screen name="EoullimStatus" component={EoullimStatusScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />
