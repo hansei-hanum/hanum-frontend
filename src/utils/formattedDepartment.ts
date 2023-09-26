@@ -6,6 +6,8 @@ export const formattedDepartment = (department: null | string) => {
       return '네트워크보안과';
     case 'METAVERSE_GAME':
       return '메타버스게임과';
+    case 'HACKING_SECURITY':
+      return '해킹보안과';
     case 'GAME':
       return '게임과';
   }

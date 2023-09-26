@@ -35,7 +35,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ number, isVerify, endDate }) =
             isVerify !== '' ? (
               isVerify
             ) : (
-              <TouchableOpacity activeOpacity={0.4} onPress={() => navigate('StudentVerify')}>
+              <TouchableOpacity activeOpacity={0.4} onPress={() => navigate('Verify')}>
                 <Text size={15} fontFamily="medium" color={colors.primary}>
                   인증 필요
                   <Entypo
