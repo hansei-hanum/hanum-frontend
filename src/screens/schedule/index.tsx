@@ -15,7 +15,7 @@ import * as S from './styled';
 export const ScheduleScreen: React.FC = () => {
   const { data, isLoading } = useGetTimeTable();
 
-  const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
+  const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
 
   const { classroom, grade, department } = useGetUser();
 
@@ -26,7 +26,7 @@ export const ScheduleScreen: React.FC = () => {
     return today === day;
   };
 
-  if (isStudent) {
+  if (verifyUser) {
     return (
       <S.ScheduleScreenWrapper>
         <S.ScheduleScreenContainer>
@@ -63,12 +63,6 @@ export const ScheduleScreen: React.FC = () => {
       </S.ScheduleScreenWrapper>
     );
   } else {
-    return (
-      <AuthFailedModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        isStudent={true}
-      />
-    );
+    return <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />;
   }
 };

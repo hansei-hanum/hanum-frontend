@@ -18,7 +18,7 @@ export const HanumPayMainScreen: React.FC = () => {
   const paymentData = payData.data?.data;
   const paymentLoading = payData.isLoading;
 
-  const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
+  const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
 
   const formattedTime = (now: Date, hour: number, minute: number) => {
     const minutes = now.getHours() * 60 + now.getMinutes(); // 현재 시간을 분으로 환산
@@ -36,7 +36,7 @@ export const HanumPayMainScreen: React.FC = () => {
     }
   }, [isFocused]);
 
-  if (isStudent) {
+  if (verifyUser) {
     return (
       <S.HanumPayWrapper>
         <S.HanumPayContainer>
@@ -125,11 +125,7 @@ export const HanumPayMainScreen: React.FC = () => {
             <HanumPayHeader title="한움페이" />
           </S.HanumPayContainer>
         </S.HanumPayWrapper>
-        <AuthFailedModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          isStudent={true}
-        />
+        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       </>
     );
   }

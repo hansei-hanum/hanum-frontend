@@ -50,7 +50,6 @@ export const EoullimMainScreen: React.FC = () => {
       <AuthFailedModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        isStudent={false}
       />
     );
   }

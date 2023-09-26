@@ -23,7 +23,7 @@ import * as S from './styled';
 export const HanumPayQRScreen: React.FC = () => {
   const [cameraModal, setCameraModal] = useState<boolean>(false);
   const setBooth = useSetRecoilState(boothState);
-  const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
+  const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
 
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ export const HanumPayQRScreen: React.FC = () => {
     });
   }, [isFocused]);
 
-  if (isStudent) {
+  if (verifyUser) {
     return (
       <>
         <S.HanumPayQRWrapper>
@@ -116,11 +116,7 @@ export const HanumPayQRScreen: React.FC = () => {
             <HanumPayHeader title="결제하기" />
           </S.HanumPayQRHeaderWrapper>
         </S.HanumPayQRWrapper>
-        <AuthFailedModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          isStudent={true}
-        />
+        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       </>
     );
   }
