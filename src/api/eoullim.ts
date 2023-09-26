@@ -1,6 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { API_SUFFIX, festivalInstance, setAccessToken } from './api';
+import { API_SUFFIX, festivalInstance } from './api';
 
 export interface EoullimLuckyDrawValue {
   token: string;
@@ -16,7 +14,7 @@ export interface EoullimVoteResponse {
   title: string;
   startAt: string;
   endAt: string;
-  fileds: [{ id: number; value: string }];
+  fields: [{ id: number; value: string }];
   myVotes?: [{ id: number; voteId: number }];
   total: number;
 }

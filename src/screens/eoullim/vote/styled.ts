@@ -46,9 +46,6 @@ export const EoullimVoteTimeContainer = styled.View`
   align-items: center;
 `;
 
-export const EoullimVoteList = styled.View`
+export const EoullimVoteList = styled.ScrollView`
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  row-gap: 6px;
 `;

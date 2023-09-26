@@ -9,9 +9,6 @@ export const useGetVote = (): UseQueryResult<
   AxiosError<APIErrorResponse>
 > => {
   return useQuery('useGetVote', eoullimGetVote, {
-    onSuccess: ({ data }) => {
-      console.log(data);
-    },
     onError: (error) => {
       console.log(error);
     },

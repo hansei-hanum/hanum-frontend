@@ -25,10 +25,18 @@ export const EoullimVoteComponent: React.FC<EoullimVoteProps> = ({ name, isSelec
       style={{ ...scaleAnimatedStyle, width: '100%' }}
     >
       <S.EoullimVote style={{ borderColor: isSelect ? colors.primary : colors.lightGray }}>
-        <Text size={15} fontFamily="bold" color={isSelect ? colors.primary : colors.placeholder}>
-          {name}
-        </Text>
-        <Ionicons name="checkmark-circle" size={34} color={isSelect ? colors.primary : '#E8E8E8'} />
+        <S.EoullimVoteTextWrapper>
+          <Text size={15} fontFamily="bold" color={isSelect ? colors.primary : colors.placeholder}>
+            {name}
+          </Text>
+        </S.EoullimVoteTextWrapper>
+        <S.EoullimVoteButtonWrapper>
+          <Ionicons
+            name="checkmark-circle"
+            size={34}
+            color={isSelect ? colors.primary : '#E8E8E8'}
+          />
+        </S.EoullimVoteButtonWrapper>
       </S.EoullimVote>
     </TouchableOpacity>
   );

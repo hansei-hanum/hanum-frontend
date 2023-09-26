@@ -118,8 +118,12 @@ export const EoullimVoteScreen: React.FC = () => {
                       {voteLeftTime}
                     </Text>
                   </S.EoullimVoteTimeContainer>
-                  <S.EoullimVoteList>
-                    {data.data.fileds.map(({ id, value }) => (
+                  <S.EoullimVoteList
+                    contentContainerStyle={{ rowGap: 6 }}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    {data.data.fields.map(({ id, value }) => (
                       <EoullimVoteComponent
                         key={id}
                         name={value}
