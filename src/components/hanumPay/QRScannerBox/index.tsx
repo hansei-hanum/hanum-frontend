@@ -6,15 +6,15 @@ import { colors } from 'src/styles';
 import * as S from './styled';
 
 interface QRScannerProps {
-  isTeacherVerify?: boolean;
+  qrName: string;
 }
 
-export const QRScannerContent: React.FC<QRScannerProps> = ({ isTeacherVerify }) => {
+export const QRScannerContent: React.FC<QRScannerProps> = ({ qrName }) => {
   return (
     <S.HanumPayQRBoxContainer>
       <Text.Column>
         <Text size={16} isCenter color={colors.white}>
-          {isTeacherVerify ? '교직원 인증' : '결제'} QR코드를 {'\n'}아래 상자에 맞춰주세요
+          {qrName} QR코드를 {'\n'}아래 상자에 맞춰주세요
         </Text>
       </Text.Column>
       <S.HanumPayQrBox>

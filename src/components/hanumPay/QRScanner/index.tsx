@@ -8,16 +8,16 @@ import { QRScannerBox } from '../QRScannerBox';
 
 export interface QRScannerProps {
   onSuccess: (e: BarCodeReadEvent) => void;
-  isTeacherVerify?: boolean;
+  qrName: string;
 }
 
-export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess, isTeacherVerify }) => {
+export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess, qrName }) => {
   const options = {
     onRead: onSuccess,
     showMarker: true,
     vibrate: false,
     reactivate: true,
-    customMarker: <QRScannerBox isTeacherVerify={isTeacherVerify} />,
+    customMarker: <QRScannerBox qrName={qrName} />,
   };
 
   if (isIos) {
