@@ -1,31 +1,39 @@
-import React, { useState } from "react";
-import * as S from "./styled";
-import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from "src/components";
-import { Linking } from "react-native";
-import { colors } from "src/styles";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState } from 'react';
+import { Linking } from 'react-native';
 
-export const EoullimRaffleScreen:React.FC = () => {
+import { useNavigation } from '@react-navigation/native';
+
+import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from 'src/components';
+import { colors } from 'src/styles';
+
+import * as S from './styled';
+
+export const EoullimRaffleScreen: React.FC = () => {
   const navigation = useNavigation();
 
-    const [modalVisible, setModalVisible] = useState<boolean>(false);
-    
-    const closeModal = () => {
-        setModalVisible(false);
-        navigation.goBack();
-    };
-    return(
-        <>
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setModalVisible(false);
+    navigation.goBack();
+  };
+  return (
+    <>
       <S.EoullimRaffleWrapper>
         <S.EoullimRaffleHeaderWrapper>
           <HanumPayHeader title="추첨번호 받기" />
         </S.EoullimRaffleHeaderWrapper>
         {modalVisible ? (
           <QRScannerBox.Permission>
-            <QRScannerBox qrName='추첨번호 받기' />
+            <QRScannerBox qrName="추첨번호 받기" />
           </QRScannerBox.Permission>
         ) : (
-          <QRScanner onSuccess={() => {console.log('wqre')}} qrName='리플렛에 있는' />
+          <QRScanner
+            onSuccess={() => {
+              console.log('wqre');
+            }}
+            qrName="리플렛에 있는"
+          />
         )}
       </S.EoullimRaffleWrapper>
       {modalVisible && (
@@ -56,5 +64,5 @@ export const EoullimRaffleScreen:React.FC = () => {
         />
       )}
     </>
-    )
-}
+  );
+};

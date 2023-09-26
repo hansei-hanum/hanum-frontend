@@ -2,9 +2,9 @@ import React from 'react';
 
 import { EoullimTimeTable } from 'src/assets';
 import { CommonHeader, Text } from 'src/components';
+import { isIos } from 'src/utils';
 
 import * as S from './styled';
-import { isIos } from 'src/utils';
 
 export const EoullimTimeTableScreen: React.FC = () => {
   return (

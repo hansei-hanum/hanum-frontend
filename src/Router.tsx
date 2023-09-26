@@ -94,7 +94,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="EoullimMain" component={EoullimMainScreen} />
           <Stack.Screen name="EoullimVote" component={EoullimVoteScreen} />
           <Stack.Screen name="EoullimTimeTable" component={EoullimTimeTableScreen} />
-          <Stack.Screen name='EoullimRaffle' component={EoullimRaffleScreen}/>
+          <Stack.Screen name="EoullimRaffle" component={EoullimRaffleScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

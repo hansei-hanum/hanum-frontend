@@ -73,7 +73,7 @@ export const HanumPayQRScreen: React.FC = () => {
             <QRScannerBox.Permission>
               <QRScannerBox qrName={'결제'} />
             </QRScannerBox.Permission>
-          ) : isFocused ?(
+          ) : isFocused ? (
             <QRScanner onSuccess={onSuccess} qrName={'결제'} />
           ) : null}
         </S.HanumPayQRWrapper>
