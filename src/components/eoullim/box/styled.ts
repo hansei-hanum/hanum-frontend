@@ -4,7 +4,6 @@ import { BlurView } from '@react-native-community/blur';
 import { fonts } from 'src/styles';
 
 export const EoullimBoxWrapper = styled.TouchableOpacity`
-  flex: 0.47;
   height: 180px;
   border-radius: 16px;
   overflow: hidden;
@@ -14,7 +13,7 @@ export const EoullimBoxWrapper = styled.TouchableOpacity`
 `;
 
 export const EoullimBox = styled(BlurView)`
-  width: 180px;
+  width: 100%;
   height: 220px;
   background-color: rgba(248, 248, 248, 0.8);
   align-items: center;

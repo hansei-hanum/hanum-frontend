@@ -36,6 +36,14 @@ export const EoullimMainScreen: React.FC = () => {
             <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
           ))}
         </S.EoullimBoxContainer>
+        <EoullimBox
+          key={'추첨하기'}
+          icon={'🎁'}
+          title={'추첨하기'}
+          navigateUrl={'EoullimRaffle'}
+          isBig={true}
+          isAnimation={false}
+        />
       </S.EoullimContainer>
     );
   } else {
