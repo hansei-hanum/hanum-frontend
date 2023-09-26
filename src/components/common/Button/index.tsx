@@ -23,7 +23,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   backgroundColor,
   textColor,
 }) => {
-  const { handlePressIn, handlePressOut, buttonAnimatedStyle } = usePressingAnimation();
+  const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
   return (
     <TouchableOpacity
@@ -33,7 +33,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
       activeOpacity={0.8}
       style={{
         width: isModalBtn ? '48%' : '100%',
-        ...buttonAnimatedStyle,
+        ...scaleAnimatedStyle,
         backgroundColor: backgroundColor ? backgroundColor : colors.primary,
         borderRadius: isModalBtn ? 16 : 10,
         paddingVertical: 14,

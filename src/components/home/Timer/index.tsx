@@ -29,10 +29,12 @@ export const TimerText: React.FC<TimerTextProps> = ({ subText, mainText }) => {
 
 export const Timer: React.FC = () => {
   const isFocused = useIsFocused();
+
   const [time, setTime] = React.useState({
     lunch: '',
     home: '',
   });
+
   const formatTime = (now: Date, hour: number, minute: number) => {
     const minutes = now.getHours() * 60 + now.getMinutes();
     const target = hour * 60 + minute;
@@ -40,6 +42,7 @@ export const Timer: React.FC = () => {
 
     return diff > 0 ? `${Math.floor(diff / 60)}시간 ${diff % 60}분` : '-';
   };
+
   const onUpdate = () => {
     const now = new Date();
 

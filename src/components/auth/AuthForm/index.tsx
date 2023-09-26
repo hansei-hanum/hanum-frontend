@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 
-import { Button, GoBackIcon, Text } from 'src/components';
+import { Button, CommonHeader, Text } from 'src/components';
 import { colors } from 'src/styles';
 
 import * as S from './styled';
@@ -27,7 +27,7 @@ export const Auth: React.FC<AuthProps> = ({
     <S.AuthWrapper>
       <S.AuthContainer behavior="padding" keyboardVerticalOffset={15}>
         <S.AuthInputContainer>
-          <GoBackIcon size={28} style={{ marginBottom: 10 }} />
+          <CommonHeader size={28} style={{ marginBottom: 10 }} />
           <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (

@@ -5,7 +5,6 @@ import { Button, Content, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { formattedMoney, isIos } from 'src/utils';
 import { useGetPaymentAmount, useNavigate } from 'src/hooks';
-import { PayIcon } from 'src/assets';
 
 import * as S from './styled';
 
@@ -30,7 +29,7 @@ export const HanumPay: React.FC = () => {
   const balanceAmount = data?.data?.balanceAmount;
 
   return (
-    <Content icon={PayIcon} name="한움페이" navigateUrl="HanumPayMain">
+    <Content icon="💳" name="한움페이" navigateUrl="HanumPayMain">
       <S.HanumPayContainer>
         {!isLoading ? (
           <Text size={24} fontFamily="bold" color={colors.black}>

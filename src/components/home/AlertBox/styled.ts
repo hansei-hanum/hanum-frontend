@@ -20,5 +20,5 @@ export const AlertBoxContentContainer = styled(AlertBoxContainer)`
 `;
 
 export const AlertBoxTextContainer = styled.View`
-  row-gap: 3px;
+  row-gap: 0px;
 `;

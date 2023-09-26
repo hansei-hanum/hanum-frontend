@@ -4,7 +4,6 @@ import { ActivityIndicator } from 'react-native';
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
-import { CalendarIcon } from 'src/assets';
 import { useGetSchedule } from 'src/hooks';
 
 import { Content } from '../Content';

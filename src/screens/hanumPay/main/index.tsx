@@ -1,18 +1,22 @@
-import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, RefreshControl } from 'react-native';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { Button, Text, HanumPayHeader, AuthFailedModal } from 'src/components';
 import { colors } from 'src/styles';
-import { useCheckUserType, useGetPaymentDetail, useNavigate } from 'src/hooks';
+import { useCheckUserType, useGetPaymentDetail, useNavigate, useOnRefresh } from 'src/hooks';
 import { formattedMoney, isIos } from 'src/utils';
 
 import * as S from './styled';
 
 export const HanumPayMainScreen: React.FC = () => {
   const navigate = useNavigate();
+  const { refreshing, onRefresh } = useOnRefresh();
 
-  const { isLoading, data } = useGetPaymentDetail();
-  const paymentData = data?.data;
+  const payData = useGetPaymentDetail();
+  const paymentData = payData.data?.data;
+  const paymentLoading = payData.isLoading;
 
   const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
 
@@ -24,6 +28,14 @@ export const HanumPayMainScreen: React.FC = () => {
     return `${diffHour} ${diff % 60}분 전`;
   };
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      payData.refetch();
+    }
+  }, [isFocused]);
+
   if (isStudent) {
     return (
       <S.HanumPayWrapper>
@@ -34,7 +46,7 @@ export const HanumPayMainScreen: React.FC = () => {
               <Text size={14} color={colors.placeholder}>
                 한움페이 잔액
               </Text>
-              {!isLoading ? (
+              {!paymentLoading ? (
                 <Text size={28} fontFamily="bold">
                   {paymentData?.balanceAmount
                     ? formattedMoney(paymentData.balanceAmount.toString())
@@ -48,15 +60,15 @@ export const HanumPayMainScreen: React.FC = () => {
             <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
             <S.HanumUseAgeHistory>
               <Text size={18}>이용내역</Text>
-              {!isLoading ? (
+              {!paymentLoading ? (
                 <S.HanumUseAgeContainer
                   showsVerticalScrollIndicator={false}
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{
-                    flexDirection: 'column',
                     paddingBottom: isIos ? 580 : 590,
                     rowGap: 20,
                   }}
+                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
                   {paymentData?.payments && paymentData.payments.length > 0 ? (
                     paymentData.payments.map(
@@ -81,9 +93,14 @@ export const HanumPayMainScreen: React.FC = () => {
                                 {formattedTime(new Date(), hour, minute)}
                               </Text>
                             </Text.Column>
-                            <Text size={18} color={colors.black}>
-                              {isPaid ? paidAmount : refundedAmount}원
-                            </Text>
+                            <Text.Column>
+                              <Text size={18} color={colors.black}>
+                                {isPaid ? `-${paidAmount}` : `${refundedAmount}`}원
+                              </Text>
+                              <Text size={15} color={colors.placeholder}>
+                                ({isPaid ? '결제됨' : '환불됨'})
+                              </Text>
+                            </Text.Column>
                           </S.HanumUseAgeDetails>
                         );
                       },
@@ -108,7 +125,11 @@ export const HanumPayMainScreen: React.FC = () => {
             <HanumPayHeader title="한움페이" />
           </S.HanumPayContainer>
         </S.HanumPayWrapper>
-        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <AuthFailedModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          isStudent={true}
+        />
       </>
     );
   }

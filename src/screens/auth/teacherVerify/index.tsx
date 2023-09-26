@@ -4,14 +4,7 @@ import { Linking } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import {
-  Button,
-  DummyContainer,
-  HanumPayHeader,
-  Modal,
-  QRScanner,
-  QRScannerBox,
-} from 'src/components';
+import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate } from 'src/hooks';
 
@@ -53,43 +46,38 @@ export const TeacherVerifyScreen: React.FC = () => {
         </S.TeacherVerifyHeaderWrapper>
         {modalVisible ? (
           <QRScannerBox.Permission>
-            <QRScannerBox />
+            <QRScannerBox qrName="교직원 인증" />
           </QRScannerBox.Permission>
         ) : (
-          <QRScanner onSuccess={onSuccess} />
+          <QRScanner onSuccess={onSuccess} qrName="교직원 인증" />
         )}
       </S.TeacherVerifyWrapper>
       {modalVisible && (
-        <>
-          <DummyContainer />
-          <Modal
-            title="카메라 접근 권한 설정"
-            text={
-              '교직원 회원가입을 진행하시려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
-            }
-            button={
-              <Button.Container>
-                <Button
-                  onPress={closeModal}
-                  isModalBtn
-                  backgroundColor={colors.secondary}
-                  textColor={colors.black}
-                >
-                  취소
-                </Button>
-                <Button
-                  onPress={() => {
-                    Linking.openSettings();
-                  }}
-                  isModalBtn
-                >
-                  설정
-                </Button>
-              </Button.Container>
-            }
-            modalVisible={true}
-          />
-        </>
+        <Modal
+          title="카메라 접근 권한 설정"
+          text={'교직원 회원가입을 진행하시려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'}
+          button={
+            <Button.Container>
+              <Button
+                onPress={closeModal}
+                isModalBtn
+                backgroundColor={colors.secondary}
+                textColor={colors.black}
+              >
+                취소
+              </Button>
+              <Button
+                onPress={() => {
+                  Linking.openSettings();
+                }}
+                isModalBtn
+              >
+                설정
+              </Button>
+            </Button.Container>
+          }
+          modalVisible={true}
+        />
       )}
     </>
   );

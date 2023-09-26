@@ -7,4 +7,6 @@ export const colors = {
   danger: '#E12525',
   lightGray: '#F5F5F5',
   background: '#FEFEFE',
+  green: '#0CEE52',
+  brown: '#FFA800',
 };

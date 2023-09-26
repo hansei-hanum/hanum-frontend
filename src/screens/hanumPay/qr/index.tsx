@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { Linking } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useSetRecoilState } from 'recoil';
 
 import {
   AuthFailedModal,
   Button,
-  DummyContainer,
   HanumPayHeader,
   Modal,
   QRScanner,
@@ -32,10 +31,8 @@ export const HanumPayQRScreen: React.FC = () => {
   /** 바코드가 감지되면 실행되는 함수 */
   const onSuccess = ({ data }: any) => {
     try {
-      console.log('data', data);
       data = JSON.parse(data);
       if (typeof data.id === 'number' && typeof data.name === 'string') {
-        console.log('data', data);
         setBooth({
           id: data.id,
           name: data.name,
@@ -55,17 +52,15 @@ export const HanumPayQRScreen: React.FC = () => {
     navigation.goBack();
   };
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
-      if (
-        result === RESULTS.DENIED ||
-        result === RESULTS.BLOCKED ||
-        result === RESULTS.UNAVAILABLE
-      ) {
+      if (result !== RESULTS.GRANTED) {
         setCameraModal(true);
       }
     });
-  }, []);
+  }, [isFocused]);
 
   if (isStudent) {
     return (
@@ -76,43 +71,40 @@ export const HanumPayQRScreen: React.FC = () => {
           </S.HanumPayQRHeaderWrapper>
           {cameraModal ? (
             <QRScannerBox.Permission>
-              <QRScannerBox />
+              <QRScannerBox qrName={'결제'} />
             </QRScannerBox.Permission>
-          ) : (
-            <QRScanner onSuccess={onSuccess} />
-          )}
+          ) : isFocused ? (
+            <QRScanner onSuccess={onSuccess} qrName={'결제'} />
+          ) : null}
         </S.HanumPayQRWrapper>
         {cameraModal && (
-          <>
-            <DummyContainer />
-            <Modal
-              title="카메라 접근 권한 설정"
-              text={
-                '한움페이 결제 기능을 사용하려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
-              }
-              button={
-                <Button.Container>
-                  <Button
-                    onPress={closeModal}
-                    isModalBtn
-                    backgroundColor={colors.secondary}
-                    textColor={colors.black}
-                  >
-                    취소
-                  </Button>
-                  <Button
-                    onPress={() => {
-                      Linking.openSettings();
-                    }}
-                    isModalBtn
-                  >
-                    설정
-                  </Button>
-                </Button.Container>
-              }
-              modalVisible={true}
-            />
-          </>
+          <Modal
+            title="카메라 접근 권한 설정"
+            text={
+              '한움페이 결제 기능을 사용하려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'
+            }
+            button={
+              <Button.Container>
+                <Button
+                  onPress={closeModal}
+                  isModalBtn
+                  backgroundColor={colors.secondary}
+                  textColor={colors.black}
+                >
+                  취소
+                </Button>
+                <Button
+                  onPress={() => {
+                    Linking.openSettings();
+                  }}
+                  isModalBtn
+                >
+                  설정
+                </Button>
+              </Button.Container>
+            }
+            modalVisible={true}
+          />
         )}
       </>
     );
@@ -124,7 +116,11 @@ export const HanumPayQRScreen: React.FC = () => {
             <HanumPayHeader title="결제하기" />
           </S.HanumPayQRHeaderWrapper>
         </S.HanumPayQRWrapper>
-        <AuthFailedModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <AuthFailedModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          isStudent={true}
+        />
       </>
     );
   }

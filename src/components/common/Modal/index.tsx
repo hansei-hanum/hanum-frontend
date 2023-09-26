@@ -16,27 +16,30 @@ export interface ModalProps {
 
 export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible, linkText }) => {
   return (
-    <ModalElement animationType="slide" transparent={true} visible={modalVisible}>
-      <S.ModalWrapper>
-        <S.ModalContainer>
-          <Text size={24} fontFamily="bold">
-            {title}
-          </Text>
-          {linkText ? (
-            <>{linkText}</>
-          ) : (
-            <Text size={16}>
-              {text?.split('\n').map((line, index) => (
-                <Text size={16} key={line}>
-                  {line}
-                  {index !== text.split('\n').length - 1 && <>{'\n'}</>}
-                </Text>
-              ))}
+    <>
+      <S.ModalDummyContainer />
+      <ModalElement animationType="slide" transparent={true} visible={modalVisible}>
+        <S.ModalWrapper>
+          <S.ModalContainer>
+            <Text size={24} fontFamily="bold">
+              {title}
             </Text>
-          )}
-          {button}
-        </S.ModalContainer>
-      </S.ModalWrapper>
-    </ModalElement>
+            {linkText ? (
+              <>{linkText}</>
+            ) : (
+              <Text size={16}>
+                {text?.split('\n').map((line, index) => (
+                  <Text size={16} key={line}>
+                    {line}
+                    {index !== text.split('\n').length - 1 && <>{'\n'}</>}
+                  </Text>
+                ))}
+              </Text>
+            )}
+            {button}
+          </S.ModalContainer>
+        </S.ModalWrapper>
+      </ModalElement>
+    </>
   );
 };

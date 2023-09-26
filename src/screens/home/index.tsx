@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
-import { WithLocalSvg } from 'react-native-svg';
+import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
-import { Alert, Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
+import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
+import { RefreshControl } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 
-import { Timer, Calendar, Header, DummyContainer, Modal, Button, HanumPay } from 'src/components';
+import { Timer, Calendar, HomeHeader, HanumPay, AlertBox } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
-import { useConnectNotification } from 'src/hooks';
+import { useConnectNotification, useOnRefresh } from 'src/hooks';
 
 import { Logo } from '../../../assets/images';
 
 import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [messageSent, setMessageSent] = useState<boolean>(false);
+  const { refreshing, onRefresh } = useOnRefresh();
   const { mutate } = useConnectNotification();
-
   const requestUserPermission = async () => {
     let isGranted = false;
 
@@ -42,9 +40,7 @@ export const HomeScreen: React.FC = () => {
   };
 
   const messageListener = async () => {
-    console.log('Before setting up message listener');
     await messaging().onMessage(async (remoteMessage) => {
-      console.log('FCM Message Data:', remoteMessage);
       await Notifier.showNotification({
         title: remoteMessage.notification?.title || '알림',
         description: remoteMessage.notification?.body,
@@ -52,71 +48,54 @@ export const HomeScreen: React.FC = () => {
         showAnimationDuration: 500,
         hideOnPress: false,
       });
-      setMessageSent(true);
     });
-    console.log('After setting up message listener');
   };
 
   useEffect(() => {
     requestUserPermission();
     messageListener();
-    messaging()
-      .subscribeToTopic('announcement')
-      .then(() => console.log('전체 공지사항 채널 구독 성공'));
-    if (
-      (messageSent && messaging.AuthorizationStatus.NOT_DETERMINED) ||
-      (messageSent && messaging.AuthorizationStatus.DENIED)
-    ) {
-      setModalVisible(true);
-    }
+    messaging().subscribeToTopic('announcement');
   }, []);
 
   return (
-    <>
-      <S.HomeScreenWrapper>
-        <S.HomeScreenContainer
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingTop: iosCheckHeight ? 70 : 90,
-            paddingBottom: 40,
-            paddingLeft: 20,
-            paddingRight: 20,
-            rowGap: 20,
-          }}
-        >
-          <HanumPay />
-          <Timer />
-          <Calendar />
-        </S.HomeScreenContainer>
-        <Header>
-          {/* <WithLocalSvg width={98} height={40} asset={Logo} color={colors.placeholder} /> */}
-          <Image source={Logo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
-          <S.HomeScreenHeaderIconContainer>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => {
-                Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
-                  Linking.openURL('https://pf.kakao.com/_xkMcxdG')
-                );
-              }}
-            >
-              <AntDesign name="customerservice" size={28} color={colors.placeholder} />
-            </TouchableOpacity>
-          </S.HomeScreenHeaderIconContainer>
-        </Header>
-      </S.HomeScreenWrapper>
-      {modalVisible && (
-        <>
-          <DummyContainer />
-          <Modal
-            title="알림 권한"
-            text="알림 수신을 위해서는 시스템 설정에서 알림 수신을 허용해주세요."
-            modalVisible={modalVisible}
-            button={<Button onPress={() => setModalVisible(false)}>확인</Button>}
-          />
-        </>
-      )}
-    </>
+    <S.HomeScreenWrapper>
+      <S.HomeScreenContainer
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        contentContainerStyle={{
+          paddingTop: iosCheckHeight ? 70 : 90,
+          paddingBottom: 40,
+          paddingLeft: 20,
+          paddingRight: 20,
+          rowGap: 20,
+        }}
+      >
+        <AlertBox
+          navigateUrl="EoullimMain"
+          icon="🎉"
+          subText="한세어울림한마당 진행 중!"
+          mainText="실시간으로 즐기기"
+        />
+        <HanumPay />
+        <Timer />
+        <Calendar />
+      </S.HomeScreenContainer>
+      <HomeHeader>
+        <Image source={Logo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
+        <S.HomeScreenHeaderIconContainer>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
+                Linking.openURL('https://pf.kakao.com/_xkMcxdG'),
+              );
+            }}
+          >
+            <AntDesign name="customerservice" size={28} color={colors.placeholder} />
+          </TouchableOpacity>
+        </S.HomeScreenHeaderIconContainer>
+      </HomeHeader>
+    </S.HomeScreenWrapper>
   );
 };

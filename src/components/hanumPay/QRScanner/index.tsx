@@ -8,14 +8,16 @@ import { QRScannerBox } from '../QRScannerBox';
 
 export interface QRScannerProps {
   onSuccess: (e: BarCodeReadEvent) => void;
+  qrName: string;
 }
 
-export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess }) => {
+export const QRScanner: React.FC<QRScannerProps> = ({ onSuccess, qrName }) => {
   const options = {
     onRead: onSuccess,
     showMarker: true,
     vibrate: false,
-    customMarker: <QRScannerBox />,
+    reactivate: true,
+    customMarker: <QRScannerBox qrName={qrName} />,
   };
 
   if (isIos) {

@@ -21,10 +21,15 @@ import {
   HanumPayStatusScreen,
   HanumPayMainScreen,
   TeacherVerifyScreen,
+  EoullimMainScreen,
+  EoullimVoteScreen,
+  EoullimTimeTableScreen,
+  EoullimRaffleScreen,
+  EoullimStatusScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
-import { useCodePush } from './hooks'
+import { useCodePush } from './hooks';
 
 const Stack = createStackNavigator();
 
@@ -50,9 +55,9 @@ export const Router: React.FC = () => {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
+  const onLayoutRootView = useCallback(async () => { }, [isReady, isLoading]);
 
-  const [isUpdating, syncProgress] = useCodePush();
+  const [isUpdating] = useCodePush();
 
   if (isReady && !isLoading && !isUpdating) {
     SplashScreen.hide();
@@ -85,6 +90,13 @@ export const Router: React.FC = () => {
           <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
           <Stack.Screen name="HanumPayStatus" component={HanumPayStatusScreen} />
           <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen name="EoullimMain" component={EoullimMainScreen} />
+          <Stack.Screen name="EoullimVote" component={EoullimVoteScreen} />
+          <Stack.Screen name="EoullimTimeTable" component={EoullimTimeTableScreen} />
+          <Stack.Screen name="EoullimRaffle" component={EoullimRaffleScreen} />
+          <Stack.Screen name="EoullimStatus" component={EoullimStatusScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

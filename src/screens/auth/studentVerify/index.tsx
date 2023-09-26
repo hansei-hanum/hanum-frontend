@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
 
-import { Text, Auth, DummyContainer, Modal, Button } from 'src/components';
+import { Text, Auth, Modal, Button } from 'src/components';
 import { useInitNavigate, useStudentCodeVerify } from 'src/hooks';
 import { authState, studentVerifyState } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
@@ -99,36 +99,33 @@ export const StudentVerifyScreen: React.FC = () => {
         />
       </Auth>
       {modalVisible && (
-        <>
-          <DummyContainer />
-          <Modal
-            title="본인 확인"
-            text={
-              studentVerify.department && studentVerify.grade && studentVerify.classroom
-                ? `${formattedDepartment(studentVerify.department)} ${studentVerify.grade}학년 ${
-                    studentVerify.classroom
-                  }반 ${studentVerify.number}번 학생이 맞나요? \n` +
-                  `본인과 정보가 다를 경우 반드시 문의를 통해 정정해주세요. 그렇지 않을 경우 나중에 계정이 이용 제한될 수도 있어요.`
-                : `${authValue.errorMessage}`
-            }
-            modalVisible={modalVisible}
-            button={
-              <Button.Container>
-                <Button
-                  onPress={() => setModalVisible(false)}
-                  backgroundColor={colors.secondary}
-                  textColor={colors.black}
-                  isModalBtn
-                >
-                  아니오
-                </Button>
-                <Button onPress={onSubmit} isModalBtn>
-                  예!
-                </Button>
-              </Button.Container>
-            }
-          />
-        </>
+        <Modal
+          title="본인 확인"
+          text={
+            studentVerify.department && studentVerify.grade && studentVerify.classroom
+              ? `${formattedDepartment(studentVerify.department)} ${studentVerify.grade}학년 ${
+                  studentVerify.classroom
+                }반 ${studentVerify.number}번 학생이 맞나요? \n` +
+                `본인과 정보가 다를 경우 반드시 문의를 통해 정정해주세요. 그렇지 않을 경우 나중에 계정이 이용 제한될 수도 있어요.`
+              : `${authValue.errorMessage}`
+          }
+          modalVisible={modalVisible}
+          button={
+            <Button.Container>
+              <Button
+                onPress={() => setModalVisible(false)}
+                backgroundColor={colors.secondary}
+                textColor={colors.black}
+                isModalBtn
+              >
+                아니오
+              </Button>
+              <Button onPress={onSubmit} isModalBtn>
+                예!
+              </Button>
+            </Button.Container>
+          }
+        />
       )}
     </>
   );

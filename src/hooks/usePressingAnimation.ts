@@ -35,9 +35,9 @@ export const usePressingAnimation = () => {
     }),
   };
 
-  const buttonAnimatedStyle = {
+  const scaleAnimatedStyle = {
     transform: [{ scale: animation }],
   };
 
-  return { animatedStyle, buttonAnimatedStyle, handlePressIn, handlePressOut };
+  return { animatedStyle, scaleAnimatedStyle, handlePressIn, handlePressOut };
 };

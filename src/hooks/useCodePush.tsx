@@ -6,14 +6,26 @@ type UseCodePushReturn = [boolean, CodePush.SyncStatus | null];
 export const useCodePush = (): UseCodePushReturn => {
   const [isUpdating, setIsUpdating] = useState<boolean>(true);
   const [syncProgress, setSyncProgress] = useState<CodePush.SyncStatus | null>(null);
-  
+
   useEffect(() => {
     const checkAndGetCodePush = async () => {
       try {
         const update: RemotePackage | null = await CodePush.checkForUpdate();
-        
-        // 필수(mandatory) 업데이트가 존재하는 경우 업데이트 프로세스 실행 
+
+        // 필수(mandatory) 업데이트가 존재하는 경우 업데이트 프로세스 실행
         if (update && update.isMandatory) {
+          console.log('[CodePush] JS: UPDATE REQUIRED');
+          await CodePush.sync(
+            {
+              installMode: CodePush.InstallMode.IMMEDIATE,
+              mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+            },
+            (progress) => {
+              setSyncProgress(progress);
+            },
+          );
+          return;
+        } else {
             console.log("[CodePush] JS: UPDATE REQUIRED");
             await CodePush.sync(
                 {
@@ -28,7 +40,7 @@ export const useCodePush = (): UseCodePushReturn => {
         }else{
             console.log("[CodePush] JS: UPDATE NOT REQUIRED");
         }
-        
+
         // 필수(mandatory) 업데이트가 존재하지 않는 경우 isUpdating 상태 false로 변경
         setIsUpdating(false);
         return;
@@ -36,9 +48,9 @@ export const useCodePush = (): UseCodePushReturn => {
         setIsUpdating(false);
       }
     };
-            
+
     checkAndGetCodePush();
   }, []);
-            
+
   return [isUpdating, syncProgress];
 };

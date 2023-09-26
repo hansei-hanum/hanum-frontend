@@ -3,6 +3,7 @@ import { FlatList } from 'react-native';
 
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
+import { isAndroid } from 'src/utils';
 
 import * as S from './styled';
 
@@ -18,6 +19,7 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
       style={{
         backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : colors.white,
         paddingTop: 20,
+        height: isAndroid ? 580 : 550,
       }}
       data={list}
       renderItem={({ item }) => {
@@ -29,7 +31,8 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
             name.includes('LAN') ||
             name.includes('인공지능') ||
             name.includes('빅데이터 분석') ||
-            name.includes('애플리케이션 보안')
+            name.includes('애플리케이션 보안') ||
+            name.includes('클라우드 시스템')
           ) {
             return name
               .replace('*', '')
@@ -38,7 +41,8 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
               .replace('근거리통신망(LAN) 설계', '네트워크 구축')
               .replace('과 미래사회', '')
               .replace('결과 시각화', '')
-              .replace('애플리케이션 보안 운영', '클라우드 보안');
+              .replace('애플리케이션 보안 운영', '클라우드 보안')
+              .replace('클라우드 시스템 요구사항 분석', '클라우드 구축');
           }
           return name;
         };

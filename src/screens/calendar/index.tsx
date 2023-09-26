@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { ActivityIndicator } from '@react-native-material/core';
 
-import { ContentBox, GoBackIcon, Icon, Text } from 'src/components';
+import { ContentBox, CommonHeader, Icon, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { useGetMonthSchedule } from 'src/hooks';
 
@@ -92,9 +92,9 @@ export const CalendarScreen: React.FC = () => {
   return (
     <S.CalendarWrapper>
       <S.CalendarHeaderContainer>
-        <GoBackIcon size={28} style={{ marginBottom: 10 }} />
+        <CommonHeader size={28} style={{ marginBottom: 10 }} />
         <S.CalendarTitleContainer>
-          <Icon icon="📆" includeBackground={false}/>
+          <Icon icon="📆" includeBackground={false} />
           <Text size={20} fontFamily="bold">
             학사일정
           </Text>
@@ -153,7 +153,7 @@ export const CalendarScreen: React.FC = () => {
             {mothScheduleData?.data
               .find(({ date }) => format(new Date(date), 'yyyy-MM-dd') === selectedDate)
               ?.data.map((item) => (
-                <ContentBox>
+                <ContentBox key={item}>
                   <Text size={16} fontFamily="medium" key={item}>
                     {item}
                   </Text>
