@@ -16,7 +16,9 @@ export const HanumPayScreen: React.FC = () => {
   const boothInfo = useRecoilValue(boothState);
 
   const { mutate } = usePayment();
+
   const onSubmit = () => {
+    console.log('asd')
     boothInfo.id !== 0 && mutate({ amount: parseInt(money), boothId: boothInfo.id });
   };
 

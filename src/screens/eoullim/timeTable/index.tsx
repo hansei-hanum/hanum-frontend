@@ -4,6 +4,7 @@ import { EoullimTimeTable } from 'src/assets';
 import { CommonHeader, Text } from 'src/components';
 
 import * as S from './styled';
+import { isIos } from 'src/utils';
 
 export const EoullimTimeTableScreen: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ export const EoullimTimeTableScreen: React.FC = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 20,
+          paddingHorizontal: isIos ? 20 : 0,
           rowGap: 10,
         }}
       >

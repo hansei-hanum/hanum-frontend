@@ -39,10 +39,10 @@ export const EoullimMainScreen: React.FC = () => {
         <EoullimBox
           key={'추첨하기'}
           icon={'🎁'}
-          title={'추첨하기'}
+          title={'나의 추첨번호'}
           navigateUrl={'EoullimRaffle'}
           isBig={true}
-          isAnimation={false}
+          // isAnimation={false}
         />
       </S.EoullimContainer>
     );

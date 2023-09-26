@@ -33,7 +33,6 @@ export const HanumPayQRScreen: React.FC = () => {
     try {
       data = JSON.parse(data);
       if (typeof data.id === 'number' && typeof data.name === 'string') {
-        console.log('data', data);
         setBooth({
           id: data.id,
           name: data.name,
@@ -74,9 +73,9 @@ export const HanumPayQRScreen: React.FC = () => {
             <QRScannerBox.Permission>
               <QRScannerBox qrName={'결제'} />
             </QRScannerBox.Permission>
-          ) : (
+          ) : isFocused ?(
             <QRScanner onSuccess={onSuccess} qrName={'결제'} />
-          )}
+          ) : null}
         </S.HanumPayQRWrapper>
         {cameraModal && (
           <Modal
