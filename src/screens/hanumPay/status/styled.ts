@@ -25,5 +25,5 @@ export const StatusScreenLottie = styled(LottieView)`
 `;
 
 export const StatusButtonWrapper = styled.View`
-margin: ${isIos ? '0 20px': '0'};
-`
+  margin: ${isIos ? '0 20px' : '0'};
+`;

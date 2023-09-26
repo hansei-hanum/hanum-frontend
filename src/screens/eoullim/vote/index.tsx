@@ -62,10 +62,9 @@ export const EoullimVoteScreen: React.FC = () => {
     }
   }, [isFocused]);
 
-  return (
-    <>
-    {voteTime ? (
-        <S.EoullimVoteWrapper>
+  if (voteTime) {
+    return (
+      <S.EoullimVoteWrapper>
         <S.EoullimVoteContainer>
           <CommonHeader />
           <S.EoullimVoteHeader>
@@ -112,25 +111,25 @@ export const EoullimVoteScreen: React.FC = () => {
             </>
           )}
         </S.EoullimVoteContainer>
-        </S.EoullimVoteWrapper>
-      ) : (
-        <Modal
-          title="투표 "
-          text={'지금은 진행 중인 투표가 없어요.\n' + '나중에 다시 시도해 보세요.'}
-          modalVisible={modalVisible}
-          button={
-            <Button
-              onPress={() => {
-                navigation.goBack();
-                setModalVisible(false);
-              }}
-            >
-              확인
-            </Button>
-          }
-        />
-      )}
-    
-    </>
-  );
+      </S.EoullimVoteWrapper>
+    );
+  } else {
+    return (
+      <Modal
+        title="투표 "
+        text={'지금은 진행 중인 투표가 없어요.\n' + '나중에 다시 시도해 보세요.'}
+        modalVisible={modalVisible}
+        button={
+          <Button
+            onPress={() => {
+              navigation.goBack();
+              setModalVisible(false);
+            }}
+          >
+            확인
+          </Button>
+        }
+      />
+    );
+  }
 };

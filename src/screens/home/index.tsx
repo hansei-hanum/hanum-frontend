@@ -17,7 +17,6 @@ import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
   const { mutate } = useConnectNotification();
-
   const requestUserPermission = async () => {
     let isGranted = false;
 

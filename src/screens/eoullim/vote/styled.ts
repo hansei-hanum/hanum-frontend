@@ -1,6 +1,7 @@
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
+import { isIos } from 'src/utils';
 
 export const EoullimVoteWrapper = styled.SafeAreaView`
   flex: 1;
@@ -10,7 +11,7 @@ export const EoullimVoteWrapper = styled.SafeAreaView`
 export const EoullimVoteContainer = styled.View`
   flex: 1;
   padding: 20px;
-  padding-top: 0px;
+  padding-top: ${isIos ? '0px' : '20px'};
   row-gap: 24px;
 `;
 

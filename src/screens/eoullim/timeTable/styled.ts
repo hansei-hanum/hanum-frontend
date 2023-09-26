@@ -15,6 +15,6 @@ export const EoullimTimeTableContainer = styled.ScrollView`
 `;
 
 export const EoullimTimeTableImage = styled.ImageBackground`
-  height: ${isIos ? '820px' : '800px'};
+  height: ${isIos ? '820px' : '700px'};
   border: 1px solid ${colors.lightGray};
 `;

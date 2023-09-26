@@ -24,27 +24,27 @@ export const EoullimMainScreen: React.FC = () => {
   const { userData } = useGetUser();
   const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
 
-  return (
-    <>
-      {verifyUser ? (
-        <S.EoullimContainer source={EoullimPoster}>
-          <CommonHeader isWhite />
-          <Text size={24} fontFamily="bold" color={colors.white}>
-            {userData.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
-          </Text>
-          <S.EoullimBoxContainer>
-            {EoullimList.map(({ icon, title, navigateUrl }) => (
-              <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
-            ))}
-          </S.EoullimBoxContainer>
-        </S.EoullimContainer>
-      ) : (
-        <AuthFailedModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          isStudent={false}
-        />
-      )}
-      </>
-  );
+  if (verifyUser) {
+    return (
+      <S.EoullimContainer source={EoullimPoster}>
+        <CommonHeader isWhite />
+        <Text size={24} fontFamily="bold" color={colors.white}>
+          {userData.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
+        </Text>
+        <S.EoullimBoxContainer>
+          {EoullimList.map(({ icon, title, navigateUrl }) => (
+            <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
+          ))}
+        </S.EoullimBoxContainer>
+      </S.EoullimContainer>
+    );
+  } else {
+    return (
+      <AuthFailedModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        isStudent={false}
+      />
+    );
+  }
 };

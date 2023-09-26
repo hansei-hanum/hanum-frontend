@@ -3,6 +3,7 @@ import { FlatList } from 'react-native';
 
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
+import { isAndroid } from 'src/utils';
 
 import * as S from './styled';
 
@@ -18,7 +19,7 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
       style={{
         backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : colors.white,
         paddingTop: 20,
-        height: 400,
+        height: isAndroid ? 580 : 400,
       }}
       data={list}
       renderItem={({ item }) => {

@@ -40,6 +40,7 @@ export const useAuth = (): UseMutationResult<
       onSuccess: async ({ data }) => {
         await AsyncStorage.setItem('token', data);
         setAccessToken(data);
+        console.log(data, 'data');
         if (auth.isCurrentStudent) {
           navigate('StudentVerify');
         } else {

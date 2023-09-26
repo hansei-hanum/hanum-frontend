@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { Linking } from 'react-native';
 
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -56,16 +56,9 @@ export const HanumPayQRScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    check(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
-      console.log('qwer', result);
-      if (result === RESULTS.BLOCKED) {
+    request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
+      if (result !== RESULTS.GRANTED) {
         setCameraModal(true);
-      } else {
-        request(PERMISSIONS.ANDROID.CAMERA || PERMISSIONS.IOS.CAMERA).then((result) => {
-          if (result !== RESULTS.GRANTED) {
-            setCameraModal(true);
-          }
-        });
       }
     });
   }, [isFocused]);
