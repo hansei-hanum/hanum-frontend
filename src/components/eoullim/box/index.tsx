@@ -10,7 +10,6 @@ export interface EoullimBoxProps {
   icon: string;
   navigateUrl: string;
   isBig?: boolean;
-  isAnimation?: boolean;
 }
 
 export const EoullimBox: React.FC<EoullimBoxProps> = ({
@@ -18,20 +17,16 @@ export const EoullimBox: React.FC<EoullimBoxProps> = ({
   icon,
   navigateUrl,
   isBig,
-  isAnimation = true,
 }) => {
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
   const navigate = useNavigate();
 
   return (
     <S.EoullimBoxWrapper
-      {...(isAnimation && {
-        onPressIn: handlePressIn,
-        onPressOut: handlePressOut,
-        activeOpacity: 0.8,
-      })}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       onPress={() => navigate(navigateUrl)}
-      activeOpacity={isAnimation ? 0.9 : 1}
+      activeOpacity={0.8}
       style={{ ...scaleAnimatedStyle, width: isBig ? '100%' : '48%' }}
     >
       <S.EoullimBox blurType="light" blurAmount={1} reducedTransparencyFallbackColor="white" />

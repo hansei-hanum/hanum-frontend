@@ -42,7 +42,6 @@ export const EoullimMainScreen: React.FC = () => {
           title={'나의 추첨번호'}
           navigateUrl={'EoullimRaffle'}
           isBig={true}
-          // isAnimation={false}
         />
       </S.EoullimContainer>
     );
