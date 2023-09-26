@@ -23,7 +23,7 @@ export const EoullimStatusScreen: React.FC = () => {
     <Status navigateUrl="EoullimMain">
       {luckyNumber.number > 0 ? (
         <S.RaffleStatusWrapper>
-          <Text size={70} fontFamily="bold" isCenter color={colors.white}>
+          <Text size={60} fontFamily="bold" isCenter color={colors.white}>
             {luckyNumber.number}
           </Text>
         </S.RaffleStatusWrapper>
