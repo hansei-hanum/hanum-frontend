@@ -16,14 +16,14 @@ export const EoullimStatusScreen: React.FC = () => {
   const { userData } = useGetUser();
   const message =
     luckyNumber.number > 0
-      ? `${userData.name}님의 추첨번호는 ${'\n'} "${luckyNumber.number}"번 입니다.`
+      ? `${userData.name}님의 추첨번호에요. ${'\n'} 행운을 빌어요!`
       : `${luckyNumber.errorMessage}`;
 
   return (
-    <Status navigateUrl="Main">
+    <Status navigateUrl="EoullimMain">
       {luckyNumber.number > 0 ? (
         <S.RaffleStatusWrapper>
-          <Text size={40} fontFamily="bold" isCenter color={colors.white}>
+          <Text size={70} fontFamily="bold" isCenter color={colors.white}>
             {luckyNumber.number}
           </Text>
         </S.RaffleStatusWrapper>
