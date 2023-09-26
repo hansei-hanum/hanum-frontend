@@ -12,6 +12,7 @@ export const EoullimVoteContainer = styled.View`
   flex: 1;
   padding: 20px;
   padding-top: ${isIos ? '0px' : '20px'};
+  padding-bottom: 0px;
   row-gap: 24px;
 `;
 

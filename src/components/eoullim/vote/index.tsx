@@ -127,7 +127,7 @@ export const EoullimVote: React.FC<EoullimVoteProps> = ({
                 </Text>
               </S.EoullimVoteTimeContainer>
               <S.EoullimVoteList
-                contentContainerStyle={{ rowGap: 6 }}
+                contentContainerStyle={{ rowGap: 6, paddingBottom: 20 }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
               >
