@@ -1,4 +1,6 @@
-import { API_SUFFIX, festivalInstance } from './api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { API_SUFFIX, festivalInstance, setAccessToken } from './api';
 
 export interface EoullimLuckyDrawValue {
   token: string;
@@ -20,9 +22,8 @@ export interface EoullimVoteResponse {
 }
 
 export const eoullimLuckyDraw = async ({ token }: EoullimLuckyDrawValue) => {
-  console.log(token);
   const { data } = await festivalInstance.post(API_SUFFIX.EOULLIM_LUCKYDRAW, {
-    token,
+    token: token,
   });
   return data;
 };

@@ -57,7 +57,7 @@ export interface APIErrorResponse {
 }
 
 export const setAccessToken = (token: string | null) => {
-  const instances = [authInstance, payInstance, infoInstance];
+  const instances = [authInstance, payInstance, infoInstance, festivalInstance];
 
   instances.forEach((instance) => {
     if (token) {

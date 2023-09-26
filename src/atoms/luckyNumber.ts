@@ -1,6 +1,14 @@
 import { atom } from 'recoil';
 
-export const luckyNumberState = atom<null | number>({
+export interface luckyNumberProps {
+  number: number | null;
+  errorMessage: string | null;
+}
+
+export const luckyNumberState = atom<luckyNumberProps>({
   key: 'luckyNumberState',
-  default: null,
+  default: {
+    number: null,
+    errorMessage: null,
+  },
 });
