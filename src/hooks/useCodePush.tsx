@@ -25,19 +25,7 @@ export const useCodePush = (): UseCodePushReturn => {
             },
           );
           return;
-        } else {
-            console.log("[CodePush] JS: UPDATE REQUIRED");
-            await CodePush.sync(
-                {
-                    installMode: CodePush.InstallMode.IMMEDIATE,
-                    mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
-                },
-                (progress) => {
-                    setSyncProgress(progress);
-                },
-            );
-          return;
-        }else{
+        } else{
             console.log("[CodePush] JS: UPDATE NOT REQUIRED");
         }
 
