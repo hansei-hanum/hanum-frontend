@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from 'src/components';
 import { colors } from 'src/styles';
-import { useNavigate } from 'src/hooks';
 import { useLuckyDraw } from 'src/hooks/query/eoullim/useLuckyDraw';
 
 import * as S from './styled';
@@ -14,16 +13,14 @@ import * as S from './styled';
 export const EoullimRaffleScreen: React.FC = () => {
   const { mutate } = useLuckyDraw();
   const navigation = useNavigation();
-  const navigate = useNavigate();
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const onSucess = ({ data }: any) => {
+  const onSucess = (data: any) => {
+    console.log(data.data, 'asdf');
     try {
-      data = JSON.parse(data);
-      if (typeof data.token === 'string') {
-        mutate(data.token);
-        navigate('EoullimStatus');
+      if (typeof data.data === 'string' && data.data.length === 6) {
+        mutate({ token: data.data });
       } else {
         return null;
       }

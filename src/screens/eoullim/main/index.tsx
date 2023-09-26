@@ -50,7 +50,7 @@ export const EoullimMainScreen: React.FC = () => {
             />
           </>
         ) : (
-          <ActivityIndicator size={26} />
+          <ActivityIndicator size={30} color={colors.white} />
         )}
       </S.EoullimContainer>
     );
