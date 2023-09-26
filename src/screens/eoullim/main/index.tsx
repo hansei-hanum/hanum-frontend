@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { AuthFailedModal, EoullimBox, CommonHeader, Text } from 'src/components';
 import { EoullimPoster } from 'src/assets';
@@ -23,9 +25,17 @@ const EoullimList = [
 ];
 
 export const EoullimMainScreen: React.FC = () => {
-  const { isLoading, data } = useGetLuckyDraw();
+  const luckyDraw = useGetLuckyDraw();
   const { userData } = useGetUser();
   const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      luckyDraw.refetch();
+    }
+  }, [isFocused]);
 
   if (verifyUser) {
     return (
@@ -34,7 +44,7 @@ export const EoullimMainScreen: React.FC = () => {
         <Text size={24} fontFamily="bold" color={colors.white}>
           {userData.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
         </Text>
-        {!isLoading ? (
+        {!luckyDraw.isLoading ? (
           <>
             <S.EoullimBoxContainer>
               {EoullimList.map(({ icon, title, navigateUrl }) => (
@@ -45,7 +55,7 @@ export const EoullimMainScreen: React.FC = () => {
               key={'추첨하기'}
               icon={'🎁'}
               title={'나의 추첨번호'}
-              navigateUrl={data ? 'EoullimStatus' : 'EoullimRaffle'}
+              navigateUrl={luckyDraw.data ? 'EoullimStatus' : 'EoullimRaffle'}
               isBig={true}
             />
           </>

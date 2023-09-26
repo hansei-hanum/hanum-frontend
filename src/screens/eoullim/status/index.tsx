@@ -12,17 +12,19 @@ import * as S from './styled';
 
 export const EoullimStatusScreen: React.FC = () => {
   const luckyNumber = useRecoilValue(luckyNumberState);
+  console.log(luckyNumber, 'asdf');
   const { userData } = useGetUser();
-  const message = luckyNumber
-    ? `${userData.name}님의 추첨번호는 ${'\n'} "76"번 입니다.`
-    : '추첨번호를 받지 못했어요.';
+  const message =
+    luckyNumber.number > 0
+      ? `${userData.name}님의 추첨번호는 ${'\n'} "${luckyNumber.number}"번 입니다.`
+      : `${luckyNumber.errorMessage}`;
 
   return (
     <Status navigateUrl="Main">
-      {luckyNumber ? (
+      {luckyNumber.number > 0 ? (
         <S.RaffleStatusWrapper>
           <Text size={40} fontFamily="bold" isCenter color={colors.white}>
-            {luckyNumber}
+            {luckyNumber.number}
           </Text>
         </S.RaffleStatusWrapper>
       ) : (

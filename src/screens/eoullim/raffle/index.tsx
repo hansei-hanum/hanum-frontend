@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from 'src/components';
 import { colors } from 'src/styles';
 import { useLuckyDraw } from 'src/hooks/query/eoullim/useLuckyDraw';
-import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -15,12 +14,9 @@ export const EoullimRaffleScreen: React.FC = () => {
   const { mutate } = useLuckyDraw();
   const navigation = useNavigation();
 
-  const navigate = useNavigate();
-
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const onSucess = (data: any) => {
-    console.log(data, 'asdf'); //  url 들어간거는 나오는데 text data는 안나옴
+  const onSucess = ({ data }: any) => {
     try {
       // if (typeof data.data === 'string' && data.data.length === 5) {
       //   mutate({ token: 'HELLOO' });
@@ -28,8 +24,7 @@ export const EoullimRaffleScreen: React.FC = () => {
       // } else {
       //   return null;
       // }
-      mutate({ token: 'HELLOO' });
-      navigate('EoullimStatus');
+      mutate({ token: 'gVTsl' });
     } catch (e) {
       console.log(e);
       return null;
