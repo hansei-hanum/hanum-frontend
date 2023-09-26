@@ -55,7 +55,7 @@ export const Router: React.FC = () => {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => { }, [isReady, isLoading]);
+  const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
 
   const [isUpdating] = useCodePush();
 
@@ -96,7 +96,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="EoullimVote" component={EoullimVoteScreen} />
           <Stack.Screen name="EoullimTimeTable" component={EoullimTimeTableScreen} />
           <Stack.Screen name="EoullimRaffle" component={EoullimRaffleScreen} />
-          <Stack.Screen name="EoullimStatus" component={EoullimStatusScreen} />
+          <Stack.Screen name='EoullimStatus' component={EoullimStatusScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

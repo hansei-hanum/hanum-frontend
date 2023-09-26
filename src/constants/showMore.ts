@@ -28,7 +28,7 @@ export const SHOW_MORE_SECTION_LIST: ShowMoreSectionItem[] = [
       {
         name: '한움페이',
         icon: '💳',
-        navigateUrl: 'HanumPayMain',
+        navigateUrl: 'HanumPay',
       },
       // {
       //   name: '2023 한세어울림한마당',
