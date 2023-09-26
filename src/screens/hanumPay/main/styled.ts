@@ -39,3 +39,14 @@ export const HanumUseAgeDetails = styled.View`
   align-items: center;
   justify-content: space-between;
 `;
+
+export const HanumUseAgeTextContainer = styled.View`
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  row-gap: 4px;
+`;
+
+export const HanumUseAgeTextLeftContainer = styled(HanumUseAgeTextContainer)`
+  align-items: flex-start;
+`;

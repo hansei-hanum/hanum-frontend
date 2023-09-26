@@ -18,13 +18,11 @@ export const EoullimRaffleScreen: React.FC = () => {
 
   const onSucess = ({ data }: any) => {
     try {
-      // if (typeof data.data === 'string' && data.data.length === 5) {
-      //   mutate({ token: 'HELLOO' });
-      //   navigate('EoullimStatus');
-      // } else {
-      //   return null;
-      // }
-      mutate({ token: 'gVTsl' });
+      if (typeof data === 'string' && data.length === 5) {
+        mutate({ token: data });
+      } else {
+        return null;
+      }
     } catch (e) {
       console.log(e);
       return null;

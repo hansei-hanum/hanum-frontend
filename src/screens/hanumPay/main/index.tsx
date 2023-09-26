@@ -87,20 +87,25 @@ export const HanumPayMainScreen: React.FC = () => {
                         const minute = historyTime.getMinutes();
                         return (
                           <S.HanumUseAgeDetails key={id}>
-                            <Text.Column>
+                            <S.HanumUseAgeTextLeftContainer>
                               <Text size={17}>{boothName}</Text>
                               <Text size={15} color={colors.placeholder}>
                                 {formattedTime(new Date(), hour, minute)}
                               </Text>
-                            </Text.Column>
-                            <Text.Column>
+                            </S.HanumUseAgeTextLeftContainer>
+                            <S.HanumUseAgeTextContainer>
                               <Text size={18} color={colors.black}>
-                                {isPaid ? `-${paidAmount}` : `${refundedAmount}`}원
+                                {isPaid
+                                  ? `-${paidAmount && formattedMoney(paidAmount.toString())}`
+                                  : `${
+                                      refundedAmount && formattedMoney(refundedAmount.toString())
+                                    }`}
+                                원
                               </Text>
                               <Text size={15} color={colors.placeholder}>
                                 ({isPaid ? '결제됨' : '환불됨'})
                               </Text>
-                            </Text.Column>
+                            </S.HanumUseAgeTextContainer>
                           </S.HanumUseAgeDetails>
                         );
                       },
