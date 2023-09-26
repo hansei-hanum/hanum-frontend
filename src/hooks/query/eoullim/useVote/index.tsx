@@ -16,9 +16,6 @@ export const useVote = (): UseMutationResult<
   EoullimVoteValue
 > => {
   return useMutation('useVote', eoullimVote, {
-    onSuccess: ({ data }) => {
-      console.log(data);
-    },
     onError: (error) => {
       console.log(error);
     },
