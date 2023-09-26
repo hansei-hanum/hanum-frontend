@@ -16,28 +16,20 @@ import * as S from './styled';
 export interface EoullimVoteProps {
   getVote: UseQueryResult<APIResponse<EoullimVoteResponse>, AxiosError<APIErrorResponse>>;
   getVoteData: EoullimVoteResponse;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const EoullimVote: React.FC<EoullimVoteProps> = ({
-  getVoteData,
-  getVote,
-  setModalVisible,
-}) => {
+export const EoullimVote: React.FC<EoullimVoteProps> = ({ getVoteData, getVote }) => {
   const [cursor, setCursor] = useState<number | null>(null);
 
   if (getVoteData && getVoteData.myVote && cursor === null) {
     setCursor(getVoteData.fields.findIndex(({ id }) => id === getVoteData.myVote?.fieldId));
   }
 
-  const now = new Date();
   const startTime = getVoteData && new Date(getVoteData?.startAt);
   const endTime = getVoteData && new Date(getVoteData?.endAt);
 
   const exitsTime = startTime && endTime;
 
-  const voteTime =
-    exitsTime && now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
   const [isProceeding, setIsProceeding] = useState<boolean>(true);
   const [isImminent, setIsImminent] = useState<boolean>(false);
   const [voteLeftTime, setVoteLeftTime] = useState<string>('');
@@ -84,7 +76,6 @@ export const EoullimVote: React.FC<EoullimVoteProps> = ({
 
   useEffect(() => {
     if (isFocused) {
-      !voteTime && setModalVisible(true);
       setInterval(onUpdate, 1000);
       onUpdate();
     }
