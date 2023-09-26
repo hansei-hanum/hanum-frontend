@@ -7,11 +7,27 @@ import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from 'src/comp
 import { colors } from 'src/styles';
 
 import * as S from './styled';
+import { useNavigate } from 'src/hooks';
 
 export const EoullimRaffleScreen: React.FC = () => {
   const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const onSucess = ({ data }: any) => {
+    try {
+      data = JSON.parse(data);
+      if (typeof data.token === 'string' ) {
+        navigate('EoullimStatus');
+      } else {
+        return null;
+      }
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
 
   const closeModal = () => {
     setModalVisible(false);
@@ -29,9 +45,7 @@ export const EoullimRaffleScreen: React.FC = () => {
           </QRScannerBox.Permission>
         ) : (
           <QRScanner
-            onSuccess={() => {
-              console.log('wqre');
-            }}
+            onSuccess={onSucess}
             qrName="리플렛에 있는"
           />
         )}

@@ -25,6 +25,7 @@ import {
   EoullimVoteScreen,
   EoullimTimeTableScreen,
   EoullimRaffleScreen,
+  EoullimStatusScreen,
 } from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
@@ -95,6 +96,7 @@ export const Router: React.FC = () => {
           <Stack.Screen name="EoullimVote" component={EoullimVoteScreen} />
           <Stack.Screen name="EoullimTimeTable" component={EoullimTimeTableScreen} />
           <Stack.Screen name="EoullimRaffle" component={EoullimRaffleScreen} />
+          <Stack.Screen name='EoullimStatus' component={EoullimStatusScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

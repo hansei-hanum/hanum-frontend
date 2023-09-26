@@ -10,20 +10,13 @@ import * as S from './styled';
 export interface StatusProps {
     children: React.ReactNode;
     navigateUrl: string;
-    status: boolean;
 }
 
-export const Status: React.FC<StatusProps> = ({children, navigateUrl, status}) => {
+export const Status: React.FC<StatusProps> = ({children, navigateUrl}) => {
   const navigate = useNavigate();
   return (
     <S.StatusScreenWrapper>
       <S.StatusScreenContainer>
-        <S.StatusScreenLottie
-          source={status ? SuccessLottie : FailedLottie}
-          autoPlay
-          loop={false}
-          speed={1.3}
-        />
         {children}
       </S.StatusScreenContainer>
       <S.StatusButtonWrapper>
