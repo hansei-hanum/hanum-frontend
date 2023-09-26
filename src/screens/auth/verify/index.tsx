@@ -105,9 +105,11 @@ export const VerifyScreen: React.FC = () => {
         <Modal
           title="본인 확인"
           text={
-            memberVerify.type === 'TEACHER'
+            memberVerify.isUsed
+              ? `이미 사용된 인증코드에요.`
+              : memberVerify.type === 'TEACHER'
               ? `한세사이버보안고등학교 교직원이 맞으신가요?`
-              : memberVerify.department && memberVerify.grade && memberVerify.classroom
+              : memberVerify.type === 'STUDENT'
               ? `${formattedDepartment(memberVerify.department)} ${memberVerify.grade}학년 ${
                   memberVerify.classroom
                 }반 ${memberVerify.number}번 학생이 맞나요?`
@@ -115,7 +117,7 @@ export const VerifyScreen: React.FC = () => {
           }
           modalVisible={modalVisible}
           button={
-            authValue.errorMessage === '' ? (
+            authValue.errorMessage === '' && !memberVerify.isUsed ? (
               <Button.Container>
                 <Button
                   onPress={() => setModalVisible(false)}
