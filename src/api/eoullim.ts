@@ -1,10 +1,10 @@
 import { API_SUFFIX, authInstance } from './api';
 
-export interface EoullimLuckDrawValue {
+export interface EoullimLuckyDrawValue {
   token: string;
 }
 
-export interface EoullimLuckDrawResponse {
+export interface EoullimLuckyDrawResponse {
   token: string;
 }
 
@@ -21,14 +21,14 @@ export interface EoullimVoteResponse {
   myVotes?: [{ id: number; voteId: number }];
 }
 
-export const eoullimLuckDraw = async ({ token }: EoullimLuckDrawValue) => {
+export const eoullimLuckyDraw = async ({ token }: EoullimLuckyDrawValue) => {
   const { data } = await authInstance.post(API_SUFFIX.EOULLIM_LUCKYDRAW, {
     token,
   });
   return data;
 };
 
-export const eoullimGetLuckDraw = async () => {
+export const eoullimGetLuckyDraw = async () => {
   const { data } = await authInstance.get(API_SUFFIX.EOULLIM_LUCKYDRAW);
   return data;
 };
