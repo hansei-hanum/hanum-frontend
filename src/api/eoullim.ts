@@ -4,10 +4,6 @@ export interface EoullimLuckyDrawValue {
   token: string;
 }
 
-export interface EoullimLuckyDrawResponse {
-  token: string;
-}
-
 export interface EoullimVoteValue {
   id: number;
   fieldId: number;
