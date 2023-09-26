@@ -1,29 +1,41 @@
 import React, { useEffect, useState } from 'react';
 
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { ActivityIndicator } from '@react-native-material/core';
 
 import { Button, EoullimVoteComponent, CommonHeader, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
+import { useGetVote, useVote } from 'src/hooks/query/eoullim';
 
 import * as S from './styled';
 
-const VOTE_LIST = ["최근원 학생의 '썸'", "조치원 학생의 '썸'", '응 몰라 학생의 너검무검'];
-
 export const EoullimVoteScreen: React.FC = () => {
+  const { isLoading, data } = useGetVote();
+  const hasData = !isLoading && data;
+
+  const { mutate } = useVote();
+
   const now = new Date();
-  const startTime = new Date('2023-09-26T08:30:00');
-  const endTime = new Date('2023-09-26T09:13:00');
-  const voteTime = now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
+  const startTime = hasData && new Date(data.data.startAt);
+  const endTime = hasData && new Date(data.data.endAt);
+
+  const exitsTime = startTime && endTime;
+
+  const voteTime =
+    exitsTime && now.getTime() >= startTime.getTime() && now.getTime() <= endTime.getTime();
   const [isProceeding, setIsProceeding] = useState<boolean>(true);
   const [isImminent, setIsImminent] = useState<boolean>(false);
   const [voteLeftTime, setVoteLeftTime] = useState<string>('');
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<number | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const navigation = useNavigation();
 
-  const handleItemClick = (item: string) => {
-    setSelectedItem(selectedItem === item ? null : item);
+  const handleItemClick = (id: number) => {
+    setSelectedItem(selectedItem === id ? null : id);
+    if (data) {
+      mutate({ id: data.data.id, fieldId: id });
+    }
   };
 
   const getTimeRemaining = (now: Date, hour: number, minute: number) => {
@@ -47,9 +59,11 @@ export const EoullimVoteScreen: React.FC = () => {
 
   const onUpdate = () => {
     const now = new Date();
-    const time = getTimeRemaining(now, +endTime.getHours(), +endTime.getMinutes());
-    setVoteLeftTime(time);
-    setIsProceeding(time === '-' ? false : true);
+    if (exitsTime) {
+      const time = getTimeRemaining(now, +endTime.getHours(), +endTime.getMinutes());
+      setVoteLeftTime(time);
+      setIsProceeding(time === '-' ? false : true);
+    }
   };
 
   const isFocused = useIsFocused();
@@ -67,48 +81,58 @@ export const EoullimVoteScreen: React.FC = () => {
       <S.EoullimVoteWrapper>
         <S.EoullimVoteContainer>
           <CommonHeader />
-          <S.EoullimVoteHeader>
-            <S.EoullimVoteStatusContainer>
-              <S.EoullimVoteStatusCircle
-                style={{ backgroundColor: isProceeding ? colors.green : colors.brown }}
-              />
-              <Text size={15} fontFamily="bold">
-                {isProceeding ? '투표 진행 중' : '투표 종료'}
-              </Text>
-            </S.EoullimVoteStatusContainer>
-            <Text.Column>
-              <Text size={24} fontFamily="bold">
-                학생공연팀{'\n'}
-                투표를 {isProceeding ? '진행해주세요!' : '종료되었어요'}
-              </Text>
-              {!isProceeding && (
-                <Text size={15} fontFamily="bold">
-                  총 100표가 투표되었어요.
-                </Text>
-              )}
-            </Text.Column>
-          </S.EoullimVoteHeader>
-          {isProceeding && (
+          {!isLoading ? (
             <>
-              <S.EoullimVoteTimeContainer>
-                <Text size={15} fontFamily="bold">
-                  투표 종료까지
-                </Text>
-                <Text size={40} fontFamily="bold" color={isImminent ? colors.danger : colors.black}>
-                  {voteLeftTime}
-                </Text>
-              </S.EoullimVoteTimeContainer>
-              <S.EoullimVoteList>
-                {VOTE_LIST.map((name) => (
-                  <EoullimVoteComponent
-                    key={name}
-                    name={name}
-                    isSelect={selectedItem === name ? true : false}
-                    onPress={() => handleItemClick(name)}
+              <S.EoullimVoteHeader>
+                <S.EoullimVoteStatusContainer>
+                  <S.EoullimVoteStatusCircle
+                    style={{ backgroundColor: isProceeding ? colors.green : colors.brown }}
                   />
-                ))}
-              </S.EoullimVoteList>
+                  <Text size={15} fontFamily="bold">
+                    {isProceeding ? '투표 진행 중' : '투표 종료'}
+                  </Text>
+                </S.EoullimVoteStatusContainer>
+                <Text.Column>
+                  <Text size={24} fontFamily="bold">
+                    학생공연팀{'\n'}
+                    투표를 {isProceeding ? '진행해주세요!' : '종료되었어요'}
+                  </Text>
+                  {!isProceeding && (
+                    <Text size={15} fontFamily="bold">
+                      총 {data.data.total}표가 투표되었어요.
+                    </Text>
+                  )}
+                </Text.Column>
+              </S.EoullimVoteHeader>
+              {isProceeding && (
+                <>
+                  <S.EoullimVoteTimeContainer>
+                    <Text size={15} fontFamily="bold">
+                      투표 종료까지
+                    </Text>
+                    <Text
+                      size={40}
+                      fontFamily="bold"
+                      color={isImminent ? colors.danger : colors.black}
+                    >
+                      {voteLeftTime}
+                    </Text>
+                  </S.EoullimVoteTimeContainer>
+                  <S.EoullimVoteList>
+                    {data.data.fileds.map(({ id, value }) => (
+                      <EoullimVoteComponent
+                        key={id}
+                        name={value}
+                        isSelect={selectedItem === id ? true : false}
+                        onPress={() => handleItemClick(id)}
+                      />
+                    ))}
+                  </S.EoullimVoteList>
+                </>
+              )}
             </>
+          ) : (
+            <ActivityIndicator size={26} />
           )}
         </S.EoullimVoteContainer>
       </S.EoullimVoteWrapper>

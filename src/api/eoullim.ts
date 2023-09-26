@@ -10,11 +10,13 @@ export interface EoullimVoteValue {
 }
 
 export interface EoullimVoteResponse {
+  id: number;
   title: string;
   startAt: string;
   endAt: string;
   fileds: [{ id: number; value: string }];
   myVotes?: [{ id: number; voteId: number }];
+  total: number;
 }
 
 export const eoullimLuckyDraw = async ({ token }: EoullimLuckyDrawValue) => {
@@ -25,7 +27,7 @@ export const eoullimLuckyDraw = async ({ token }: EoullimLuckyDrawValue) => {
 };
 
 export const eoullimGetLuckyDraw = async () => {
-  const { data } = await authInstance.get(API_SUFFIX.EOULLIM_LUCKYDRAW);
+  const { data } = await authInstance.get(API_SUFFIX.EOULLIM_GET_LUCKYDRAW);
   return data;
 };
 

@@ -4,6 +4,7 @@ export const API_BASEURLS = {
   PAY: 'https://pay.hanum.us',
   AUTH: 'https://account.hanum.us',
   INFO: 'https://info.hanum.us',
+  FESTIVAL: 'https://festival.hanum.us',
 };
 
 export const API_SUFFIX = {
@@ -43,6 +44,7 @@ export const createAxiosInstance = (baseURL: string): AxiosInstance => {
 export const authInstance = createAxiosInstance(API_BASEURLS.AUTH);
 export const payInstance = createAxiosInstance(API_BASEURLS.PAY);
 export const infoInstance = createAxiosInstance(API_BASEURLS.INFO);
+export const festivalInstance = createAxiosInstance(API_BASEURLS.FESTIVAL);
 
 export interface APIResponse<T = unknown> {
   message: string;
