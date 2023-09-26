@@ -10,9 +10,8 @@ export const HanumPayWrapper = styled.SafeAreaView`
 
 export const HanumPayContainer = styled.View`
   width: 100%;
+  row-gap: 36;
   padding: 20px;
-  flex-direction: column;
-  row-gap: 36px;
 `;
 
 export const HanumPaySection = styled.View`
@@ -30,7 +29,6 @@ export const HanumUseAgeHistory = styled(HanumPaySection)`
 
 export const HanumUseAgeContainer = styled.ScrollView`
   width: 100%;
-  height: 100%;
   flex: 1;
   flex-direction: column;
 `;

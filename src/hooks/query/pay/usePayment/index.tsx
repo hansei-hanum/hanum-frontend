@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, payment, PaymentValues } from 'src/api';
 import { hanumPayState } from 'src/atoms';
-import { useGetPaymentDetail, useNavigate } from 'src/hooks';
+import { useGetPaymentAmount, useGetPaymentDetail, useNavigate } from 'src/hooks';
 import { formattedMoney } from 'src/utils';
 
 const ErrorMessages: { [key: string]: string } = {
@@ -33,12 +33,14 @@ export const usePayment = (): UseMutationResult<
   const [hanumPay, setHanumPay] = useRecoilState(hanumPayState);
   const navigate = useNavigate();
   const getPaymentDetail = useGetPaymentDetail();
+  const getPayment = useGetPaymentAmount();
 
   return useMutation('usePayment', payment, {
     onSuccess: ({ data }) => {
       const transFerAmount = data.transaction.transferAmount;
       const balanceAmount = data.balanceAmount;
       getPaymentDetail.refetch();
+      getPayment.refetch();
       navigate('HanumPayStatus');
       setHanumPay({
         money: transFerAmount > 999 ? formattedMoney(`${transFerAmount}`) : transFerAmount,

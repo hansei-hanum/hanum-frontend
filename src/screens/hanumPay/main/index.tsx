@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
 import { Button, Text, HanumPayHeader, AuthFailedModal } from 'src/components';
 import { colors } from 'src/styles';
-import { useCheckUserType, useGetPaymentDetail, useNavigate } from 'src/hooks';
+import { useCheckUserType, useGetPaymentDetail, useNavigate, useOnRefresh } from 'src/hooks';
 import { formattedMoney, isIos } from 'src/utils';
 
 import * as S from './styled';
 
 export const HanumPayMainScreen: React.FC = () => {
   const navigate = useNavigate();
+  const { refreshing, onRefresh } = useOnRefresh();
 
   const payData = useGetPaymentDetail();
   const paymentData = payData.data?.data;
@@ -64,10 +65,10 @@ export const HanumPayMainScreen: React.FC = () => {
                   showsVerticalScrollIndicator={false}
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{
-                    flexDirection: 'column',
                     paddingBottom: isIos ? 580 : 590,
                     rowGap: 20,
                   }}
+                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
                   {paymentData?.payments && paymentData.payments.length > 0 ? (
                     paymentData.payments.map(
@@ -92,9 +93,14 @@ export const HanumPayMainScreen: React.FC = () => {
                                 {formattedTime(new Date(), hour, minute)}
                               </Text>
                             </Text.Column>
-                            <Text size={18} color={colors.black}>
-                              {isPaid ? paidAmount : refundedAmount}원
-                            </Text>
+                            <Text.Column>
+                              <Text size={18} color={colors.black}>
+                                {isPaid ? `-${paidAmount}` : `${refundedAmount}`}원
+                              </Text>
+                              <Text size={15} color={colors.placeholder}>
+                                ({isPaid ? '결제됨' : '환불됨'})
+                              </Text>
+                            </Text.Column>
                           </S.HanumUseAgeDetails>
                         );
                       },
