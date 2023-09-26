@@ -22,19 +22,19 @@ export const SHOW_MORE_SECTION_LIST: ShowMoreSectionItem[] = [
       },
     ],
   },
-  {
-    name: '행사',
-    section: [
-      {
-        name: '한움페이',
-        icon: '💳',
-        navigateUrl: 'HanumPay',
-      },
-      // {
-      //   name: '2023 한세어울림한마당',
-      //   icon: '🎉',
-      //   navigateUrl: 'HanseiFestival',
-      // },
-    ],
-  },
+  // {
+  //   name: '행사',
+  //   section: [
+  //     {
+  //       name: '한움페이',
+  //       icon: '💵',
+  //       navigateUrl: 'HanumPay',
+  //     },
+  //     {
+  //       name: '2023 한세어울림한마당',
+  //       icon: '🎉',
+  //       navigateUrl: 'HanseiFestival',
+  //     },
+  //   ],
+  // },
 ];
