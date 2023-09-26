@@ -25,8 +25,8 @@ export const useCodePush = (): UseCodePushReturn => {
             },
           );
           return;
-        } else{
-            console.log("[CodePush] JS: UPDATE NOT REQUIRED");
+        } else {
+          console.log('[CodePush] JS: UPDATE NOT REQUIRED');
         }
 
         // 필수(mandatory) 업데이트가 존재하지 않는 경우 isUpdating 상태 false로 변경

@@ -19,6 +19,10 @@ export const API_SUFFIX = {
   NOTIFICATION: '/users/@me/tokens/fcm/',
   SCHEDULE: '/schedule/',
   TIMETABLE: '/timetable/',
+  EOULLIM_GET_VOTE: '/vote/primary',
+  EOULLIM_VOTE: '/vote/',
+  EOULLIM_LUCKYDRAW: '/luckydraw/lucky_numbers',
+  EOULLIM_GET_LUCKYDRAW: '/luckydraw/lucky_number',
 };
 
 const baseConfig = {

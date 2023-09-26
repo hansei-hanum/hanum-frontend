@@ -6,16 +6,18 @@ import { useGetUser } from './query';
 
 export const useCheckUserType = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { verifyUser } = useGetUser();
+  const { userType, verifyUser } = useGetUser();
+  const isStudent = userType() === '재학생';
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused && !verifyUser) {
+    if ((isFocused && !isStudent) || (isFocused && !verifyUser)) {
       setModalVisible(true);
     }
   }, [isFocused]);
 
   return {
+    isStudent,
     modalVisible,
     setModalVisible,
     verifyUser,
