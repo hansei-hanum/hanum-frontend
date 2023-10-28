@@ -3,6 +3,12 @@ import { Animated } from 'react-native';
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
+import { iosCheckHeight } from 'src/utils';
+
+export const ShowMoreScreenWrapper = styled.SafeAreaView`
+  flex: 1;
+  background: ${colors.background};
+`;
 
 export const ShowMoreScreenContainer = styled.ScrollView`
   flex: 1;
@@ -13,6 +19,7 @@ export const ShowMoreHeaderScreen = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 10px;
+  padding-top: ${iosCheckHeight ? '10px' : '26px'};
 `;
 
 export const ShowMoreUserContainer = styled(Animated.View)`

@@ -16,7 +16,8 @@ export interface SectionItemProps {
 
 export const SectionItem: React.FC<SectionItemProps> = ({ name, icon, navigateUrl }) => {
   const navigate = useNavigate();
-  const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
+  const { handlePressIn, handlePressOut, bgColorAnimatedStyle, scaleAnimatedStyle } =
+    usePressingAnimation();
 
   return (
     <TouchableOpacity
@@ -25,15 +26,17 @@ export const SectionItem: React.FC<SectionItemProps> = ({ name, icon, navigateUr
       activeOpacity={1}
       onPress={() => navigate(navigateUrl)}
     >
-      <S.SectionItem style={[animatedStyle]}>
-        <S.SectionIconContainer>
-          <Icon icon={icon} />
-          <Text key={name} size={16}>
-            {name}
-          </Text>
-        </S.SectionIconContainer>
-        <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
-      </S.SectionItem>
+      <S.SectionItemWrapper style={[bgColorAnimatedStyle]}>
+        <S.SectionItem style={[scaleAnimatedStyle]}>
+          <S.SectionIconContainer>
+            <Icon icon={icon} />
+            <Text key={name} size={16}>
+              {name}
+            </Text>
+          </S.SectionIconContainer>
+          <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
+        </S.SectionItem>
+      </S.SectionItemWrapper>
     </TouchableOpacity>
   );
 };

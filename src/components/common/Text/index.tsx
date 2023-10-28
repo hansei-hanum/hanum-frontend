@@ -41,7 +41,7 @@ export const TextComponent: React.FC<TextProps> = ({
       style={[
         style,
         css`
-          line-height: ${lineHeight ? `${lineHeight.toString()}px` : 'normal'};
+          line-height: ${lineHeight ? lineHeight : size * 1.5}px;
           font-size: ${size.toString()}px;
           font-family: ${fontFamily ? fonts[fontFamily] : fonts.medium};
           color: ${color ? color : colors.black};

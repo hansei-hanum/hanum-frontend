@@ -12,6 +12,7 @@ import * as S from './styled';
 
 export const Calendar: React.FC = () => {
   const { data, isLoading } = useGetSchedule();
+  console.log(data, 'data');
   const fontSize = isIos ? 15 : 14;
 
   const formatDate = (scheduleDate: string) => {
@@ -30,17 +31,19 @@ export const Calendar: React.FC = () => {
       <S.CalendarContainer>
         {isLoading ? (
           <ActivityIndicator size={26} />
-        ) : (
-          data?.data.slice(0, 4).map(({ date, data }) => (
+        ) : data && data.data.length > 0 ? (
+          data.data.slice(0, 4).map(({ date, data }) => (
             <S.CalendarTextContainer key={date}>
-              <Text size={fontSize} fontFamily="medium" color={colors.placeholder}>
+              <Text size={fontSize} color={colors.placeholder}>
                 {formatDate(date)}: {''}
               </Text>
-              <Text size={fontSize} fontFamily="medium" color={colors.black}>
-                {data.map((item) => item).join('\n ')}
-              </Text>
+              <Text size={fontSize}>{data.map((item) => item).join('\n ')}</Text>
             </S.CalendarTextContainer>
           ))
+        ) : (
+          <Text size={fontSize} color={colors.placeholder}>
+            학사일정이 없습니다.
+          </Text>
         )}
       </S.CalendarContainer>
     </Content>

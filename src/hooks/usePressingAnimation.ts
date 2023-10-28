@@ -9,7 +9,7 @@ export const usePressingAnimation = () => {
   const handlePressIn = () => {
     // 버튼을 누를 때 작아지는 애니메이션 적용
     Animated.timing(animation, {
-      toValue: 0.96, // 작아지는 정도
+      toValue: 0.96,
       duration: 50,
       easing: Easing.linear,
       useNativeDriver: true,
@@ -39,5 +39,12 @@ export const usePressingAnimation = () => {
     transform: [{ scale: animation }],
   };
 
-  return { animatedStyle, scaleAnimatedStyle, handlePressIn, handlePressOut };
+  const bgColorAnimatedStyle = {
+    backgroundColor: animation.interpolate({
+      inputRange: [0.96, 1], // 작아진 상태와 원래 크기의 중간 값
+      outputRange: [colors.lightGray, colors.white], // 해당 범위에 따른 색깔 변화
+    }),
+  };
+
+  return { animatedStyle, scaleAnimatedStyle, bgColorAnimatedStyle, handlePressIn, handlePressOut };
 };
