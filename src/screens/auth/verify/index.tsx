@@ -10,7 +10,7 @@ import { TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useNavigation } from '@react-navigation/native';
 
-import { Text, Auth, Modal, Button } from 'src/components';
+import { Text, Auth, Modal, Button, CodeInput } from 'src/components';
 import { useInitNavigate, useMemberVerify } from 'src/hooks';
 import { authState, meberVerifyState } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
@@ -80,25 +80,11 @@ export const VerifyScreen: React.FC = () => {
         isDisabled={isDisabled}
         onPress={onCheckSubmit}
       >
-        <CodeField
-          ref={codeFieldRef}
-          {...props}
+        <CodeInput
           value={value}
-          onChangeText={onChangeText}
-          cellCount={CELL_COUNT}
-          caretHidden={true}
-          keyboardType="default"
-          textContentType="oneTimeCode"
-          rootStyle={{
-            width: '100%',
-          }}
-          renderCell={({ index, symbol, isFocused }) => (
-            <S.StudentVerifyInput key={index} onLayout={getCellOnLayoutHandler(index)}>
-              <Text size={20} fontFamily="medium">
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            </S.StudentVerifyInput>
-          )}
+          setValue={setValue}
+          isNumber={false}
+          setIsDisabled={setIsDisabled}
         />
       </Auth>
       {modalVisible && (
