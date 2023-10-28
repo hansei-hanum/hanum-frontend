@@ -42,4 +42,5 @@ export const AuthMainScreenTextContainer = styled.View`
 
 export const AuthMainTextRow = styled.View`
   flex-direction: row;
+  flex-wrap: wrap;
 `;

@@ -23,6 +23,7 @@ interface TextProps {
   fontFamily?: keyof typeof fonts;
   color?: string;
   isCenter?: boolean;
+  lineHeight?: number;
   style?: StyleProp<TextStyle>;
 }
 
@@ -32,6 +33,7 @@ export const TextComponent: React.FC<TextProps> = ({
   fontFamily,
   color,
   isCenter,
+  lineHeight,
   style,
 }) => {
   return (
@@ -39,6 +41,7 @@ export const TextComponent: React.FC<TextProps> = ({
       style={[
         style,
         css`
+          line-height: ${lineHeight ? `${lineHeight.toString()}px` : 'normal'};
           font-size: ${size.toString()}px;
           font-family: ${fontFamily ? fonts[fontFamily] : fonts.medium};
           color: ${color ? color : colors.black};

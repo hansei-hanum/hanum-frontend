@@ -88,7 +88,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
             label={placeHolder}
             keyboardType={isNameScreen ? 'default' : 'numeric'}
             maxLength={isNameScreen ? 16 : 11}
-            color={colors.placeholder}
+            color={colors.primary}
             inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
             inputStyle={{ fontSize: 20 }}
           />
