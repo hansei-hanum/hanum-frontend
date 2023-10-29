@@ -33,7 +33,6 @@ export const useMemberVerify = (): UseMutationResult<
     },
     onError: (error) => {
       const message = error.response?.data.message;
-      console.log(message, 'message');
       verify({
         type: null,
         department: null,

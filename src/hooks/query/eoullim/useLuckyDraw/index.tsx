@@ -17,7 +17,6 @@ export const useLuckyDraw = (): UseMutationResult<
   const setLuckyNumber = useSetRecoilState(luckyNumberState);
   return useMutation('useLuckyDraw', eoullimLuckyDraw, {
     onSuccess: ({ data }) => {
-      console.log(data, 'data');
       setLuckyNumber({ number: data, errorMessage: '' });
       navigate('EoullimStatus');
     },

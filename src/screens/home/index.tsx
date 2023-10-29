@@ -64,7 +64,7 @@ export const HomeScreen: React.FC = () => {
         showsHorizontalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={{
-          paddingTop: iosCheckHeight ? 70 : 90,
+          paddingTop: iosCheckHeight ? 70 : 78,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,

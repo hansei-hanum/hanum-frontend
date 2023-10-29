@@ -14,7 +14,6 @@ export const useGetLuckyDraw = (): UseQueryResult<
   const setLuckyNumber = useSetRecoilState(luckyNumberState);
   return useQuery('useGetLuckyDraw', eoullimGetLuckyDraw, {
     onSuccess: ({ data }) => {
-      console.log(data);
       setLuckyNumber({ number: data, errorMessage: '' });
     },
     onError: (error) => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
-import { ScrollView } from 'react-native';
 
 import { ActivityIndicator } from '@react-native-material/core';
 
@@ -41,17 +40,15 @@ export const ScheduleScreen: React.FC = () => {
               {department} {grade}학년 {classroom}반
             </Text>
           </S.ScheduleScreenHeader>
-          <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-            <WeekDay />
-            {!isLoading && (
-              <S.ScheduleScreenTimeContainer>
-                <ClassList list={NUMBER_LIST} isNumber />
-                {data?.data.map((item) => (
-                  <ClassList key={item.date} list={item.data} isToday={checkToday(item.date)} />
-                ))}
-              </S.ScheduleScreenTimeContainer>
-            )}
-          </ScrollView>
+          <WeekDay />
+          {!isLoading && (
+            <S.ScheduleScreenTimeContainer>
+              <ClassList list={NUMBER_LIST} isNumber />
+              {data?.data.map((item) => (
+                <ClassList key={item.date} list={item.data} isToday={checkToday(item.date)} />
+              ))}
+            </S.ScheduleScreenTimeContainer>
+          )}
           {isLoading && (
             <ActivityIndicator
               size={26}
