@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, eoullimGetLuckyDraw } from 'src/api';
 import { luckyNumberState } from 'src/atoms/luckyNumber';
-import { eoullimGetLuckDrawErrorMessage } from 'src/constants';
+import { PAY_FAILED, eoullimGetLuckDrawErrorMessage } from 'src/constants';
 
 export const useGetLuckyDraw = (): UseQueryResult<
   APIResponse<number>,
@@ -21,7 +21,7 @@ export const useGetLuckyDraw = (): UseQueryResult<
       const message = error.response?.data.message;
       setLuckyNumber({
         number: 0,
-        errorMessage: eoullimGetLuckDrawErrorMessage[message ?? ('' || '결제에 실패했습니다.')],
+        errorMessage: eoullimGetLuckDrawErrorMessage[message ?? ('' || PAY_FAILED)],
       });
     },
     retry: 0,

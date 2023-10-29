@@ -5,8 +5,8 @@ import { useRecoilValue } from 'recoil';
 import { useNavigation } from '@react-navigation/native';
 
 import { Text, Auth, Modal, Button, CodeInput } from 'src/components';
-import { useInitNavigate, useMemberVerify } from 'src/hooks';
-import { authState, meberVerifyState } from 'src/atoms';
+import { useInitNavigate, useUserVerify } from 'src/hooks';
+import { authState, useUserVerifyState } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
 import { colors } from 'src/styles';
 
@@ -19,9 +19,9 @@ export const VerifyScreen: React.FC = () => {
 
   const navigation = useNavigation();
 
-  const { mutate } = useMemberVerify();
+  const { mutate } = useUserVerify();
 
-  const memberVerify = useRecoilValue(meberVerifyState);
+  const memberVerify = useRecoilValue(useUserVerifyState);
   const authValue = useRecoilValue(authState);
 
   const { initNavigate } = useInitNavigate();

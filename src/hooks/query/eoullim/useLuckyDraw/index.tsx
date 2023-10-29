@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, EoullimLuckyDrawValue, eoullimLuckyDraw } from 'src/api';
 import { luckyNumberState } from 'src/atoms';
-import { eoulimLuckDrawErrorMessage } from 'src/constants';
+import { PAY_FAILED, eoulimLuckDrawErrorMessage } from 'src/constants';
 import { useNavigate } from 'src/hooks/useNavigate';
 
 export const useLuckyDraw = (): UseMutationResult<
@@ -25,7 +25,7 @@ export const useLuckyDraw = (): UseMutationResult<
       const message = error.response?.data.message;
       setLuckyNumber({
         number: 0,
-        errorMessage: eoulimLuckDrawErrorMessage[message ?? ('' || '결제에 실패했습니다.')],
+        errorMessage: eoulimLuckDrawErrorMessage[message ?? ('' || PAY_FAILED)],
       });
       navigate('EoullimStatus');
     },
