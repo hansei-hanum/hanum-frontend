@@ -1,10 +1,4 @@
 import React, { useState } from 'react';
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
 import { TouchableOpacity } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
@@ -18,17 +12,10 @@ import { colors } from 'src/styles';
 
 import * as S from './styled';
 
-const CELL_COUNT = 6;
-
 export const VerifyScreen: React.FC = () => {
   const [value, setValue] = useState('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const codeFieldRef = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
 
   const navigation = useNavigation();
 
@@ -38,11 +25,6 @@ export const VerifyScreen: React.FC = () => {
   const authValue = useRecoilValue(authState);
 
   const { initNavigate } = useInitNavigate();
-
-  const onChangeText = (text: string) => {
-    text.length === 6 ? setIsDisabled(false) : setIsDisabled(true);
-    setValue(text);
-  };
 
   const onCheckSubmit = () => {
     mutate({ code: value, isCheck: true });

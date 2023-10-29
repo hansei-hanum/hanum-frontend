@@ -1,38 +1,19 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
 
 import { useRecoilValue } from 'recoil';
 
-import { checkNumber, isAndroid } from 'src/utils';
+import { isAndroid } from 'src/utils';
 import { colors } from 'src/styles';
 import { Auth, CodeInput, Text } from 'src/components';
 import { authState } from 'src/atoms';
 import { useAuth } from 'src/hooks';
 
-import * as S from './styled';
-
-const CELL_COUNT = 6;
-
 export const VerifyCodeScreen: React.FC = () => {
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
   const auth = useRecoilValue(authState);
   const { mutate: mutateAuth } = useAuth();
-
-  const onChangeText = (text: string) => {
-    const newText = checkNumber(text);
-    const codeValidationRegex = /^\d{6}$/;
-    setIsDisabled(!codeValidationRegex.test(newText));
-    setValue(newText);
-  };
 
   const onSubmit = () => {
     mutateAuth({ ...auth, code: value });
