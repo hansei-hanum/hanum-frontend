@@ -71,6 +71,10 @@ export const CalendarScreen: React.FC = () => {
       }, {})
     : null;
 
+  const filterDate = mothScheduleData?.data.find(
+    ({ date }) => format(new Date(date), 'yyyy-MM-dd') === selectedDate,
+  )?.data;
+
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -150,15 +154,19 @@ export const CalendarScreen: React.FC = () => {
               rowGap: 20,
             }}
           >
-            {mothScheduleData?.data
-              .find(({ date }) => format(new Date(date), 'yyyy-MM-dd') === selectedDate)
-              ?.data.map((item) => (
+            {filterDate ? (
+              filterDate.map((item) => (
                 <ContentBox key={item}>
                   <Text size={16} fontFamily="medium" key={item}>
                     {item}
                   </Text>
                 </ContentBox>
-              ))}
+              ))
+            ) : (
+              <Text size={16} fontFamily="medium">
+                일정이 없습니다.
+              </Text>
+            )}
           </S.CalendarScheduleContainer>
         </>
       )}

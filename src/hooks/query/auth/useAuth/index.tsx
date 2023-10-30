@@ -49,7 +49,7 @@ export const useAuth = (): UseMutationResult<
         userProfile.refetch();
       },
       onError: (error) => {
-        console.log(error, 'error');
+        console.log(error.response?.data, 'error');
         const message = error.response?.data.message;
         setAuth({
           ...auth,

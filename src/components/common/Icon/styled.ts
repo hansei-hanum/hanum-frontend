@@ -15,5 +15,6 @@ export const Icon = styled.Text`
   font-size: 30px;
   font-family: ${fonts.tossIcon};
   color: ${colors.black};
-  text-align: center;
+  padding-bottom: 0;
+  margin-bottom: 0;
 `;

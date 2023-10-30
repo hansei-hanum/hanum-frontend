@@ -1,6 +1,7 @@
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
+import { isAndroid } from 'src/utils';
 
 export const HomeScreenWrapper = styled.SafeAreaView`
   flex: 1;
@@ -19,5 +20,5 @@ export const HomeScreenHeaderIconContainer = styled.View`
   justify-content: flex-end;
   column-gap: 20px;
   position: relative;
-  bottom: 8px;
+  bottom: ${isAndroid ? '8px' : '0px'};
 `;
