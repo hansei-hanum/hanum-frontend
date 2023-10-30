@@ -3,7 +3,6 @@ import { FlatList } from 'react-native';
 
 import { Text } from 'src/components';
 import { colors } from 'src/styles';
-import { isAndroid } from 'src/utils';
 
 import * as S from './styled';
 
@@ -19,10 +18,9 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
       style={{
         backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : colors.white,
         paddingTop: 20,
-        height: isAndroid ? 580 : 550,
       }}
       data={list}
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         const formatName = (name: string) => {
           if (
             name.includes('*') ||
@@ -48,7 +46,7 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
         };
 
         return (
-          <S.ClassListWrapper key={item}>
+          <S.ClassListWrapper key={Math.random() * index}>
             <Text
               size={item.length > 5 ? 14 : 15}
               color={isToday || isNumber ? colors.black : colors.placeholder}
@@ -59,7 +57,7 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
           </S.ClassListWrapper>
         );
       }}
-      keyExtractor={(item) => item}
+      keyExtractor={(item) => Math.random() + item}
       scrollEnabled={false}
     />
   );

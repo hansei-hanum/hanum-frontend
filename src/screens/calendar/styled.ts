@@ -1,7 +1,7 @@
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
-import { iosCheckHeight } from 'src/utils';
+import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const CalendarWrapper = styled.SafeAreaView`
   flex: 1;
@@ -11,7 +11,7 @@ export const CalendarWrapper = styled.SafeAreaView`
 export const CalendarHeaderContainer = styled.View`
   width: 100%;
   padding: 0 20px;
-  padding-top: ${iosCheckHeight ? '10px' : '26px'};
+  padding-top: ${iosCheckHeight ? '10px' : isAndroid ? '20px' : '26px'};
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { ActivityIndicator } from 'react-native';
 
@@ -10,10 +10,6 @@ import * as S from './styled';
 export const WebViewScreen: React.FC = () => {
   const [title, setTitle] = useState<string>('읽어들이는 중..');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    console.log('isLoading changed to ' + isLoading);
-  }, [isLoading]);
 
   return (
     <S.WebViewSafeContainer>

@@ -4,20 +4,21 @@ import { AxiosError } from 'axios';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, memberVerify, MemberVerifyValue } from 'src/api';
-import { authState, meberVerifyState } from 'src/atoms';
+import { authState, useUserVerifyState } from 'src/atoms';
 import { useFetchUser, useInitNavigate } from 'src/hooks';
+import { AUTH_ERROR_MESSAGE, authUserVerifyErrorMessage } from 'src/constants';
 
-export const useMemberVerify = (): UseMutationResult<
+export const useUserVerify = (): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
   MemberVerifyValue
 > => {
   const [auth, setAuth] = useRecoilState(authState);
-  const verify = useSetRecoilState(meberVerifyState);
+  const verify = useSetRecoilState(useUserVerifyState);
   const { initNavigate } = useInitNavigate();
   const userProfile = useFetchUser();
 
-  return useMutation('useMemberVerify', memberVerify, {
+  return useMutation('useUserVerify', memberVerify, {
     onSuccess: ({ data }, variables) => {
       userProfile.refetch();
       variables.isCheck
@@ -32,8 +33,8 @@ export const useMemberVerify = (): UseMutationResult<
         : initNavigate('Main');
     },
     onError: (error) => {
+      console.log(error, 'error');
       const message = error.response?.data.message;
-      console.log(message, 'message');
       verify({
         type: null,
         department: null,
@@ -42,17 +43,10 @@ export const useMemberVerify = (): UseMutationResult<
         number: null,
       });
 
-      if (message === 'UNAUTHORIZED') {
-        setAuth({
-          ...auth,
-          errorMessage: '로그인 토큰이 만료되었거나, 존재하지 않아요.',
-        });
-      } else if (message === 'KEY_NOT_FOUND') {
-        setAuth({ ...auth, errorMessage: '인증 코드가 잘못되었어요' });
-      } else {
-        console.log(error, 'error');
-        setAuth({ ...auth, errorMessage: '알 수 없는 오류가 발생했습니다.' });
-      }
+      setAuth({
+        ...auth,
+        errorMessage: authUserVerifyErrorMessage[message ?? ('' || AUTH_ERROR_MESSAGE)],
+      });
     },
     retry: 0,
   });

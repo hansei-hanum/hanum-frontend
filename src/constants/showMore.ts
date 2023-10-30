@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export interface Section {
   name: string;
-  icon: any;
+  icon: string;
   navigateUrl: string;
 }
 

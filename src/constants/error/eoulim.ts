@@ -14,7 +14,7 @@ export const eoulimLuckDrawErrorMessage: { [key: string]: string } = {
 };
 
 export const eoullimGetLuckDrawErrorMessage: { [key: string]: string } = {
-  USER_NOT_FOUND: ' 사용자 정보를 찾을 수 없습니다.',
+  USER_NOT_FOUND: '사용자 정보를 찾을 수 없습니다.',
   NOT_ALLOWED: '인증하지 않았거나 사용할 권한이 없는 유저입니다.',
   USER_HAS_NO_LUCKY_NUMBER: '추첨번호를 받지 않았습니다.',
 };

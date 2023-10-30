@@ -14,7 +14,6 @@ export const VoteModal: React.FC<VoteModalProps> = ({ getVoteData }) => {
   useEffect(() => {
     if (!getVoteData) {
       setModalVisible(true);
-      console.log('투표 없음');
     }
   }, []);
   return (

@@ -1,7 +1,7 @@
 import styled from '@emotion/native';
 
 import { colors } from 'src/styles';
-import { iosCheckHeight } from 'src/utils';
+import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const ScheduleScreenWrapper = styled.SafeAreaView`
   flex: 1;
@@ -10,7 +10,7 @@ export const ScheduleScreenWrapper = styled.SafeAreaView`
 
 export const ScheduleScreenContainer = styled.View`
   flex: 1;
-  padding-top: ${iosCheckHeight ? '10px' : '26px'};
+  padding-top: ${iosCheckHeight ? '10px' : isAndroid ? '20px' : '26px'};
 `;
 
 export const ScheduleScreenHeader = styled.View`
@@ -19,6 +19,7 @@ export const ScheduleScreenHeader = styled.View`
   row-gap: 10px;
   align-items: flex-start;
   justify-content: flex-start;
+  padding-bottom: 40px;
 `;
 
 export const ScheduleScreenIconContainer = styled.View`

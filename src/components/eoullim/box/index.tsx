@@ -12,12 +12,7 @@ export interface EoullimBoxProps {
   isBig?: boolean;
 }
 
-export const EoullimBox: React.FC<EoullimBoxProps> = ({
-  title,
-  icon,
-  navigateUrl,
-  isBig,
-}) => {
+export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl, isBig }) => {
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
   const navigate = useNavigate();
 
