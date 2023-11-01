@@ -3,21 +3,19 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
 import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
-import { RefreshControl } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 
-import { Timer, Calendar, HomeHeader, HanumPay, AlertBox } from 'src/components';
+import { Timer, Calendar, HomeHeader } from 'src/components';
 import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
-import { useConnectNotification, useOnRefresh } from 'src/hooks';
+import { useConnectNotification } from 'src/hooks';
 
 import { Logo } from '../../../assets/images';
 
 import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
-  const { refreshing, onRefresh } = useOnRefresh();
   const { mutate } = useConnectNotification();
   const requestUserPermission = async () => {
     let isGranted = false;
@@ -62,7 +60,6 @@ export const HomeScreen: React.FC = () => {
       <S.HomeScreenContainer
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={{
           paddingTop: iosCheckHeight ? 70 : 78,
           paddingBottom: 40,
@@ -71,13 +68,12 @@ export const HomeScreen: React.FC = () => {
           rowGap: 20,
         }}
       >
-        <AlertBox
+        {/* <AlertBox
           navigateUrl="EoullimMain"
           icon="🎉"
           subText="한세어울림한마당 진행 중!"
           mainText="실시간으로 즐기기"
-        />
-        <HanumPay />
+        /> */}
         <Timer />
         <Calendar />
       </S.HomeScreenContainer>
