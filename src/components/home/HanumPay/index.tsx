@@ -1,7 +1,6 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
 
-import { Button, Content, Text } from 'src/components';
+import { Button, Content, Spinner, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { formattedMoney, isIos } from 'src/utils';
 import { useGetPaymentAmount, useNavigate } from 'src/hooks';
@@ -36,7 +35,7 @@ export const HanumPay: React.FC = () => {
             {balanceAmount ? formattedMoney(balanceAmount.toString()) : '0'}원
           </Text>
         ) : (
-          <ActivityIndicator size={26} color={colors.primary} />
+          <Spinner />
         )}
         <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
       </S.HanumPayContainer>

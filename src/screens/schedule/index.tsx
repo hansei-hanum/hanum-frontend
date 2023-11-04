@@ -1,13 +1,10 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
 
-import { ActivityIndicator } from '@react-native-material/core';
-
-import { Text, ClassList, WeekDay, AuthFailedModal } from 'src/components';
+import { Text, ClassList, WeekDay, AuthFailedModal, Spinner } from 'src/components';
 import { NUMBER_LIST } from 'src/constants';
 import { ScheduleIcon } from 'src/assets';
 import { useCheckUserType, useGetTimeTable, useGetUser } from 'src/hooks';
-import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -49,23 +46,13 @@ export const ScheduleScreen: React.FC = () => {
               ))}
             </S.ScheduleScreenTimeContainer>
           )}
-          {isLoading && (
-            <ActivityIndicator
-              size={26}
-              color={colors.black}
-              style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
-            />
-          )}
+          {isLoading && <Spinner isCenter />}
         </S.ScheduleScreenContainer>
       </S.ScheduleScreenWrapper>
     );
   } else {
     return (
-      <AuthFailedModal
-        isStudent={true}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
+      <AuthFailedModal isStudent modalVisible={modalVisible} setModalVisible={setModalVisible} />
     );
   }
 };

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { Button, Text, HanumPayHeader, AuthFailedModal } from 'src/components';
+import { Button, Text, HanumPayHeader, AuthFailedModal, Spinner } from 'src/components';
 import { colors } from 'src/styles';
 import { useCheckUserType, useGetPaymentDetail, useNavigate, useOnRefresh } from 'src/hooks';
 import { formattedMoney, isIos } from 'src/utils';
@@ -54,7 +54,7 @@ export const HanumPayMainScreen: React.FC = () => {
                   원
                 </Text>
               ) : (
-                <ActivityIndicator size={26} color={colors.primary} />
+                <Spinner />
               )}
             </Text.Column>
             <Button onPress={() => navigate('HanumPayQR')}>결제하기</Button>
@@ -115,7 +115,7 @@ export const HanumPayMainScreen: React.FC = () => {
                   )}
                 </S.HanumUseAgeContainer>
               ) : (
-                <ActivityIndicator size={26} color={colors.primary} />
+                <Spinner />
               )}
             </S.HanumUseAgeHistory>
           </S.HanumPaySection>

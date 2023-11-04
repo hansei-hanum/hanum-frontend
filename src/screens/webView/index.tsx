@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
-import { ActivityIndicator } from 'react-native';
 
-import { CommonHeader, Text } from 'src/components';
-import { colors } from 'src/styles';
+import { CommonHeader, Spinner, Text } from 'src/components';
 
 import * as S from './styled';
 
@@ -29,7 +27,7 @@ export const WebViewScreen: React.FC = () => {
       >
         {isLoading ? (
           <S.LoadingWrapper>
-            <ActivityIndicator size="large" color={colors.lightGray} />
+            <Spinner size={32} />
           </S.LoadingWrapper>
         ) : null}
       </WebView>

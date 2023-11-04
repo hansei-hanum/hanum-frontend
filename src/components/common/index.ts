@@ -6,3 +6,4 @@ export * from './Icon';
 export * from './Header';
 export * from './AuthFailedModal';
 export * from './Status';
+export * from './Spinner';

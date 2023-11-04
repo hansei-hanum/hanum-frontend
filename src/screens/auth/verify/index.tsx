@@ -3,9 +3,8 @@ import { TouchableOpacity } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
 import { useNavigation } from '@react-navigation/native';
-import { ActivityIndicator } from '@react-native-material/core';
 
-import { Text, Auth, Modal, Button, CodeInput } from 'src/components';
+import { Text, Auth, Modal, Button, CodeInput, Spinner } from 'src/components';
 import { useInitNavigate, useUserVerify } from 'src/hooks';
 import { authAtom, userVerifyAtom } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
@@ -75,7 +74,7 @@ export const VerifyScreen: React.FC = () => {
           title="본인 확인"
           text={
             isLoading ? (
-              <ActivityIndicator size={26} color={colors.black} />
+              <Spinner />
             ) : userVerify.isUsed ? (
               `이미 사용된 인증코드에요.`
             ) : userVerify.type === 'TEACHER' ? (

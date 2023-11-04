@@ -1,7 +1,6 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
 
-import { Text } from 'src/components';
+import { Spinner, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 import { useGetSchedule } from 'src/hooks';
@@ -29,7 +28,7 @@ export const Calendar: React.FC = () => {
     <Content icon="📆" name="학사일정" navigateUrl="Calendar">
       <S.CalendarContainer>
         {isLoading ? (
-          <ActivityIndicator size={26} />
+          <Spinner />
         ) : data?.data && data.data.length > 0 ? (
           data.data.slice(0, 4).map(({ date, data }) => (
             <S.CalendarTextContainer key={date}>

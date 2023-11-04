@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { AuthFailedModal, EoullimBox, CommonHeader, Text } from 'src/components';
+import { AuthFailedModal, EoullimBox, CommonHeader, Text, Spinner } from 'src/components';
 import { EoullimPoster } from 'src/assets';
 import { colors } from 'src/styles';
 import { useCheckUserType, useGetUser } from 'src/hooks';
@@ -60,7 +59,7 @@ export const EoullimMainScreen: React.FC = () => {
             />
           </>
         ) : (
-          <ActivityIndicator size={30} color={colors.white} />
+          <Spinner />
         )}
       </S.EoullimContainer>
     );
