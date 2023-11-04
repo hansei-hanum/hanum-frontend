@@ -1,8 +1,14 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
+import { useRecoilValue } from 'recoil';
+
 import { colors } from 'src/styles';
 import { usePressingAnimation } from 'src/hooks';
+import { loadingAtom } from 'src/atoms/loading';
+
+import { Spinner } from '../Spinner';
+import { Text } from '../Text';
 
 import * as S from './styled';
 
@@ -18,34 +24,39 @@ export interface ButtonProps {
 export const ButtonElement: React.FC<ButtonProps> = ({
   children,
   onPress,
-  isDisabled,
   isModalBtn,
+  isDisabled,
   backgroundColor,
   textColor,
 }) => {
+  const loading = useRecoilValue(loadingAtom);
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
   return (
     <TouchableOpacity
-      {...(!isDisabled && { onPress: onPress })}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      activeOpacity={0.8}
+      {...(!isDisabled && {
+        onPress: onPress,
+        onPressIn: handlePressIn,
+        onPressOut: handlePressOut,
+      })}
+      activeOpacity={isDisabled ? 0.4 : 0.8}
       style={{
-        width: isModalBtn ? '48%' : '100%',
         ...scaleAnimatedStyle,
+        width: isModalBtn ? '48%' : '100%',
         backgroundColor: backgroundColor ? backgroundColor : colors.primary,
         borderRadius: isModalBtn ? 16 : 10,
+        opacity: isDisabled || loading ? 0.4 : 1,
         paddingVertical: 14,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        columnGap: 6,
       }}
     >
-      <S.ButtonText
-        style={{
-          color: textColor ? textColor : colors.white,
-        }}
-      >
+      {loading && <Spinner color={colors.white} />}
+      <Text size={16} isCenter color={textColor ? textColor : colors.white}>
         {children}
-      </S.ButtonText>
+      </Text>
     </TouchableOpacity>
   );
 };

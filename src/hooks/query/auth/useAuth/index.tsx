@@ -1,7 +1,7 @@
 import { UseMutationResult, useMutation } from 'react-query';
 
 import { AxiosError } from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
@@ -17,12 +17,14 @@ import {
 import { authAtom } from 'src/atoms';
 import { useFetchUser, useInitNavigate, useNavigate } from 'src/hooks';
 import { AUTH_ERROR_MESSAGE, authErrorMessage } from 'src/constants';
+import { loadingAtom } from 'src/atoms/loading';
 
 export const useAuth = (): UseMutationResult<
   APIResponse<AuthResponse>,
   AxiosError<APIErrorResponse>,
   RegisterValues | LoginValues
 > => {
+  const setLoading = useSetRecoilState(loadingAtom);
   const [auth, setAuth] = useRecoilState(authAtom);
   const navigate = useNavigate();
   const { initNavigate } = useInitNavigate();
@@ -39,6 +41,7 @@ export const useAuth = (): UseMutationResult<
     },
     {
       onSuccess: async ({ data }) => {
+        setLoading(false);
         await AsyncStorage.setItem('token', data);
         setAccessToken(data);
         if (auth.isCurrentStudent) {
