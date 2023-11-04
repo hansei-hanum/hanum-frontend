@@ -1,13 +1,13 @@
 import { useRecoilValue } from 'recoil';
 
 import { Status, Text } from 'src/components';
-import { hanumPayState } from 'src/atoms';
+import { hanumPayAtom } from 'src/atoms';
 import { FailedLottie, SuccessLottie } from 'src/assets';
 
 import * as S from './styled';
 
 export const HanumPayStatusScreen: React.FC = () => {
-  const hanumPay = useRecoilValue(hanumPayState);
+  const hanumPay = useRecoilValue(hanumPayAtom);
   return (
     <Status navigateUrl="Main">
       <S.StatusScreenLottie

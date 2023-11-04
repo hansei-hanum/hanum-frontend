@@ -3,34 +3,31 @@ import { UseMutationResult, useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import { APIErrorResponse, APIResponse, memberVerify, MemberVerifyValue } from 'src/api';
-import { authState, useUserVerifyState } from 'src/atoms';
+import {
+  APIErrorResponse,
+  APIResponse,
+  userVerify,
+  UserVerifyResponse,
+  UserVerifyValue,
+} from 'src/api';
+import { authAtom, userVerifyAtom } from 'src/atoms';
 import { useFetchUser, useInitNavigate } from 'src/hooks';
 import { AUTH_ERROR_MESSAGE, authUserVerifyErrorMessage } from 'src/constants';
 
 export const useUserVerify = (): UseMutationResult<
-  APIResponse<null>,
+  APIResponse<UserVerifyResponse>,
   AxiosError<APIErrorResponse>,
-  MemberVerifyValue
+  UserVerifyValue
 > => {
-  const [auth, setAuth] = useRecoilState(authState);
-  const verify = useSetRecoilState(useUserVerifyState);
+  const [auth, setAuth] = useRecoilState(authAtom);
+  const verify = useSetRecoilState(userVerifyAtom);
   const { initNavigate } = useInitNavigate();
   const userProfile = useFetchUser();
 
-  return useMutation('useUserVerify', memberVerify, {
-    onSuccess: ({ data }, variables) => {
+  return useMutation('useUserVerify', userVerify, {
+    onSuccess: ({ data }: APIResponse<UserVerifyResponse>, variables) => {
       userProfile.refetch();
-      variables.isCheck
-        ? verify({
-            type: data.type,
-            department: data.department,
-            grade: data.grade,
-            classroom: data.classroom,
-            number: data.number,
-            isUsed: data.isUsed,
-          })
-        : initNavigate('Main');
+      variables.isCheck ? verify({ ...data }) : initNavigate('Main');
     },
     onError: (error) => {
       console.log(error, 'error');

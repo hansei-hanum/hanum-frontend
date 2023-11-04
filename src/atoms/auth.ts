@@ -1,14 +1,14 @@
 import { atom } from 'recoil';
 
-export interface authProps {
+export interface authAtomProps {
   name: string;
   phone: string;
   isCurrentStudent?: boolean;
   errorMessage?: string;
 }
 
-export const authState = atom<authProps>({
-  key: 'authState',
+export const authAtom = atom<authAtomProps>({
+  key: 'authAtom',
   default: {
     name: '',
     phone: '',

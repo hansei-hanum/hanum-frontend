@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { colors } from 'src/styles';
 import { checkNumber, checkString, isAndroid } from 'src/utils';
 import { useNavigate, usePhone } from 'src/hooks';
-import { authState } from 'src/atoms';
+import { authAtom } from 'src/atoms';
 import { Text } from 'src/components/common';
 
 import { Auth } from '../AuthForm';
@@ -28,7 +28,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   isPhoneScreen,
 }) => {
   const navigate = useNavigate();
-  const [auth, setAuth] = useRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authAtom);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');

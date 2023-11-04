@@ -1,13 +1,13 @@
 import { atom } from 'recoil';
 
-export interface hanumPayProps {
+export interface hanumPayAtomProps {
   status: boolean;
   money: string;
   message: string;
 }
 
-export const hanumPayState = atom<hanumPayProps>({
-  key: 'HanumPayState',
+export const hanumPayAtom = atom<hanumPayAtomProps>({
+  key: 'hanumPayAtom',
   default: {
     status: false,
     money: '',

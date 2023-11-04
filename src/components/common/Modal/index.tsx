@@ -9,7 +9,7 @@ import * as S from './styled';
 export interface ModalProps {
   title: string;
   linkText?: React.ReactNode;
-  text?: string;
+  text?: string | React.ReactNode;
   button: React.ReactNode;
   modalVisible: boolean;
 }
@@ -28,12 +28,14 @@ export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible,
               <>{linkText}</>
             ) : (
               <Text size={16}>
-                {text?.split('\n').map((line, index) => (
-                  <Text size={16} key={line}>
-                    {line}
-                    {index !== text.split('\n').length - 1 && <>{'\n'}</>}
-                  </Text>
-                ))}
+                {typeof text === 'string'
+                  ? text?.split('\n').map((line, index) => (
+                      <Text size={16} key={line}>
+                        {line}
+                        {index !== text.split('\n').length - 1 && <>{'\n'}</>}
+                      </Text>
+                    ))
+                  : text}
               </Text>
             )}
             {button}

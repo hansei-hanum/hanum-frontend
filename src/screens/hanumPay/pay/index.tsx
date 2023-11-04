@@ -6,14 +6,14 @@ import { Auth } from 'src/components';
 import { colors } from 'src/styles';
 import { checkNumber, isAndroid } from 'src/utils';
 import { usePayment } from 'src/hooks';
-import { boothState } from 'src/atoms';
+import { boothAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
   const [money, setMoney] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState(true);
-  const boothInfo = useRecoilValue(boothState);
+  const boothInfo = useRecoilValue(boothAtom);
 
   const { mutate } = usePayment();
 

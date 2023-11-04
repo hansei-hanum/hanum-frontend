@@ -15,14 +15,14 @@ import {
   QRScannerBox,
 } from 'src/components';
 import { colors } from 'src/styles';
-import { boothState } from 'src/atoms';
+import { boothAtom } from 'src/atoms';
 import { useCheckUserType, useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 export const HanumPayQRScreen: React.FC = () => {
   const [cameraModal, setCameraModal] = useState<boolean>(false);
-  const setBooth = useSetRecoilState(boothState);
+  const setBooth = useSetRecoilState(boothAtom);
   const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
 
   const navigation = useNavigation();

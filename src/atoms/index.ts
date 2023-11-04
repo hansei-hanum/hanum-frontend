@@ -1,6 +1,6 @@
 export * from './auth';
 export * from './hanumPay';
 export * from './userProfile';
-export * from './studentVerify';
+export * from './userVerify';
 export * from './booth';
 export * from './luckyNumber';

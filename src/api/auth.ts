@@ -41,10 +41,12 @@ export interface FetchUserResponse {
   verification: VerificationUser | null;
 }
 
-export interface MemberVerifyValue {
+export interface UserVerifyValue {
   code: string;
   isCheck: boolean;
 }
+
+export type UserVerifyResponse = Omit<VerificationUser, 'graduated_at' | 'valid_until'>;
 
 export const phone = async ({ phone }: PhoneValue) => {
   const { data } = await authInstance.post(API_SUFFIX.PHONE, {
@@ -78,7 +80,7 @@ export const fetchUser = async () => {
   return data;
 };
 
-export const memberVerify = async ({ code, isCheck }: MemberVerifyValue) => {
+export const userVerify = async ({ code, isCheck }: UserVerifyValue) => {
   const token = await AsyncStorage.getItem('token');
   if (!token) return null;
   setAccessToken(token);

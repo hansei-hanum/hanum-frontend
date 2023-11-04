@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, EoullimLuckyDrawValue, eoullimLuckyDraw } from 'src/api';
-import { luckyNumberState } from 'src/atoms';
+import { luckyNumberAtom } from 'src/atoms';
 import { PAY_FAILED, eoulimLuckDrawErrorMessage } from 'src/constants';
 import { useNavigate } from 'src/hooks/useNavigate';
 
@@ -14,7 +14,7 @@ export const useLuckyDraw = (): UseMutationResult<
   EoullimLuckyDrawValue
 > => {
   const navigate = useNavigate();
-  const setLuckyNumber = useSetRecoilState(luckyNumberState);
+  const setLuckyNumber = useSetRecoilState(luckyNumberAtom);
   return useMutation('useLuckyDraw', eoullimLuckyDraw, {
     onSuccess: ({ data }) => {
       setLuckyNumber({ number: data, errorMessage: '' });

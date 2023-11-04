@@ -1,12 +1,12 @@
 import { atom } from 'recoil';
 
-export interface luckyNumberProps {
+export interface luckyNumberAtomProps {
   number: number;
   errorMessage: string;
 }
 
-export const luckyNumberState = atom<luckyNumberProps>({
-  key: 'luckyNumberState',
+export const luckyNumberAtom = atom<luckyNumberAtomProps>({
+  key: 'luckyNumberAtom',
   default: {
     number: 0,
     errorMessage: '',

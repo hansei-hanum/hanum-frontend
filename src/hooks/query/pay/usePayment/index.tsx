@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, payment, PaymentValues } from 'src/api';
-import { hanumPayState } from 'src/atoms';
+import { hanumPayAtom } from 'src/atoms';
 import { useGetPaymentAmount, useGetPaymentDetail, useNavigate } from 'src/hooks';
 import { formattedMoney } from 'src/utils';
 import { PAY_FAILED, payMentErrorMessage } from 'src/constants';
@@ -14,7 +14,7 @@ export const usePayment = (): UseMutationResult<
   AxiosError<APIErrorResponse>,
   PaymentValues
 > => {
-  const [hanumPay, setHanumPay] = useRecoilState(hanumPayState);
+  const [hanumPay, setHanumPay] = useRecoilState(hanumPayAtom);
   const navigate = useNavigate();
   const getPaymentDetail = useGetPaymentDetail();
   const getPayment = useGetPaymentAmount();

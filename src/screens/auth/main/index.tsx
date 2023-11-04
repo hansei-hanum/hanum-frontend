@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Button, Modal, Text } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate } from 'src/hooks';
-import { authState } from 'src/atoms';
+import { authAtom } from 'src/atoms';
 
 import { Logo } from '../../../../assets/images';
 
@@ -20,7 +20,7 @@ export const AuthMainScreen: React.FC = () => {
     isCurrentStudentModal: false,
   });
   const isAgreeModal = modalVisible.isAgreeModal;
-  const [auth, setAuth] = useRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authAtom);
 
   const onButtonPress = (isCurrentStudent?: boolean) => {
     isCurrentStudent && setAuth({ ...auth, isCurrentStudent: true });

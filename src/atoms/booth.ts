@@ -1,7 +1,12 @@
 import { atom } from 'recoil';
 
-export const boothState = atom({
-  key: 'boothState',
+export interface boothAtomProps {
+  id: number;
+  name: string;
+}
+
+export const boothAtom = atom<boothAtomProps>({
+  key: 'boothAtom',
   default: {
     id: 0,
     name: '',

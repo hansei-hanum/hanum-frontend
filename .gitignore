@@ -74,3 +74,4 @@ package-lock.json
 ios/Podfile.lock
 *.lock
 android/gradle.properties
+.eslintcache
