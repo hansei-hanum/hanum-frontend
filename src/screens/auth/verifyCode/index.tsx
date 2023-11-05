@@ -13,7 +13,7 @@ export const VerifyCodeScreen: React.FC = () => {
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const auth = useRecoilValue(authAtom);
-  const { mutate: mutateAuth } = useAuth();
+  const { mutate: mutateAuth, isLoading } = useAuth();
 
   const onSubmit = () => {
     mutateAuth({ ...auth, code: value });
@@ -21,6 +21,7 @@ export const VerifyCodeScreen: React.FC = () => {
 
   return (
     <Auth
+      isLoading={isLoading}
       headerText={`인증번호를 보냈어요!\n받은 인증번호를 입력해 주세요`}
       bottomText="인증하기"
       isDisabled={isDisabled}

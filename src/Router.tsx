@@ -5,13 +5,11 @@ import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useRecoilValue } from 'recoil';
 
 import * as SC from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
 import { useCodePush } from './hooks';
-import { loadingAtom } from './atoms/loading';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +18,6 @@ export type RootStackParamList = {
 };
 
 export const Router: React.FC = () => {
-  const loading = useRecoilValue(loadingAtom);
   const [isReady, setIsReady] = useState(false);
   const { data, isLoading } = useFetchUser();
 
@@ -51,7 +48,7 @@ export const Router: React.FC = () => {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-        screenOptions={{ headerShown: false, gestureEnabled: loading }}
+        screenOptions={{ headerShown: false }}
         initialRouteName={data ? 'Main' : 'AuthMain'}
       >
         <Stack.Group>

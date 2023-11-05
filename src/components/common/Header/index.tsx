@@ -3,28 +3,30 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { StyleProp, TextStyle, TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import { useRecoilValue } from 'recoil';
 
 import { colors } from 'src/styles';
-import { loadingAtom } from 'src/atoms/loading';
 
 export interface CommonHeaderProps {
+  isLoading?: boolean;
   size?: number;
   style?: StyleProp<TextStyle>;
   isWhite?: boolean;
 }
 
-export const CommonHeader: React.FC<CommonHeaderProps> = ({ size = 28, style, isWhite }) => {
-  const loading = useRecoilValue(loadingAtom);
-
+export const CommonHeader: React.FC<CommonHeaderProps> = ({
+  isLoading,
+  size = 28,
+  style,
+  isWhite,
+}) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
-      activeOpacity={loading ? 1 : 0.5}
+      activeOpacity={isLoading ? 1 : 0.5}
       style={style}
       onPress={() => {
-        if (loading) return;
+        if (isLoading) return;
         navigation.goBack();
       }}
     >

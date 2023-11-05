@@ -1,11 +1,8 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { useRecoilValue } from 'recoil';
-
 import { colors } from 'src/styles';
 import { usePressingAnimation } from 'src/hooks';
-import { loadingAtom } from 'src/atoms/loading';
 
 import { Spinner } from '../Spinner';
 import { Text } from '../Text';
@@ -16,6 +13,7 @@ export interface ButtonProps {
   children: React.ReactNode;
   backgroundColor?: string;
   textColor?: string;
+  isLoading?: boolean;
   isDisabled?: boolean;
   isModalBtn?: boolean;
   onPress?: () => void;
@@ -26,10 +24,10 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   onPress,
   isModalBtn,
   isDisabled,
+  isLoading,
   backgroundColor,
   textColor,
 }) => {
-  const loading = useRecoilValue(loadingAtom);
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
   return (
@@ -45,7 +43,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
         width: isModalBtn ? '48%' : '100%',
         backgroundColor: backgroundColor ? backgroundColor : colors.primary,
         borderRadius: isModalBtn ? 16 : 10,
-        opacity: isDisabled || loading ? 0.4 : 1,
+        opacity: isDisabled || isLoading ? 0.4 : 1,
         paddingVertical: 14,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -53,7 +51,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
         columnGap: 6,
       }}
     >
-      {loading && <Spinner color={colors.white} />}
+      {isLoading && <Spinner color={colors.white} />}
       <Text size={16} isCenter color={textColor ? textColor : colors.white}>
         {children}
       </Text>

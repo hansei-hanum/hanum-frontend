@@ -41,7 +41,7 @@ export const EoullimMainScreen: React.FC = () => {
       <S.EoullimContainer source={EoullimPoster}>
         <CommonHeader isWhite />
         <Text size={24} fontFamily="bold" color={colors.white}>
-          {userData.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
+          {userData?.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
         </Text>
         {!luckyDraw.isLoading ? (
           <>

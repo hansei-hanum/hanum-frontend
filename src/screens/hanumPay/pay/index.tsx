@@ -15,7 +15,7 @@ export const HanumPayScreen: React.FC = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const boothInfo = useRecoilValue(boothAtom);
 
-  const { mutate } = usePayment();
+  const { mutate, isLoading } = usePayment();
 
   const onSubmit = () => {
     boothInfo.id !== 0 && mutate({ amount: parseInt(money), boothId: boothInfo.id });
@@ -29,6 +29,7 @@ export const HanumPayScreen: React.FC = () => {
 
   return (
     <Auth
+      isLoading={isLoading}
       isDisabled={isDisabled}
       onPress={onSubmit}
       headerText={`${boothInfo.name}에` + '\n얼마를 결제할까요?'}

@@ -15,11 +15,13 @@ import * as S from './styled';
 
 export const AuthMainScreen: React.FC = () => {
   const navigate = useNavigate();
+
   const [modalVisible, setModalVisible] = useState({
     isAgreeModal: false,
     isCurrentStudentModal: false,
   });
   const isAgreeModal = modalVisible.isAgreeModal;
+
   const [auth, setAuth] = useRecoilState(authAtom);
 
   const onButtonPress = (isCurrentStudent?: boolean) => {

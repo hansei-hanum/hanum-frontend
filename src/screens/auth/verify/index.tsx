@@ -39,6 +39,7 @@ export const VerifyScreen: React.FC = () => {
   return (
     <>
       <Auth
+        isLoading={isLoading}
         headerText={`정회원 인증 코드를\n` + `입력해주세요`}
         subHeaderText={
           <S.StudentVerifyTextContainer>

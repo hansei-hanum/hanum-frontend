@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { useGetUser } from './query';
+import { useGetUser } from './useGetUser';
 
 export const useCheckUserType = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);

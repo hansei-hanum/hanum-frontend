@@ -1,19 +1,27 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
-import { useRecoilValue } from 'recoil';
+import { useNavigation } from '@react-navigation/native';
 
-import { loadingAtom } from 'src/atoms/loading';
-
-export const useBlockGesture = () => {
-  const loading = useRecoilValue(loadingAtom);
+export const useBlockGesture = (isLoading: boolean) => {
+  const navigation = useNavigation();
 
   useEffect(() => {
     const backAction = () => {
-      return loading;
+      return isLoading;
     };
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
+    if (isLoading) {
+      navigation.setOptions({
+        gestureEnabled: false,
+      });
+    } else {
+      navigation.setOptions({
+        gestureEnabled: true,
+      });
+    }
+
     return () => backHandler.remove();
-  }, [loading]);
+  }, [isLoading]);
 };
