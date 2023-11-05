@@ -4,12 +4,16 @@ import { TouchableOpacity } from 'react-native';
 import { colors } from 'src/styles';
 import { usePressingAnimation } from 'src/hooks';
 
+import { Spinner } from '../Spinner';
+import { Text } from '../Text';
+
 import * as S from './styled';
 
 export interface ButtonProps {
   children: React.ReactNode;
   backgroundColor?: string;
   textColor?: string;
+  isLoading?: boolean;
   isDisabled?: boolean;
   isModalBtn?: boolean;
   onPress?: () => void;
@@ -18,8 +22,9 @@ export interface ButtonProps {
 export const ButtonElement: React.FC<ButtonProps> = ({
   children,
   onPress,
-  isDisabled,
   isModalBtn,
+  isDisabled,
+  isLoading,
   backgroundColor,
   textColor,
 }) => {
@@ -27,25 +32,29 @@ export const ButtonElement: React.FC<ButtonProps> = ({
 
   return (
     <TouchableOpacity
-      {...(!isDisabled && { onPress: onPress })}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      activeOpacity={0.8}
+      {...(!isDisabled && {
+        onPress: onPress,
+        onPressIn: handlePressIn,
+        onPressOut: handlePressOut,
+      })}
+      activeOpacity={isDisabled ? 0.4 : 0.8}
       style={{
-        width: isModalBtn ? '48%' : '100%',
         ...scaleAnimatedStyle,
+        width: isModalBtn ? '48%' : '100%',
         backgroundColor: backgroundColor ? backgroundColor : colors.primary,
         borderRadius: isModalBtn ? 16 : 10,
+        opacity: isDisabled || isLoading ? 0.4 : 1,
         paddingVertical: 14,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        columnGap: 6,
       }}
     >
-      <S.ButtonText
-        style={{
-          color: textColor ? textColor : colors.white,
-        }}
-      >
+      {isLoading && <Spinner color={colors.white} />}
+      <Text size={16} isCenter color={textColor ? textColor : colors.white}>
         {children}
-      </S.ButtonText>
+      </Text>
     </TouchableOpacity>
   );
 };

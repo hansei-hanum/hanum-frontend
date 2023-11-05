@@ -2,8 +2,8 @@ import { atom } from 'recoil';
 
 import { VerificationUser } from 'src/api';
 
-export const useUserVerifyState = atom<Omit<VerificationUser, 'graduated_at' | 'valid_until'>>({
-  key: 'useUserVerifyState',
+export const userVerifyAtom = atom<Omit<VerificationUser, 'graduated_at' | 'valid_until'>>({
+  key: 'userVerifyAtom',
   default: {
     type: null,
     department: null,

@@ -3,9 +3,8 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 import { useIsFocused } from '@react-navigation/native';
 import { format } from 'date-fns';
-import { ActivityIndicator } from '@react-native-material/core';
 
-import { ContentBox, CommonHeader, Icon, Text } from 'src/components';
+import { ContentBox, CommonHeader, Icon, Text, Spinner } from 'src/components';
 import { colors } from 'src/styles';
 import { useGetMonthSchedule } from 'src/hooks';
 
@@ -105,11 +104,7 @@ export const CalendarScreen: React.FC = () => {
         </S.CalendarTitleContainer>
       </S.CalendarHeaderContainer>
       {monthSchedule.isLoading ? (
-        <ActivityIndicator
-          size={26}
-          color={colors.black}
-          style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
-        />
+        <Spinner isCenter />
       ) : (
         <>
           <Calendar

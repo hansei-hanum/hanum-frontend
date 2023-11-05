@@ -6,26 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import {
-  AuthMainScreen,
-  NameScreen,
-  PhoneScreen,
-  VerifyScreen,
-  VerifyCodeScreen,
-  MainScreen,
-  HanumPayScreen,
-  CalendarScreen,
-  UserInfoScreen,
-  WebViewScreen,
-  HanumPayQRScreen,
-  HanumPayStatusScreen,
-  HanumPayMainScreen,
-  EoullimMainScreen,
-  EoullimVoteScreen,
-  EoullimTimeTableScreen,
-  EoullimRaffleScreen,
-  EoullimStatusScreen,
-} from './screens';
+import * as SC from './screens';
 import { useFetchUser } from './hooks';
 import { isIos } from './utils';
 import { useCodePush } from './hooks';
@@ -71,30 +52,30 @@ export const Router: React.FC = () => {
         initialRouteName={data ? 'Main' : 'AuthMain'}
       >
         <Stack.Group>
-          <Stack.Screen name="AuthMain" component={AuthMainScreen} />
-          <Stack.Screen name="Phone" component={PhoneScreen} />
-          <Stack.Screen name="Name" component={NameScreen} />
-          <Stack.Screen name="VerifyCode" component={VerifyCodeScreen} />
-          <Stack.Screen name="Verify" component={VerifyScreen} />
+          <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
+          <Stack.Screen name="Phone" component={SC.PhoneScreen} />
+          <Stack.Screen name="Name" component={SC.NameScreen} />
+          <Stack.Screen name="VerifyCode" component={SC.VerifyCodeScreen} />
+          <Stack.Screen name="Verify" component={SC.VerifyScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="Main" component={MainScreen} />
-          <Stack.Screen name="Calendar" component={CalendarScreen} />
-          <Stack.Screen name="UserInfo" component={UserInfoScreen} />
-          <Stack.Screen name="WebView" component={WebViewScreen} />
+          <Stack.Screen name="Main" component={SC.MainScreen} />
+          <Stack.Screen name="Calendar" component={SC.CalendarScreen} />
+          <Stack.Screen name="UserInfo" component={SC.UserInfoScreen} />
+          <Stack.Screen name="WebView" component={SC.WebViewScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="HanumPayMain" component={HanumPayMainScreen} />
-          <Stack.Screen name="HanumPayQR" component={HanumPayQRScreen} />
-          <Stack.Screen name="HanumPayStatus" component={HanumPayStatusScreen} />
-          <Stack.Screen name="HanumPay" component={HanumPayScreen} />
+          <Stack.Screen name="HanumPayMain" component={SC.HanumPayMainScreen} />
+          <Stack.Screen name="HanumPayQR" component={SC.HanumPayQRScreen} />
+          <Stack.Screen name="HanumPayStatus" component={SC.HanumPayStatusScreen} />
+          <Stack.Screen name="HanumPay" component={SC.HanumPayScreen} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="EoullimMain" component={EoullimMainScreen} />
-          <Stack.Screen name="EoullimVote" component={EoullimVoteScreen} />
-          <Stack.Screen name="EoullimTimeTable" component={EoullimTimeTableScreen} />
-          <Stack.Screen name="EoullimRaffle" component={EoullimRaffleScreen} />
-          <Stack.Screen name="EoullimStatus" component={EoullimStatusScreen} />
+          <Stack.Screen name="EoullimMain" component={SC.EoullimMainScreen} />
+          <Stack.Screen name="EoullimVote" component={SC.EoullimVoteScreen} />
+          <Stack.Screen name="EoullimTimeTable" component={SC.EoullimTimeTableScreen} />
+          <Stack.Screen name="EoullimRaffle" component={SC.EoullimRaffleScreen} />
+          <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
         </Stack.Group>
       </Stack.Navigator>
       <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />

@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useRecoilState } from 'recoil';
 
 import { PhoneValue, phone, APIErrorResponse, APIResponse } from 'src/api';
-import { authState } from 'src/atoms';
+import { authAtom } from 'src/atoms';
 import { useNavigate } from 'src/hooks';
 import { AUTH_ERROR_MESSAGE, authPhoneErrorMessage } from 'src/constants';
 
@@ -13,7 +13,7 @@ export const usePhone = (): UseMutationResult<
   AxiosError<APIErrorResponse>,
   PhoneValue
 > => {
-  const [auth, setAuth] = useRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authAtom);
   const navigate = useNavigate();
 
   return useMutation('usePhone', phone, {

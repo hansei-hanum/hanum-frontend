@@ -2,11 +2,11 @@
 import React from 'react';
 
 import { Button, CommonHeader, Text } from 'src/components';
-import { colors } from 'src/styles';
 
 import * as S from './styled';
 
 export interface AuthProps {
+  isLoading: boolean;
   headerText: string;
   subHeaderText?: React.ReactNode;
   children: React.ReactNode;
@@ -22,12 +22,13 @@ export const Auth: React.FC<AuthProps> = ({
   subHeaderText,
   onPress,
   bottomText,
+  isLoading,
 }) => {
   return (
     <S.AuthWrapper>
       <S.AuthContainer behavior="padding" keyboardVerticalOffset={15}>
         <S.AuthInputContainer>
-          <CommonHeader size={28} style={{ marginBottom: 10 }} />
+          <CommonHeader size={28} style={{ marginBottom: 10 }} isLoading={isLoading} />
           <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (
@@ -42,11 +43,7 @@ export const Auth: React.FC<AuthProps> = ({
           {children}
         </S.AuthInputContainer>
         <S.AuthButtonWrapper>
-          <Button
-            isDisabled={isDisabled}
-            onPress={onPress}
-            backgroundColor={isDisabled ? colors.secondary : colors.primary}
-          >
+          <Button isDisabled={isDisabled} onPress={onPress} isLoading={isLoading}>
             {bottomText}
           </Button>
         </S.AuthButtonWrapper>

@@ -7,16 +7,29 @@ import { useNavigation } from '@react-navigation/native';
 import { colors } from 'src/styles';
 
 export interface CommonHeaderProps {
+  isLoading?: boolean;
   size?: number;
   style?: StyleProp<TextStyle>;
   isWhite?: boolean;
 }
 
-export const CommonHeader: React.FC<CommonHeaderProps> = ({ size = 28, style, isWhite }) => {
+export const CommonHeader: React.FC<CommonHeaderProps> = ({
+  isLoading,
+  size = 28,
+  style,
+  isWhite,
+}) => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.goBack()} style={style}>
+    <TouchableOpacity
+      activeOpacity={isLoading ? 1 : 0.5}
+      style={style}
+      onPress={() => {
+        if (isLoading) return;
+        navigation.goBack();
+      }}
+    >
       <Entypo name="chevron-thin-left" size={size} color={isWhite ? colors.white : colors.black} />
     </TouchableOpacity>
   );

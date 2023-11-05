@@ -6,16 +6,16 @@ import { Auth } from 'src/components';
 import { colors } from 'src/styles';
 import { checkNumber, isAndroid } from 'src/utils';
 import { usePayment } from 'src/hooks';
-import { boothState } from 'src/atoms';
+import { boothAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
   const [money, setMoney] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState(true);
-  const boothInfo = useRecoilValue(boothState);
+  const boothInfo = useRecoilValue(boothAtom);
 
-  const { mutate } = usePayment();
+  const { mutate, isLoading } = usePayment();
 
   const onSubmit = () => {
     boothInfo.id !== 0 && mutate({ amount: parseInt(money), boothId: boothInfo.id });
@@ -29,6 +29,7 @@ export const HanumPayScreen: React.FC = () => {
 
   return (
     <Auth
+      isLoading={isLoading}
       isDisabled={isDisabled}
       onPress={onSubmit}
       headerText={`${boothInfo.name}에` + '\n얼마를 결제할까요?'}

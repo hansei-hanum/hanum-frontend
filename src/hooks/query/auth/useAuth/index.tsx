@@ -1,7 +1,7 @@
 import { UseMutationResult, useMutation } from 'react-query';
 
 import { AxiosError } from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
@@ -14,7 +14,7 @@ import {
   AuthResponse,
   setAccessToken,
 } from 'src/api';
-import { authState } from 'src/atoms';
+import { authAtom } from 'src/atoms';
 import { useFetchUser, useInitNavigate, useNavigate } from 'src/hooks';
 import { AUTH_ERROR_MESSAGE, authErrorMessage } from 'src/constants';
 
@@ -23,7 +23,7 @@ export const useAuth = (): UseMutationResult<
   AxiosError<APIErrorResponse>,
   RegisterValues | LoginValues
 > => {
-  const [auth, setAuth] = useRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authAtom);
   const navigate = useNavigate();
   const { initNavigate } = useInitNavigate();
   const userProfile = useFetchUser();

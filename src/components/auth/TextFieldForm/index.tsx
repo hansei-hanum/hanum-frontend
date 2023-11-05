@@ -6,9 +6,9 @@ import { useIsFocused } from '@react-navigation/native';
 
 import { colors } from 'src/styles';
 import { checkNumber, checkString, isAndroid } from 'src/utils';
-import { useNavigate, usePhone } from 'src/hooks';
-import { authState } from 'src/atoms';
-import { Text } from 'src/components/common';
+import { useBlockGesture, useNavigate, usePhone } from 'src/hooks';
+import { authAtom } from 'src/atoms';
+import { Text } from 'src/components';
 
 import { Auth } from '../AuthForm';
 
@@ -28,12 +28,16 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   isPhoneScreen,
 }) => {
   const navigate = useNavigate();
-  const [auth, setAuth] = useRecoilState(authState);
+
+  const [auth, setAuth] = useRecoilState(authAtom);
+
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
 
-  const { mutate: phoneMutate } = usePhone();
+  const { mutate: phoneMutate, isLoading: isPhoneLoading } = usePhone();
+
+  useBlockGesture(isPhoneLoading);
 
   const onNameChange = (text: string) => {
     const newText = checkString(text);
@@ -74,6 +78,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
 
   return (
     <Auth
+      isLoading={isPhoneLoading}
       headerText={`${title}`}
       bottomText="다음"
       onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}

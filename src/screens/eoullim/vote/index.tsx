@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { ActivityIndicator } from '@react-native-material/core';
 import { useIsFocused } from '@react-navigation/native';
 
-import { EoullimVote, VoteModal } from 'src/components';
-import { colors } from 'src/styles';
+import { EoullimVote, Spinner, VoteModal } from 'src/components';
 import { useGetVote } from 'src/hooks/query/eoullim';
 
 export const EoullimVoteScreen: React.FC = () => {
@@ -20,13 +18,7 @@ export const EoullimVoteScreen: React.FC = () => {
   }, [isFocused]);
 
   if (getVote.isLoading) {
-    return (
-      <ActivityIndicator
-        size={40}
-        color={colors.placeholder}
-        style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
-      />
-    );
+    return <Spinner size={40} isCenter />;
   } else if (!getVote.isLoading && getVoteData) {
     return <EoullimVote getVoteData={getVoteData} getVote={getVote} />;
   } else if (!getVoteData) {

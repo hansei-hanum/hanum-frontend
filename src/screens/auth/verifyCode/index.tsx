@@ -6,14 +6,14 @@ import { useRecoilValue } from 'recoil';
 import { isAndroid } from 'src/utils';
 import { colors } from 'src/styles';
 import { Auth, CodeInput, Text } from 'src/components';
-import { authState } from 'src/atoms';
+import { authAtom } from 'src/atoms';
 import { useAuth } from 'src/hooks';
 
 export const VerifyCodeScreen: React.FC = () => {
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
-  const auth = useRecoilValue(authState);
-  const { mutate: mutateAuth } = useAuth();
+  const auth = useRecoilValue(authAtom);
+  const { mutate: mutateAuth, isLoading } = useAuth();
 
   const onSubmit = () => {
     mutateAuth({ ...auth, code: value });
@@ -21,6 +21,7 @@ export const VerifyCodeScreen: React.FC = () => {
 
   return (
     <Auth
+      isLoading={isLoading}
       headerText={`인증번호를 보냈어요!\n받은 인증번호를 입력해 주세요`}
       bottomText="인증하기"
       isDisabled={isDisabled}

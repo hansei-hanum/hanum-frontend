@@ -80,6 +80,7 @@ export const EoullimVote: React.FC<EoullimVoteProps> = ({ getVoteData, getVote }
       onUpdate();
     }
   }, [isFocused]);
+
   return (
     <S.EoullimVoteWrapper>
       <S.EoullimVoteContainer>

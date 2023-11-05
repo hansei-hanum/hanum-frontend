@@ -5,3 +5,5 @@ export * from './useInitNavigate';
 export * from './useCodePush';
 export * from './useCheckUserType';
 export * from './useOnRefresh';
+export * from './useBlockGesture';
+export * from './useGetUser';
