@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as SC from './screens';
 import { isIos } from './utils';
-import { useCodePush } from './hooks';
+import { useCodePush, useFetchUser } from './hooks';
 import { fetchUser } from './api';
 
 const Stack = createStackNavigator();
@@ -19,6 +19,7 @@ export type RootStackParamList = {
 };
 
 export const Router: React.FC = () => {
+  useFetchUser();
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState<null | string>(null);
 

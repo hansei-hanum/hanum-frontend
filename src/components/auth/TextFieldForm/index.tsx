@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
 
 import { colors } from 'src/styles';
 import { checkNumber, checkString, isAndroid } from 'src/utils';
 import { useBlockGesture, useNavigate, usePhone } from 'src/hooks';
-import { authAtom } from 'src/atoms';
+import { authAtom, disableAtom } from 'src/atoms';
 import { Text } from 'src/components';
 
 import { Auth } from '../AuthForm';
@@ -30,8 +30,8 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   const navigate = useNavigate();
 
   const [auth, setAuth] = useRecoilState(authAtom);
+  const [disabled, setDisabled] = useRecoilState(disableAtom);
 
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
 
@@ -43,9 +43,9 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
     const newText = checkString(text);
     const nameRegex = /^[가-힣]{2,10}$/;
     if (!nameRegex.test(newText)) {
-      setIsDisabled(true);
+      setDisabled(true);
     } else {
-      setIsDisabled(false);
+      setDisabled(false);
     }
     setName(newText);
   };
@@ -54,14 +54,16 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
     const newPhone = checkNumber(phone);
     const phoneRegex = /^010-?\d{4}-?\d{4}$/;
     if (!phoneRegex.test(newPhone)) {
-      setIsDisabled(true);
+      setDisabled(true);
     } else {
-      setIsDisabled(false);
+      setDisabled(false);
     }
     setPhone(newPhone);
   };
 
   const onPhoneSubmit = () => {
+    setDisabled(true);
+    console.log('phone', phone);
     phoneMutate({ phone: phone });
   };
 
@@ -74,6 +76,9 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
 
   useEffect(() => {
     setAuth({ ...auth, errorMessage: '' });
+    if (isFocused && phone.length === 11) {
+      setDisabled(false);
+    }
   }, [isFocused]);
 
   return (
@@ -82,7 +87,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
       headerText={`${title}`}
       bottomText="다음"
       onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
-      isDisabled={isDisabled}
+      isDisabled={disabled}
     >
       <View style={{ flexDirection: 'column', rowGap: isAndroid ? 6 : 0 }}>
         <S.TextFieldFormInputWrapper>

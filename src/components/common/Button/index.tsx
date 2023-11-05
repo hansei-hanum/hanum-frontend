@@ -32,12 +32,13 @@ export const ButtonElement: React.FC<ButtonProps> = ({
 
   return (
     <TouchableOpacity
-      {...(!isDisabled && {
-        onPress: onPress,
-        onPressIn: handlePressIn,
-        onPressOut: handlePressOut,
-      })}
-      activeOpacity={isDisabled ? 0.4 : 0.8}
+      {...(!isDisabled &&
+        !isLoading && {
+          onPress: onPress,
+          onPressIn: handlePressIn,
+          onPressOut: handlePressOut,
+        })}
+      activeOpacity={isLoading || isDisabled ? 0.4 : 0.8}
       style={{
         ...scaleAnimatedStyle,
         width: isModalBtn ? '48%' : '100%',
