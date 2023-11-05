@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { colors } from 'src/styles';
 import { checkNumber, checkString, isAndroid } from 'src/utils';
 import { useBlockGesture, useNavigate, usePhone } from 'src/hooks';
-import { authAtom, disableAtom } from 'src/atoms';
+import { authAtom, isDisableAtom } from 'src/atoms';
 import { Text } from 'src/components';
 
 import { Auth } from '../AuthForm';
@@ -30,7 +30,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   const navigate = useNavigate();
 
   const [auth, setAuth] = useRecoilState(authAtom);
-  const [disabled, setDisabled] = useRecoilState(disableAtom);
+  const setIsDisabled = useSetRecoilState(isDisableAtom);
 
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
@@ -43,9 +43,9 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
     const newText = checkString(text);
     const nameRegex = /^[가-힣]{2,10}$/;
     if (!nameRegex.test(newText)) {
-      setDisabled(true);
+      setIsDisabled(true);
     } else {
-      setDisabled(false);
+      setIsDisabled(false);
     }
     setName(newText);
   };
@@ -54,16 +54,15 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
     const newPhone = checkNumber(phone);
     const phoneRegex = /^010-?\d{4}-?\d{4}$/;
     if (!phoneRegex.test(newPhone)) {
-      setDisabled(true);
+      setIsDisabled(true);
     } else {
-      setDisabled(false);
+      setIsDisabled(false);
     }
     setPhone(newPhone);
   };
 
   const onPhoneSubmit = () => {
-    setDisabled(true);
-    console.log('phone', phone);
+    setIsDisabled(true);
     phoneMutate({ phone: phone });
   };
 
@@ -76,8 +75,8 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
 
   useEffect(() => {
     setAuth({ ...auth, errorMessage: '' });
-    if (isFocused && phone.length === 11) {
-      setDisabled(false);
+    if (isFocused && phone.length !== 11) {
+      setIsDisabled(true);
     }
   }, [isFocused]);
 
@@ -87,7 +86,6 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
       headerText={`${title}`}
       bottomText="다음"
       onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
-      isDisabled={disabled}
     >
       <View style={{ flexDirection: 'column', rowGap: isAndroid ? 6 : 0 }}>
         <S.TextFieldFormInputWrapper>

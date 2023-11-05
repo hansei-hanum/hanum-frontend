@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
-import { useNavigation } from '@react-navigation/native';
 
 import { Text, Auth, Modal, Button, CodeInput, Spinner } from 'src/components';
 import { useInitNavigate, useUserVerify } from 'src/hooks';
@@ -15,9 +14,6 @@ import * as S from './styled';
 export const VerifyScreen: React.FC = () => {
   const [value, setValue] = useState('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-
-  const navigation = useNavigation();
 
   const { mutate, isLoading } = useUserVerify();
 
@@ -60,15 +56,9 @@ export const VerifyScreen: React.FC = () => {
           </S.StudentVerifyTextContainer>
         }
         bottomText="인증하기"
-        isDisabled={isDisabled}
         onPress={onCheckSubmit}
       >
-        <CodeInput
-          value={value}
-          setValue={setValue}
-          isNumber={false}
-          setIsDisabled={setIsDisabled}
-        />
+        <CodeInput value={value} setValue={setValue} isNumber={false} />
       </Auth>
       {modalVisible && (
         <Modal
@@ -108,7 +98,6 @@ export const VerifyScreen: React.FC = () => {
               <Button
                 onPress={() => {
                   setModalVisible(false);
-                  navigation.goBack();
                 }}
               >
                 확인

@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useIsFocused } from '@react-navigation/native';
 
 import { Auth } from 'src/components';
 import { colors } from 'src/styles';
 import { checkNumber, isAndroid } from 'src/utils';
 import { usePayment } from 'src/hooks';
-import { boothAtom } from 'src/atoms';
+import { boothAtom, isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
   const [money, setMoney] = useState<string>('');
-  const [isDisabled, setIsDisabled] = useState(true);
+  const setIsDisabled = useSetRecoilState(isDisableAtom);
+
   const boothInfo = useRecoilValue(boothAtom);
 
   const { mutate, isLoading } = usePayment();
@@ -27,10 +29,17 @@ export const HanumPayScreen: React.FC = () => {
     setMoney(newMoney);
   };
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      setIsDisabled(true);
+    }
+  }, [isFocused]);
+
   return (
     <Auth
       isLoading={isLoading}
-      isDisabled={isDisabled}
       onPress={onSubmit}
       headerText={`${boothInfo.name}에` + '\n얼마를 결제할까요?'}
       bottomText="결제하기"

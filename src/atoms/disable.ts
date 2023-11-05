@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const disableAtom = atom<boolean>({
-  key: 'disableAtom',
+export const isDisableAtom = atom<boolean>({
+  key: 'isDisableAtom',
   default: true,
 });

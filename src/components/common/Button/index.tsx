@@ -52,7 +52,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
         columnGap: 6,
       }}
     >
-      {isLoading && <Spinner color={colors.white} />}
+      {isLoading && <Spinner color={colors.white} size={20} />}
       <Text size={16} isCenter color={textColor ? textColor : colors.white}>
         {children}
       </Text>

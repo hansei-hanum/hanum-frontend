@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   CodeField,
   Cursor,
@@ -6,26 +6,26 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
+import { useIsFocused } from '@react-navigation/native';
+import { useSetRecoilState } from 'recoil';
+
 import { Text } from 'src/components/common';
 import { checkNumber } from 'src/utils';
+import { isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export interface CodeInputProps {
   isNumber: boolean;
-  setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   value: string;
 }
 
 const CELL_COUNT = 6;
 
-export const CodeInput: React.FC<CodeInputProps> = ({
-  isNumber,
-  value,
-  setValue,
-  setIsDisabled,
-}) => {
+export const CodeInput: React.FC<CodeInputProps> = ({ isNumber, value, setValue }) => {
+  const setIsDisabled = useSetRecoilState(isDisableAtom);
+
   const codeFieldRef = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
 
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -44,6 +44,14 @@ export const CodeInput: React.FC<CodeInputProps> = ({
       setValue(text);
     }
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused && value.length !== 6) {
+      setIsDisabled(true);
+    }
+  }, [isFocused]);
 
   return (
     <CodeField

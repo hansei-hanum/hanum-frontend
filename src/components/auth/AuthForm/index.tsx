@@ -1,7 +1,10 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 
+import { useRecoilValue } from 'recoil';
+
 import { Button, CommonHeader, Text } from 'src/components';
+import { isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -10,20 +13,20 @@ export interface AuthProps {
   headerText: string;
   subHeaderText?: React.ReactNode;
   children: React.ReactNode;
-  isDisabled: boolean;
   onPress: () => void;
   bottomText: string;
 }
 
 export const Auth: React.FC<AuthProps> = ({
   children,
-  isDisabled,
   headerText,
   subHeaderText,
   onPress,
   bottomText,
   isLoading,
 }) => {
+  const isDisabled = useRecoilValue(isDisableAtom);
+
   return (
     <S.AuthWrapper>
       <S.AuthContainer behavior="padding" keyboardVerticalOffset={15}>
@@ -43,7 +46,7 @@ export const Auth: React.FC<AuthProps> = ({
           {children}
         </S.AuthInputContainer>
         <S.AuthButtonWrapper>
-          <Button isDisabled={isDisabled} onPress={onPress} isLoading={isLoading}>
+          <Button onPress={onPress} isDisabled={isDisabled} isLoading={isLoading}>
             {bottomText}
           </Button>
         </S.AuthButtonWrapper>
