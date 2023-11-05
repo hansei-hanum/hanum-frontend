@@ -23,6 +23,7 @@ export const usePhone = (): UseMutationResult<
     },
     onError: (error) => {
       console.log(error, 'error');
+      console.log(error.response?.data, 'error data');
       const message = error.response?.data.message;
       setAuth({
         ...auth,
