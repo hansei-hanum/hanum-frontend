@@ -1,7 +1,7 @@
 import { UseMutationResult, useMutation } from 'react-query';
 
 import { AxiosError } from 'axios';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {

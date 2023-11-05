@@ -3,7 +3,6 @@ import { View } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
 
-import { isAndroid } from 'src/utils';
 import { colors } from 'src/styles';
 import { Auth, CodeInput, Text } from 'src/components';
 import { authAtom } from 'src/atoms';
@@ -27,7 +26,7 @@ export const VerifyCodeScreen: React.FC = () => {
       isDisabled={isDisabled}
       onPress={onSubmit}
     >
-      <View style={{ flexDirection: 'column', rowGap: isAndroid ? 10 : 0 }}>
+      <View style={{ flexDirection: 'column', rowGap: 10 }}>
         <CodeInput
           value={value}
           setValue={setValue}

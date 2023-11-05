@@ -5,11 +5,12 @@ import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as SC from './screens';
-import { useFetchUser } from './hooks';
 import { isIos } from './utils';
 import { useCodePush } from './hooks';
+import { fetchUser } from './api';
 
 const Stack = createStackNavigator();
 
@@ -19,10 +20,21 @@ export type RootStackParamList = {
 
 export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
-  const { data, isLoading } = useFetchUser();
+  const [data, setData] = useState<null | string>(null);
+
+  const fetch = useCallback(async () => {
+    try {
+      const { data } = await fetchUser();
+      setData(data);
+    } catch (e) {
+      await AsyncStorage.removeItem('token');
+      console.log(e, 'error');
+    }
+  }, []);
 
   useEffect(() => {
     async function prepare() {
+      await fetch();
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
@@ -35,13 +47,13 @@ export const Router: React.FC = () => {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {}, [isReady, isLoading]);
+  const onLayoutRootView = useCallback(async () => {}, [isReady]);
 
   const [isUpdating] = useCodePush();
 
-  if (isReady && !isLoading && !isUpdating) {
+  if (isReady && !isUpdating) {
     SplashScreen.hide();
-  } else if (!isReady || isLoading) {
+  } else if (!isReady) {
     return null;
   }
 
