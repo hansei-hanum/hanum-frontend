@@ -4,7 +4,6 @@ import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
 
 import { checkHeight } from 'src/utils';
-import { colors } from 'src/styles';
 
 export const AndroidHeaderBlur = styled(View)`
   position: absolute;
@@ -13,7 +12,7 @@ export const AndroidHeaderBlur = styled(View)`
 `;
 
 export const AndroidHeader = styled.View`
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
   width: 100%;
   height: 60px;
   padding: 0 20px;

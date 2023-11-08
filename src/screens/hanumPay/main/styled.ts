@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
 export const HanumPayWrapper = styled.SafeAreaView`
   flex: 1;
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const HanumPayContainer = styled.View`

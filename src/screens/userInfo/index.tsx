@@ -3,10 +3,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '@emotion/react';
 
 import { Button, InfoBox, Modal, Text } from 'src/components';
 import { useGetUser, useInitNavigate } from 'src/hooks';
-import { colors } from 'src/styles';
 import { UserLogo } from 'src/assets/';
 import { deleteUser, disconnectNotification } from 'src/api';
 
@@ -22,6 +22,8 @@ const modalContent = `회원 탈퇴를 진행하면 즉시 모든 한움 서비�
   정말로 계속하시겠습니까?`;
 
 export const UserInfoScreen: React.FC = () => {
+  const theme = useTheme();
+
   const navigation = useNavigation();
   const { initNavigate } = useInitNavigate();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
@@ -57,7 +59,7 @@ export const UserInfoScreen: React.FC = () => {
                 <Entypo
                   name="chevron-thin-left"
                   size={28}
-                  color="black"
+                  color={theme.default}
                   style={{ marginBottom: 10 }}
                 />
               </TouchableOpacity>
@@ -66,7 +68,7 @@ export const UserInfoScreen: React.FC = () => {
                   source={userProfile ? { uri: userProfile } : UserLogo}
                   style={{
                     resizeMode: 'contain',
-                    borderColor: colors.lightGray,
+                    borderColor: theme.lightGray,
                     borderWidth: 1,
                   }}
                 />
@@ -76,7 +78,7 @@ export const UserInfoScreen: React.FC = () => {
                 <Text
                   size={15}
                   fontFamily="medium"
-                  color={verifyUser ? colors.black : colors.danger}
+                  color={verifyUser ? theme.default : theme.danger}
                 >
                   {verifyUser ? `${formatUser()}` : '정회원 인증 안 됨'}
                 </Text>
@@ -88,14 +90,10 @@ export const UserInfoScreen: React.FC = () => {
               />
             </S.UserInfoProfileContainer>
             <S.UserInfoButtonContainer>
-              <Button
-                backgroundColor={colors.secondary}
-                textColor={colors.black}
-                onPress={onLogout}
-              >
+              <Button isWhite onPress={onLogout}>
                 로그아웃
               </Button>
-              <Button backgroundColor={colors.danger} onPress={() => setIsSecessionClick(true)}>
+              <Button backgroundColor={theme.danger} onPress={() => setIsSecessionClick(true)}>
                 회원 탈퇴하기
               </Button>
             </S.UserInfoButtonContainer>
@@ -109,15 +107,10 @@ export const UserInfoScreen: React.FC = () => {
           modalVisible={isSecessionClick}
           button={
             <Button.Container>
-              <Button
-                onPress={() => setIsSecessionClick(false)}
-                backgroundColor={colors.lightGray}
-                textColor={colors.black}
-                isModalBtn
-              >
+              <Button onPress={() => setIsSecessionClick(false)} isWhite isModalBtn>
                 취소
               </Button>
-              <Button onPress={onSubmit} backgroundColor={colors.danger} isModalBtn>
+              <Button onPress={onSubmit} backgroundColor={theme.danger} isModalBtn>
                 확인
               </Button>
             </Button.Container>

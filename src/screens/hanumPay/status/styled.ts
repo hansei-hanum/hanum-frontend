@@ -1,12 +1,11 @@
 import styled from '@emotion/native';
 import LottieView from 'lottie-react-native';
 
-import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
 export const StatusScreenWrapper = styled.SafeAreaView`
   flex: 1;
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
   justify-content: space-between;
   padding: 20px;
 `;

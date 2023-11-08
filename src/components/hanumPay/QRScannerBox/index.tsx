@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { useTheme } from '@emotion/react';
+
 import { Text } from 'src/components';
-import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -10,10 +11,11 @@ interface QRScannerProps {
 }
 
 export const QRScannerContent: React.FC<QRScannerProps> = ({ qrName }) => {
+  const theme = useTheme();
   return (
     <S.HanumPayQRBoxContainer>
       <Text.Column>
-        <Text size={16} isCenter color={colors.white}>
+        <Text size={16} isCenter color={theme.white}>
           {qrName} QR코드를 {'\n'}아래 상자에 맞춰주세요
         </Text>
       </Text.Column>

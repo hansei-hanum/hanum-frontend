@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Linking, Image } from 'react-native';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 
 import { Button, Modal, Text } from 'src/components';
 import { useNavigate } from 'src/hooks';
-import { authAtom } from 'src/atoms';
+import { authAtom, themeAtom } from 'src/atoms';
 
 import { Logo, WhiteLogo } from '../../../../assets/images';
 
 import * as S from './styled';
 
 export const AuthMainScreen: React.FC = () => {
+  const themeValue = useRecoilValue(themeAtom);
+
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -48,7 +50,10 @@ export const AuthMainScreen: React.FC = () => {
       <S.AuthMainScreenWrapper>
         <S.AuthMainScreenContainer>
           <S.AuthMainScreenLogoContainer>
-            <Image source={WhiteLogo} style={{ width: 198, height: 55, resizeMode: 'contain' }} />
+            <Image
+              source={themeValue === 'light' ? Logo : WhiteLogo}
+              style={{ width: 198, height: 55, resizeMode: 'contain' }}
+            />
             <Text size={17} fontFamily="bold">
               한세인의 도우미, 한움
             </Text>

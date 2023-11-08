@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@emotion/react';
 
 import { Status, Text } from 'src/components';
-import { colors } from 'src/styles';
 import { useGetUser } from 'src/hooks';
 import { FailedLottie } from 'src/assets';
 import { luckyNumberAtom } from 'src/atoms/luckyNumber';
@@ -11,7 +11,10 @@ import { luckyNumberAtom } from 'src/atoms/luckyNumber';
 import * as S from './styled';
 
 export const EoullimStatusScreen: React.FC = () => {
+  const theme = useTheme();
+
   const luckyNumber = useRecoilValue(luckyNumberAtom);
+
   const { userData } = useGetUser();
   const message =
     luckyNumber.number > 0
@@ -22,7 +25,7 @@ export const EoullimStatusScreen: React.FC = () => {
     <Status navigateUrl="EoullimMain">
       {luckyNumber.number > 0 ? (
         <S.RaffleStatusWrapper>
-          <Text size={60} fontFamily="bold" isCenter color={colors.white}>
+          <Text size={60} fontFamily="bold" isCenter color={theme.white}>
             {luckyNumber.number}
           </Text>
         </S.RaffleStatusWrapper>

@@ -7,12 +7,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider } from '@emotion/react';
+import { useRecoilState } from 'recoil';
 
 import * as SC from './screens';
-import { isIos } from './utils';
 import { useCodePush, useFetchUser } from './hooks';
 import { fetchUser } from './api';
 import { darkTheme, lightTheme } from './styles';
+import { themeAtom } from './atoms';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ export const Router: React.FC = () => {
   useFetchUser();
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState<null | string>(null);
-  console.log(data, 'data');
+  const [themeValue, setThemeValue] = useRecoilState(themeAtom);
 
   const fetch = useCallback(async () => {
     try {
@@ -36,9 +37,19 @@ export const Router: React.FC = () => {
     }
   }, []);
 
+  const getTheme = useCallback(async () => {
+    const theme = await AsyncStorage.getItem('theme');
+    if (theme === 'dark') {
+      setThemeValue('dark');
+    } else {
+      setThemeValue('light');
+    }
+  }, []);
+
   useEffect(() => {
     async function prepare() {
       await fetch();
+      await getTheme();
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
@@ -64,7 +75,7 @@ export const Router: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={themeValue === 'dark' ? darkTheme : lightTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}

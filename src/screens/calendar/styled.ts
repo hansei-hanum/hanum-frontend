@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const CalendarWrapper = styled.SafeAreaView`
   flex: 1;
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const CalendarHeaderContainer = styled.View`

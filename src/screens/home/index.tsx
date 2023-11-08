@@ -5,17 +5,23 @@ import { Notifier } from 'react-native-notifier';
 import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
+import { useRecoilValue } from 'recoil';
+import { useTheme } from '@emotion/react';
 
 import { Timer, Calendar, HomeHeader } from 'src/components';
-import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
+import { themeAtom } from 'src/atoms';
 
 import { Logo, WhiteLogo } from '../../../assets/images';
 
 import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
+  const theme = useTheme();
+
+  const themeValue = useRecoilValue(themeAtom);
+
   const { mutate } = useConnectNotification();
   const requestUserPermission = async () => {
     let isGranted = false;
@@ -78,7 +84,10 @@ export const HomeScreen: React.FC = () => {
         <Calendar />
       </S.HomeScreenContainer>
       <HomeHeader>
-        <Image source={WhiteLogo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
+        <Image
+          source={themeValue === 'light' ? Logo : WhiteLogo}
+          style={{ width: 98, height: 40, resizeMode: 'contain' }}
+        />
         <S.HomeScreenHeaderIconContainer>
           <TouchableOpacity
             activeOpacity={0.5}
@@ -88,7 +97,7 @@ export const HomeScreen: React.FC = () => {
               );
             }}
           >
-            <AntDesign name="customerservice" size={28} color={colors.placeholder} />
+            <AntDesign name="customerservice" size={28} color={theme.placeholder} />
           </TouchableOpacity>
         </S.HomeScreenHeaderIconContainer>
       </HomeHeader>

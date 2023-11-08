@@ -1,7 +1,5 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
-
 export const TimerTextWrapper = styled.View`
   width: 100%;
   justify-content: center;
@@ -18,7 +16,7 @@ export const ScreenTimerContainer = styled(TimerTextWrapper)`
 export const ScreenTimerLine = styled.View`
   width: 1px;
   height: 100%;
-  background-color: ${colors.secondary};
+  background-color: ${({ theme }) => theme.secondary};
 `;
 
 export const TimerTextContainer = styled.View`

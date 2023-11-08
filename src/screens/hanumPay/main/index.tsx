@@ -2,15 +2,17 @@ import React, { useEffect } from 'react';
 import { RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
+import { useTheme } from '@emotion/react';
 
 import { Button, Text, HanumPayHeader, AuthFailedModal, Spinner } from 'src/components';
-import { colors } from 'src/styles';
 import { useCheckUserType, useGetPaymentDetail, useNavigate, useOnRefresh } from 'src/hooks';
 import { formattedMoney, isIos } from 'src/utils';
 
 import * as S from './styled';
 
 export const HanumPayMainScreen: React.FC = () => {
+  const theme = useTheme();
+
   const navigate = useNavigate();
   const { refreshing, onRefresh } = useOnRefresh();
 
@@ -43,7 +45,7 @@ export const HanumPayMainScreen: React.FC = () => {
           <HanumPayHeader title="한움페이" />
           <S.HanumPaySection>
             <Text.Column>
-              <Text size={14} color={colors.placeholder}>
+              <Text size={14} color={theme.placeholder}>
                 한움페이 잔액
               </Text>
               {!paymentLoading ? (
@@ -89,12 +91,12 @@ export const HanumPayMainScreen: React.FC = () => {
                           <S.HanumUseAgeDetails key={id}>
                             <S.HanumUseAgeTextLeftContainer>
                               <Text size={17}>{boothName}</Text>
-                              <Text size={15} color={colors.placeholder}>
+                              <Text size={15} color={theme.placeholder}>
                                 {formattedTime(new Date(), hour, minute)}
                               </Text>
                             </S.HanumUseAgeTextLeftContainer>
                             <S.HanumUseAgeTextContainer>
-                              <Text size={18} color={colors.black}>
+                              <Text size={18} color={theme.default}>
                                 {isPaid
                                   ? `-${paidAmount && formattedMoney(paidAmount.toString())}`
                                   : `${
@@ -102,7 +104,7 @@ export const HanumPayMainScreen: React.FC = () => {
                                     }`}
                                 원
                               </Text>
-                              <Text size={15} color={colors.placeholder}>
+                              <Text size={15} color={theme.placeholder}>
                                 ({isPaid ? '결제됨' : '환불됨'})
                               </Text>
                             </S.HanumUseAgeTextContainer>

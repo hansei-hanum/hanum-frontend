@@ -14,7 +14,6 @@ import {
   QRScanner,
   QRScannerBox,
 } from 'src/components';
-import { colors } from 'src/styles';
 import { boothAtom } from 'src/atoms';
 import { useCheckUserType, useNavigate } from 'src/hooks';
 
@@ -22,7 +21,9 @@ import * as S from './styled';
 
 export const HanumPayQRScreen: React.FC = () => {
   const [cameraModal, setCameraModal] = useState<boolean>(false);
+
   const setBooth = useSetRecoilState(boothAtom);
+
   const { verifyUser, modalVisible, setModalVisible } = useCheckUserType();
 
   const navigation = useNavigation();
@@ -85,12 +86,7 @@ export const HanumPayQRScreen: React.FC = () => {
             }
             button={
               <Button.Container>
-                <Button
-                  onPress={closeModal}
-                  isModalBtn
-                  backgroundColor={colors.secondary}
-                  textColor={colors.black}
-                >
+                <Button onPress={closeModal} isModalBtn isWhite>
                   취소
                 </Button>
                 <Button

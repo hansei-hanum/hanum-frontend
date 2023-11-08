@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
 export const EoullimVoteWrapper = styled.SafeAreaView`
   flex: 1;
-  background-color: ${colors.white};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const EoullimVoteContainer = styled.View`
@@ -30,14 +29,14 @@ export const EoullimVoteStatusContainer = styled.View`
   flex-direction: row;
   align-items: center;
   column-gap: 6px;
-  background-color: ${colors.lightGray};
+  background-color: ${({ theme }) => theme.lightGray};
 `;
 
 export const EoullimVoteStatusCircle = styled.View`
   width: 16px;
   height: 16px;
   border-radius: 20px;
-  background-color: ${colors.green};
+  background-color: ${({ theme }) => theme.green};
 `;
 
 export const EoullimVoteTimeContainer = styled.View`

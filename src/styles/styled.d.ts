@@ -13,11 +13,6 @@ declare module '@emotion/react' {
     background: string;
     green: string;
     brown: string;
-    codeInput: string;
-    shadow: {
-      Ios: string;
-      Android: string;
-    };
     vote: {
       background: string;
       notSelect: string;

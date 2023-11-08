@@ -58,6 +58,7 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "13.9.0",
     "react-native-toast-message": "^2.1.6",
+    "react-native-toggle-element": "^2.0.1",
     "react-native-vector-icons": "^10.0.0",
     "react-native-webview": "^13.5.1",
     "react-query": "^3.39.3",

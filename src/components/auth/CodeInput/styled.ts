@@ -10,5 +10,5 @@ export const StudentVerifyInput = styled(TextInput)`
   padding: 0px 16px;
   border-radius: 12px;
   font-size: 20px;
-  background-color: ${({ theme }) => theme.modalBg};
+  background-color: ${({ theme }) => theme.lightGray};
 `;

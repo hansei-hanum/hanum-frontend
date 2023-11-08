@@ -2,8 +2,9 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 
+import { useTheme } from '@emotion/react';
+
 import { Text } from 'src/components/common';
-import { colors } from 'src/styles';
 import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
@@ -15,7 +16,10 @@ export interface InfoBoxProps {
 }
 
 export const InfoBox: React.FC<InfoBoxProps> = ({ number, isVerify, endDate }) => {
+  const theme = useTheme();
+
   const navigate = useNavigate();
+
   const sections = [
     {
       title: '기본 정보',
@@ -36,12 +40,12 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ number, isVerify, endDate }) =
               isVerify
             ) : (
               <TouchableOpacity activeOpacity={0.4} onPress={() => navigate('Verify')}>
-                <Text size={15} fontFamily="medium" color={colors.primary}>
+                <Text size={15} fontFamily="medium" color={theme.primary}>
                   인증 필요
                   <Entypo
                     name="chevron-thin-right"
                     size={16}
-                    color={colors.primary}
+                    color={theme.primary}
                     style={{ marginBottom: 10 }}
                   />
                 </Text>
@@ -64,7 +68,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ number, isVerify, endDate }) =
           </Text>
           {section.fields.map((field) => (
             <S.InfoBoxItem key={field.title}>
-              <Text size={15} fontFamily="medium" color={colors.placeholder}>
+              <Text size={15} fontFamily="medium" color={theme.placeholder}>
                 {field.title}
               </Text>
               {typeof field.value === 'string' ? (

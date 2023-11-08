@@ -1,24 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { ScrollView } from 'react-native';
+import Toggle from 'react-native-toggle-element';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useTheme } from '@emotion/react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRecoilState } from 'recoil';
 
 import { Text, Section } from 'src/components';
-import { colors } from 'src/styles';
 import { useGetUser, useNavigate, usePressingAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
+import { themeAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const ShowMoreScreen: React.FC = () => {
   const theme = useTheme();
+  const [themeValue, setThemeValue] = useRecoilState(themeAtom);
 
   const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
 
   const { userData, userProfile, verifyUser, formatUser } = useGetUser();
+
+  const setTheme = async () => {
+    if (themeValue === 'dark') {
+      await AsyncStorage.setItem('theme', 'dark');
+    } else {
+      await AsyncStorage.setItem('theme', 'light');
+    }
+  };
+
+  useEffect(() => {
+    setTheme();
+  }, [themeValue]);
 
   return (
     <S.ShowMoreScreenWrapper>
@@ -36,6 +53,37 @@ export const ShowMoreScreen: React.FC = () => {
           <Text size={20} fontFamily="bold">
             더 보기
           </Text>
+          <Toggle
+            value={themeValue === 'dark'}
+            onPress={() => setThemeValue(themeValue === 'dark' ? 'light' : 'dark')}
+            leftComponent={
+              <Icon
+                name="light-mode"
+                size={20}
+                color={themeValue === 'dark' ? theme.placeholder : theme.white}
+              />
+            }
+            rightComponent={
+              <Icon
+                name="dark-mode"
+                size={20}
+                color={themeValue === 'dark' ? theme.background : theme.placeholder}
+              />
+            }
+            trackBar={{
+              width: 80,
+              height: 36,
+              activeBackgroundColor: theme.secondary,
+              inActiveBackgroundColor: theme.secondary,
+              borderWidth: 5,
+            }}
+            thumbButton={{
+              width: 36,
+              height: 36,
+              activeBackgroundColor: theme.white,
+              inActiveBackgroundColor: theme.primary,
+            }}
+          />
         </S.ShowMoreHeaderScreen>
         {userData && (
           <>
@@ -68,7 +116,7 @@ export const ShowMoreScreen: React.FC = () => {
                     </Text>
                   </S.ShowMoreUserNameContainer>
                 </S.ShowMoreUserInfo>
-                <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
+                <MaterialIcons name="chevron-right" size={30} color={theme.placeholder} />
               </S.ShowMoreUserContainer>
             </TouchableOpacity>
             <Section />

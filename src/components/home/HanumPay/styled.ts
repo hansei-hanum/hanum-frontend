@@ -1,7 +1,5 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
-
 export const HanumPayContainer = styled.View`
   width: 100%;
   flex-direction: column;
@@ -21,6 +19,6 @@ export const HanumPayButton = styled.TouchableOpacity`
   border-radius: 14px;
   align-items: center;
   justify-content: center;
-  background-color: ${colors.lightGray};
+  background-color: ${({ theme }) => theme.lightGray};
   padding: 10px 0;
 `;
