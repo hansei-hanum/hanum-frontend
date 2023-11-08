@@ -1,6 +1,8 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
+import { useTheme } from '@emotion/react';
+
 import { colors } from 'src/styles';
 import { usePressingAnimation } from 'src/hooks';
 
@@ -13,6 +15,7 @@ export interface ButtonProps {
   children: React.ReactNode;
   backgroundColor?: string;
   textColor?: string;
+  isWhite?: boolean;
   isLoading?: boolean;
   isDisabled?: boolean;
   isModalBtn?: boolean;
@@ -25,9 +28,9 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   isModalBtn,
   isDisabled,
   isLoading,
-  backgroundColor,
-  textColor,
+  isWhite,
 }) => {
+  const theme = useTheme();
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
   return (
@@ -42,7 +45,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
       style={{
         ...scaleAnimatedStyle,
         width: isModalBtn ? '48%' : '100%',
-        backgroundColor: backgroundColor ? backgroundColor : colors.primary,
+        backgroundColor: isWhite ? theme.secondary : theme.primary,
         borderRadius: isModalBtn ? 16 : 10,
         opacity: isDisabled || isLoading ? 0.4 : 1,
         paddingVertical: 14,
@@ -53,7 +56,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
       }}
     >
       {isLoading && <Spinner color={colors.white} size={20} />}
-      <Text size={16} isCenter color={textColor ? textColor : colors.white}>
+      <Text size={16} isCenter color={isWhite ? theme.default : theme.white}>
         {children}
       </Text>
     </TouchableOpacity>

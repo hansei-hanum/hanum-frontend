@@ -12,7 +12,7 @@ import * as SC from './screens';
 import { isIos } from './utils';
 import { useCodePush, useFetchUser } from './hooks';
 import { fetchUser } from './api';
-import { lightTheme } from './styles';
+import { darkTheme, lightTheme } from './styles';
 
 const Stack = createStackNavigator();
 
@@ -54,6 +54,8 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
+  console.log(isUpdating, 'isUpdating', isReady, 'isReady');
+
   if (isReady && !isUpdating) {
     SplashScreen.hide();
   } else if (!isReady) {
@@ -61,7 +63,7 @@ export const Router: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={darkTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
@@ -94,7 +96,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
           </Stack.Group>
         </Stack.Navigator>
-        <StatusBar barStyle={isIos ? 'dark-content' : 'light-content'} />
+        <StatusBar barStyle={'light-content'} />
       </NavigationContainer>
     </ThemeProvider>
   );

@@ -1,11 +1,11 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
+import { fonts } from 'src/styles';
 
 export const AuthMainScreenWrapper = styled.SafeAreaView`
   flex: 1;
   width: 100%;
-  background-color: ${colors.white};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const AuthMainScreenContainer = styled.View`
@@ -40,7 +40,8 @@ export const AuthMainScreenTextContainer = styled.View`
   align-items: center;
 `;
 
-export const AuthMainTextRow = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
+export const AuthModalText = styled.Text<{ color?: string }>`
+  font-size: 15px;
+  font-family: ${fonts.medium};
+  color: ${({ color, theme }) => color || theme.default};
 `;
