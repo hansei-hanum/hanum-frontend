@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Linking,
-  TouchableOpacity,
-  Image,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
-  Pressable,
-  View,
-} from 'react-native';
+import { Linking, Image } from 'react-native';
 
 import { useRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
@@ -16,7 +8,6 @@ import { useTheme } from '@emotion/react';
 import { Button, Modal, Text } from 'src/components';
 import { useNavigate } from 'src/hooks';
 import { authAtom } from 'src/atoms';
-import { isIos } from 'src/utils';
 
 import { Logo, WhiteLogo } from '../../../../assets/images';
 

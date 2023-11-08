@@ -29,7 +29,7 @@ export const lightTheme: Theme = {
   primary: '#4785FA',
   secondary: '#EFEFEF',
   placeholder: '#A3A3A3',
-  danger: '#E12525',
+  danger: '#F72020',
   lightGray: '#F5F5F5',
   background: '#FEFEFE',
   green: '#0CEE52',
@@ -43,8 +43,8 @@ export const lightTheme: Theme = {
     background: '#FBFBFB',
     notSelect: '#E8E8E8',
   },
-  text: '#000000',
   modalBg: '#FEFEFE',
+  tabBarBg: '#FFFFFF',
 };
 
 export const darkTheme: Theme = {
@@ -53,7 +53,7 @@ export const darkTheme: Theme = {
   black: '#000000',
   primary: '#4580F1',
   secondary: '#4B4E53',
-  placeholder: '#A3A3A3',
+  placeholder: '#B3B3B3',
   danger: '#E12525',
   lightGray: '#F5F5F5',
   background: '#2A2B2E',
@@ -68,6 +68,6 @@ export const darkTheme: Theme = {
     background: '#FBFBFB',
     notSelect: '#E8E8E8',
   },
-  text: '#FFFFFF',
   modalBg: '#333539',
+  tabBarBg: '#373A40',
 };

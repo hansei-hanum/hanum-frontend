@@ -4,32 +4,33 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTheme } from '@emotion/react';
 
 import { HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
-import { colors } from 'src/styles';
 
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
+  const theme = useTheme();
   const size = 25;
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.white,
+          backgroundColor: theme.tabBarBg,
           height: iosCheckHeight ? 80 : 64,
           paddingBottom: iosCheckHeight ? 30 : 10,
         },
-        tabBarActiveTintColor: colors.black,
+        tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
           fontSize: 12,
         },
         tabBarIconStyle: {
           paddingBottom: 0,
           marginBottom: Platform.OS == 'ios' ? -8 : -10,
-          color: colors.black,
+          color: theme.default,
         },
       }}
       initialRouteName="홈"

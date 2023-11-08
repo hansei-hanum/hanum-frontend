@@ -24,6 +24,7 @@ export const Router: React.FC = () => {
   useFetchUser();
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState<null | string>(null);
+  console.log(data, 'data');
 
   const fetch = useCallback(async () => {
     try {
@@ -63,7 +64,7 @@ export const Router: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={lightTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}

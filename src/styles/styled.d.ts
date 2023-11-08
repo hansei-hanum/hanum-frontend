@@ -22,7 +22,7 @@ declare module '@emotion/react' {
       background: string;
       notSelect: string;
     };
-    text: string;
     modalBg: string;
+    tabBarBg: string;
   }
 }

@@ -11,7 +11,7 @@ export interface HeaderProps {
 export const HomeHeader: React.FC<HeaderProps> = ({ children }) => {
   if (isIos) {
     return (
-      <S.IosHeader blurType="light" reducedTransparencyFallbackColor="white">
+      <S.IosHeader blurType="thinMaterialDark" reducedTransparencyFallbackColor="white">
         {children}
       </S.IosHeader>
     );

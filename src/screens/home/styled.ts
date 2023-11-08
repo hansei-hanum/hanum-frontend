@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { isAndroid } from 'src/utils';
 
 export const HomeScreenWrapper = styled.SafeAreaView`
   flex: 1;
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
   width: 100%;
 `;
 

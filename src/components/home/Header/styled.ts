@@ -28,8 +28,8 @@ export const IosHeader = styled(BlurView)`
   position: absolute;
   flex-direction: row;
   width: 100%;
-  padding: 12px 20px;
-  padding-top: ${checkHeight ? '60px' : '40px'};
+  padding: 6px 20px;
+  padding-top: ${checkHeight ? '60px' : '30px'};
   align-items: center;
   justify-content: space-between;
 `;

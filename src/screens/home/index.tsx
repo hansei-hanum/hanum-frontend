@@ -11,7 +11,7 @@ import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 
-import { Logo } from '../../../assets/images';
+import { Logo, WhiteLogo } from '../../../assets/images';
 
 import * as S from './styled';
 
@@ -78,7 +78,7 @@ export const HomeScreen: React.FC = () => {
         <Calendar />
       </S.HomeScreenContainer>
       <HomeHeader>
-        <Image source={Logo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
+        <Image source={WhiteLogo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
         <S.HomeScreenHeaderIconContainer>
           <TouchableOpacity
             activeOpacity={0.5}

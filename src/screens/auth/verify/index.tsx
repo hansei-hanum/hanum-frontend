@@ -82,12 +82,7 @@ export const VerifyScreen: React.FC = () => {
           button={
             authValue.errorMessage === '' && !userVerify.isUsed ? (
               <Button.Container>
-                <Button
-                  onPress={() => setModalVisible(false)}
-                  backgroundColor={colors.secondary}
-                  textColor={colors.black}
-                  isModalBtn
-                >
+                <Button onPress={() => setModalVisible(false)} isWhite isModalBtn>
                   아니오
                 </Button>
                 <Button onPress={onSubmit} isModalBtn>
