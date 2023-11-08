@@ -3,13 +3,13 @@ import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
 
-import { colors, fonts } from 'src/styles';
+import { fonts } from 'src/styles';
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const AuthWrapper = styled.SafeAreaView`
   width: 100%;
   flex: 1;
-  background-color: ${colors.white};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const AuthContainer = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`

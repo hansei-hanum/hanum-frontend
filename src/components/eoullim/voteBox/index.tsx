@@ -34,7 +34,7 @@ export const EoullimVoteBox: React.FC<EoullimVoteBoxProps> = ({ name, isSelect, 
           <Ionicons
             name="checkmark-circle"
             size={34}
-            color={isSelect ? colors.primary : '#E8E8E8'}
+            color={isSelect ? colors.primary : colors.vote.notSelect}
           />
         </S.EoullimVoteButtonWrapper>
       </S.EoullimVote>

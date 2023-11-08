@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
+import { colors } from 'src/styles';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -17,18 +18,18 @@ export const MainScreen: React.FC = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: colors.white,
           height: iosCheckHeight ? 80 : 64,
           paddingBottom: iosCheckHeight ? 30 : 10,
         },
-        tabBarActiveTintColor: '#000',
+        tabBarActiveTintColor: colors.black,
         tabBarLabelStyle: {
           fontSize: 12,
         },
         tabBarIconStyle: {
           paddingBottom: 0,
           marginBottom: Platform.OS == 'ios' ? -8 : -10,
-          color: '#000',
+          color: colors.black,
         },
       }}
       initialRouteName="홈"

@@ -1,9 +1,11 @@
 import { Platform } from 'react-native';
 
+import { colors } from 'src/styles';
+
 export const boxShadow = {
   ...Platform.select({
     ios: {
-      shadowColor: '#B0B9C2',
+      shadowColor: colors.shadow.Ios,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -13,7 +15,7 @@ export const boxShadow = {
       elevation: 40,
     },
     android: {
-      shadowColor: '#808992',
+      shadowColor: colors.shadow.Android,
       shadowOffset: {
         width: 0,
         height: 5,

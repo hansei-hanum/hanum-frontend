@@ -1,8 +1,10 @@
 import styled from '@emotion/native';
 
+import { colors } from 'src/styles';
+
 export const WebViewSafeContainer = styled.SafeAreaView`
   flex: 1;
-  background-color: #fff;
+  background-color: ${colors.white};
 `;
 
 export const HeaderContainer = styled.View`

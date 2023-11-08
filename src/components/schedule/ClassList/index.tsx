@@ -16,7 +16,7 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
   return (
     <FlatList
       style={{
-        backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : colors.white,
+        backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : 'transparent',
         paddingTop: 20,
       }}
       data={list}
