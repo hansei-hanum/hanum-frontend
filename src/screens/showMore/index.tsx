@@ -1,6 +1,9 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { ScrollView } from 'react-native';
+
+import { useTheme } from '@emotion/react';
 
 import { Text, Section } from 'src/components';
 import { colors } from 'src/styles';
@@ -10,6 +13,8 @@ import { UserLogo } from 'src/assets';
 import * as S from './styled';
 
 export const ShowMoreScreen: React.FC = () => {
+  const theme = useTheme();
+
   const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
 
@@ -17,7 +22,7 @@ export const ShowMoreScreen: React.FC = () => {
 
   return (
     <S.ShowMoreScreenWrapper>
-      <S.ShowMoreScreenContainer
+      <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
@@ -46,7 +51,7 @@ export const ShowMoreScreen: React.FC = () => {
                     source={userProfile ? userProfile : UserLogo}
                     style={{
                       resizeMode: 'contain',
-                      borderColor: colors.lightGray,
+                      borderColor: theme.lightGray,
                       borderWidth: 1,
                     }}
                   />
@@ -57,7 +62,7 @@ export const ShowMoreScreen: React.FC = () => {
                     <Text
                       size={13}
                       fontFamily="medium"
-                      color={verifyUser ? colors.black : colors.danger}
+                      color={verifyUser ? theme.default : theme.danger}
                     >
                       {verifyUser ? `${formatUser()}` : '정회원 인증 안 됨'}
                     </Text>
@@ -69,7 +74,7 @@ export const ShowMoreScreen: React.FC = () => {
             <Section />
           </>
         )}
-      </S.ShowMoreScreenContainer>
+      </ScrollView>
     </S.ShowMoreScreenWrapper>
   );
 };

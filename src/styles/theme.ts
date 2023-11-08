@@ -55,7 +55,7 @@ export const darkTheme: Theme = {
   secondary: '#4B4E53',
   placeholder: '#B3B3B3',
   danger: '#E12525',
-  lightGray: '#F5F5F5',
+  lightGray: '#4B4E53',
   background: '#2A2B2E',
   green: '#0CEE52',
   brown: '#FFA800',

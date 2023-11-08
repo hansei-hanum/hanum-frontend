@@ -64,7 +64,7 @@ export const Router: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={darkTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}

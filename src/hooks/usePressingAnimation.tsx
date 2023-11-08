@@ -3,9 +3,7 @@ import { Animated, Easing } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
-import { colors } from 'src/styles';
-
-export const usePressingAnimation = () => {
+export const usePressingAnimation = (initColor?: string) => {
   const theme = useTheme();
   const [animation] = useState(new Animated.Value(1)); // 애니메이션 값 초기화
 
@@ -34,7 +32,7 @@ export const usePressingAnimation = () => {
     transform: [{ scale: animation }],
     backgroundColor: animation.interpolate({
       inputRange: [0.96, 1], // 작아진 상태와 원래 크기의 중간 값
-      outputRange: [colors.lightGray, theme.modalBg], // 해당 범위에 따른 색깔 변화
+      outputRange: [theme.lightGray, initColor ? initColor : theme.background], // 해당 범위에 따른 색깔 변화
     }),
   };
 
@@ -45,7 +43,7 @@ export const usePressingAnimation = () => {
   const bgColorAnimatedStyle = {
     backgroundColor: animation.interpolate({
       inputRange: [0.96, 1], // 작아진 상태와 원래 크기의 중간 값
-      outputRange: [colors.lightGray, theme.modalBg], // 해당 범위에 따른 색깔 변화
+      outputRange: [theme.lightGray, initColor ? initColor : theme.background], // 해당 범위에 따른 색깔 변화
     }),
   };
 

@@ -2,6 +2,8 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import { useTheme } from '@emotion/react';
+
 import { ContentBox, Text, Icon } from 'src/components';
 import { colors } from 'src/styles';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
@@ -18,10 +20,11 @@ export interface ContentProps {
 }
 
 export const Content: React.FC<ContentProps> = ({ icon, name, children, navigateUrl, onPress }) => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const size = 30;
 
-  const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
+  const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation(theme.modalBg);
 
   return (
     <ContentBox isHome>

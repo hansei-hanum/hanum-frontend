@@ -5,8 +5,8 @@ import { colors, fonts } from 'src/styles';
 export const IconWrapper = styled.View<{ backgroundColor?: string }>`
   padding: 4px;
   border-radius: 10px;
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor ? backgroundColor : colors.lightGray};
+  background-color: ${({ backgroundColor, theme }) =>
+    backgroundColor ? backgroundColor : theme.lightGray};
   align-items: center;
   justify-content: center;
 `;

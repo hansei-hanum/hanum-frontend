@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const ScheduleScreenWrapper = styled.SafeAreaView`
   flex: 1;
-  background: ${colors.background};
+  background: ${({ theme }) => theme.background};
 `;
 
 export const ScheduleScreenContainer = styled.View`
@@ -26,10 +25,4 @@ export const ScheduleScreenIconContainer = styled.View`
   flex-direction: row;
   align-items: center;
   column-gap: 6px;
-`;
-
-export const ScheduleScreenTimeContainer = styled.View`
-  flex-direction: row;
-  align-items: flex-start;
-  padding-right: 10px;
 `;
