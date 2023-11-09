@@ -5,23 +5,36 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 
 import { HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
+import { themeAtom } from 'src/atoms';
 
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
   const theme = useTheme();
+  const themeValue = useRecoilValue(themeAtom);
+
   const size = 25;
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          zIndex: 10,
+          borderTopRightRadius: 24,
+          borderTopLeftRadius: 24,
+          borderTopColor: theme.secondary,
+          borderTopWidth: 1,
+          borderLeftColor: theme.secondary,
+          borderLeftWidth: 1,
+          borderRightColor: theme.secondary,
+          borderRightWidth: 1,
           backgroundColor: theme.tabBarBg,
-          height: iosCheckHeight ? 80 : 64,
-          paddingBottom: iosCheckHeight ? 30 : 10,
+          height: iosCheckHeight ? 78 : 64,
+          paddingBottom: iosCheckHeight ? 26 : 10,
         },
         tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
@@ -33,6 +46,12 @@ export const MainScreen: React.FC = () => {
           color: theme.default,
         },
       }}
+      sceneContainerStyle={
+        {
+          // borderColor: 'red',
+          // borderWidth: 1,
+        }
+      }
       initialRouteName="홈"
     >
       <BottomTab.Screen

@@ -71,7 +71,7 @@ export const ShowMoreScreen: React.FC = () => {
               />
             }
             trackBar={{
-              width: 80,
+              width: 72,
               height: 36,
               activeBackgroundColor: theme.secondary,
               inActiveBackgroundColor: theme.secondary,

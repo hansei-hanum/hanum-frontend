@@ -6,7 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ThemeProvider } from '@emotion/react';
+import { ThemeProvider, useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
 import * as SC from './screens';
@@ -40,7 +40,7 @@ export const Router: React.FC = () => {
 
   const getTheme = useCallback(async () => {
     const StorageTheme = await AsyncStorage.getItem('theme');
-    if (theme === StorageTheme) {
+    if (theme && theme !== StorageTheme) {
       setThemeValue(theme);
     } else if (StorageTheme) {
       setThemeValue(StorageTheme);
@@ -67,8 +67,6 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
-  console.log(isUpdating, 'isUpdating', isReady, 'isReady');
-
   if (isReady && !isUpdating) {
     SplashScreen.hide();
   } else if (!isReady) {
@@ -79,7 +77,10 @@ export const Router: React.FC = () => {
     <ThemeProvider theme={themeValue === 'dark' ? darkTheme : lightTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
-          screenOptions={{ headerShown: false }}
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: themeValue === 'dark' ? '#2A2B2E' : '#FEFEFE' },
+          }}
           initialRouteName={data ? 'Main' : 'AuthMain'}
         >
           <Stack.Group>
