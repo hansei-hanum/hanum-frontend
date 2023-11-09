@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -26,6 +26,7 @@ export const Router: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState<null | string>(null);
   const [themeValue, setThemeValue] = useRecoilState(themeAtom);
+  const theme = useColorScheme();
 
   const fetch = useCallback(async () => {
     try {
@@ -38,11 +39,11 @@ export const Router: React.FC = () => {
   }, []);
 
   const getTheme = useCallback(async () => {
-    const theme = await AsyncStorage.getItem('theme');
-    if (theme === 'dark') {
-      setThemeValue('dark');
-    } else {
-      setThemeValue('light');
+    const StorageTheme = await AsyncStorage.getItem('theme');
+    if (theme === StorageTheme) {
+      setThemeValue(theme);
+    } else if (StorageTheme) {
+      setThemeValue(StorageTheme);
     }
   }, []);
 
