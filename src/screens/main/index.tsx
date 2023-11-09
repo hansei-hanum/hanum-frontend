@@ -5,17 +5,14 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@emotion/react';
-import { useRecoilValue } from 'recoil';
 
 import { HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
-import { themeAtom } from 'src/atoms';
 
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
   const theme = useTheme();
-  const themeValue = useRecoilValue(themeAtom);
 
   const size = 25;
   return (

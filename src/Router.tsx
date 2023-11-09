@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import { Appearance, StatusBar, useColorScheme } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ThemeProvider, useTheme } from '@emotion/react';
+import { ThemeProvider } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
 import * as SC from './screens';
@@ -14,6 +13,7 @@ import { useCodePush, useFetchUser } from './hooks';
 import { fetchUser } from './api';
 import { darkTheme, lightTheme } from './styles';
 import { themeAtom } from './atoms';
+import { isAndroid } from './utils';
 
 const Stack = createStackNavigator();
 
@@ -40,11 +40,18 @@ export const Router: React.FC = () => {
 
   const getTheme = useCallback(async () => {
     const StorageTheme = await AsyncStorage.getItem('theme');
-    if (theme && theme !== StorageTheme) {
+    if (theme === StorageTheme) {
       setThemeValue(theme);
     } else if (StorageTheme) {
       setThemeValue(StorageTheme);
     }
+  }, []);
+
+  useEffect(() => {
+    Appearance.addChangeListener(({ colorScheme }) => {
+      setThemeValue(Appearance.getColorScheme() === 'dark' ? 'dark' : 'light');
+    });
+    return () => {};
   }, []);
 
   useEffect(() => {
@@ -80,6 +87,14 @@ export const Router: React.FC = () => {
           screenOptions={{
             headerShown: false,
             cardStyle: { backgroundColor: themeValue === 'dark' ? '#2A2B2E' : '#FEFEFE' },
+            ...(isAndroid &&
+              themeValue === 'dark' && {
+                cardStyleInterpolator: ({ current }) => ({
+                  cardStyle: {
+                    opacity: current.progress,
+                  },
+                }),
+              }),
           }}
           initialRouteName={data ? 'Main' : 'AuthMain'}
         >
