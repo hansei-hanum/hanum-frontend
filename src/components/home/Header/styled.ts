@@ -23,7 +23,7 @@ export const AndroidHeader = styled.View`
   justify-content: space-between;
 `;
 
-export const IosHeader = styled(BlurView)`
+export const IosBlurHeader = styled(BlurView)`
   position: absolute;
   flex-direction: row;
   width: 100%;
@@ -31,4 +31,15 @@ export const IosHeader = styled(BlurView)`
   padding-top: ${checkHeight ? '60px' : '40px'};
   align-items: center;
   justify-content: space-between;
+`;
+
+export const IosHeader = styled.View`
+  position: absolute;
+  flex-direction: row;
+  width: 100%;
+  padding: 6px 20px;
+  padding-top: ${checkHeight ? '60px' : '40px'};
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.background};
 `;

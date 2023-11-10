@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
 import { isIos } from 'src/utils';
@@ -14,17 +13,15 @@ export interface HeaderProps {
 
 export const HomeHeader: React.FC<HeaderProps> = ({ children }) => {
   const themeValue = useRecoilValue(themeAtom);
-  const theme = useTheme();
-  if (isIos) {
+
+  if (isIos && themeValue !== 'dark') {
     return (
-      <S.IosHeader
-        blurType={themeValue === 'dark' ? 'dark' : 'light'}
-        overlayColor={theme.modalBg}
-        reducedTransparencyFallbackColor="black"
-      >
+      <S.IosBlurHeader blurType="light" blurAmount={16}>
         {children}
-      </S.IosHeader>
+      </S.IosBlurHeader>
     );
+  } else if (isIos && themeValue === 'dark') {
+    return <S.IosHeader>{children}</S.IosHeader>;
   } else {
     return (
       <S.AndroidHeaderBlur>

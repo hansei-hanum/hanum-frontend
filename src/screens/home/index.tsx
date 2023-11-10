@@ -23,6 +23,7 @@ export const HomeScreen: React.FC = () => {
   const themeValue = useRecoilValue(themeAtom);
 
   const { mutate } = useConnectNotification();
+
   const requestUserPermission = async () => {
     let isGranted = false;
 

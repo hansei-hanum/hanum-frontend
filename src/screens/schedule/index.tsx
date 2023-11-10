@@ -46,6 +46,8 @@ export const ScheduleScreen: React.FC = () => {
               contentContainerStyle={{
                 flexDirection: 'row',
                 alignItems: 'center',
+                paddingLeft: 10,
+                paddingRight: 10,
               }}
             >
               <ClassList list={NUMBER_LIST} isNumber />

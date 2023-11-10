@@ -48,7 +48,7 @@ export const Router: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    Appearance.addChangeListener(({ colorScheme }) => {
+    Appearance.addChangeListener(() => {
       setThemeValue(Appearance.getColorScheme() === 'dark' ? 'dark' : 'light');
     });
     return () => {};
@@ -73,6 +73,8 @@ export const Router: React.FC = () => {
   const onLayoutRootView = useCallback(async () => {}, [isReady]);
 
   const [isUpdating] = useCodePush();
+
+  console.log(isUpdating, 'isUpdating', isReady, 'isReady');
 
   if (isReady && !isUpdating) {
     SplashScreen.hide();
