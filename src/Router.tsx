@@ -25,8 +25,12 @@ export const Router: React.FC = () => {
   useFetchUser();
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState<null | string>(null);
+
   const [themeValue, setThemeValue] = useRecoilState(themeAtom);
+
   const theme = useColorScheme();
+
+  const isDark = themeValue === 'dark';
 
   const fetch = useCallback(async () => {
     try {
@@ -74,8 +78,6 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
-  console.log(isUpdating, 'isUpdating');
-
   if (isReady && !isUpdating) {
     SplashScreen.hide();
   } else if (!isReady) {
@@ -83,14 +85,14 @@ export const Router: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={themeValue === 'dark' ? darkTheme : lightTheme}>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            cardStyle: { backgroundColor: themeValue === 'dark' ? '#2A2B2E' : '#FEFEFE' },
+            cardStyle: { backgroundColor: isDark ? '#2A2B2E' : '#FEFEFE' },
             ...(isAndroid &&
-              themeValue === 'dark' && {
+              isDark && {
                 cardStyleInterpolator: ({ current }) => ({
                   cardStyle: {
                     opacity: current.progress,
@@ -127,7 +129,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
           </Stack.Group>
         </Stack.Navigator>
-        <StatusBar barStyle={'light-content'} />
+        <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       </NavigationContainer>
     </ThemeProvider>
   );
