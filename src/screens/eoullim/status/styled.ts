@@ -1,15 +1,13 @@
 import styled from '@emotion/native';
 import LottieView from 'lottie-react-native';
 
-import { colors } from 'src/styles';
-
 export const RaffleStatusWrapper = styled.View`
   width: 120px;
   height: 120px;
   align-items: center;
   justify-content: center;
   border-radius: 100px;
-  background-color: ${colors.primary};
+  background-color: ${({ theme }) => theme.primary};
 `;
 
 export const RaffleStatusLottie = styled(LottieView)`

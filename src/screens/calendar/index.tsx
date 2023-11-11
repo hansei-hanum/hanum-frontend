@@ -3,9 +3,9 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 import { useIsFocused } from '@react-navigation/native';
 import { format } from 'date-fns';
+import { useTheme } from '@emotion/react';
 
 import { ContentBox, CommonHeader, Icon, Text, Spinner } from 'src/components';
-import { colors } from 'src/styles';
 import { useGetMonthSchedule } from 'src/hooks';
 
 import * as S from './styled';
@@ -46,6 +46,8 @@ LocaleConfig.locales['ko'] = {
 LocaleConfig.defaultLocale = 'ko';
 
 export const CalendarScreen: React.FC = () => {
+  const theme = useTheme();
+
   const [month, setMonth] = useState<string>((new Date().getMonth() + 1).toString());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
@@ -61,8 +63,8 @@ export const CalendarScreen: React.FC = () => {
             dots: [
               {
                 key: currentValue.date,
-                color: colors.primary,
-                selectedDotColor: colors.primary,
+                color: theme.primary,
+                selectedDotColor: theme.primary,
               },
             ],
           },
@@ -117,11 +119,14 @@ export const CalendarScreen: React.FC = () => {
             }}
             markingType="multi-dot"
             theme={{
-              selectedDayBackgroundColor: colors.primary,
-              arrowColor: colors.black,
-              todayTextColor: colors.primary,
-              dotColor: colors.primary,
-              selectedDotColor: colors.white,
+              selectedDayBackgroundColor: theme.primary,
+              arrowColor: theme.default,
+              todayTextColor: theme.primary,
+              dotColor: theme.primary,
+              selectedDotColor: theme.white,
+              calendarBackground: theme.modalBg,
+              dayTextColor: theme.default,
+              monthTextColor: theme.default,
             }}
             style={{
               marginTop: 30,
@@ -129,7 +134,8 @@ export const CalendarScreen: React.FC = () => {
               paddingRight: 20,
               paddingBottom: 40,
               borderBottomWidth: 0.4,
-              borderBottomColor: colors.placeholder,
+              borderBottomColor: theme.placeholder,
+              backgroundColor: theme.modalBg,
             }}
             onMonthChange={({ month }) => {
               setMonth(month.toString());

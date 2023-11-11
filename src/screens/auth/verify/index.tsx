@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@emotion/react';
 
 import { Text, Auth, Modal, Button, CodeInput, Spinner } from 'src/components';
 import { useInitNavigate, useUserVerify } from 'src/hooks';
 import { authAtom, userVerifyAtom } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
-import { colors } from 'src/styles';
 
 import * as S from './styled';
 
 export const VerifyScreen: React.FC = () => {
+  const theme = useTheme();
+
   const [value, setValue] = useState('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -39,7 +41,7 @@ export const VerifyScreen: React.FC = () => {
         headerText={`정회원 인증 코드를\n` + `입력해주세요`}
         subHeaderText={
           <S.StudentVerifyTextContainer>
-            <Text size={15} color={colors.placeholder}>
+            <Text size={15} color={theme.placeholder}>
               아직 인증 코드가 없나요?
             </Text>
             <TouchableOpacity
@@ -48,7 +50,7 @@ export const VerifyScreen: React.FC = () => {
               }}
               activeOpacity={0.5}
             >
-              <Text size={15} color={colors.primary}>
+              <Text size={15} color={theme.primary}>
                 {' '}
                 나중에 하기
               </Text>
@@ -82,12 +84,7 @@ export const VerifyScreen: React.FC = () => {
           button={
             authValue.errorMessage === '' && !userVerify.isUsed ? (
               <Button.Container>
-                <Button
-                  onPress={() => setModalVisible(false)}
-                  backgroundColor={colors.secondary}
-                  textColor={colors.black}
-                  isModalBtn
-                >
+                <Button onPress={() => setModalVisible(false)} isWhite isModalBtn>
                   아니오
                 </Button>
                 <Button onPress={onSubmit} isModalBtn>

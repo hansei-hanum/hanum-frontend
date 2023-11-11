@@ -16,7 +16,7 @@ export const ScreenTimerContainer = styled(TimerTextWrapper)`
 export const ScreenTimerLine = styled.View`
   width: 1px;
   height: 100%;
-  background-color: #efefef;
+  background-color: ${({ theme }) => theme.secondary};
 `;
 
 export const TimerTextContainer = styled.View`

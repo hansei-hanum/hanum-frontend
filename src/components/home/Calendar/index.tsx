@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { useTheme } from '@emotion/react';
+
 import { Spinner, Text } from 'src/components';
-import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 import { useGetSchedule } from 'src/hooks';
 
@@ -10,7 +11,10 @@ import { Content } from '../Content';
 import * as S from './styled';
 
 export const Calendar: React.FC = () => {
+  const theme = useTheme();
+
   const { data, isLoading } = useGetSchedule();
+
   const fontSize = isIos ? 15 : 14;
 
   const formatDate = (scheduleDate: string) => {
@@ -32,14 +36,14 @@ export const Calendar: React.FC = () => {
         ) : data?.data && data.data.length > 0 ? (
           data.data.slice(0, 4).map(({ date, data }) => (
             <S.CalendarTextContainer key={date}>
-              <Text size={fontSize} color={colors.placeholder}>
+              <Text size={fontSize} color={theme.placeholder}>
                 {formatDate(date)}: {''}
               </Text>
               <Text size={fontSize}>{data.map((item) => item).join('\n')}</Text>
             </S.CalendarTextContainer>
           ))
         ) : (
-          <Text size={fontSize} color={colors.placeholder}>
+          <Text size={fontSize} color={theme.placeholder}>
             학사일정이 없습니다.
           </Text>
         )}

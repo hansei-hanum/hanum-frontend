@@ -1,5 +1,6 @@
 import React from 'react';
 import { WithLocalSvg } from 'react-native-svg';
+import { ScrollView } from 'react-native';
 
 import { Text, ClassList, WeekDay, AuthFailedModal, Spinner } from 'src/components';
 import { NUMBER_LIST } from 'src/constants';
@@ -39,12 +40,21 @@ export const ScheduleScreen: React.FC = () => {
           </S.ScheduleScreenHeader>
           <WeekDay />
           {!isLoading && (
-            <S.ScheduleScreenTimeContainer>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingLeft: 10,
+                paddingRight: 10,
+              }}
+            >
               <ClassList list={NUMBER_LIST} isNumber />
               {data?.data.map((item) => (
                 <ClassList key={item.date} list={item.data} isToday={checkToday(item.date)} />
               ))}
-            </S.ScheduleScreenTimeContainer>
+            </ScrollView>
           )}
           {isLoading && <Spinner isCenter />}
         </S.ScheduleScreenContainer>

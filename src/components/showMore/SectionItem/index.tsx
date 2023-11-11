@@ -2,9 +2,10 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import { useTheme } from '@emotion/react';
+
 import { useNavigate, usePressingAnimation } from 'src/hooks';
 import { Icon, Text } from 'src/components';
-import { colors } from 'src/styles';
 
 import * as S from './styled';
 
@@ -15,7 +16,10 @@ export interface SectionItemProps {
 }
 
 export const SectionItem: React.FC<SectionItemProps> = ({ name, icon, navigateUrl }) => {
+  const theme = useTheme();
+
   const navigate = useNavigate();
+
   const { handlePressIn, handlePressOut, bgColorAnimatedStyle, scaleAnimatedStyle } =
     usePressingAnimation();
 
@@ -34,7 +38,7 @@ export const SectionItem: React.FC<SectionItemProps> = ({ name, icon, navigateUr
               {name}
             </Text>
           </S.SectionIconContainer>
-          <MaterialIcons name="chevron-right" size={30} color={colors.placeholder} />
+          <MaterialIcons name="chevron-right" size={30} color={theme.placeholder} />
         </S.SectionItem>
       </S.SectionItemWrapper>
     </TouchableOpacity>

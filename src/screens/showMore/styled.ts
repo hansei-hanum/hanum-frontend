@@ -2,17 +2,11 @@ import { Animated } from 'react-native';
 
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const ShowMoreScreenWrapper = styled.SafeAreaView`
   flex: 1;
-  background: ${colors.background};
-`;
-
-export const ShowMoreScreenContainer = styled.ScrollView`
-  flex: 1;
-  background-color: ${colors.background};
+  background: ${({ theme }) => theme.background};
 `;
 
 export const ShowMoreHeaderScreen = styled.View`

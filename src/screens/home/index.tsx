@@ -5,18 +5,25 @@ import { Notifier } from 'react-native-notifier';
 import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
+import { useRecoilValue } from 'recoil';
+import { useTheme } from '@emotion/react';
 
-import { Timer, Calendar, HomeHeader } from 'src/components';
-import { colors } from 'src/styles';
+import { Timer, Calendar } from 'src/components';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
+import { themeAtom } from 'src/atoms';
 
-import { Logo } from '../../../assets/images';
+import { Logo, WhiteLogo } from '../../../assets/images';
 
 import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
+  const theme = useTheme();
+
+  const themeValue = useRecoilValue(themeAtom);
+
   const { mutate } = useConnectNotification();
+
   const requestUserPermission = async () => {
     let isGranted = false;
 
@@ -57,6 +64,24 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <S.HomeScreenWrapper>
+      <S.HomeScreenHeader>
+        <Image
+          source={themeValue === 'light' ? Logo : WhiteLogo}
+          style={{ width: 98, height: 40, resizeMode: 'contain' }}
+        />
+        <S.HomeScreenHeaderIconContainer>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
+                Linking.openURL('https://pf.kakao.com/_xkMcxdG'),
+              );
+            }}
+          >
+            <AntDesign name="customerservice" size={28} color={theme.placeholder} />
+          </TouchableOpacity>
+        </S.HomeScreenHeaderIconContainer>
+      </S.HomeScreenHeader>
       <S.HomeScreenContainer
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -77,21 +102,6 @@ export const HomeScreen: React.FC = () => {
         <Timer />
         <Calendar />
       </S.HomeScreenContainer>
-      <HomeHeader>
-        <Image source={Logo} style={{ width: 98, height: 40, resizeMode: 'contain' }} />
-        <S.HomeScreenHeaderIconContainer>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => {
-              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
-                Linking.openURL('https://pf.kakao.com/_xkMcxdG'),
-              );
-            }}
-          >
-            <AntDesign name="customerservice" size={28} color={colors.placeholder} />
-          </TouchableOpacity>
-        </S.HomeScreenHeaderIconContainer>
-      </HomeHeader>
     </S.HomeScreenWrapper>
   );
 };

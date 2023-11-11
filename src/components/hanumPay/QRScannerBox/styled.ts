@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
 export const HanumPayQRBoxPermission = styled.View`
   flex: 1;
-  background-color: ${colors.black};
+  background-color: ${({ theme }) => theme.background};
   justify-content: center;
   align-items: center;
 `;

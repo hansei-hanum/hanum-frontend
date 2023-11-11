@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
+import { useTheme } from '@emotion/react';
 
-import { colors } from 'src/styles';
 import { checkNumber, checkString, isAndroid } from 'src/utils';
 import { useBlockGesture, useNavigate, usePhone } from 'src/hooks';
 import { authAtom, isDisableAtom } from 'src/atoms';
@@ -27,6 +27,8 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   isNameScreen,
   isPhoneScreen,
 }) => {
+  const theme = useTheme();
+
   const navigate = useNavigate();
 
   const [auth, setAuth] = useRecoilState(authAtom);
@@ -34,6 +36,7 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
 
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+  const [clicked, setClicked] = useState<boolean>(false);
 
   const { mutate: phoneMutate, isLoading: isPhoneLoading } = usePhone();
 
@@ -75,8 +78,8 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
 
   useEffect(() => {
     setAuth({ ...auth, errorMessage: '' });
-    if (isFocused && phone.length !== 11) {
-      setIsDisabled(true);
+    if (isFocused && phone.length === 11) {
+      setIsDisabled(false);
     }
   }, [isFocused]);
 
@@ -90,19 +93,23 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
       <View style={{ flexDirection: 'column', rowGap: isAndroid ? 6 : 0 }}>
         <S.TextFieldFormInputWrapper>
           <S.TextFieldFormInput
+            onFocus={() => setClicked(true)}
+            onBlur={() => setClicked(false)}
             onChangeText={isNameScreen ? onNameChange : onPhoneChange}
             value={isNameScreen ? name : phone}
             variant="standard"
-            label={placeHolder}
+            label={clicked ? placeHolder : ''}
+            placeholder={clicked ? '' : placeHolder}
+            placeholderTextColor={theme.default}
             keyboardType={isNameScreen ? 'default' : 'numeric'}
             maxLength={isNameScreen ? 16 : 11}
-            color={colors.primary}
+            color={theme.primary}
             inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
-            inputStyle={{ fontSize: 20 }}
+            inputStyle={{ fontSize: 20, color: theme.default }}
           />
         </S.TextFieldFormInputWrapper>
         {isPhoneScreen && auth.errorMessage !== '' && (
-          <Text color={colors.danger} size={15}>
+          <Text color={theme.danger} size={15}>
             {auth.errorMessage}
           </Text>
         )}

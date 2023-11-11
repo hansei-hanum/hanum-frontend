@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleProp, Text as TextElement, TextStyle } from 'react-native';
 
 import { css } from '@emotion/native';
+import { useTheme } from '@emotion/react';
 
-import { colors, fonts } from 'src/styles';
+import { fonts } from 'src/styles';
 
 import * as S from './styled';
 
@@ -25,6 +26,7 @@ interface TextProps {
   isCenter?: boolean;
   lineHeight?: number;
   style?: StyleProp<TextStyle>;
+  onPress?: () => void;
 }
 
 export const TextComponent: React.FC<TextProps> = ({
@@ -35,16 +37,19 @@ export const TextComponent: React.FC<TextProps> = ({
   isCenter,
   lineHeight,
   style,
+  onPress,
 }) => {
+  const theme = useTheme();
   return (
     <TextElement
+      onPress={onPress}
       style={[
         style,
         css`
-          line-height: ${lineHeight ? lineHeight : size * 1.5}px;
+          /* line-height: ${lineHeight ? lineHeight : size * 1.5}px; */
           font-size: ${size.toString()}px;
           font-family: ${fontFamily ? fonts[fontFamily] : fonts.medium};
-          color: ${color ? color : colors.black};
+          color: ${color ? color : theme.default};
           text-align: ${isCenter ? 'center' : 'left'};
         `,
       ]}

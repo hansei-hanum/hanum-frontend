@@ -3,11 +3,11 @@ import { UseQueryResult } from 'react-query';
 
 import { useIsFocused } from '@react-navigation/native';
 import { AxiosError } from 'axios';
+import { useTheme } from '@emotion/react';
 
 import { CommonHeader, Text } from 'src/components/common';
 import { APIErrorResponse, APIResponse, EoullimVoteResponse } from 'src/api';
 import { useVote } from 'src/hooks';
-import { colors } from 'src/styles';
 
 import { EoullimVoteBox } from '../voteBox';
 
@@ -19,6 +19,8 @@ export interface EoullimVoteProps {
 }
 
 export const EoullimVote: React.FC<EoullimVoteProps> = ({ getVoteData, getVote }) => {
+  const theme = useTheme();
+
   const [cursor, setCursor] = useState<number | null>(null);
 
   if (getVoteData && getVoteData.myVote && cursor === null) {
@@ -89,7 +91,7 @@ export const EoullimVote: React.FC<EoullimVoteProps> = ({ getVoteData, getVote }
           <S.EoullimVoteHeader>
             <S.EoullimVoteStatusContainer>
               <S.EoullimVoteStatusCircle
-                style={{ backgroundColor: isProceeding ? colors.green : colors.brown }}
+                style={{ backgroundColor: isProceeding ? theme.green : theme.brown }}
               />
               <Text size={15} fontFamily="bold">
                 {isProceeding ? '투표 진행 중' : '투표 종료'}
@@ -114,7 +116,7 @@ export const EoullimVote: React.FC<EoullimVoteProps> = ({ getVoteData, getVote }
                 <Text size={15} fontFamily="bold">
                   투표 종료까지
                 </Text>
-                <Text size={40} fontFamily="bold" color={isImminent ? colors.danger : colors.black}>
+                <Text size={40} fontFamily="bold" color={isImminent ? theme.danger : theme.default}>
                   {voteLeftTime}
                 </Text>
               </S.EoullimVoteTimeContainer>

@@ -5,13 +5,13 @@ import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from 'src/components';
-import { colors } from 'src/styles';
 import { useLuckyDraw } from 'src/hooks/query/eoullim/useLuckyDraw';
 
 import * as S from './styled';
 
 export const EoullimRaffleScreen: React.FC = () => {
   const { mutate } = useLuckyDraw();
+
   const navigation = useNavigation();
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -53,12 +53,7 @@ export const EoullimRaffleScreen: React.FC = () => {
           text={'추첨번호를 받으시려면\n' + 'QR 스캔을 위해 카메라 접근 권한이 필요해요.'}
           button={
             <Button.Container>
-              <Button
-                onPress={closeModal}
-                isModalBtn
-                backgroundColor={colors.secondary}
-                textColor={colors.black}
-              >
+              <Button onPress={closeModal} isModalBtn isWhite>
                 취소
               </Button>
               <Button

@@ -1,10 +1,8 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
-
 export const EoullimRaffleWrapper = styled.SafeAreaView`
   flex: 1;
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const EoullimRaffleHeaderWrapper = styled.View`

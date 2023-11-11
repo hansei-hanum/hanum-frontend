@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@emotion/react';
 
-import { colors } from 'src/styles';
 import { Auth, CodeInput, Text } from 'src/components';
 import { authAtom } from 'src/atoms';
 import { useAuth } from 'src/hooks';
 
 export const VerifyCodeScreen: React.FC = () => {
+  const theme = useTheme();
+
   const [value, setValue] = useState('');
   const auth = useRecoilValue(authAtom);
   const { mutate: mutateAuth, isLoading } = useAuth();
@@ -27,7 +29,7 @@ export const VerifyCodeScreen: React.FC = () => {
       <View style={{ flexDirection: 'column', rowGap: 10 }}>
         <CodeInput value={value} setValue={setValue} isNumber={true} />
         {auth.errorMessage && (
-          <Text size={15} color={colors.danger}>
+          <Text size={15} color={theme.danger}>
             {auth.errorMessage}
           </Text>
         )}

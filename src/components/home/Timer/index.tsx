@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
 import { useIsFocused } from '@react-navigation/native';
+import { useTheme } from '@emotion/react';
 
 import { Text } from 'src/components';
-import { colors } from 'src/styles';
 
 import { Content } from '../Content';
 
@@ -15,12 +15,14 @@ export interface TimerTextProps {
 }
 
 export const TimerText: React.FC<TimerTextProps> = ({ subText, mainText }) => {
+  const theme = useTheme();
+
   return (
     <S.TimerTextContainer>
-      <Text size={14} fontFamily="medium" color={colors.placeholder}>
+      <Text size={14} fontFamily="medium" color={theme.placeholder}>
         {subText}
       </Text>
-      <Text size={20} fontFamily="bold" color={colors.black}>
+      <Text size={20} fontFamily="bold">
         {mainText}
       </Text>
     </S.TimerTextContainer>

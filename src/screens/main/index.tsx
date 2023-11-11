@@ -4,6 +4,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTheme } from '@emotion/react';
 
 import { HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
@@ -11,26 +12,43 @@ import { iosCheckHeight } from 'src/utils';
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
+  const theme = useTheme();
+
   const size = 25;
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#fff',
-          height: iosCheckHeight ? 80 : 64,
-          paddingBottom: iosCheckHeight ? 30 : 10,
+          zIndex: 10,
+          borderTopRightRadius: 24,
+          borderTopLeftRadius: 24,
+          borderTopColor: theme.secondary,
+          borderTopWidth: 1,
+          borderLeftColor: theme.secondary,
+          borderLeftWidth: 1,
+          borderRightColor: theme.secondary,
+          borderRightWidth: 1,
+          backgroundColor: theme.tabBarBg,
+          height: iosCheckHeight ? 78 : 64,
+          paddingBottom: iosCheckHeight ? 26 : 10,
         },
-        tabBarActiveTintColor: '#000',
+        tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
           fontSize: 12,
         },
         tabBarIconStyle: {
           paddingBottom: 0,
           marginBottom: Platform.OS == 'ios' ? -8 : -10,
-          color: '#000',
+          color: theme.default,
         },
       }}
+      sceneContainerStyle={
+        {
+          // borderColor: 'red',
+          // borderWidth: 1,
+        }
+      }
       initialRouteName="홈"
     >
       <BottomTab.Screen

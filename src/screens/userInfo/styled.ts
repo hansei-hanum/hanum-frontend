@@ -1,6 +1,5 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const UserInfoWrapper = styled.View`
@@ -8,7 +7,7 @@ export const UserInfoWrapper = styled.View`
   padding: 0 20px;
   padding-top: ${iosCheckHeight ? '70px' : isAndroid ? '24px' : '40px'};
   padding-bottom: ${isAndroid ? '10px' : iosCheckHeight ? '34px' : '10px'};
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const UserInfoContainer = styled.View`

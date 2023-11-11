@@ -1,7 +1,5 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
-
 export const ModalDummyContainer = styled.View`
   position: absolute;
   z-index: 999;
@@ -21,7 +19,7 @@ export const ModalContainer = styled.View`
   align-items: center;
   width: 90%;
   border-radius: 16px;
-  background-color: ${colors.white};
+  background-color: ${({ theme }) => theme.modalBg};
   padding: 14px;
   row-gap: 20px;
 `;

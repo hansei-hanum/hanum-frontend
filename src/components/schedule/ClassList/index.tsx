@@ -1,8 +1,10 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
+import { useTheme } from '@emotion/react';
+
 import { Text } from 'src/components';
-import { colors } from 'src/styles';
+import { RPH } from 'src/utils';
 
 import * as S from './styled';
 
@@ -13,11 +15,14 @@ export interface ClassListProps {
 }
 
 export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber }) => {
+  const theme = useTheme();
   return (
     <FlatList
       style={{
-        backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : colors.white,
+        backgroundColor: isToday ? 'rgba(69, 133, 254, 0.10)' : 'transparent',
         paddingTop: 20,
+        width: isNumber ? 20 : 40,
+        height: RPH(66),
       }}
       data={list}
       renderItem={({ item, index }) => {
@@ -49,7 +54,7 @@ export const ClassList: React.FC<ClassListProps> = ({ list, isToday, isNumber })
           <S.ClassListWrapper key={Math.random() * index}>
             <Text
               size={item.length > 5 ? 14 : 15}
-              color={isToday || isNumber ? colors.black : colors.placeholder}
+              color={isToday || isNumber ? theme.default : theme.placeholder}
               isCenter
             >
               {formatName(item)}

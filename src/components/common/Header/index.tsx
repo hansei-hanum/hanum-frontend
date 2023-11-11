@@ -3,8 +3,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { StyleProp, TextStyle, TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-
-import { colors } from 'src/styles';
+import { useTheme } from '@emotion/react';
 
 export interface CommonHeaderProps {
   isLoading?: boolean;
@@ -19,6 +18,7 @@ export const CommonHeader: React.FC<CommonHeaderProps> = ({
   style,
   isWhite,
 }) => {
+  const theme = useTheme();
   const navigation = useNavigation();
 
   return (
@@ -30,7 +30,7 @@ export const CommonHeader: React.FC<CommonHeaderProps> = ({
         navigation.goBack();
       }}
     >
-      <Entypo name="chevron-thin-left" size={size} color={isWhite ? colors.white : colors.black} />
+      <Entypo name="chevron-thin-left" size={size} color={isWhite ? theme.white : theme.default} />
     </TouchableOpacity>
   );
 };

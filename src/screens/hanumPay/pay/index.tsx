@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
+import { useTheme } from '@emotion/react';
 
 import { Auth } from 'src/components';
-import { colors } from 'src/styles';
 import { checkNumber, isAndroid } from 'src/utils';
 import { usePayment } from 'src/hooks';
 import { boothAtom, isDisableAtom } from 'src/atoms';
@@ -12,6 +12,7 @@ import { boothAtom, isDisableAtom } from 'src/atoms';
 import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
+  const theme = useTheme();
   const [money, setMoney] = useState<string>('');
   const setIsDisabled = useSetRecoilState(isDisableAtom);
 
@@ -45,12 +46,12 @@ export const HanumPayScreen: React.FC = () => {
       bottomText="결제하기"
     >
       <S.TextFieldFormInput
-        placeholderTextColor={colors.placeholder}
+        placeholderTextColor={theme.placeholder}
         variant="standard"
         label="결제 금액"
         keyboardType="numeric"
         onChangeText={onMoneyChange}
-        color={colors.placeholder}
+        color={theme.placeholder}
         value={money}
         inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
         inputStyle={{ fontSize: 20 }}

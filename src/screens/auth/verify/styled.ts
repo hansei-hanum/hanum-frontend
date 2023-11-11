@@ -10,7 +10,7 @@ export const StudentVerifyInput = styled(TextInput)`
   padding: 0px 16px;
   border-radius: 12px;
   font-size: 20px;
-  background-color: #f4f4f5;
+  background-color: ${({ theme }) => theme.lightGray};
 `;
 
 export const StudentVerifyTextContainer = styled.View`

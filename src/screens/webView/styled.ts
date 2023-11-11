@@ -2,7 +2,7 @@ import styled from '@emotion/native';
 
 export const WebViewSafeContainer = styled.SafeAreaView`
   flex: 1;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const HeaderContainer = styled.View`

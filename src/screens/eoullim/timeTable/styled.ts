@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 
-import { colors } from 'src/styles';
 import { isIos } from 'src/utils';
 
 export const EoullimTimeTableWrapper = styled.SafeAreaView`
   flex: 1;
-  background-color: ${colors.background};
+  background-color: ${({ theme }) => theme.background};
   padding: 20px;
   padding-bottom: 0;
 `;
@@ -16,5 +15,5 @@ export const EoullimTimeTableContainer = styled.ScrollView`
 
 export const EoullimTimeTableImage = styled.ImageBackground`
   height: ${isIos ? '820px' : '700px'};
-  border: 1px solid ${colors.lightGray};
+  border: 1px solid ${({ theme }) => theme.lightGray};
 `;

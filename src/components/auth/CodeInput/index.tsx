@@ -68,7 +68,7 @@ export const CodeInput: React.FC<CodeInputProps> = ({ isNumber, value, setValue 
       }}
       renderCell={({ index, symbol, isFocused }) => (
         <S.StudentVerifyInput key={index} onLayout={getCellOnLayoutHandler(index)}>
-          <Text size={20} fontFamily="medium">
+          <Text size={20} fontFamily="medium" isCenter>
             {symbol || (isFocused ? <Cursor /> : null)}
           </Text>
         </S.StudentVerifyInput>
