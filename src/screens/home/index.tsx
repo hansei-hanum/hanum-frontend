@@ -8,7 +8,7 @@ import messaging from '@react-native-firebase/messaging';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Calendar, HomeHeader } from 'src/components';
+import { Timer, Calendar } from 'src/components';
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
@@ -64,6 +64,24 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <S.HomeScreenWrapper>
+      <S.HomeScreenHeader>
+        <Image
+          source={themeValue === 'light' ? Logo : WhiteLogo}
+          style={{ width: 98, height: 40, resizeMode: 'contain' }}
+        />
+        <S.HomeScreenHeaderIconContainer>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
+                Linking.openURL('https://pf.kakao.com/_xkMcxdG'),
+              );
+            }}
+          >
+            <AntDesign name="customerservice" size={28} color={theme.placeholder} />
+          </TouchableOpacity>
+        </S.HomeScreenHeaderIconContainer>
+      </S.HomeScreenHeader>
       <S.HomeScreenContainer
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -84,24 +102,6 @@ export const HomeScreen: React.FC = () => {
         <Timer />
         <Calendar />
       </S.HomeScreenContainer>
-      <HomeHeader>
-        <Image
-          source={themeValue === 'light' ? Logo : WhiteLogo}
-          style={{ width: 98, height: 40, resizeMode: 'contain' }}
-        />
-        <S.HomeScreenHeaderIconContainer>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => {
-              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
-                Linking.openURL('https://pf.kakao.com/_xkMcxdG'),
-              );
-            }}
-          >
-            <AntDesign name="customerservice" size={28} color={theme.placeholder} />
-          </TouchableOpacity>
-        </S.HomeScreenHeaderIconContainer>
-      </HomeHeader>
     </S.HomeScreenWrapper>
   );
 };

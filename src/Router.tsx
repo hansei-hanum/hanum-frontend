@@ -74,7 +74,7 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
-  console.log(isUpdating, 'isUpdating', isReady, 'isReady');
+  console.log(isUpdating, 'isUpdating');
 
   if (isReady && !isUpdating) {
     SplashScreen.hide();

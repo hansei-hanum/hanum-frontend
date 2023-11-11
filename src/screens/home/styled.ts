@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-import { isAndroid } from 'src/utils';
+import { RPH, checkHeight, isAndroid } from 'src/utils';
 
 export const HomeScreenWrapper = styled.SafeAreaView`
   flex: 1;
@@ -20,4 +20,16 @@ export const HomeScreenHeaderIconContainer = styled.View`
   column-gap: 20px;
   position: relative;
   bottom: ${isAndroid ? '8px' : '0px'};
+`;
+
+export const HomeScreenHeader = styled.View`
+  position: absolute;
+  flex-direction: row;
+  width: 100%;
+  padding: 6px 20px;
+  padding-top: ${checkHeight ? `${RPH(6.4)}px` : '42px'};
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.background};
+  z-index: 10;
 `;
