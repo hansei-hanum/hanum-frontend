@@ -1,5 +1,3 @@
-import { Animated } from 'react-native';
-
 import styled from '@emotion/native';
 
 import { RPH, checkHeight, isAndroid } from 'src/utils';
@@ -24,7 +22,7 @@ export const HomeScreenHeaderIconContainer = styled.View`
   bottom: ${isAndroid ? '8px' : '0px'};
 `;
 
-export const HomeScreenHeader = styled(Animated.View)`
+export const HomeScreenHeader = styled.View`
   position: absolute;
   flex-direction: row;
   width: 100%;

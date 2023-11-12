@@ -44,19 +44,17 @@ export const Router: React.FC = () => {
 
   const getTheme = useCallback(async () => {
     const StorageTheme = await AsyncStorage.getItem('theme');
-    if (!StorageTheme && theme) {
-      await AsyncStorage.setItem('theme', theme);
+    if (theme && (!StorageTheme || theme === StorageTheme)) {
       setThemeValue(theme);
-    } else if (theme === StorageTheme) {
-      setThemeValue(theme);
-    } else if (StorageTheme) {
+    } else {
       setThemeValue(StorageTheme);
     }
   }, []);
 
   useEffect(() => {
     Appearance.addChangeListener(() => {
-      setThemeValue(Appearance.getColorScheme() === 'dark' ? 'dark' : 'light');
+      const setTheme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+      setThemeValue(setTheme);
     });
     return () => {};
   }, []);

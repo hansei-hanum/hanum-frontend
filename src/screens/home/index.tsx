@@ -1,23 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
-import {
-  Linking,
-  PermissionsAndroid,
-  TouchableOpacity,
-  Image,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Animated,
-} from 'react-native';
+import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
 import { Timer, Calendar } from 'src/components';
-import { RPH, iosCheckHeight, isAndroid, isIos } from 'src/utils';
+import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
 
@@ -31,19 +23,6 @@ export const HomeScreen: React.FC = () => {
   const themeValue = useRecoilValue(themeAtom);
 
   const { mutate } = useConnectNotification();
-
-  const [hidden, setHidden] = useState<boolean>(false);
-
-  const prevScrollY = useRef(new Animated.Value(0)).current;
-
-  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const currentScrollY = e.nativeEvent.contentOffset.y;
-    const isScrollUp = currentScrollY < +prevScrollY;
-
-    setHidden(currentScrollY > 50 && currentScrollY > +prevScrollY && !isScrollUp);
-
-    console.log(currentScrollY > 0);
-  };
 
   const requestUserPermission = async () => {
     let isGranted = false;
@@ -85,7 +64,7 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <S.HomeScreenWrapper>
-      <S.HomeScreenHeader style={{ top: hidden ? -RPH(10) : 0 }}>
+      <S.HomeScreenHeader>
         <Image
           source={themeValue === 'light' ? Logo : WhiteLogo}
           style={{ width: 98, height: 40, resizeMode: 'contain' }}
@@ -113,7 +92,6 @@ export const HomeScreen: React.FC = () => {
           paddingRight: 20,
           rowGap: 20,
         }}
-        onScroll={handleScroll}
       >
         {/* <AlertBox
           navigateUrl="EoullimMain"
