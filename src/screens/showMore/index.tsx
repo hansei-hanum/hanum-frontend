@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { ScrollView } from 'react-native';
@@ -26,16 +26,9 @@ export const ShowMoreScreen: React.FC = () => {
   const { userData, userProfile, verifyUser, formatUser } = useGetUser();
 
   const setTheme = async () => {
-    if (themeValue === 'dark') {
-      await AsyncStorage.setItem('theme', 'dark');
-    } else {
-      await AsyncStorage.setItem('theme', 'light');
-    }
+    setThemeValue(themeValue === 'dark' ? 'light' : 'dark');
+    await AsyncStorage.setItem('theme', themeValue === 'dark' ? 'light' : 'dark');
   };
-
-  useEffect(() => {
-    setTheme();
-  }, [themeValue]);
 
   return (
     <S.ShowMoreScreenWrapper>
@@ -55,7 +48,7 @@ export const ShowMoreScreen: React.FC = () => {
           </Text>
           <Toggle
             value={themeValue === 'dark'}
-            onPress={() => setThemeValue(themeValue === 'dark' ? 'light' : 'dark')}
+            onPress={setTheme}
             leftComponent={
               <Icon
                 name="light-mode"

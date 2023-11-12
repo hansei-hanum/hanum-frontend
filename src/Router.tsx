@@ -25,8 +25,12 @@ export const Router: React.FC = () => {
   useFetchUser();
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState<null | string>(null);
+
   const [themeValue, setThemeValue] = useRecoilState(themeAtom);
+
   const theme = useColorScheme();
+
+  const isDark = themeValue === 'dark';
 
   const fetch = useCallback(async () => {
     try {
@@ -40,16 +44,17 @@ export const Router: React.FC = () => {
 
   const getTheme = useCallback(async () => {
     const StorageTheme = await AsyncStorage.getItem('theme');
-    if (theme === StorageTheme) {
+    if (theme && (!StorageTheme || theme === StorageTheme)) {
       setThemeValue(theme);
-    } else if (StorageTheme) {
+    } else {
       setThemeValue(StorageTheme);
     }
   }, []);
 
   useEffect(() => {
     Appearance.addChangeListener(() => {
-      setThemeValue(Appearance.getColorScheme() === 'dark' ? 'dark' : 'light');
+      const setTheme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+      setThemeValue(setTheme);
     });
     return () => {};
   }, []);
@@ -74,8 +79,6 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
-  console.log(isUpdating, 'isUpdating');
-
   if (isReady && !isUpdating) {
     SplashScreen.hide();
   } else if (!isReady) {
@@ -83,14 +86,14 @@ export const Router: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={themeValue === 'dark' ? darkTheme : lightTheme}>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            cardStyle: { backgroundColor: themeValue === 'dark' ? '#2A2B2E' : '#FEFEFE' },
+            cardStyle: { backgroundColor: isDark ? '#2A2B2E' : '#FEFEFE' },
             ...(isAndroid &&
-              themeValue === 'dark' && {
+              isDark && {
                 cardStyleInterpolator: ({ current }) => ({
                   cardStyle: {
                     opacity: current.progress,
@@ -127,7 +130,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
           </Stack.Group>
         </Stack.Navigator>
-        <StatusBar barStyle={'light-content'} />
+        <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       </NavigationContainer>
     </ThemeProvider>
   );

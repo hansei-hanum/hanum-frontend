@@ -101,6 +101,10 @@ export const HomeScreen: React.FC = () => {
         /> */}
         <Timer />
         <Calendar />
+        <Timer />
+        <Calendar />
+        <Timer />
+        <Calendar />
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>
   );
