@@ -16,6 +16,7 @@ import { themeAtom } from 'src/atoms';
 import { Logo, WhiteLogo } from '../../../assets/images';
 
 import * as S from './styled';
+import { useNavigation } from '@react-navigation/native';
 
 export const HomeScreen: React.FC = () => {
   const theme = useTheme();
@@ -23,6 +24,8 @@ export const HomeScreen: React.FC = () => {
   const themeValue = useRecoilValue(themeAtom);
 
   const { mutate } = useConnectNotification();
+
+  const navigator = useNavigation();
 
   const requestUserPermission = async () => {
     let isGranted = false;
@@ -40,6 +43,7 @@ export const HomeScreen: React.FC = () => {
 
     if (isGranted) {
       const token = await messaging().getToken();
+      console.log("Token:", token);
       mutate({ token: token, platform: isIos ? 'IOS' : 'ANDROID' });
     }
   };
@@ -60,6 +64,62 @@ export const HomeScreen: React.FC = () => {
     requestUserPermission();
     messageListener();
     messaging().subscribeToTopic('announcement');
+  }, []);
+
+    interface ParsedURL {
+    path: string[];
+    params: Record<string, string> | null;
+  }
+  
+  function parseDeeplink(url: string): ParsedURL | null {
+    const protocol = "hanum://";
+    if (!url.startsWith(protocol)) {
+      return null;
+    }
+  
+    const pathAndParams = url.slice(protocol.length).split("?");
+    const path = pathAndParams[0].split("/").filter(Boolean);
+    const params = pathAndParams[1]
+      ? parseQueryString(pathAndParams[1])
+      : null;
+  
+    return { path, params };
+  }
+  
+  function parseQueryString(queryString: string): Record<string, string> {
+    const params: Record<string, string> = {};
+    const keyValuePairs = queryString.split("&");
+  
+    keyValuePairs.forEach((pair) => {
+      const [key, value] = pair.split("=");
+      params[key] = value;
+    });
+  
+    return params;
+  }
+
+  function handleOpenURL(url: string) {
+    const linkInfo = parseDeeplink(url);
+    if (linkInfo){
+      navigator.navigate({name: linkInfo.path[linkInfo.path.length - 1], params: linkInfo.params} as never);
+    }
+  }
+
+  useEffect(() => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      if (remoteMessage.data) {
+        handleOpenURL(remoteMessage.data.url);
+      }
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage?.data) {
+          handleOpenURL(remoteMessage.data.url);
+        }
+      });
   }, []);
 
   return (
