@@ -5,7 +5,7 @@ export const SectionContainer = styled.View`
   flex-direction: column;
   row-gap: 40px;
   padding: 0 10px;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 export const Section = styled.View`

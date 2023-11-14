@@ -8,8 +8,8 @@ import messaging from '@react-native-firebase/messaging';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Calendar } from 'src/components';
-import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
+import { Timer, Calendar, Header, AlertBox } from 'src/components';
+import { isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
 
@@ -64,10 +64,10 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <S.HomeScreenWrapper>
-      <S.HomeScreenHeader>
+      <Header isRow>
         <Image
           source={themeValue === 'light' ? Logo : WhiteLogo}
-          style={{ width: 98, height: 40, resizeMode: 'contain' }}
+          style={{ width: 98, height: 30, resizeMode: 'contain' }}
         />
         <S.HomeScreenHeaderIconContainer>
           <TouchableOpacity
@@ -81,28 +81,24 @@ export const HomeScreen: React.FC = () => {
             <AntDesign name="customerservice" size={28} color={theme.placeholder} />
           </TouchableOpacity>
         </S.HomeScreenHeaderIconContainer>
-      </S.HomeScreenHeader>
+      </Header>
       <S.HomeScreenContainer
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: iosCheckHeight ? 70 : 78,
+          paddingTop: 20,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,
           rowGap: 20,
         }}
       >
-        {/* <AlertBox
+        <AlertBox
           navigateUrl="EoullimMain"
           icon="🎉"
           subText="한세어울림한마당 진행 중!"
           mainText="실시간으로 즐기기"
-        /> */}
-        <Timer />
-        <Calendar />
-        <Timer />
-        <Calendar />
+        />
         <Timer />
         <Calendar />
       </S.HomeScreenContainer>

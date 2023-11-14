@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Button, CommonHeader, Text } from 'src/components';
+import { Button, GoBackHeader, Text } from 'src/components';
 import { isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
@@ -31,7 +31,7 @@ export const Auth: React.FC<AuthProps> = ({
     <S.AuthWrapper>
       <S.AuthContainer behavior="padding" keyboardVerticalOffset={15}>
         <S.AuthInputContainer>
-          <CommonHeader size={28} style={{ marginBottom: 10 }} isLoading={isLoading} />
+          <GoBackHeader size={28} isLoading={isLoading} />
           <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (

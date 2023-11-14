@@ -2,18 +2,14 @@ import { Animated } from 'react-native';
 
 import styled from '@emotion/native';
 
-import { iosCheckHeight, isAndroid } from 'src/utils';
-
 export const ShowMoreScreenWrapper = styled.SafeAreaView`
   flex: 1;
   background: ${({ theme }) => theme.background};
 `;
 
-export const ShowMoreHeaderScreen = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
+export const ShowMoreScreenContainer = styled.View`
   padding: 0 10px;
-  padding-top: ${iosCheckHeight ? '10px' : isAndroid ? '20px' : '26px'};
+  row-gap: 16px;
 `;
 
 export const ShowMoreUserContainer = styled(Animated.View)`
@@ -21,7 +17,7 @@ export const ShowMoreUserContainer = styled(Animated.View)`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border-radius: 16px;
 `;
 

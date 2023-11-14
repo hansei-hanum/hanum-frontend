@@ -28,6 +28,7 @@ export const AuthInputContainer = styled.View`
 `;
 
 export const AuthTextContainer = styled.View`
+  margin-top: 10px;
   flex-direction: column;
   row-gap: 6px;
 `;

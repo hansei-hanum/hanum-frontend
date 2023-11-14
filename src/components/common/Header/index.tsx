@@ -1,36 +1,22 @@
 import React from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { StyleProp, TextStyle, TouchableOpacity } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '@emotion/react';
+import * as S from './styled';
 
-export interface CommonHeaderProps {
-  isLoading?: boolean;
-  size?: number;
-  style?: StyleProp<TextStyle>;
-  isWhite?: boolean;
+export interface HeaderProps {
+  children: React.ReactNode;
+  isRow?: boolean;
 }
 
-export const CommonHeader: React.FC<CommonHeaderProps> = ({
-  isLoading,
-  size = 28,
-  style,
-  isWhite,
-}) => {
-  const theme = useTheme();
-  const navigation = useNavigation();
-
+export const Header: React.FC<HeaderProps> = ({ children, isRow }) => {
   return (
-    <TouchableOpacity
-      activeOpacity={isLoading ? 1 : 0.5}
-      style={style}
-      onPress={() => {
-        if (isLoading) return;
-        navigation.goBack();
+    <S.HeaderContainer
+      style={{
+        flexDirection: isRow ? 'row' : 'column',
+        alignItems: isRow ? 'center' : 'flex-start',
+        justifyContent: isRow ? 'space-between' : 'flex-start',
       }}
     >
-      <Entypo name="chevron-thin-left" size={size} color={isWhite ? theme.white : theme.default} />
-    </TouchableOpacity>
+      {children}
+    </S.HeaderContainer>
   );
 };

@@ -6,11 +6,15 @@ import { isIos } from 'src/utils';
 export const StatusScreenWrapper = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
-  justify-content: space-between;
-  padding: 20px;
 `;
 
-export const StatusScreenContainer = styled.View`
+export const StautsScreenContainer = styled.View`
+  flex: 1;
+  justify-content: space-between;
+  padding: 20px 0;
+`;
+
+export const StatusScreenContentContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;

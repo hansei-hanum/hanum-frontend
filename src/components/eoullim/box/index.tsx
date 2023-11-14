@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useNavigate, usePressingAnimation } from 'src/hooks';
-import { Icon, Text } from 'src/components';
+import { Icon } from 'src/components';
 
 import * as S from './styled';
 
@@ -27,9 +27,7 @@ export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl
       <S.EoullimBox blurType="light" blurAmount={1} reducedTransparencyFallbackColor="white" />
       <S.EoullimBoxTextContainer>
         <Icon size={60} icon={icon} includeBackground={false} />
-        <Text size={18} fontFamily="bold">
-          {title}
-        </Text>
+        <S.EoullimBoxText>{title}</S.EoullimBoxText>
       </S.EoullimBoxTextContainer>
     </S.EoullimBoxWrapper>
   );

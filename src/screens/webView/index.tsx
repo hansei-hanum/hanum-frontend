@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
 
-import { CommonHeader, Spinner, Text } from 'src/components';
+import { GoBackHeader, Header, Spinner, Text } from 'src/components';
 
 import * as S from './styled';
 
@@ -11,14 +11,14 @@ export const WebViewScreen: React.FC = () => {
 
   return (
     <S.WebViewSafeContainer>
-      <S.HeaderContainer>
-        <CommonHeader style={{ position: 'absolute', left: 0, top: 0 }} />
+      <Header>
+        <GoBackHeader />
         <S.HeaderContentWrapper>
           <Text size={18} fontFamily="bold">
             {title}
           </Text>
         </S.HeaderContentWrapper>
-      </S.HeaderContainer>
+      </Header>
       <WebView
         source={{ uri: 'https://pf.kakao.com/_xkMcxdG' }}
         onLoad={() => setIsLoading(false)}

@@ -2,18 +2,17 @@ import styled from '@emotion/native';
 
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
-export const UserInfoWrapper = styled.View`
+export const UserInfoWrapper = styled.SafeAreaView`
   flex: 1;
-  padding: 0 20px;
-  padding-top: ${iosCheckHeight ? '70px' : isAndroid ? '24px' : '40px'};
-  padding-bottom: ${isAndroid ? '10px' : iosCheckHeight ? '34px' : '10px'};
   background-color: ${({ theme }) => theme.background};
 `;
 
 export const UserInfoContainer = styled.View`
+  flex: 1;
   flex-direction: column;
-  height: 100%;
   justify-content: space-between;
+  padding: 0 20px;
+  padding-bottom: ${isAndroid ? '10px' : iosCheckHeight ? '34px' : '10px'};
 `;
 
 export const UserInfoProfileContainer = styled.View`

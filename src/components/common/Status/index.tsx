@@ -1,4 +1,4 @@
-import { Button } from 'src/components';
+import { Button, GoBackHeader, Header } from 'src/components';
 import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
@@ -12,10 +12,15 @@ export const Status: React.FC<StatusProps> = ({ children, navigateUrl }) => {
   const navigate = useNavigate();
   return (
     <S.StatusScreenWrapper>
-      <S.StatusScreenContainer>{children}</S.StatusScreenContainer>
-      <S.StatusButtonWrapper>
-        <Button onPress={() => navigate(navigateUrl)}>확인</Button>
-      </S.StatusButtonWrapper>
+      <Header>
+        <GoBackHeader />
+      </Header>
+      <S.StautsScreenContainer>
+        <S.StatusScreenContentContainer>{children}</S.StatusScreenContentContainer>
+        <S.StatusButtonWrapper>
+          <Button onPress={() => navigate(navigateUrl)}>확인</Button>
+        </S.StatusButtonWrapper>
+      </S.StautsScreenContainer>
     </S.StatusScreenWrapper>
   );
 };
