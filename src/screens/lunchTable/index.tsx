@@ -9,7 +9,6 @@ import { useRecoilValue } from 'recoil';
 
 import { GoBackIcon, Header, Text } from 'src/components';
 import { boxShadow, MealItem, MEAL_LIST } from 'src/constants';
-import { checkHeight, iosCheckHeight, isAndroid, isIos } from 'src/utils';
 import { MealIcon } from 'src/assets';
 import { themeAtom } from 'src/atoms';
 
@@ -25,7 +24,6 @@ export const LunchTableScreen: React.FC = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
-  const [todayLunch, setTodayLunch] = useState<MealItem | null>(null);
 
   const toggleNotifyClick = () => {
     setNotifyClick(!notifyClick);
@@ -36,24 +34,15 @@ export const LunchTableScreen: React.FC = () => {
     }
   };
 
-  const ITEM_HEIGHT = checkHeight ? 100 : 110;
   const isFocused = useIsFocused();
 
-  useEffect(() => {
-    const todayLunch = MEAL_LIST.find((item) => {
-      const date = new Date(item.date);
-      const nowDate = new Date();
-      const checkTodayLunch = date.getDate() === nowDate.getDate();
-      return checkTodayLunch;
-    });
-    if (todayLunch) {
-      setTodayLunch(todayLunch);
-      setTimeout(() => {
-        const yOffset = MEAL_LIST.indexOf(todayLunch) * ITEM_HEIGHT;
-        scrollViewRef?.current?.scrollTo({ y: yOffset, animated: true });
-      }, 0);
-    }
-  }, [isFocused]);
+  const today = new Date();
+
+  const filteredMealList = MEAL_LIST.filter(
+    (meal) => new Date(meal.date).getDate() >= today.getDate(),
+  );
+
+  useEffect(() => {}, [isFocused]);
 
   return (
     <S.LunchTableWrapper>
@@ -84,7 +73,7 @@ export const LunchTableScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 40,
+          paddingTop: 30,
           paddingBottom: 40,
           paddingLeft: 20,
           paddingRight: 20,
@@ -92,50 +81,46 @@ export const LunchTableScreen: React.FC = () => {
         }}
       >
         <S.LunchTableBoxContainer>
-          {MEAL_LIST.reduce<MealItem[][]>((acc, currentValue, index) => {
-            if (index % 2 === 0) acc.push([currentValue]);
-            else acc[acc.length - 1].push(currentValue);
-            return acc;
-          }, []).map((items, index) => (
-            <S.LunchBoxWrapper key={index}>
-              {items.map((item) => {
-                const date = new Date(item.date);
-                const checkTodayLunch = todayLunch?.date === item.date;
-                const todayLunchText = checkTodayLunch ? theme.white : theme.default;
-                return (
-                  <S.LunchBoxContainer
-                    key={item.date}
-                    style={[
-                      themeValue === 'light' && boxShadow,
-                      {
-                        backgroundColor: checkTodayLunch ? theme.primary : theme.modalBg,
-                      },
-                    ]}
-                  >
-                    <Text size={18} fontFamily="bold" color={todayLunchText}>
-                      {`${date.getMonth() + 1}/${date.getDate()} (${WEEKDAY_LIST[date.getDay()]})`}
-                    </Text>
-                    {item.menus.map(({ name }) => (
-                      <View key={name}>
-                        <Text size={15} color={todayLunchText}>
-                          {name}
-                        </Text>
-                        {/* {allergys.length > 0 && (
-                          <Text
-                            fontFamily="medium"
-                            size={11}
-                            color={checkTodayLunch ? theme.secondary : theme.placeholder}
-                          >
-                            {allergys.join(', ')}
+          {filteredMealList
+            .reduce<MealItem[][]>((acc, currentValue, index) => {
+              if (index % 2 === 0) acc.push([currentValue]);
+              else acc[acc.length - 1].push(currentValue);
+              return acc;
+            }, [])
+            .map((items, index) => (
+              <S.LunchBoxWrapper key={index}>
+                {items.map((item) => {
+                  const date = new Date(item.date);
+                  const nowDate = new Date();
+                  const checkTodayLunch = date.getDate() === nowDate.getDate();
+                  const todayLunchText = checkTodayLunch ? theme.white : theme.default;
+                  return (
+                    <S.LunchBoxContainer
+                      key={item.date}
+                      style={[
+                        themeValue === 'light' && boxShadow,
+                        {
+                          backgroundColor: checkTodayLunch ? theme.primary : theme.modalBg,
+                        },
+                      ]}
+                    >
+                      <Text size={18} fontFamily="bold" color={todayLunchText}>
+                        {`${date.getMonth() + 1}/${date.getDate()} (${
+                          WEEKDAY_LIST[date.getDay()]
+                        })`}
+                      </Text>
+                      {item.menus.map(({ name }) => (
+                        <View key={name}>
+                          <Text size={15} color={todayLunchText}>
+                            {name}
                           </Text>
-                        )} */}
-                      </View>
-                    ))}
-                  </S.LunchBoxContainer>
-                );
-              })}
-            </S.LunchBoxWrapper>
-          ))}
+                        </View>
+                      ))}
+                    </S.LunchBoxContainer>
+                  );
+                })}
+              </S.LunchBoxWrapper>
+            ))}
         </S.LunchTableBoxContainer>
       </S.LunchTableContainer>
     </S.LunchTableWrapper>

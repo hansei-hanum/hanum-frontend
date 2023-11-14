@@ -7,10 +7,17 @@ export const TimerTextWrapper = styled.View`
 `;
 
 export const ScreenTimerContainer = styled(TimerTextWrapper)`
-  width: 80%;
+  width: 100%;
   justify-content: space-between;
   flex-direction: row;
   height: 70px;
+  padding: 0 4px;
+`;
+
+export const ScreenTimeLineWrapper = styled.View`
+  flex-grow: 1;
+  align-items: center;
+  height: 100%;
 `;
 
 export const ScreenTimerLine = styled.View`
@@ -23,7 +30,7 @@ export const TimerTextContainer = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: auto;
   flex-direction: column;
+  flex-grow: 1;
   row-gap: 2px;
 `;
