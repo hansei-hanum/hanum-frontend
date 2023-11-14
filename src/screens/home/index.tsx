@@ -94,10 +94,10 @@ export const HomeScreen: React.FC = () => {
         }}
       >
         <AlertBox
-          navigateUrl="EoullimMain"
-          icon="🎉"
-          subText="한세어울림한마당 진행 중!"
-          mainText="실시간으로 즐기기"
+          navigateUrl="LunchTable"
+          icon="🍽"
+          subText="오늘의 급식!"
+          mainText="실시간으로 보기"
         />
         <Timer />
         <Calendar />

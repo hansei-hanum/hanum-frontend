@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
 import { Text } from 'src/components';
-import { GoBackHeader } from 'src/components/common';
+import { GoBackIcon } from 'src/components/common';
 
 import * as S from './styled';
 
@@ -14,7 +14,7 @@ export interface HanumPayHeaderProps {
 export const HanumPayHeader: React.FC<HanumPayHeaderProps> = ({ title, style }) => {
   return (
     <S.HanumPayHeader style={style}>
-      <GoBackHeader />
+      <GoBackIcon />
       <Text size={17}>{title}</Text>
     </S.HanumPayHeader>
   );

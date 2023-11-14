@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
 
-import { GoBackHeader, Header, Spinner, Text } from 'src/components';
+import { GoBackIcon, Header, Spinner, Text } from 'src/components';
 
 import * as S from './styled';
 
@@ -12,7 +12,7 @@ export const WebViewScreen: React.FC = () => {
   return (
     <S.WebViewSafeContainer>
       <Header>
-        <GoBackHeader />
+        <GoBackIcon />
         <S.HeaderContentWrapper>
           <Text size={18} fontFamily="bold">
             {title}

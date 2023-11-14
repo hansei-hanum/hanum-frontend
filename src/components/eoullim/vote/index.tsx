@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { AxiosError } from 'axios';
 import { useTheme } from '@emotion/react';
 
-import { GoBackHeader, Text } from 'src/components/common';
+import { GoBackIcon, Text } from 'src/components/common';
 import { APIErrorResponse, APIResponse, EoullimVoteResponse } from 'src/api';
 import { useVote } from 'src/hooks';
 
@@ -85,7 +85,7 @@ export const EoullimVote: React.FC<EoullimVoteProps> = ({ getVoteData, getVote }
 
   return (
     <S.EoullimVoteWrapper>
-      <GoBackHeader />
+      <GoBackIcon />
       <S.EoullimVoteContainer>
         <>
           <S.EoullimVoteHeader>

@@ -5,13 +5,13 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 
-export interface GoBackHeaderProps {
+export interface GoBackIconProps {
   isLoading?: boolean;
   size?: number;
   isWhite?: boolean;
 }
 
-export const GoBackHeader: React.FC<GoBackHeaderProps> = ({ isLoading, size = 28, isWhite }) => {
+export const GoBackIcon: React.FC<GoBackIconProps> = ({ isLoading, size = 28, isWhite }) => {
   const theme = useTheme();
 
   const navigation = useNavigation();

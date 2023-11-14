@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { useTheme } from '@emotion/react';
 
-import { ContentBox, GoBackHeader, Icon, Text, Spinner, Header } from 'src/components';
+import { ContentBox, GoBackIcon, Icon, Text, Spinner, Header } from 'src/components';
 import { useGetMonthSchedule } from 'src/hooks';
 
 import * as S from './styled';
@@ -56,20 +56,20 @@ export const CalendarScreen: React.FC = () => {
 
   const dotsDate = mothScheduleData
     ? mothScheduleData.data.reduce((acc, currentValue) => {
-        const date = format(new Date(currentValue.date), 'yyyy-MM-dd');
-        return {
-          ...acc,
-          [date]: {
-            dots: [
-              {
-                key: currentValue.date,
-                color: theme.primary,
-                selectedDotColor: theme.primary,
-              },
-            ],
-          },
-        };
-      }, {})
+      const date = format(new Date(currentValue.date), 'yyyy-MM-dd');
+      return {
+        ...acc,
+        [date]: {
+          dots: [
+            {
+              key: currentValue.date,
+              color: theme.primary,
+              selectedDotColor: theme.primary,
+            },
+          ],
+        },
+      };
+    }, {})
     : null;
 
   const filterDate = mothScheduleData?.data.find(
@@ -97,7 +97,7 @@ export const CalendarScreen: React.FC = () => {
   return (
     <S.CalendarWrapper>
       <Header>
-        <GoBackHeader size={28} />
+        <GoBackIcon size={28} />
         <S.CalendarTitleContainer>
           <Icon icon="📆" includeBackground={false} />
           <Text size={20} fontFamily="bold">

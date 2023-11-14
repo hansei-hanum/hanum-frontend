@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { EoullimTimeTable } from 'src/assets';
-import { GoBackHeader, Header, Text } from 'src/components';
+import { GoBackIcon, Header, Text } from 'src/components';
 import { isIos } from 'src/utils';
 
 import * as S from './styled';
@@ -10,7 +10,7 @@ export const EoullimTimeTableScreen: React.FC = () => {
   return (
     <S.EoullimTimeTableWrapper>
       <Header>
-        <GoBackHeader />
+        <GoBackIcon />
       </Header>
       <S.EoullimTimeTableContainer
         showsVerticalScrollIndicator={false}
