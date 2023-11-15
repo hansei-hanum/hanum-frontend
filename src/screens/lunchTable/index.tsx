@@ -11,21 +11,15 @@ import { Button, Header, Modal, Spinner, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
 import { MealIcon } from 'src/assets';
 import { themeAtom } from 'src/atoms';
-import { useGetMeal } from 'src/hooks';
+import { useGetMealData } from 'src/hooks';
 import { GetMealResponse } from 'src/api';
 
 import * as S from './styled';
 
 const WEEKDAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
 
-const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-
 export const LunchTableScreen: React.FC = () => {
-  const curr = new Date();
-  const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
-  const krDate = new Date(utc + KR_TIME_DIFF);
-
-  const { data, isLoading } = useGetMeal({ month: `${krDate.getMonth() + 1}` });
+  const { isLoading, meal, krDate } = useGetMealData();
 
   const themeValue = useRecoilValue(themeAtom);
 
@@ -45,7 +39,7 @@ export const LunchTableScreen: React.FC = () => {
     }
   };
 
-  const filteredMealList = data?.data.filter(
+  const filteredMealList = meal?.filter(
     (meal) => new Date(meal.date).getDate() >= krDate.getDate(),
   );
 
@@ -54,7 +48,7 @@ export const LunchTableScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused && !isLoading && !data) {
+    if (isFocused && !isLoading && !meal) {
       setModalVisible(true);
     }
   }, [isFocused]);
@@ -84,7 +78,7 @@ export const LunchTableScreen: React.FC = () => {
       </Header>
       {isLoading ? (
         <Spinner isCenter />
-      ) : !isLoading && data ? (
+      ) : !isLoading && meal ? (
         <S.LunchTableContainer
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
