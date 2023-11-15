@@ -11,7 +11,7 @@ export const useGetMonthSchedule = ({
   APIResponse<GetInfoResponse[]>,
   AxiosError<APIErrorResponse>
 > => {
-  return useQuery('monthSchedule', () => getMonthSchedule({ month }), {
+  return useQuery('useGetMonthSchedule', () => getMonthSchedule({ month }), {
     onError: (error) => {
       console.log(error, 'error');
     },

@@ -9,7 +9,7 @@ export const useGetTimeTable = (): UseQueryResult<
   APIResponse<GetInfoResponse[]>,
   AxiosError<APIErrorResponse>
 > => {
-  return useQuery('timetable', getTimeTable, {
+  return useQuery('useGetTimeTable', getTimeTable, {
     onError: (error) => {
       console.log(error);
     },

@@ -24,6 +24,7 @@ export const API_SUFFIX = {
   EOULLIM_VOTE: '/vote/',
   EOULLIM_LUCKYDRAW: '/luckydraw/lucky_numbers',
   EOULLIM_GET_LUCKYDRAW: '/luckydraw/lucky_number',
+  MEAL: '/meal/',
 };
 
 const baseConfig = {

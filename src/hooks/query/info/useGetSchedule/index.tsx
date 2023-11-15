@@ -9,7 +9,7 @@ export const useGetSchedule = (): UseQueryResult<
   APIResponse<GetInfoResponse[]>,
   AxiosError<APIErrorResponse>
 > => {
-  return useQuery('schedule', getSchedule, {
+  return useQuery('useGetSchedule', getSchedule, {
     onError: (error) => {
       console.log(error);
     },
