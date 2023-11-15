@@ -115,7 +115,6 @@ export const Router: React.FC = () => {
             <Stack.Screen name="Calendar" component={SC.CalendarScreen} />
             <Stack.Screen name="UserInfo" component={SC.UserInfoScreen} />
             <Stack.Screen name="WebView" component={SC.WebViewScreen} />
-            <Stack.Screen name="LunchTable" component={SC.LunchTableScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanumPayMain" component={SC.HanumPayMainScreen} />

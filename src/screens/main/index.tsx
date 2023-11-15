@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Platform } from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
@@ -6,7 +7,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@emotion/react';
 
-import { HomeScreen, ShowMoreScreen, ScheduleScreen } from 'src/screens';
+import { HomeScreen, ShowMoreScreen, ScheduleScreen, LunchTableScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
 
 const BottomTab = createBottomTabNavigator();
@@ -43,12 +44,6 @@ export const MainScreen: React.FC = () => {
           color: theme.default,
         },
       }}
-      sceneContainerStyle={
-        {
-          // borderColor: 'red',
-          // borderWidth: 1,
-        }
-      }
       initialRouteName="홈"
     >
       <BottomTab.Screen
@@ -63,6 +58,13 @@ export const MainScreen: React.FC = () => {
         component={ScheduleScreen}
         options={{
           tabBarIcon: ({ color }) => <Icons name="access-time" size={size} color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="급식표"
+        component={LunchTableScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Icons name="local-restaurant" size={size} color={color} />,
         }}
       />
       <BottomTab.Screen

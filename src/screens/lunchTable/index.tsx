@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, Switch, View } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import messaging from '@react-native-firebase/messaging';
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
-import { GoBackIcon, Header, Spinner, Text } from 'src/components';
+import { Button, Header, Modal, Spinner, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
 import { MealIcon } from 'src/assets';
 import { themeAtom } from 'src/atoms';
@@ -17,10 +18,11 @@ import * as S from './styled';
 
 const WEEKDAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
 
+const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+
 export const LunchTableScreen: React.FC = () => {
   const curr = new Date();
   const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
-  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const krDate = new Date(utc + KR_TIME_DIFF);
 
   const { data, isLoading } = useGetMeal({ month: `${krDate.getMonth() + 1}` });
@@ -32,10 +34,11 @@ export const LunchTableScreen: React.FC = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const toggleNotifyClick = () => {
     setNotifyClick(!notifyClick);
-    if (notifyClick) {
+    if (!notifyClick) {
       messaging().subscribeToTopic('meal');
     } else {
       messaging().unsubscribeFromTopic('meal');
@@ -46,11 +49,20 @@ export const LunchTableScreen: React.FC = () => {
     (meal) => new Date(meal.date).getDate() >= krDate.getDate(),
   );
 
+  const navigation = useNavigation();
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused && !isLoading && !data) {
+      setModalVisible(true);
+    }
+  }, [isFocused]);
+
   return (
     <S.LunchTableWrapper>
       <Header>
-        <GoBackIcon />
-        <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center', marginTop: 20 }}>
+        <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
           <WithLocalSvg width={34} height={34} asset={MealIcon} />
           <Text size={20} fontFamily="bold">
             급식표
@@ -72,7 +84,7 @@ export const LunchTableScreen: React.FC = () => {
       </Header>
       {isLoading ? (
         <Spinner isCenter />
-      ) : (
+      ) : !isLoading && data ? (
         <S.LunchTableContainer
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
@@ -128,6 +140,24 @@ export const LunchTableScreen: React.FC = () => {
               ))}
           </S.LunchTableBoxContainer>
         </S.LunchTableContainer>
+      ) : (
+        <Modal
+          modalVisible={modalVisible}
+          title="급식 정보 불러오기 실패"
+          text={'급식 정보를 불러오는데 실패했습니다.\n' + '다시 시도해주세요.'}
+          button={
+            <Button
+              onPress={() => {
+                navigation.goBack(), setModalVisible(false);
+              }}
+            >
+              확인
+            </Button>
+          }
+        />
+        // <Text size={20} fontFamily="bold">
+        //   급식 정보가 없습니다.
+        // </Text>
       )}
     </S.LunchTableWrapper>
   );
