@@ -32,3 +32,9 @@ export const EoullimBoxIcon = styled.Text`
   font-family: ${fonts.tossIcon};
   font-size: 50px;
 `;
+
+export const EoullimBoxText = styled.Text`
+  font-size: 18px;
+  font-family: ${fonts.bold};
+  color: ${({ theme }) => theme.black};
+`;

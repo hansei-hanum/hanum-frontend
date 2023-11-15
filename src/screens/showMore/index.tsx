@@ -9,7 +9,7 @@ import { useTheme } from '@emotion/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRecoilState } from 'recoil';
 
-import { Text, Section } from 'src/components';
+import { Text, Section, Header } from 'src/components';
 import { useGetUser, useNavigate, usePressingAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { themeAtom } from 'src/atoms';
@@ -37,12 +37,9 @@ export const ShowMoreScreen: React.FC = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 40,
-          paddingLeft: 10,
-          paddingRight: 10,
-          rowGap: 16,
         }}
       >
-        <S.ShowMoreHeaderScreen>
+        <Header isRow>
           <Text size={20} fontFamily="bold">
             더 보기
           </Text>
@@ -77,9 +74,9 @@ export const ShowMoreScreen: React.FC = () => {
               inActiveBackgroundColor: theme.primary,
             }}
           />
-        </S.ShowMoreHeaderScreen>
+        </Header>
         {userData && (
-          <>
+          <S.ShowMoreScreenContainer>
             <TouchableOpacity
               onPressIn={handlePressIn}
               onPressOut={handlePressOut}
@@ -113,7 +110,7 @@ export const ShowMoreScreen: React.FC = () => {
               </S.ShowMoreUserContainer>
             </TouchableOpacity>
             <Section />
-          </>
+          </S.ShowMoreScreenContainer>
         )}
       </ScrollView>
     </S.ShowMoreScreenWrapper>

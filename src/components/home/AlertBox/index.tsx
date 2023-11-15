@@ -3,10 +3,12 @@ import { TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 
 import { Icon, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
+import { themeAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -18,6 +20,8 @@ export interface AlertBoxProps {
 }
 
 export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, navigateUrl }) => {
+  const themeValue = useRecoilValue(themeAtom);
+
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -32,7 +36,12 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
       activeOpacity={1}
       onPress={() => navigate(navigateUrl)}
     >
-      <S.AlertBoxWrapper style={[animatedStyle, boxShadow]}>
+      <S.AlertBoxWrapper
+        style={[
+          animatedStyle,
+          themeValue === 'dark' ? { backgroundColor: theme.modalBg } : boxShadow,
+        ]}
+      >
         <S.AlertBoxContainer>
           <S.AlertBoxContentContainer>
             <Icon icon={icon} includeBackground={false} />

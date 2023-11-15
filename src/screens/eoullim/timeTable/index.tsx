@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { EoullimTimeTable } from 'src/assets';
-import { CommonHeader, Text } from 'src/components';
+import { GoBackIcon, Header, Text } from 'src/components';
 import { isIos } from 'src/utils';
 
 import * as S from './styled';
@@ -9,6 +9,9 @@ import * as S from './styled';
 export const EoullimTimeTableScreen: React.FC = () => {
   return (
     <S.EoullimTimeTableWrapper>
+      <Header>
+        <GoBackIcon />
+      </Header>
       <S.EoullimTimeTableContainer
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -18,7 +21,6 @@ export const EoullimTimeTableScreen: React.FC = () => {
           rowGap: 10,
         }}
       >
-        <CommonHeader />
         <Text size={22} fontFamily="bold" isCenter>
           행사일정
         </Text>

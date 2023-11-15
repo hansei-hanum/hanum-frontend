@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { TouchableOpacity } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 
-import { Button, InfoBox, Modal, Text } from 'src/components';
+import { Button, GoBackIcon, Header, InfoBox, Modal, Text } from 'src/components';
 import { useGetUser, useInitNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets/';
 import { deleteUser, disconnectNotification } from 'src/api';
@@ -24,7 +21,6 @@ const modalContent = `회원 탈퇴를 진행하면 즉시 모든 한움 서비�
 export const UserInfoScreen: React.FC = () => {
   const theme = useTheme();
 
-  const navigation = useNavigation();
   const { initNavigate } = useInitNavigate();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
@@ -52,17 +48,12 @@ export const UserInfoScreen: React.FC = () => {
   return (
     <>
       <S.UserInfoWrapper>
+        <Header>
+          <GoBackIcon />
+        </Header>
         {userData && (
           <S.UserInfoContainer>
             <S.UserInfoProfileContainer>
-              <TouchableOpacity activeOpacity={0.2} onPress={() => navigation.goBack()}>
-                <Entypo
-                  name="chevron-thin-left"
-                  size={28}
-                  color={theme.default}
-                  style={{ marginBottom: 10 }}
-                />
-              </TouchableOpacity>
               <S.UserInfoProfile>
                 <S.UserInfoProfileImage
                   source={userProfile ? { uri: userProfile } : UserLogo}

@@ -1,7 +1,5 @@
 import styled from '@emotion/native';
 
-import { iosCheckHeight, isAndroid } from 'src/utils';
-
 export const ScheduleScreenWrapper = styled.SafeAreaView`
   flex: 1;
   background: ${({ theme }) => theme.background};
@@ -9,7 +7,6 @@ export const ScheduleScreenWrapper = styled.SafeAreaView`
 
 export const ScheduleScreenContainer = styled.View`
   flex: 1;
-  padding-top: ${iosCheckHeight ? '10px' : isAndroid ? '20px' : '26px'};
 `;
 
 export const ScheduleScreenHeader = styled.View`

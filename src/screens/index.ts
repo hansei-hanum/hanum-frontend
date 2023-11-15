@@ -8,3 +8,4 @@ export * from './calendar';
 export * from './userInfo';
 export * from './webView';
 export * from './eoullim';
+export * from './lunchTable';

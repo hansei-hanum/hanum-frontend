@@ -10,7 +10,7 @@ export interface MealItem {
 
 export const MEAL_LIST: MealItem[] = [
   {
-    date: '2023-08-18T00:00:00',
+    date: '2023-011-10T00:00:00',
     menus: [
       {
         name: '치킨마요덮밥',
@@ -39,7 +39,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-21T00:00:00',
+    date: '2023-11-11T00:00:00',
     menus: [
       {
         name: '현미밥',
@@ -68,7 +68,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-19T00:00:00',
+    date: '2023-11-12T00:00:00',
     menus: [
       {
         name: '차조밥',
@@ -97,7 +97,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-23T00:00:00',
+    date: '2023-11-13T00:00:00',
     menus: [
       {
         name: '열무냉면',
@@ -126,7 +126,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-29T00:00:00',
+    date: '2023-11-14T00:00:00',
     menus: [
       {
         name: '보리밥',
@@ -155,7 +155,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-09-01T00:00:00',
+    date: '2023-11-05T00:00:00',
     menus: [
       {
         name: '열무냉면',
@@ -184,7 +184,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-04T00:00:00',
+    date: '2023-11-16T00:00:00',
     menus: [
       {
         name: '열무냉면',
@@ -213,7 +213,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-23T00:00:00',
+    date: '2023-11-17T00:00:00',
     menus: [
       {
         name: '열무냉면',
@@ -242,7 +242,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-23T00:00:00',
+    date: '2023-11-18T00:00:00',
     menus: [
       {
         name: '열무냉면',
@@ -271,7 +271,7 @@ export const MEAL_LIST: MealItem[] = [
     ],
   },
   {
-    date: '2023-08-23T00:00:00',
+    date: '2023-11-19T00:00:00',
     menus: [
       {
         name: '열무냉면',
