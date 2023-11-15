@@ -13,6 +13,7 @@ export interface GetMealValue extends GetMonthScheduleValue {}
 
 export interface GetMealResponse {
   date: string;
+  kcal: number;
   menus: string[];
 }
 

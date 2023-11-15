@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ScrollView, Switch, View } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import messaging from '@react-native-firebase/messaging';
-import { useIsFocused } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
 import { GoBackIcon, Header, Spinner, Text } from 'src/components';
-import { boxShadow, MealItem, MEAL_LIST } from 'src/constants';
+import { boxShadow } from 'src/constants';
 import { MealIcon } from 'src/assets';
 import { themeAtom } from 'src/atoms';
 import { useGetMeal } from 'src/hooks';
+import { GetMealResponse } from 'src/api';
 
 import * as S from './styled';
 
@@ -19,10 +19,7 @@ const WEEKDAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
 
 export const LunchTableScreen: React.FC = () => {
   const curr = new Date();
-
-  // 2. UTC 시간 계산
   const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
-
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const krDate = new Date(utc + KR_TIME_DIFF);
 
@@ -45,15 +42,9 @@ export const LunchTableScreen: React.FC = () => {
     }
   };
 
-  const isFocused = useIsFocused();
-
-  const filteredMealList = MEAL_LIST.filter(
-    (meal) => new Date(meal.date).getDate() >= krDate.getDate() + 1,
+  const filteredMealList = data?.data.filter(
+    (meal) => new Date(meal.date).getDate() >= krDate.getDate(),
   );
-
-  useEffect(() => {
-    console.log(data, 'data', krDate.getDate(), 'month');
-  }, [isFocused]);
 
   return (
     <S.LunchTableWrapper>
@@ -80,7 +71,7 @@ export const LunchTableScreen: React.FC = () => {
         </S.LunchTableAlertContainer>
       </Header>
       {isLoading ? (
-        <Spinner />
+        <Spinner isCenter />
       ) : (
         <S.LunchTableContainer
           ref={scrollViewRef}
@@ -96,7 +87,7 @@ export const LunchTableScreen: React.FC = () => {
         >
           <S.LunchTableBoxContainer>
             {filteredMealList
-              .reduce<MealItem[][]>((acc, currentValue, index) => {
+              ?.reduce<GetMealResponse[][]>((acc, currentValue, index) => {
                 if (index % 2 === 0) acc.push([currentValue]);
                 else acc[acc.length - 1].push(currentValue);
                 return acc;
@@ -123,10 +114,10 @@ export const LunchTableScreen: React.FC = () => {
                             WEEKDAY_LIST[date.getDay()]
                           })`}
                         </Text>
-                        {item.menus.map(({ name }) => (
-                          <View key={name}>
+                        {item.menus.map((item) => (
+                          <View key={item}>
                             <Text size={15} color={todayLunchText}>
-                              {name}
+                              {item}
                             </Text>
                           </View>
                         ))}
