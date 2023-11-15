@@ -31,7 +31,7 @@ export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
               ? meal
                   .filter((meal) => new Date(meal.date).getDate() === krDate.getDate())
                   .map((item) => {
-                    return item.menus.join(', ');
+                    return item.menus.join(', ') + ' ' + `(${item.kcal}kcal)`;
                   })
               : '불러올 급식이 없어요'}
           </S.LunchTableText>

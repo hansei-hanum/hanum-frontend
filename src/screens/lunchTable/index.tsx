@@ -127,6 +127,9 @@ export const LunchTableScreen: React.FC = () => {
                             </Text>
                           </View>
                         ))}
+                        <Text size={15} color={todayLunchText}>
+                          ({item.kcal} kcal)
+                        </Text>
                       </S.LunchBoxContainer>
                     );
                   })}

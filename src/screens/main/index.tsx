@@ -64,7 +64,7 @@ export const MainScreen: React.FC = () => {
         name="급식표"
         component={LunchTableScreen}
         options={{
-          tabBarIcon: ({ color }) => <Icons name="local-restaurant" size={size} color={color} />,
+          tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,
         }}
       />
       <BottomTab.Screen
