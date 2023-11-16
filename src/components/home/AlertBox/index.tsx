@@ -24,7 +24,7 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
 
   const theme = useTheme();
 
-  const navigate = useNavigate();
+  const navigation = useNavigate();
   const size = 30;
 
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
@@ -34,7 +34,7 @@ export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, nav
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       activeOpacity={1}
-      onPress={() => navigate(navigateUrl)}
+      onPress={() => navigation(navigateUrl)}
     >
       <S.AlertBoxWrapper
         style={[
