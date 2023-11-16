@@ -16,6 +16,8 @@ export interface LunchTableProps {
 export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
   const { meal, isLoading, krDate } = useGetMealData();
 
+  const filterMeal = meal?.filter((meal) => new Date(meal.date).getDate() === krDate.getDate());
+
   const theme = useTheme();
   return (
     <Content icon="🍴" name="급식표" onPress={onPress}>
@@ -25,16 +27,14 @@ export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
         </Text>
         {isLoading ? (
           <Spinner />
+        ) : !isLoading && filterMeal && filterMeal.length > 0 ? (
+          <Text size={16}>
+            {filterMeal.map((item) => {
+              return item.menus.join(', ') + ' ' + `(${item.kcal}kcal)`;
+            })}
+          </Text>
         ) : (
-          <S.LunchTableText>
-            {!isLoading && meal
-              ? meal
-                  .filter((meal) => new Date(meal.date).getDate() === krDate.getDate())
-                  .map((item) => {
-                    return item.menus.join(', ') + ' ' + `(${item.kcal}kcal)`;
-                  })
-              : '불러올 급식이 없어요'}
-          </S.LunchTableText>
+          <Text size={16}>불러올 급식이 없어요</Text>
         )}
       </S.LunchTableTextContainer>
     </Content>
