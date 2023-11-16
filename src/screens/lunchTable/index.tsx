@@ -152,9 +152,6 @@ export const LunchTableScreen: React.FC = () => {
             </Button>
           }
         />
-        // <Text size={20} fontFamily="bold">
-        //   급식 정보가 없습니다.
-        // </Text>
       )}
     </S.LunchTableWrapper>
   );

@@ -1,89 +1,89 @@
 {
-  "images" : [
+  "images": [
     {
-      "filename" : "LightLaunch-1x.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename": "LightLaunch-1x.png",
+      "idiom": "universal",
+      "scale": "1x"
     },
     {
-      "appearances" : [
+      "appearances": [
         {
-          "appearance" : "luminosity",
-          "value" : "light"
+          "appearance": "luminosity",
+          "value": "light"
         }
       ],
-      "filename" : "LightLaunch-1x 1.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename": "LightLaunch-1x 1.png",
+      "idiom": "universal",
+      "scale": "1x"
     },
     {
-      "appearances" : [
+      "appearances": [
         {
-          "appearance" : "luminosity",
-          "value" : "dark"
+          "appearance": "luminosity",
+          "value": "dark"
         }
       ],
-      "filename" : "DarkLaunch-1x.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename": "DarkLaunch-1x.png",
+      "idiom": "universal",
+      "scale": "1x"
     },
     {
-      "filename" : "LightLaunch-2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
+      "filename": "LightLaunch-2x.png",
+      "idiom": "universal",
+      "scale": "2x"
     },
     {
-      "appearances" : [
+      "appearances": [
         {
-          "appearance" : "luminosity",
-          "value" : "light"
+          "appearance": "luminosity",
+          "value": "light"
         }
       ],
-      "filename" : "LightLaunch-2x 1.png",
-      "idiom" : "universal",
-      "scale" : "2x"
+      "filename": "LightLaunch-2x 1.png",
+      "idiom": "universal",
+      "scale": "2x"
     },
     {
-      "appearances" : [
+      "appearances": [
         {
-          "appearance" : "luminosity",
-          "value" : "dark"
+          "appearance": "luminosity",
+          "value": "dark"
         }
       ],
-      "filename" : "DarkLaunch-2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
+      "filename": "DarkLaunch-2x.png",
+      "idiom": "universal",
+      "scale": "2x"
     },
     {
-      "filename" : "LightLaunch-3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename": "LightLaunch-3x.png",
+      "idiom": "universal",
+      "scale": "3x"
     },
     {
-      "appearances" : [
+      "appearances": [
         {
-          "appearance" : "luminosity",
-          "value" : "light"
+          "appearance": "luminosity",
+          "value": "light"
         }
       ],
-      "filename" : "LightLaunch-3x 1.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename": "LightLaunch-3x 1.png",
+      "idiom": "universal",
+      "scale": "3x"
     },
     {
-      "appearances" : [
+      "appearances": [
         {
-          "appearance" : "luminosity",
-          "value" : "dark"
+          "appearance": "luminosity",
+          "value": "dark"
         }
       ],
-      "filename" : "DarkLaunch-3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename": "DarkLaunch-3x.png",
+      "idiom": "universal",
+      "scale": "3x"
     }
   ],
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
+  "info": {
+    "author": "xcode",
+    "version": 1
   }
 }
