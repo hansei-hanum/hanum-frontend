@@ -50,7 +50,7 @@ export const CommunityMainScreen: React.FC = () => {
   };
 
   const animatedStyle2 = {
-    flex: value.interpolate({ inputRange: [0, 1], outputRange: [0.98, 1] }),
+    flex: value.interpolate({ inputRange: [0, 1], outputRange: [1, 1] }),
   };
 
   const animatedStyle3 = {
@@ -76,6 +76,7 @@ export const CommunityMainScreen: React.FC = () => {
               {
                 alignItems: 'center',
                 justifyContent: 'flex-end',
+                marginLeft: 10,
               },
               animatedStyle,
             ]}

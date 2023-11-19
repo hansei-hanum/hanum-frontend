@@ -13,7 +13,6 @@ export const CommunityMainWrapper = styled.SafeAreaView`
 
 export const CommunityMainSearchBarContainer = styled(Animated.View)`
   flex-direction: row;
-  overflow: hidden;
   align-items: center;
   padding: ${isIos ? '12px' : '0px'} 12px;
   border-radius: 12px;
@@ -24,6 +23,7 @@ export const CommunityMainSearchBar = styled.TextInput`
   font-size: 16px;
   font-family: ${fonts.regular};
   flex-grow: 1;
+  color: ${({ theme }) => theme.default};
 `;
 
 export const TextWrapper = styled.View`
