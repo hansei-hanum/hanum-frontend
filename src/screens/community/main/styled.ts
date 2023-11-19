@@ -11,9 +11,9 @@ export const CommunityMainWrapper = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.background};
 `;
 
-export const CommunityMainSearchBarContainer = styled.View`
-  flex: 1;
+export const CommunityMainSearchBarContainer = styled(Animated.View)`
   flex-direction: row;
+  overflow: hidden;
   align-items: center;
   padding: ${isIos ? '12px' : '0px'} 12px;
   border-radius: 12px;
@@ -30,7 +30,6 @@ export const TextWrapper = styled.View`
   position: relative;
   z-index: -1;
   flex: 1;
-  border: 1px solid red;
   height: 100%;
 `;
 
@@ -38,6 +37,5 @@ export const TextWrapper2 = styled(Animated.View)`
   position: relative;
   z-index: 2;
   flex: 1;
-  border: 1px solid red;
   height: 100%;
 `;
