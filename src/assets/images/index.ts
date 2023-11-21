@@ -2,3 +2,4 @@
 export const UserLogo = require('./user.png');
 export const EoullimPoster = require('./eoullim.png');
 export const EoullimTimeTable = require('./eoullimTimeTable.png');
+export const ComImg = require('./comImg.png');

@@ -1,4 +1,3 @@
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Animated } from 'react-native';
 
 import styled from '@emotion/native';
@@ -26,10 +25,79 @@ export const CommunityMainSearchBar = styled.TextInput`
   color: ${({ theme }) => theme.default};
 `;
 
-export const TextWrapper = styled.View`
-  position: relative;
-  z-index: -1;
+export const CommunityMainIconWrapper = styled(Animated.View)`
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 10px;
+`;
+
+export const CommunityUserContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 10px;
+`;
+
+export const CommunityImage = styled.Image`
+  border-radius: 100px;
+  width: 44px;
+  height: 44px;
+  border-color: ${({ theme }) => theme.lightGray};
+  border-width: 1px;
+`;
+
+export const CommunityUserThinkBox = styled.View`
   flex: 1;
+  align-items: flex-start;
+  padding: 14px;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.secondary};
+  border-radius: 12px;
+`;
+
+export const CommunityMainBox = styled.View`
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  row-gap: 10px;
+  width: 100%;
+`;
+
+export const CommunityMainBoxHeader = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const CommunityMainBoxHeaderTitle = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10px;
+`;
+
+export const CommunityMainBoxUserProfile = styled.View`
+  flex-direction: row;
+  align-items: center;
+  column-gap: 4px;
+`;
+
+export const CommunityMainBoxContainer = styled(CommunityMainBox)`
+  row-gap: 8px;
+  border: 1px solid red;
+`;
+
+export const CommunityMainBoxImageContainer = styled.View`
+  flex-direction: row;
+  width: 100%;
+  height: 200px;
+  justify-content: space-between;
+  border: 1px solid blue;
+`;
+
+export const CommunityMainBoxImage = styled.Image`
+  width: 140px;
   height: 100%;
 `;
 

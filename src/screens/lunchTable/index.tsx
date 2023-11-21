@@ -25,8 +25,6 @@ export const LunchTableScreen: React.FC = () => {
 
   const theme = useTheme();
 
-  const scrollViewRef = useRef<ScrollView>(null);
-
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -80,7 +78,6 @@ export const LunchTableScreen: React.FC = () => {
         <Spinner isCenter />
       ) : !isLoading && meal ? (
         <S.LunchTableContainer
-          ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
