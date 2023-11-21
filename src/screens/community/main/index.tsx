@@ -1,17 +1,29 @@
-import { useRef, useState } from 'react';
-import { Animated, TextInput, Easing, LayoutAnimation, ScrollView, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Animated,
+  TextInput,
+  Easing,
+  LayoutAnimation,
+  ScrollView,
+  View,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Image } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
-import { ContentBox, Header, Text, TextColumnContainer } from 'src/components';
+import { ContentBox, Header, Text } from 'src/components';
 import { useGetUser } from 'src/hooks';
-import { ComImg, UserLogo } from 'src/assets';
+import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants/community';
+import { RPH } from 'src/utils';
 
 import * as S from './styled';
 
 export const CommunityMainScreen: React.FC = () => {
+  const { width } = Dimensions.get('window');
+
   const { userProfile } = useGetUser();
 
   const theme = useTheme();
@@ -19,6 +31,22 @@ export const CommunityMainScreen: React.FC = () => {
   const searchRef = useRef<TextInput>(null);
 
   const [isFocused, setIsFocused] = useState(false);
+  const [imageHeights, setImageHeights] = useState<Array<number>>([]);
+
+  const getHeightsForImage = useCallback((uri: string, index: number) => {
+    try {
+      Image.getSize(uri, (w, h) => {
+        const imageHeight = ((h - 400) * width) / w;
+        setImageHeights((prev) => {
+          const newImageHeights = [...prev];
+          newImageHeights[index] = imageHeight;
+          return newImageHeights;
+        });
+      });
+    } catch (error) {
+      console.error('Error getting image size:', error);
+    }
+  }, []);
 
   const value = useRef(new Animated.Value(0)).current;
 
@@ -72,6 +100,14 @@ export const CommunityMainScreen: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    COMMUNITY_LIST.forEach((item, index) => {
+      item.content.image.slice(0, 1).forEach((image, i) => {
+        getHeightsForImage(image, index * item.content.image.length + i);
+      });
+    });
+  }, [COMMUNITY_LIST, getHeightsForImage]);
+
   return (
     <S.CommunityMainWrapper>
       <Header isRow>
@@ -115,7 +151,7 @@ export const CommunityMainScreen: React.FC = () => {
               </S.CommunityUserThinkBox>
             </S.CommunityUserContainer>
           </ContentBox>
-          {COMMUNITY_LIST.map((item) => {
+          {COMMUNITY_LIST.map((item, index) => {
             return (
               <ContentBox key={item.time + Math.random()}>
                 <S.CommunityMainBox>
@@ -155,12 +191,17 @@ export const CommunityMainScreen: React.FC = () => {
                         {item.content.message}
                       </Text>
                       <S.CommunityMainBoxImageContainer>
-                        {item.content.image.map((image) => {
+                        {item.content.image.slice(0, 1).map((image, i) => {
+                          const imageHeight = imageHeights[index * item.content.image.length + i];
                           return (
-                            <S.CommunityMainBoxImage
-                              key={image}
-                              source={ComImg}
-                              style={{ resizeMode: 'contain' }}
+                            <Image
+                              key={i}
+                              style={{ width: '100%' }}
+                              source={{
+                                uri: image,
+                                height: imageHeight > RPH(45) ? RPH(45) : imageHeight,
+                              }}
+                              resizeMode="contain"
                             />
                           );
                         })}
