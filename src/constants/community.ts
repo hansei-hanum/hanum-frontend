@@ -39,7 +39,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
       name: '김잉기',
       image: null,
     },
-    time: '2023-11-21T11:00:00.000Z',
+    time: '2023-11-22T07:00:00.000Z',
     content: {
       message: `점심시간에 에어팟이 사라졌어요\n혹시 보신 분?`,
       image: [CHAT, CHAT, CHAT, CHAT],

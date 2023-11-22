@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native';
 
+import moment from 'moment-timezone';
 import { useTheme } from '@emotion/react';
 
 import { ContentBox, Header, Text } from 'src/components';
@@ -77,26 +78,31 @@ export const CommunityMainScreen: React.FC = () => {
   };
 
   const getTime = (date: string) => {
-    const now = new Date();
-    const time = new Date(date);
-    const diff = now.getTime() - time.getTime();
-    const diffMin = Math.floor(diff / 1000 / 60);
-    const diffHour = Math.floor(diffMin / 60);
-    const diffDay = Math.floor(diffHour / 24);
-    const diffMonth = Math.floor(diffDay / 30);
-    const diffYear = Math.floor(diffMonth / 16);
-    if (diffMin < 1) {
+    const now = moment().tz('Asia/Seoul');
+    // get month
+    console.log(now.month(), now.date());
+    const target = moment(date).tz('Asia/Seoul');
+    const diff = now.diff(target, 'seconds');
+    const diffMinutes = now.diff(target, 'minutes');
+    const diffHours = now.diff(target, 'hours');
+    const diffDays = now.diff(target, 'days');
+    const diffWeeks = now.diff(target, 'weeks');
+    const diffMonths = now.diff(target, 'months');
+    const diffYears = now.diff(target, 'years');
+    if (diff < 1) {
       return '방금 전';
-    } else if (diffMin < 60) {
-      return `${diffMin}분 전`;
-    } else if (diffHour < 24) {
-      return `${diffHour}시간 전`;
-    } else if (diffDay < 30) {
-      return `${diffDay}일 전`;
-    } else if (diffMonth < 12) {
-      return `${diffMonth}달 전`;
-    } else {
-      return `${diffYear}년 전`;
+    } else if (diffMinutes < 60) {
+      return `${diffMinutes}분 전`;
+    } else if (diffHours < 24) {
+      return `${diffHours}시간 전`;
+    } else if (diffDays < 7) {
+      return `${diffDays}일 전`;
+    } else if (diffWeeks < 4) {
+      return `${diffWeeks}주 전`;
+    } else if (diffMonths < 12) {
+      return `${diffMonths}달 전`;
+    } else if (diffYears < 1) {
+      return `${diffYears}년 전`;
     }
   };
 
@@ -182,7 +188,7 @@ export const CommunityMainScreen: React.FC = () => {
                     <Icon name="more-horiz" size={24} color={theme.placeholder} />
                   </S.CommunityMainBoxHeader>
                   {item.content.image.length <= 0 ? (
-                    <Text size={24} style={{ width: '100%' }}>
+                    <Text size={20} style={{ width: '100%' }}>
                       {item.content.message}
                     </Text>
                   ) : (
@@ -191,7 +197,7 @@ export const CommunityMainScreen: React.FC = () => {
                         {item.content.message}
                       </Text>
                       <S.CommunityMainBoxImageContainer>
-                        {item.content.image.slice(0, 1).map((image, i) => {
+                        {/* {item.content.image.slice(0, 1).map((image, i) => {
                           const imageHeight = imageHeights[index * item.content.image.length + i];
                           return (
                             <Image
@@ -204,7 +210,7 @@ export const CommunityMainScreen: React.FC = () => {
                               resizeMode="contain"
                             />
                           );
-                        })}
+                        })} */}
                       </S.CommunityMainBoxImageContainer>
                     </S.CommunityMainBoxContainer>
                   )}
