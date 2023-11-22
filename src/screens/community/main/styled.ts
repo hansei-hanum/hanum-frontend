@@ -1,4 +1,4 @@
-import { Animated, Dimensions } from 'react-native';
+import { Animated } from 'react-native';
 
 import styled from '@emotion/native';
 
@@ -51,7 +51,7 @@ export const CommunityUserThinkBox = styled.View`
   align-items: flex-start;
   padding: 14px;
   justify-content: center;
-  background-color: ${({ theme }) => theme.secondary};
+  background-color: ${({ theme }) => theme.lightGray};
   border-radius: 12px;
 `;
 
@@ -84,21 +84,13 @@ export const CommunityMainBoxUserProfile = styled.View`
 `;
 
 export const CommunityMainBoxContainer = styled(CommunityMainBox)`
-  row-gap: 8px;
+  row-gap: 12px;
 `;
 
 export const CommunityMainBoxImageContainer = styled.View`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
-`;
-
-export const CommunityMainBoxImage = styled.Image`
-  // image의 size 만큼 height를 설정해줘야 함
-  /* height: 300px; */
-  width: 100%;
-  height: 440;
-  // center image
 `;
 
 export const TextWrapper2 = styled(Animated.View)`

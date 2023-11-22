@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -14,11 +15,10 @@ import { Image } from 'react-native';
 import moment from 'moment-timezone';
 import { useTheme } from '@emotion/react';
 
-import { ContentBox, Header, Text } from 'src/components';
+import { ContentBox, Header, ImageCard, Text } from 'src/components';
 import { useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants/community';
-import { RPH } from 'src/utils';
 
 import * as S from './styled';
 
@@ -34,10 +34,15 @@ export const CommunityMainScreen: React.FC = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [imageHeights, setImageHeights] = useState<Array<number>>([]);
 
-  const getHeightsForImage = useCallback((uri: string, index: number) => {
+  const getHeightsForImage = useCallback((uri: string, index: number, number: number) => {
     try {
       Image.getSize(uri, (w, h) => {
-        const imageHeight = ((h - 400) * width) / w;
+        let imageHeight = 0;
+        if (number === 1) {
+          imageHeight = (h * width) / w;
+        } else {
+          imageHeight = ((h / 2.4) * width) / w;
+        }
         setImageHeights((prev) => {
           const newImageHeights = [...prev];
           newImageHeights[index] = imageHeight;
@@ -56,7 +61,7 @@ export const CommunityMainScreen: React.FC = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     Animated.timing(value, {
       toValue: 0,
-      duration: 300,
+      duration: 200,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
@@ -79,8 +84,6 @@ export const CommunityMainScreen: React.FC = () => {
 
   const getTime = (date: string) => {
     const now = moment().tz('Asia/Seoul');
-    // get month
-    console.log(now.month(), now.date());
     const target = moment(date).tz('Asia/Seoul');
     const diff = now.diff(target, 'seconds');
     const diffMinutes = now.diff(target, 'minutes');
@@ -108,8 +111,10 @@ export const CommunityMainScreen: React.FC = () => {
 
   useEffect(() => {
     COMMUNITY_LIST.forEach((item, index) => {
-      item.content.image.slice(0, 1).forEach((image, i) => {
-        getHeightsForImage(image, index * item.content.image.length + i);
+      item.content.image.forEach((image, i) => {
+        if (item.content.image.length === 1)
+          getHeightsForImage(image, index * item.content.image.length + i, 1);
+        else getHeightsForImage(image, index * item.content.image.length + i, 2);
       });
     });
   }, [COMMUNITY_LIST, getHeightsForImage]);
@@ -196,22 +201,7 @@ export const CommunityMainScreen: React.FC = () => {
                       <Text size={18} style={{ width: '100%' }}>
                         {item.content.message}
                       </Text>
-                      <S.CommunityMainBoxImageContainer>
-                        {/* {item.content.image.slice(0, 1).map((image, i) => {
-                          const imageHeight = imageHeights[index * item.content.image.length + i];
-                          return (
-                            <Image
-                              key={i}
-                              style={{ width: '100%' }}
-                              source={{
-                                uri: image,
-                                height: imageHeight > RPH(45) ? RPH(45) : imageHeight,
-                              }}
-                              resizeMode="contain"
-                            />
-                          );
-                        })} */}
-                      </S.CommunityMainBoxImageContainer>
+                      <ImageCard item={item} index={index} imageHeights={imageHeights} />
                     </S.CommunityMainBoxContainer>
                   )}
                 </S.CommunityMainBox>
