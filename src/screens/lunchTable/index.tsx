@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, Switch, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Switch, View } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import messaging from '@react-native-firebase/messaging';
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 
 import { Button, Header, Modal, Spinner, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
@@ -19,13 +20,13 @@ import * as S from './styled';
 const WEEKDAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
 
 export const LunchTableScreen: React.FC = () => {
-  const { isLoading, meal, krDate } = useGetMealData();
+  const { isLoading, meal } = useGetMealData();
+
+  const krDate = moment().tz('Asia/Seoul');
 
   const themeValue = useRecoilValue(themeAtom);
 
   const theme = useTheme();
-
-  const scrollViewRef = useRef<ScrollView>(null);
 
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -39,9 +40,7 @@ export const LunchTableScreen: React.FC = () => {
     }
   };
 
-  const filteredMealList = meal?.filter(
-    (meal) => new Date(meal.date).getDate() >= krDate.getDate(),
-  );
+  const filteredMealList = meal?.filter((meal) => new Date(meal.date).getDate() >= krDate.date());
 
   const navigation = useNavigation();
 
@@ -80,7 +79,6 @@ export const LunchTableScreen: React.FC = () => {
         <Spinner isCenter />
       ) : !isLoading && meal ? (
         <S.LunchTableContainer
-          ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{

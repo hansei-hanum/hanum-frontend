@@ -10,6 +10,8 @@ import { useTheme } from '@emotion/react';
 import { HomeScreen, ShowMoreScreen, ScheduleScreen, LunchTableScreen } from 'src/screens';
 import { iosCheckHeight } from 'src/utils';
 
+import { CommunityMainScreen } from '../community';
+
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
@@ -44,7 +46,7 @@ export const MainScreen: React.FC = () => {
           color: theme.default,
         },
       }}
-      initialRouteName="홈"
+      initialRouteName="대나무숲"
     >
       <BottomTab.Screen
         name="홈"
@@ -65,6 +67,13 @@ export const MainScreen: React.FC = () => {
         component={LunchTableScreen}
         options={{
           tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="대나무숲"
+        component={CommunityMainScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Icons name="article" size={size + 4} color={color} />,
         }}
       />
       <BottomTab.Screen

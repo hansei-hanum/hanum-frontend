@@ -27,10 +27,10 @@ export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible,
             {linkText ? (
               <>{linkText}</>
             ) : (
-              <Text size={16}>
+              <Text size={16} style={{ width: '100%' }}>
                 {typeof text === 'string'
                   ? text?.split('\n').map((line, index) => (
-                      <Text size={16} key={line}>
+                      <Text size={16} key={line} style={{ width: '100%' }}>
                         {line}
                         {index !== text.split('\n').length - 1 && <>{'\n'}</>}
                       </Text>

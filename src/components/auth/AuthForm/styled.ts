@@ -1,9 +1,7 @@
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 
 import styled from '@emotion/native';
-import { TextInput } from '@react-native-material/core';
 
-import { fonts } from 'src/styles';
 import { iosCheckHeight, isAndroid } from 'src/utils';
 
 export const AuthWrapper = styled.SafeAreaView`
@@ -31,14 +29,6 @@ export const AuthTextContainer = styled.View`
   margin-top: 10px;
   flex-direction: column;
   row-gap: 6px;
-`;
-
-export const AuthInput = styled(TextInput)`
-  width: 100%;
-  padding: 10px 0;
-  margin-right: 20px;
-  font-size: 16px;
-  font-family: ${fonts.medium};
 `;
 
 export const AuthButtonWrapper = styled.View`
