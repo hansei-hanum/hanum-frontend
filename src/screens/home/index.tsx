@@ -8,6 +8,7 @@ import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-nati
 import messaging from '@react-native-firebase/messaging';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
+import { useNavigation } from '@react-navigation/native';
 
 import { Timer, Calendar, Header, LunchTable } from 'src/components';
 import { isAndroid, isIos } from 'src/utils';
@@ -17,7 +18,6 @@ import { themeAtom } from 'src/atoms';
 import { Logo, WhiteLogo } from '../../../assets/images';
 
 import * as S from './styled';
-import { useNavigation } from '@react-navigation/native';
 
 export const HomeScreen: React.FC = ({ navigation }: any) => {
   const theme = useTheme();
@@ -44,7 +44,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
 
     if (isGranted) {
       const token = await messaging().getToken();
-      console.log("Token:", token);
+      console.log('Token:', token);
       mutate({ token: token, platform: isIos ? 'IOS' : 'ANDROID' });
     }
   };
@@ -71,58 +71,58 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
     messaging().subscribeToTopic('announcement');
   }, []);
 
-    interface ParsedURL {
+  interface ParsedURL {
     path: string[];
     params: Record<string, string> | null;
   }
-  
+
+  function parseQueryString(queryString: string): Record<string, string> {
+    const params: Record<string, string> = {};
+    const keyValuePairs = queryString.split('&');
+
+    keyValuePairs.forEach((pair) => {
+      const [key, value] = pair.split('=');
+      params[key] = value;
+    });
+
+    return params;
+  }
+
   function parseDeeplink(url: string): ParsedURL | null {
-    const protocol = "hanum://";
+    const protocol = 'hanum://';
     if (!url.startsWith(protocol)) {
       return null;
     }
-  
-    const pathAndParams = url.slice(protocol.length).split("?");
-    const path = pathAndParams[0].split("/").filter(Boolean);
-    const params = pathAndParams[1]
-      ? parseQueryString(pathAndParams[1])
-      : null;
-  
+
+    const pathAndParams = url.slice(protocol.length).split('?');
+    const path = pathAndParams[0].split('/').filter(Boolean);
+    const params = pathAndParams[1] ? parseQueryString(pathAndParams[1]) : null;
+
     return { path, params };
-  }
-  
-  function parseQueryString(queryString: string): Record<string, string> {
-    const params: Record<string, string> = {};
-    const keyValuePairs = queryString.split("&");
-  
-    keyValuePairs.forEach((pair) => {
-      const [key, value] = pair.split("=");
-      params[key] = value;
-    });
-  
-    return params;
   }
 
   function handleOpenURL(url: string) {
     const linkInfo = parseDeeplink(url);
-    if (linkInfo){
-      navigator.navigate({name: linkInfo.path[linkInfo.path.length - 1], params: linkInfo.params} as never);
+    if (linkInfo) {
+      navigator.navigate({
+        name: linkInfo.path[linkInfo.path.length - 1],
+        params: linkInfo.params,
+      } as never);
     }
   }
 
   useEffect(() => {
-    messaging().onNotificationOpenedApp(remoteMessage => {
+    messaging().onNotificationOpenedApp((remoteMessage) => {
       if (remoteMessage.data) {
-        handleOpenURL(remoteMessage.data.url);
+        handleOpenURL(`${remoteMessage.data.url}`);
       }
     });
 
-    // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
-      .then(remoteMessage => {
+      .then((remoteMessage) => {
         if (remoteMessage?.data) {
-          handleOpenURL(remoteMessage.data.url);
+          handleOpenURL(`${remoteMessage.data.url}`);
         }
       });
   }, []);

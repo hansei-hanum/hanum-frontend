@@ -16,7 +16,7 @@ import { View } from 'react-native';
 import moment from 'moment-timezone';
 import { useTheme } from '@emotion/react';
 
-import { ContentBox, Header, Text } from 'src/components';
+import { Header, Text } from 'src/components';
 import { useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants';
@@ -148,22 +148,20 @@ export const CommunityMainScreen: React.FC = () => {
           contentContainerStyle={{
             paddingTop: 20,
             paddingBottom: 40,
-            rowGap: 20,
+            rowGap: 16,
           }}
         >
-          <ContentBox>
-            <S.CommunityUserContainer>
-              <S.CommunityImage
-                source={userProfile ? { uri: userProfile } : UserLogo}
-                style={{ resizeMode: 'contain' }}
-              />
-              <S.CommunityUserThinkBox>
-                <Text size={15} color={theme.placeholder}>
-                  어떤 생각을 하고 계신가요?
-                </Text>
-              </S.CommunityUserThinkBox>
-            </S.CommunityUserContainer>
-          </ContentBox>
+          <S.CommunityUserContainer>
+            <S.CommunityImage
+              source={userProfile ? { uri: userProfile } : UserLogo}
+              style={{ resizeMode: 'contain' }}
+            />
+            <S.CommunityUserThinkBox>
+              <Text size={15} color={theme.placeholder}>
+                어떤 생각을 하고 계신가요?
+              </Text>
+            </S.CommunityUserThinkBox>
+          </S.CommunityUserContainer>
           {COMMUNITY_LIST.map((item, index) => {
             return (
               <S.CommunityMainBox>

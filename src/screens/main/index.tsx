@@ -46,7 +46,7 @@ export const MainScreen: React.FC = () => {
           color: theme.default,
         },
       }}
-      initialRouteName="대나무숲"
+      initialRouteName="홈"
     >
       <BottomTab.Screen
         name="홈"

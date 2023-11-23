@@ -13,6 +13,7 @@ export const CommunityMainWrapper = styled.SafeAreaView`
 export const CommunityMainSearchBarContainer = styled(Animated.View)`
   flex-direction: row;
   align-items: center;
+  margin-top: 10px;
   padding: ${isIos ? '12px' : '0px'} 12px;
   border-radius: 12px;
   background-color: ${({ theme }) => theme.secondary};
@@ -31,11 +32,20 @@ export const CommunityMainIconWrapper = styled(Animated.View)`
   margin-left: 10px;
 `;
 
+export const CommunityUserWrapper = styled.View`
+  margin: 0 20px;
+`;
+
 export const CommunityUserContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   column-gap: 10px;
+  padding: 20px;
+  border-top-color: ${({ theme }) => theme.lightGray};
+  border-bottom-color: ${({ theme }) => theme.lightGray};
+  border-top-width: 1px;
+  border-bottom-width: 1px;
 `;
 
 export const CommunityImage = styled.Image`

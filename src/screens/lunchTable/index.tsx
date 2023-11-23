@@ -23,6 +23,7 @@ export const LunchTableScreen: React.FC = () => {
   const { isLoading, meal } = useGetMealData();
 
   const krDate = moment().tz('Asia/Seoul');
+  console.log(krDate.date());
 
   const themeValue = useRecoilValue(themeAtom);
 

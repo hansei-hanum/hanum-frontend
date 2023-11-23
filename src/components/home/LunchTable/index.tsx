@@ -14,11 +14,14 @@ export interface LunchTableProps {
 }
 
 export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
-  const { meal, isLoading, krDate } = useGetMealData();
+  const { meal, isLoading } = useGetMealData();
 
-  const filterMeal = meal?.filter((meal) => new Date(meal.date).getDate() === krDate.getDate());
+  const today = new Date();
+
+  const filterMeal = meal?.filter((meal) => new Date(meal.date).getDate() === today.getDate());
 
   const theme = useTheme();
+
   return (
     <Content icon="🍴" name="급식표" onPress={onPress}>
       <S.LunchTableTextContainer>
