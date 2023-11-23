@@ -1,24 +1,18 @@
-/* eslint-disable prefer-const */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  TextInput,
-  Easing,
-  LayoutAnimation,
-  ScrollView,
-  View,
-  Dimensions,
-} from 'react-native';
+import { Animated, TextInput, Easing, LayoutAnimation, ScrollView, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native';
+import Swiper from 'react-native-swiper';
+import { View } from 'react-native';
 
 import moment from 'moment-timezone';
 import { useTheme } from '@emotion/react';
 
-import { ContentBox, Header, ImageCard, Text } from 'src/components';
+import { ContentBox, Header, Text } from 'src/components';
 import { useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
-import { COMMUNITY_LIST } from 'src/constants/community';
+import { COMMUNITY_LIST } from 'src/constants';
+import { RPH } from 'src/utils';
 
 import * as S from './styled';
 
@@ -34,15 +28,11 @@ export const CommunityMainScreen: React.FC = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [imageHeights, setImageHeights] = useState<Array<number>>([]);
 
-  const getHeightsForImage = useCallback((uri: string, index: number, number: number) => {
+  const getHeightsForImage = useCallback((uri: string, index: number) => {
     try {
       Image.getSize(uri, (w, h) => {
         let imageHeight = 0;
-        if (number === 1) {
-          imageHeight = (h * width) / w;
-        } else {
-          imageHeight = ((h / 2.4) * width) / w;
-        }
+        imageHeight = ((h - 250) * width) / w;
         setImageHeights((prev) => {
           const newImageHeights = [...prev];
           newImageHeights[index] = imageHeight;
@@ -85,36 +75,32 @@ export const CommunityMainScreen: React.FC = () => {
   const getTime = (date: string) => {
     const now = moment().tz('Asia/Seoul');
     const target = moment(date).tz('Asia/Seoul');
-    const diff = now.diff(target, 'seconds');
-    const diffMinutes = now.diff(target, 'minutes');
-    const diffHours = now.diff(target, 'hours');
-    const diffDays = now.diff(target, 'days');
-    const diffWeeks = now.diff(target, 'weeks');
-    const diffMonths = now.diff(target, 'months');
-    const diffYears = now.diff(target, 'years');
-    if (diff < 1) {
-      return '방금 전';
-    } else if (diffMinutes < 60) {
-      return `${diffMinutes}분 전`;
-    } else if (diffHours < 24) {
-      return `${diffHours}시간 전`;
-    } else if (diffDays < 7) {
-      return `${diffDays}일 전`;
-    } else if (diffWeeks < 4) {
-      return `${diffWeeks}주 전`;
-    } else if (diffMonths < 12) {
-      return `${diffMonths}달 전`;
-    } else if (diffYears < 1) {
-      return `${diffYears}년 전`;
+    const units = ['방금 전', '분', '시간', '일', '주', '달', '년'];
+    const diffs = [
+      now.diff(target, 'seconds'),
+      now.diff(target, 'minutes'),
+      now.diff(target, 'hours'),
+      now.diff(target, 'days'),
+      now.diff(target, 'weeks'),
+      now.diff(target, 'months'),
+      now.diff(target, 'years'),
+    ];
+
+    for (let i = 0; i < units.length; i++) {
+      if (diffs[i] < 1) {
+        return units[i];
+      } else if (diffs[i + 1] < 60) {
+        return `${diffs[i + 1]}${units[i + 1]} 전`;
+      }
     }
+
+    return `${diffs[6]}${units[6]} 전`;
   };
 
   useEffect(() => {
     COMMUNITY_LIST.forEach((item, index) => {
       item.content.image.forEach((image, i) => {
-        if (item.content.image.length === 1)
-          getHeightsForImage(image, index * item.content.image.length + i, 1);
-        else getHeightsForImage(image, index * item.content.image.length + i, 2);
+        getHeightsForImage(image, index * item.content.image.length + i);
       });
     });
   }, [COMMUNITY_LIST, getHeightsForImage]);
@@ -145,7 +131,6 @@ export const CommunityMainScreen: React.FC = () => {
           contentContainerStyle={{
             paddingTop: 20,
             paddingBottom: 40,
-            paddingHorizontal: 20,
             rowGap: 20,
           }}
         >
@@ -164,48 +149,77 @@ export const CommunityMainScreen: React.FC = () => {
           </ContentBox>
           {COMMUNITY_LIST.map((item, index) => {
             return (
-              <ContentBox key={item.time + Math.random()}>
-                <S.CommunityMainBox>
-                  <S.CommunityMainBoxHeader>
-                    <S.CommunityMainBoxHeaderTitle>
-                      <S.CommunityImage
-                        source={item.author.image ? { uri: item.author.image } : UserLogo}
-                        style={{ resizeMode: 'contain' }}
-                      />
-                      <View>
-                        <Text size={16}>{item.author.name}</Text>
-                        <S.CommunityMainBoxUserProfile>
-                          <Text size={14} color={theme.placeholder}>
-                            {getTime(item.time)}
-                          </Text>
-                          {item.type === 'ALL' && (
-                            <Icon name="public" size={16} color={theme.placeholder} />
-                          )}
-                          {item.type === 'PRIVATE' && (
-                            <Icon name="lock" size={16} color={theme.placeholder} />
-                          )}
-                          {item.type === 'STUDENT' && (
-                            <Icon name="school" size={16} color={theme.placeholder} />
-                          )}
-                        </S.CommunityMainBoxUserProfile>
-                      </View>
-                    </S.CommunityMainBoxHeaderTitle>
-                    <Icon name="more-horiz" size={24} color={theme.placeholder} />
-                  </S.CommunityMainBoxHeader>
+              <S.CommunityMainBox>
+                {/* <CommunityMainHeader item={item} /> */}
+                <S.CommunityMainBoxHeader>
+                  <S.CommunityMainBoxHeaderTitle>
+                    <S.CommunityImage
+                      source={item.author.image ? { uri: item.author.image } : UserLogo}
+                      style={{ resizeMode: 'contain' }}
+                    />
+                    <View>
+                      <Text size={16}>{item.author.name}</Text>
+                      <S.CommunityMainBoxUserProfile>
+                        <Text size={14} color={theme.placeholder}>
+                          {getTime(item.time)}
+                        </Text>
+                        {item.type === 'ALL' && (
+                          <Icon name="public" size={16} color={theme.placeholder} />
+                        )}
+                        {item.type === 'PRIVATE' && (
+                          <Icon name="lock" size={16} color={theme.placeholder} />
+                        )}
+                        {item.type === 'STUDENT' && (
+                          <Icon name="school" size={16} color={theme.placeholder} />
+                        )}
+                      </S.CommunityMainBoxUserProfile>
+                    </View>
+                  </S.CommunityMainBoxHeaderTitle>
+                  <Icon name="more-horiz" size={24} color={theme.placeholder} />
+                </S.CommunityMainBoxHeader>
+                <S.CommunityMainContentWrapper>
                   {item.content.image.length <= 0 ? (
                     <Text size={20} style={{ width: '100%' }}>
                       {item.content.message}
                     </Text>
                   ) : (
-                    <S.CommunityMainBoxContainer>
-                      <Text size={18} style={{ width: '100%' }}>
-                        {item.content.message}
-                      </Text>
-                      <ImageCard item={item} index={index} imageHeights={imageHeights} />
-                    </S.CommunityMainBoxContainer>
+                    <Text size={18} style={{ width: '100%' }}>
+                      {item.content.message}
+                    </Text>
                   )}
-                </S.CommunityMainBox>
-              </ContentBox>
+                </S.CommunityMainContentWrapper>
+                {item.content.image.length > 0 && (
+                  <Swiper
+                    loop={false}
+                    containerStyle={{
+                      height:
+                        imageHeights[index * item.content.image.length] > RPH(45)
+                          ? RPH(45)
+                          : imageHeights[index * item.content.image.length],
+                      paddingBottom: 0,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {item.content.image.map((image, i) => {
+                      const imageHeight = imageHeights[index * item.content.image.length + i];
+                      return (
+                        <S.ImageCardWrapper>
+                          <Image
+                            style={{ width: '100%' }}
+                            key={i}
+                            source={{
+                              uri: image,
+                              height: imageHeight > RPH(45) ? RPH(45) : imageHeight,
+                            }}
+                            resizeMode="contain"
+                          />
+                        </S.ImageCardWrapper>
+                      );
+                    })}
+                  </Swiper>
+                )}
+              </S.CommunityMainBox>
             );
           })}
         </ScrollView>

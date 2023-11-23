@@ -59,8 +59,18 @@ export const CommunityMainBox = styled.View`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  row-gap: 10px;
+  row-gap: 12px;
   width: 100%;
+  border-top-color: ${({ theme }) => theme.lightGray};
+  border-bottom-color: ${({ theme }) => theme.lightGray};
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+`;
+
+export const CommunityMainBoxHeaderContainer = styled.View`
+  width: 100%;
+  padding: 0 20px;
+  row-gap: 12px;
 `;
 
 export const CommunityMainBoxHeader = styled.View`
@@ -68,6 +78,8 @@ export const CommunityMainBoxHeader = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
+  padding-top: 20px;
 `;
 
 export const CommunityMainBoxHeaderTitle = styled.View`
@@ -83,14 +95,9 @@ export const CommunityMainBoxUserProfile = styled.View`
   column-gap: 4px;
 `;
 
-export const CommunityMainBoxContainer = styled(CommunityMainBox)`
-  row-gap: 12px;
-`;
-
-export const CommunityMainBoxImageContainer = styled.View`
-  flex-direction: row;
+export const CommunityMainContentWrapper = styled.View`
   width: 100%;
-  justify-content: space-between;
+  padding: 0 20px;
 `;
 
 export const TextWrapper2 = styled(Animated.View)`
@@ -98,4 +105,10 @@ export const TextWrapper2 = styled(Animated.View)`
   z-index: 2;
   flex: 1;
   height: 100%;
+`;
+
+export const ImageCardWrapper = styled.View`
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
 `;

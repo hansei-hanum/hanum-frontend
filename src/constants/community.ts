@@ -14,7 +14,7 @@ export interface CommunityListItems {
 }
 
 const CHAT =
-  'https://cdn.discordapp.com/attachments/1142361627501547552/1176511445790371840/Screenshot_2023-11-17_at_1.13.18_PM.png?ex=656f22ab&is=655cadab&hm=6ce59e4d34e4346e73ae6908495abc6092c35b915b656830aa0f49045881edbb&';
+  'https://cdn.discordapp.com/attachments/1142361627501547552/1177075812994916402/Screenshot_2023-11-23_at_11.38.58_AM.png?ex=65713046&is=655ebb46&hm=84449109b2a44cda6542c3770522222537e75bdd86e1acc251f07a5929e7418a&';
 
 const POSTER =
   'https://cdn.discordapp.com/attachments/1142361627501547552/1176511662447144990/comImg.png?ex=656f22de&is=655cadde&hm=c9ed37e1214d7ed4008e8599d40bcdb17c1d9ddc0e1bc59175baa087e3a461de&';
@@ -45,7 +45,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     time: '2023-11-22T07:00:00.000Z',
     content: {
       message: `점심시간에 에어팟이 사라졌어요\n혹시 보신 분?`,
-      image: [POSTER],
+      image: [CHAT],
       likes: 5,
       comments: 3,
     },
@@ -73,7 +73,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     time: '2023-11-19T15:00:00.000Z',
     content: {
       message: `보안관제 동아리에서 신입부원을 모집합니다!\n\n- 모집 기간: 기원전 12년 ~ 기원전 11년\n- 모집 인원: 미정\n- 지원하기: https://hsoc.kr/`,
-      image: [IMAGE, IMAGE, IMAGE],
+      image: [POSTER, IMAGE, IMAGE],
       likes: 5,
       comments: 3,
     },
@@ -87,7 +87,21 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     time: '2023-11-19T15:00:00.000Z',
     content: {
       message: `보안관제 동아리에서 신입부원을 모집합니다!\n\n- 모집 기간: 기원전 12년 ~ 기원전 11년\n- 모집 인원: 미정\n- 지원하기: https://hsoc.kr/`,
-      image: [IMAGE, IMAGE, IMAGE, IMAGE, IMAGE, IMAGE, IMAGE],
+      image: [IMAGE, IMAGE, IMAGE, IMAGE],
+      likes: 5,
+      comments: 3,
+    },
+    type: 'STUDENT',
+  },
+  {
+    author: {
+      name: '너검무검',
+      image: null,
+    },
+    time: '2023-11-19T15:00:00.000Z',
+    content: {
+      message: `보안관제 동아리에서 신입부원을 모집합니다!\n\n- 모집 기간: 기원전 12년 ~ 기원전 11년\n- 모집 인원: 미정\n- 지원하기: https://hsoc.kr/`,
+      image: [IMAGE, IMAGE, IMAGE, IMAGE, IMAGE, IMAGE, IMAGE, IMAGE],
       likes: 5,
       comments: 3,
     },
