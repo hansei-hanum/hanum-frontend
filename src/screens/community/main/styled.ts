@@ -59,7 +59,7 @@ export const CommunityMainBox = styled.View`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  row-gap: 12px;
+  row-gap: 20px;
   width: 100%;
   border-top-color: ${({ theme }) => theme.lightGray};
   border-bottom-color: ${({ theme }) => theme.lightGray};
@@ -100,15 +100,30 @@ export const CommunityMainContentWrapper = styled.View`
   padding: 0 20px;
 `;
 
+export const CommunityMainImageCardWrapper = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const CommunityMainBottom = styled.View`
+  width: 70%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  padding-bottom: 20px;
+`;
+
+export const CommunityMainBottomIconContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
+`;
+
 export const TextWrapper2 = styled(Animated.View)`
   position: relative;
   z-index: 2;
   flex: 1;
   height: 100%;
-`;
-
-export const ImageCardWrapper = styled.View`
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
 `;

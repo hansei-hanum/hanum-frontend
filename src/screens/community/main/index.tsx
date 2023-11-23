@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, TextInput, Easing, LayoutAnimation, ScrollView, Dimensions } from 'react-native';
+import {
+  Animated,
+  TextInput,
+  Easing,
+  LayoutAnimation,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -27,12 +35,13 @@ export const CommunityMainScreen: React.FC = () => {
 
   const [isFocused, setIsFocused] = useState(false);
   const [imageHeights, setImageHeights] = useState<Array<number>>([]);
+  const [likes, setLikes] = useState<Array<boolean>>([]);
 
   const getHeightsForImage = useCallback((uri: string, index: number) => {
     try {
       Image.getSize(uri, (w, h) => {
         let imageHeight = 0;
-        imageHeight = ((h - 250) * width) / w;
+        imageHeight = (h * width) / w;
         setImageHeights((prev) => {
           const newImageHeights = [...prev];
           newImageHeights[index] = imageHeight;
@@ -97,6 +106,14 @@ export const CommunityMainScreen: React.FC = () => {
     return `${diffs[6]}${units[6]} 전`;
   };
 
+  const onLikeClick = (index: number) => {
+    setLikes((prev) => {
+      const newLikes = [...prev];
+      newLikes[index] = !newLikes[index];
+      return newLikes;
+    });
+  };
+
   useEffect(() => {
     COMMUNITY_LIST.forEach((item, index) => {
       item.content.image.forEach((image, i) => {
@@ -150,7 +167,6 @@ export const CommunityMainScreen: React.FC = () => {
           {COMMUNITY_LIST.map((item, index) => {
             return (
               <S.CommunityMainBox>
-                {/* <CommunityMainHeader item={item} /> */}
                 <S.CommunityMainBoxHeader>
                   <S.CommunityMainBoxHeaderTitle>
                     <S.CommunityImage
@@ -179,11 +195,11 @@ export const CommunityMainScreen: React.FC = () => {
                 </S.CommunityMainBoxHeader>
                 <S.CommunityMainContentWrapper>
                   {item.content.image.length <= 0 ? (
-                    <Text size={20} style={{ width: '100%' }}>
+                    <Text size={18} style={{ width: '100%' }}>
                       {item.content.message}
                     </Text>
                   ) : (
-                    <Text size={18} style={{ width: '100%' }}>
+                    <Text size={16} style={{ width: '100%' }}>
                       {item.content.message}
                     </Text>
                   )}
@@ -193,32 +209,49 @@ export const CommunityMainScreen: React.FC = () => {
                     loop={false}
                     containerStyle={{
                       height:
-                        imageHeights[index * item.content.image.length] > RPH(45)
-                          ? RPH(45)
+                        imageHeights[index * item.content.image.length] > RPH(48)
+                          ? RPH(48)
                           : imageHeights[index * item.content.image.length],
-                      paddingBottom: 0,
-                      justifyContent: 'center',
-                      alignItems: 'center',
                     }}
                   >
                     {item.content.image.map((image, i) => {
                       const imageHeight = imageHeights[index * item.content.image.length + i];
                       return (
-                        <S.ImageCardWrapper>
+                        <S.CommunityMainImageCardWrapper>
                           <Image
                             style={{ width: '100%' }}
                             key={i}
                             source={{
                               uri: image,
-                              height: imageHeight > RPH(45) ? RPH(45) : imageHeight,
+                              height: imageHeight > RPH(48) ? RPH(48) : imageHeight,
                             }}
                             resizeMode="contain"
                           />
-                        </S.ImageCardWrapper>
+                        </S.CommunityMainImageCardWrapper>
                       );
                     })}
                   </Swiper>
                 )}
+                <S.CommunityMainBottom>
+                  <S.CommunityMainBottomIconContainer>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => onLikeClick(index)}>
+                      <Icon
+                        name="thumb-up-alt"
+                        size={24}
+                        color={likes[index] ? theme.primary : theme.placeholder}
+                      />
+                    </TouchableOpacity>
+                    <Text size={14} color={theme.placeholder}>
+                      좋아요 {likes[index] ? item.content.likes + 1 : item.content.likes}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                  <S.CommunityMainBottomIconContainer>
+                    <Icon name="comment" size={24} color={theme.placeholder} />
+                    <Text size={14} color={theme.placeholder}>
+                      댓글 {item.content.comments}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </S.CommunityMainBottom>
               </S.CommunityMainBox>
             );
           })}
