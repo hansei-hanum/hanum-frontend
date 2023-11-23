@@ -539,7 +539,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Hanum/Hanum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SX3VDZQ993;
+				DEVELOPMENT_TEAM = 663NYARW47;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Hanum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "한움";
@@ -549,7 +549,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -576,7 +576,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Hanum/Hanum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SX3VDZQ993;
+				DEVELOPMENT_TEAM = 663NYARW47;
 				INFOPLIST_FILE = Hanum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "한움";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
@@ -585,7 +585,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
