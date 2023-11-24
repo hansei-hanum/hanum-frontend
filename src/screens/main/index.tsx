@@ -49,37 +49,41 @@ export const MainScreen: React.FC = () => {
       initialRouteName="홈"
     >
       <BottomTab.Screen
-        name="홈"
+        name="Home"
         component={HomeScreen}
         options={{
+          title: "홈",
           tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="시간표"
+        name="TimeTable"
         component={ScheduleScreen}
         options={{
+          title: "시간표",
           tabBarIcon: ({ color }) => <Icons name="access-time" size={size} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="급식표"
+        name="Meal"
         component={LunchTableScreen}
         options={{
+          title: "급식표",
           tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="대나무숲"
         component={CommunityMainScreen}
         options={{
           tabBarIcon: ({ color }) => <Icons name="article" size={size + 4} color={color} />,
         }}
-      />
+      /> */}
       <BottomTab.Screen
-        name="더보기"
+        name="More"
         component={ShowMoreScreen}
         options={{
+          title: "더보기",
           tabBarIcon: ({ color }) => <Icons name="menu" size={size} color={color} />,
         }}
       />

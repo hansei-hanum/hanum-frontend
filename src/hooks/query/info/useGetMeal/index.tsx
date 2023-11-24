@@ -1,7 +1,7 @@
 import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import { APIErrorResponse, APIResponse, GetMealResponse } from 'src/api';
 import { GetMealValue, getMeal } from 'src/api';

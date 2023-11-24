@@ -62,7 +62,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
   };
 
   const onPress = () => {
-    navigation.navigate('급식표');
+    navigation.navigate('Meal');
   };
 
   useEffect(() => {

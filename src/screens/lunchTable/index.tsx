@@ -6,7 +6,7 @@ import messaging from '@react-native-firebase/messaging';
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import { Button, Header, Modal, Spinner, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
@@ -14,6 +14,8 @@ import { MealIcon } from 'src/assets';
 import { themeAtom } from 'src/atoms';
 import { useGetMealData } from 'src/hooks';
 import { GetMealResponse } from 'src/api';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as S from './styled';
 
@@ -23,7 +25,6 @@ export const LunchTableScreen: React.FC = () => {
   const { isLoading, meal } = useGetMealData();
 
   const krDate = moment().tz('Asia/Seoul');
-  console.log(krDate.date());
 
   const themeValue = useRecoilValue(themeAtom);
 
@@ -35,11 +36,26 @@ export const LunchTableScreen: React.FC = () => {
   const toggleNotifyClick = () => {
     setNotifyClick(!notifyClick);
     if (!notifyClick) {
+      console.log("Subscribe to topic 'meal'");
+      AsyncStorage.setItem('mealNotificationEnabled', 'true');
       messaging().subscribeToTopic('meal');
     } else {
+      console.log("Unsubscribe from topic 'meal'");
+      AsyncStorage.setItem('mealNotificationEnabled', 'false');
       messaging().unsubscribeFromTopic('meal');
     }
   };
+
+  useEffect(() => {
+    AsyncStorage.getItem('mealNotificationEnabled').then((value) => {
+      if (value === 'true') {
+        setNotifyClick(true);
+      } else {
+        setNotifyClick(false);
+      }
+    });
+  }, []);
+
 
   const filteredMealList = meal?.filter((meal) => new Date(meal.date).getDate() >= krDate.date());
 
