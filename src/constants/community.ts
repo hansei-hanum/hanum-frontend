@@ -15,7 +15,7 @@ export interface CommunityListItems {
 }
 
 const CHAT =
-  'https://cdn.discordapp.com/attachments/1142361627501547552/1177075812994916402/Screenshot_2023-11-23_at_11.38.58_AM.png?ex=65713046&is=655ebb46&hm=84449109b2a44cda6542c3770522222537e75bdd86e1acc251f07a5929e7418a&';
+  'https://cdn.discordapp.com/attachments/976313946812350474/1177900739604008970/IMG_0961.jpg?ex=6574308c&is=6561bb8c&hm=6bbfc3690d36b90d5a4d1db8b65b7591f25ab67da49a1f5b0a92d846a3460891&';
 
 const POSTER =
   'https://cdn.discordapp.com/attachments/1142361627501547552/1176511662447144990/comImg.png?ex=656f22de&is=655cadde&hm=c9ed37e1214d7ed4008e8599d40bcdb17c1d9ddc0e1bc59175baa087e3a461de&';
@@ -160,3 +160,24 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
     replies: 5,
   },
 ];
+
+export interface CommunityPostItems extends CommunityListItems {
+  chats: CommunityChatListItems[];
+}
+
+export const COMMUNITY_POST: CommunityPostItems = {
+  author: {
+    name: '너검무검',
+    image: null,
+    isHidden: false,
+  },
+  time: '2023-11-19T15:00:00.000Z',
+  content: {
+    message: `보안관제 동아리에서 신입부원을 모집합니다!\n\n- 모집 기간: 기원전 12년 ~ 기원전 11년\n- 모집 인원: 미정\n- 지원하기: https://hsoc.kr/`,
+    image: [CHAT, IMAGE, POSTER],
+    likes: 5,
+    comments: 3,
+  },
+  type: 'STUDENT',
+  chats: COMMUNITY_CHAT_LIST,
+};

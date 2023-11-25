@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const CommunityMainBox = styled.View`
+export const CommunityPostContainer = styled.View`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
@@ -8,13 +8,13 @@ export const CommunityMainBox = styled.View`
   width: 100%;
 `;
 
-export const CommunityMainBoxHeaderContainer = styled.View`
+export const CommunityPostHeaderContainer = styled.View`
   width: 100%;
   padding: 0 20px;
   row-gap: 12px;
 `;
 
-export const CommunityMainBoxHeader = styled.View`
+export const CommunityPostHeader = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
@@ -23,31 +23,32 @@ export const CommunityMainBoxHeader = styled.View`
   padding-top: 20px;
 `;
 
-export const CommunityMainBoxHeaderTitle = styled.View`
+export const CommunityPostHeaderTitle = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
   column-gap: 10px;
 `;
 
-export const CommunityMainBoxUserProfile = styled.View`
+export const CommunityPostUserProfile = styled.View`
   flex-direction: row;
   align-items: center;
   column-gap: 4px;
 `;
 
-export const CommunityMainContentWrapper = styled.View`
+export const CommunityPostContentWrapper = styled.View`
   width: 100%;
   padding: 0 20px;
 `;
 
-export const CommunityMainImageCardWrapper = styled.View`
+export const CommunityPostImageWrapper = styled.View`
   width: 100%;
+  background-color: ${({ theme }) => theme.black};
   align-items: center;
   justify-content: center;
 `;
 
-export const CommunityImage = styled.Image`
+export const CommunityPostImage = styled.Image`
   border-radius: 100px;
   width: 44px;
   height: 44px;

@@ -1,20 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   TextInput,
   Easing,
   LayoutAnimation,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Image } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
 import { CommunityPost, Header, ScaleOpacity, Text } from 'src/components';
-import { useGetUser, useNavigate } from 'src/hooks';
+import { useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants';
 
@@ -23,7 +21,7 @@ import * as S from './styled';
 export const CommunityMainScreen: React.FC = () => {
   const navigate = useNavigate();
 
-  const { width } = Dimensions.get('window');
+  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const { userProfile } = useGetUser();
 
@@ -32,24 +30,7 @@ export const CommunityMainScreen: React.FC = () => {
   const searchRef = useRef<TextInput>(null);
 
   const [isFocused, setIsFocused] = useState(false);
-  const [imageHeights, setImageHeights] = useState<Array<number>>([]);
   const [likes, setLikes] = useState<Array<boolean>>([]);
-
-  const getHeightsForImage = useCallback((uri: string, index: number) => {
-    try {
-      Image.getSize(uri, (w, h) => {
-        let imageHeight = 0;
-        imageHeight = (h * width) / w;
-        setImageHeights((prev) => {
-          const newImageHeights = [...prev];
-          newImageHeights[index] = imageHeight;
-          return newImageHeights;
-        });
-      });
-    } catch (error) {
-      console.error('Error getting image size:', error);
-    }
-  }, []);
 
   const value = useRef(new Animated.Value(0)).current;
 

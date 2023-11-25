@@ -26,6 +26,7 @@ export interface CommunityPostProps {
   };
   type: 'ALL' | 'PRIVATE' | 'STUDENT';
   imageHeights: number[];
+  isSingle?: boolean;
 }
 
 export const CommunityPost: React.FC<CommunityPostProps> = ({
@@ -35,6 +36,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   time,
   imageHeights,
   index,
+  isSingle,
 }) => {
   const theme = useTheme();
 
@@ -64,28 +66,28 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   };
 
   return (
-    <S.CommunityMainBox>
-      <S.CommunityMainBoxHeader>
-        <S.CommunityMainBoxHeaderTitle>
-          <S.CommunityImage
+    <S.CommunityPostContainer>
+      <S.CommunityPostHeader>
+        <S.CommunityPostHeaderTitle>
+          <S.CommunityPostImage
             source={author.image && !author.isHidden ? { uri: author.image } : UserLogo}
             style={{ resizeMode: 'contain' }}
           />
           <View>
             <Text size={16}>{author.isHidden ? '익명' : author.name}</Text>
-            <S.CommunityMainBoxUserProfile>
+            <S.CommunityPostUserProfile>
               <Text size={14} color={theme.placeholder}>
                 {getTime(time)}
               </Text>
               {type === 'ALL' && <Icon name="public" size={16} color={theme.placeholder} />}
               {type === 'PRIVATE' && <Icon name="lock" size={16} color={theme.placeholder} />}
               {type === 'STUDENT' && <Icon name="school" size={16} color={theme.placeholder} />}
-            </S.CommunityMainBoxUserProfile>
+            </S.CommunityPostUserProfile>
           </View>
-        </S.CommunityMainBoxHeaderTitle>
+        </S.CommunityPostHeaderTitle>
         <Icon name="more-horiz" size={24} color={theme.placeholder} />
-      </S.CommunityMainBoxHeader>
-      <S.CommunityMainContentWrapper>
+      </S.CommunityPostHeader>
+      <S.CommunityPostContentWrapper>
         {content.image.length <= 0 ? (
           <Text size={18} style={{ width: '100%' }}>
             {content.message}
@@ -95,35 +97,39 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
             {content.message}
           </Text>
         )}
-      </S.CommunityMainContentWrapper>
+      </S.CommunityPostContentWrapper>
       {content.image.length > 0 && (
         <Swiper
           loop={false}
           containerStyle={{
             height:
-              imageHeights[index * content.image.length] > RPH(48)
+              imageHeights[index * content.image.length] > RPH(48) || isSingle
                 ? RPH(48)
                 : imageHeights[index * content.image.length],
           }}
+          dotColor="#A3A3A3"
+          activeDotColor={theme.primary}
         >
           {content.image.map((image, i) => {
-            const imageHeight = imageHeights[index * content.image.length + i];
+            const imageHeight = isSingle
+              ? imageHeights[i]
+              : imageHeights[index * content.image.length + i];
             return (
-              <S.CommunityMainImageCardWrapper>
+              <S.CommunityPostImageWrapper key={i}>
                 <Image
                   style={{ width: '100%' }}
                   key={i}
                   source={{
                     uri: image,
-                    height: imageHeight,
+                    height: imageHeight > RPH(48) ? RPH(48) : imageHeight,
                   }}
-                  resizeMode="stretch"
+                  resizeMode="contain"
                 />
-              </S.CommunityMainImageCardWrapper>
+              </S.CommunityPostImageWrapper>
             );
           })}
         </Swiper>
       )}
-    </S.CommunityMainBox>
+    </S.CommunityPostContainer>
   );
 };
