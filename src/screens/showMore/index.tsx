@@ -5,8 +5,9 @@ import { ScrollView } from 'react-native';
 import Toggle from 'react-native-toggle-element';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { useTheme } from '@emotion/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
 import { Text, Section, Header } from 'src/components';

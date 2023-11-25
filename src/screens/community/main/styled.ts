@@ -13,7 +13,7 @@ export const CommunityMainWrapper = styled.SafeAreaView`
 export const CommunityMainSearchBarContainer = styled(Animated.View)`
   flex-direction: row;
   align-items: center;
-  margin-top: 10px;
+  justify-content: center;
   padding: ${isIos ? '12px' : '0px'} 12px;
   border-radius: 12px;
   background-color: ${({ theme }) => theme.secondary};
@@ -28,7 +28,7 @@ export const CommunityMainSearchBar = styled.TextInput`
 
 export const CommunityMainIconWrapper = styled(Animated.View)`
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   margin-left: 10px;
 `;
 

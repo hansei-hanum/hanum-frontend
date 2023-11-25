@@ -5,6 +5,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { ThemeProvider } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
@@ -101,7 +102,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={data ? 'Main' : 'AuthMain'}
+          initialRouteName={'Main'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />

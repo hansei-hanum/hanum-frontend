@@ -16,7 +16,7 @@ import { View } from 'react-native';
 import moment from 'moment-timezone';
 import { useTheme } from '@emotion/react';
 
-import { Header, Text } from 'src/components';
+import { Header, ScaleOpacity, Text } from 'src/components';
 import { useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants';
@@ -137,7 +137,9 @@ export const CommunityMainScreen: React.FC = () => {
         </S.CommunityMainSearchBarContainer>
         {isFocused && (
           <S.CommunityMainIconWrapper style={opacityAnimation}>
-            <Icon name="cancel" size={24} color={theme.placeholder} onPress={hidden} />
+            <TouchableOpacity activeOpacity={0.8} onPress={hidden}>
+              <Icon name="cancel" size={24} color={theme.placeholder} />
+            </TouchableOpacity>
           </S.CommunityMainIconWrapper>
         )}
       </Header>
@@ -232,23 +234,25 @@ export const CommunityMainScreen: React.FC = () => {
                 )}
                 <S.CommunityMainBottom>
                   <S.CommunityMainBottomIconContainer>
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => onLikeClick(index)}>
+                    <ScaleOpacity onPress={() => onLikeClick(index)}>
                       <Icon
                         name="thumb-up-alt"
                         size={24}
                         color={likes[index] ? theme.primary : theme.placeholder}
                       />
-                    </TouchableOpacity>
+                    </ScaleOpacity>
                     <Text size={14} color={theme.placeholder}>
                       좋아요 {likes[index] ? item.content.likes + 1 : item.content.likes}
                     </Text>
                   </S.CommunityMainBottomIconContainer>
-                  <S.CommunityMainBottomIconContainer>
-                    <Icon name="comment" size={24} color={theme.placeholder} />
-                    <Text size={14} color={theme.placeholder}>
-                      댓글 {item.content.comments}
-                    </Text>
-                  </S.CommunityMainBottomIconContainer>
+                  <ScaleOpacity onPress={() => {}}>
+                    <S.CommunityMainBottomIconContainer>
+                      <Icon name="comment" size={24} color={theme.placeholder} />
+                      <Text size={14} color={theme.placeholder}>
+                        댓글 {item.content.comments}
+                      </Text>
+                    </S.CommunityMainBottomIconContainer>
+                  </ScaleOpacity>
                 </S.CommunityMainBottom>
               </S.CommunityMainBox>
             );

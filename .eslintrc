@@ -33,12 +33,12 @@
             {
                 "pathGroups": [
                     {
-                        "pattern": "{@expo*, expo*, expo*/**}",
-                        "group": "builtin",
+                        "pattern": "{react*,react*/**}",
+                        "group": "type",
                         "position": "before"
                     },
                     {
-                        "pattern": "{react*,react*/**}",
+                        "pattern": "{@react*,@react*/**}",
                         "group": "external",
                         "position": "before"
                     },

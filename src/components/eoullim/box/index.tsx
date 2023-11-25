@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useNavigate, usePressingAnimation } from 'src/hooks';
-import { Icon } from 'src/components';
+import { useNavigate } from 'src/hooks';
+import { Icon, ScaleOpacity } from 'src/components';
 
 import * as S from './styled';
 
@@ -13,22 +13,15 @@ export interface EoullimBoxProps {
 }
 
 export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl, isBig }) => {
-  const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
   const navigate = useNavigate();
 
   return (
-    <S.EoullimBoxWrapper
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      onPress={() => navigate(navigateUrl)}
-      activeOpacity={0.8}
-      style={{ ...scaleAnimatedStyle, width: isBig ? '100%' : '48%' }}
-    >
+    <ScaleOpacity onPress={() => navigate(navigateUrl)} style={{ width: isBig ? '100%' : '48%' }}>
       <S.EoullimBox blurType="light" blurAmount={1} reducedTransparencyFallbackColor="white" />
       <S.EoullimBoxTextContainer>
         <Icon size={60} icon={icon} includeBackground={false} />
         <S.EoullimBoxText>{title}</S.EoullimBoxText>
       </S.EoullimBoxTextContainer>
-    </S.EoullimBoxWrapper>
+    </ScaleOpacity>
   );
 };
