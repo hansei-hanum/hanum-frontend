@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 import { useIsFocused } from '@react-navigation/native';
+
 import { format } from 'date-fns';
 import { useTheme } from '@emotion/react';
 
@@ -97,7 +98,7 @@ export const CalendarScreen: React.FC = () => {
   return (
     <S.CalendarWrapper>
       <Header>
-        <GoBackIcon size={28} />
+        <GoBackIcon />
         <S.CalendarTitleContainer>
           <Icon icon="📆" includeBackground={false} />
           <Text size={20} fontFamily="bold">

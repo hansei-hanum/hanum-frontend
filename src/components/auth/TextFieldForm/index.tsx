@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
+
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
 import { checkNumber, checkString, isAndroid } from 'src/utils';

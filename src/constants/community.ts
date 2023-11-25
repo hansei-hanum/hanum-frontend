@@ -1,6 +1,7 @@
 export interface CommunityListItems {
   author: {
     name: string;
+    isHidden: boolean;
     image: string | null;
   };
   time: string;
@@ -30,6 +31,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     author: {
       name: '김민수',
       image: null,
+      isHidden: false,
     },
     time: '2023-11-20T15:00:00.000Z',
     content: {
@@ -44,6 +46,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     author: {
       name: '김잉기',
       image: null,
+      isHidden: true,
     },
     time: '2023-11-22T07:00:00.000Z',
     content: {
@@ -58,6 +61,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     author: {
       name: '너검무검',
       image: null,
+      isHidden: false,
     },
     time: '2023-11-19T15:00:00.000Z',
     content: {
@@ -72,6 +76,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     author: {
       name: '너검무검',
       image: null,
+      isHidden: false,
     },
     time: '2023-11-19T15:00:00.000Z',
     content: {
@@ -86,6 +91,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     author: {
       name: '너검무검',
       image: null,
+      isHidden: false,
     },
     time: '2023-11-19T15:00:00.000Z',
     content: {
@@ -100,6 +106,7 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
     author: {
       name: '너검무검',
       image: null,
+      isHidden: false,
     },
     time: '2023-11-19T15:00:00.000Z',
     content: {
@@ -109,5 +116,47 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
       comments: 3,
     },
     type: 'STUDENT',
+  },
+];
+
+export interface CommunityChatListItems extends Omit<CommunityListItems, 'content' | 'type'> {
+  replies: number;
+  message: string;
+  likes: number;
+}
+
+export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
+  {
+    author: {
+      name: '김민수',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-25T16:00:00.000Z',
+    message: '잉기 디밍기?',
+    likes: 5,
+    replies: 10,
+  },
+  {
+    author: {
+      name: '너검무검',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-25T15:30:00.000Z',
+    message: '잉기 디찌?',
+    likes: 3,
+    replies: 7,
+  },
+  {
+    author: {
+      name: '기모링',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-25T15:30:00.000Z',
+    message: '잉기 디푹?',
+    likes: 5,
+    replies: 5,
   },
 ];

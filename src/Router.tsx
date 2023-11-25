@@ -130,6 +130,9 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimRaffle" component={SC.EoullimRaffleScreen} />
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
           </Stack.Group>
+          <Stack.Group>
+            <Stack.Screen name="CommunityChat" component={SC.CommunityChatScreen} />
+          </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       </NavigationContainer>

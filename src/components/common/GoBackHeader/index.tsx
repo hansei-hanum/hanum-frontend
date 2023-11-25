@@ -3,6 +3,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+
 import { useTheme } from '@emotion/react';
 
 export interface GoBackIconProps {
@@ -11,7 +12,7 @@ export interface GoBackIconProps {
   isWhite?: boolean;
 }
 
-export const GoBackIcon: React.FC<GoBackIconProps> = ({ isLoading, size = 28, isWhite }) => {
+export const GoBackIcon: React.FC<GoBackIconProps> = ({ isLoading, size = 25, isWhite }) => {
   const theme = useTheme();
 
   const navigation = useNavigation();

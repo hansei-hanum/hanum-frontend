@@ -9,3 +9,4 @@ export * from './userInfo';
 export * from './webView';
 export * from './eoullim';
 export * from './lunchTable';
+export * from './community';
