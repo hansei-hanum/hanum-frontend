@@ -186,7 +186,7 @@ export const COMMUNITY_POST: CommunityPostItems = {
   time: '2023-11-19T15:00:00.000Z',
   content: {
     message: `보안관제 동아리에서 신입부원을 모집합니다!\n\n- 모집 기간: 기원전 12년 ~ 기원전 11년\n- 모집 인원: 미정\n- 지원하기: https://hsoc.kr/`,
-    image: [CHAT, IMAGE, POSTER],
+    image: [CHAT],
     likes: 5,
     comments: 3,
   },

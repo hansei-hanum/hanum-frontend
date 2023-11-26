@@ -1,6 +1,9 @@
+import { KeyboardAvoidingView, View } from 'react-native';
+
 import styled from '@emotion/native';
 
 import { fonts } from 'src/styles';
+import { isIos } from 'src/utils';
 
 export const CommunityChatWrapper = styled.SafeAreaView`
   flex: 1;
@@ -10,7 +13,7 @@ export const CommunityChatWrapper = styled.SafeAreaView`
 
 export const CommunityChatContainer = styled.View`
   padding-top: 4px;
-  padding: 0 20px;
+  padding: 0 10px;
   row-gap: 24px;
   justify-content: center;
   align-items: flex-start;
@@ -23,10 +26,10 @@ export const CommunityChatContent = styled.View`
   width: 100%;
 `;
 
-export const CommunityPostImage = styled.Image`
+export const CommunityChatImage = styled.Image`
   border-radius: 100px;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-color: ${({ theme }) => theme.lightGray};
   border-width: 1px;
 `;
@@ -52,4 +55,31 @@ export const Chat = styled.Text`
   font-size: 15px;
   font-family: ${fonts.medium};
   color: ${({ theme }) => theme.default};
+`;
+
+export const CommunityChatBottomContainer = styled(isIos ? KeyboardAvoidingView : View)`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: ${isIos ? '10px' : '14px'} 10px;
+  column-gap: 10px;
+`;
+
+export const CommunityChatInputContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  background-color: ${({ theme }) => theme.lightGray};
+  flex-direction: row;
+  column-gap: 10px;
+  padding: 0;
+  border-radius: 40px;
+  padding: 0 10px;
+`;
+
+export const CommunityChatInput = styled.TextInput`
+  flex: 1;
+  padding: ${isIos ? '12px' : '8px'} 0;
+  font-size: 15px;
+  background-color: transparent;
 `;

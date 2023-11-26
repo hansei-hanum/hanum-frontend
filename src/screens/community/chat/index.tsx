@@ -1,48 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { NativeSyntheticEvent, ScrollView, TextLayoutEventData, View } from 'react-native';
+import FAIcon from 'react-native-vector-icons/FontAwesome5';
+import MI from 'react-native-vector-icons/MaterialIcons';
 
-import moment from 'moment-timezone';
 import { useTheme } from '@emotion/react';
 
-import { CommunityPost, GoBackIcon, Header, ScaleOpacity, Text } from 'src/components';
+import {
+  CommunityHeader,
+  CommunityPost,
+  GoBackIcon,
+  Header,
+  ScaleOpacity,
+  Text,
+} from 'src/components';
 import { COMMUNITY_POST } from 'src/constants';
-import { useGetImagesHeight } from 'src/hooks';
+import { useGetImagesHeight, useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
+import { getPostTime } from 'src/utils';
 
 import * as S from './styled';
 
 export const CommunityChatScreen: React.FC = () => {
+  const { userProfile } = useGetUser();
+
+  const [chat, setChat] = useState<string>('');
   const [isOverlay, setIsOverlay] = useState<Array<boolean>>([]);
   const [isShow, setIsShow] = useState<Array<boolean>>([]);
 
   const theme = useTheme();
 
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
-
-  const getTime = (date: string) => {
-    const now = moment().tz('Asia/Seoul');
-    const target = moment(date).tz('Asia/Seoul');
-    const units = ['방금 전', '분', '시간', '일', '주', '달', '년'];
-    const diffs = [
-      now.diff(target, 'seconds'),
-      now.diff(target, 'minutes'),
-      now.diff(target, 'hours'),
-      now.diff(target, 'days'),
-      now.diff(target, 'weeks'),
-      now.diff(target, 'months'),
-      now.diff(target, 'years'),
-    ];
-
-    for (let i = 0; i < units.length; i++) {
-      if (diffs[i] < 1) {
-        return units[i];
-      } else if (diffs[i + 1] < 60) {
-        return `${diffs[i + 1]}${units[i + 1]} 전`;
-      }
-    }
-
-    return `${diffs[6]}${units[6]} 전`;
-  };
 
   const showMore = (index: number) => {
     setIsShow((prev) => {
@@ -68,6 +55,10 @@ export const CommunityChatScreen: React.FC = () => {
     });
   };
 
+  const onChangeChat = (text: string) => {
+    setChat(text);
+  };
+
   useEffect(() => {
     COMMUNITY_POST.content.image.forEach((uri, index) => {
       getHeightsForImage(uri, index);
@@ -76,14 +67,15 @@ export const CommunityChatScreen: React.FC = () => {
 
   return (
     <S.CommunityChatWrapper>
-      <Header>
+      <Header isRow>
         <GoBackIcon />
+        <CommunityHeader {...COMMUNITY_POST} />
       </Header>
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 40,
+          paddingBottom: 10,
           rowGap: 10,
         }}
       >
@@ -96,18 +88,20 @@ export const CommunityChatScreen: React.FC = () => {
           index={0}
           isSingle
         />
+        <Text size={15} style={{ paddingHorizontal: 10 }}>
+          댓글 {COMMUNITY_POST.chats.length}
+        </Text>
         <S.CommunityChatContainer>
-          <Text size={15}>댓글 {COMMUNITY_POST.chats.length}</Text>
           {COMMUNITY_POST.chats.map(({ author, time, message }, i) => {
             return (
               <S.CommunityChatContent key={i}>
-                <S.CommunityPostImage source={author.image ? { uri: author.image } : UserLogo} />
+                <S.CommunityChatImage source={author.image ? { uri: author.image } : UserLogo} />
                 <View style={{ rowGap: 4, flex: 1 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text size={12}>{author.name}</Text>
-                    <Text size={12} color={theme.placeholder}>
+                    <Text size={13}>{author.name}</Text>
+                    <Text size={13} color={theme.placeholder}>
                       {'  '}
-                      {getTime(time)}
+                      {getPostTime(time)}
                     </Text>
                   </View>
                   {!isShow[i] ? (
@@ -145,6 +139,26 @@ export const CommunityChatScreen: React.FC = () => {
           })}
         </S.CommunityChatContainer>
       </ScrollView>
+      <S.CommunityChatBottomContainer behavior="padding" keyboardVerticalOffset={10}>
+        <S.CommunityChatImage source={userProfile ? { uri: userProfile } : UserLogo} />
+        <S.CommunityChatInputContainer>
+          <S.CommunityChatInput
+            placeholder="댓글을 입력하세요."
+            placeholderTextColor={theme.placeholder}
+            value={chat}
+            onChangeText={onChangeChat}
+          />
+          {chat.length > 0 ? (
+            <ScaleOpacity onPress={() => {}}>
+              <MI name="send" size={28} color={theme.primary} />
+            </ScaleOpacity>
+          ) : (
+            <ScaleOpacity onPress={() => {}}>
+              <FAIcon name="image" size={28} color={theme.black} />
+            </ScaleOpacity>
+          )}
+        </S.CommunityChatInputContainer>
+      </S.CommunityChatBottomContainer>
     </S.CommunityChatWrapper>
   );
 };

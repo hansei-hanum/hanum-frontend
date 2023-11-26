@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useTheme } from '@emotion/react';
 
-import { CommunityPost, Header, ScaleOpacity, Text } from 'src/components';
+import { CommunityHeader, CommunityPost, Header, ScaleOpacity, Text } from 'src/components';
 import { useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants';
@@ -121,6 +121,12 @@ export const CommunityMainScreen: React.FC = () => {
           {COMMUNITY_LIST.map(({ author, content, time, type }, index) => {
             return (
               <S.CommunityMainBox>
+                <CommunityHeader
+                  author={author}
+                  type={type}
+                  time={time}
+                  style={{ width: '100%', flex: 0 }}
+                />
                 <CommunityPost
                   author={author}
                   content={content}

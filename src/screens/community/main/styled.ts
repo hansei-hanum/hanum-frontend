@@ -41,7 +41,7 @@ export const CommunityUserContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   column-gap: 10px;
-  padding: 20px;
+  padding: 10px;
   border-top-color: ${({ theme }) => theme.lightGray};
   border-bottom-color: ${({ theme }) => theme.lightGray};
   border-top-width: 1px;
@@ -50,8 +50,8 @@ export const CommunityUserContainer = styled.View`
 
 export const CommunityImage = styled.Image`
   border-radius: 100px;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-color: ${({ theme }) => theme.lightGray};
   border-width: 1px;
 `;
