@@ -81,3 +81,8 @@ export const CommunityChatInput = styled.TextInput`
   font-size: 15px;
   background-color: transparent;
 `;
+
+export const CommunityChatImageWrapper = styled.View`
+  flex: 1;
+  padding: 10px 10px;
+`;

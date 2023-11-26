@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { NativeSyntheticEvent, ScrollView, TextLayoutEventData, View } from 'react-native';
+import { Image, NativeSyntheticEvent, ScrollView, TextLayoutEventData, View } from 'react-native';
 import FI from 'react-native-vector-icons/Feather';
 import MI from 'react-native-vector-icons/MaterialIcons';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 import { useTheme } from '@emotion/react';
 
@@ -21,6 +22,8 @@ import { getPostTime } from 'src/utils';
 import * as S from './styled';
 
 export const CommunityChatScreen: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<string | undefined>('');
+
   const { userProfile } = useGetUser();
 
   const [chat, setChat] = useState<string>('');
@@ -57,6 +60,29 @@ export const CommunityChatScreen: React.FC = () => {
 
   const onChangeChat = (text: string) => {
     setChat(text);
+  };
+
+  const openImagePicker = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: 200,
+        maxWidth: 200,
+      },
+      (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+          setSelectedImage('');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+          setSelectedImage('');
+        } else {
+          const imageUri = response.assets?.[0]?.uri;
+          setSelectedImage(imageUri);
+        }
+      },
+    );
   };
 
   useEffect(() => {
@@ -148,12 +174,12 @@ export const CommunityChatScreen: React.FC = () => {
             value={chat}
             onChangeText={onChangeChat}
           />
-          {chat.length > 0 ? (
+          {chat.length > 0 || (selectedImage && selectedImage?.length > 0) ? (
             <ScaleOpacity onPress={() => {}}>
               <MI name="send" size={28} color={theme.primary} />
             </ScaleOpacity>
           ) : (
-            <ScaleOpacity onPress={() => {}}>
+            <ScaleOpacity onPress={openImagePicker}>
               <FI name="image" size={28} color={theme.black} />
             </ScaleOpacity>
           )}
