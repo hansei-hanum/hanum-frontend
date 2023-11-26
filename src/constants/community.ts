@@ -132,7 +132,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
       image: null,
       isHidden: false,
     },
-    time: '2023-11-25T16:00:00.000Z',
+    time: '2023-11-26T14:00:00.000Z',
     message: '잉기 디밍기?',
     likes: 5,
     replies: 10,
@@ -156,6 +156,18 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
     },
     time: '2023-11-25T15:30:00.000Z',
     message: '잉기 디푹?',
+    likes: 5,
+    replies: 5,
+  },
+  {
+    author: {
+      name: '기모링',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-25T15:30:00.000Z',
+    message:
+      '잉기 디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad',
     likes: 5,
     replies: 5,
   },

@@ -8,19 +8,12 @@ export const CommunityPostContainer = styled.View`
   width: 100%;
 `;
 
-export const CommunityPostHeaderContainer = styled.View`
-  width: 100%;
-  padding: 0 20px;
-  row-gap: 12px;
-`;
-
 export const CommunityPostHeader = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  padding-top: 20px;
+  padding: 0 10px;
 `;
 
 export const CommunityPostHeaderTitle = styled.View`
@@ -38,7 +31,7 @@ export const CommunityPostUserProfile = styled.View`
 
 export const CommunityPostContentWrapper = styled.View`
   width: 100%;
-  padding: 0 20px;
+  padding: 0 10px;
 `;
 
 export const CommunityPostImageWrapper = styled.View`

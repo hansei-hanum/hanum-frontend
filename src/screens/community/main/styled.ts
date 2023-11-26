@@ -75,15 +75,14 @@ export const CommunityMainBox = styled.View`
   border-bottom-color: ${({ theme }) => theme.lightGray};
   border-top-width: 1px;
   border-bottom-width: 1px;
+  padding: 10px 0;
 `;
 
 export const CommunityMainBottom = styled.View`
-  width: 80%;
+  width: 78%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  padding-bottom: 10px;
 `;
 
 export const CommunityMainBottomIconContainer = styled.View`

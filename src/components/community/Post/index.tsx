@@ -67,7 +67,9 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
 
   return (
     <S.CommunityPostContainer>
-      <S.CommunityPostHeader>
+      <S.CommunityPostHeader
+        style={isSingle && { paddingLeft: 20, paddingRight: 20, paddingTop: 10 }}
+      >
         <S.CommunityPostHeaderTitle>
           <S.CommunityPostImage
             source={author.image && !author.isHidden ? { uri: author.image } : UserLogo}
@@ -87,7 +89,9 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
         </S.CommunityPostHeaderTitle>
         <Icon name="more-horiz" size={24} color={theme.placeholder} />
       </S.CommunityPostHeader>
-      <S.CommunityPostContentWrapper>
+      <S.CommunityPostContentWrapper
+        style={isSingle && { paddingLeft: 20, paddingRight: 20, paddingTop: 12 }}
+      >
         {content.image.length <= 0 ? (
           <Text size={18} style={{ width: '100%' }}>
             {content.message}
