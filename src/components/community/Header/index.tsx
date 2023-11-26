@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useTheme } from '@emotion/react';
 
@@ -33,7 +34,7 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ author, type, 
             </Text>
             {type === 'ALL' && <Icon name="public" size={16} color={theme.placeholder} />}
             {type === 'PRIVATE' && <Icon name="lock" size={16} color={theme.placeholder} />}
-            {type === 'STUDENT' && <Icon name="school" size={16} color={theme.placeholder} />}
+            {type === 'STUDENT' && <MCI name="account-group" size={16} color={theme.placeholder} />}
           </S.CommunityHeaderUserSection>
         </View>
       </S.CommunityHeaderTitle>

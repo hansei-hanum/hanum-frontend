@@ -1,7 +1,6 @@
 import styled from '@emotion/native';
 
 export const CommunityHeader = styled.View`
-  flex: 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -25,6 +24,4 @@ export const CommunityHeaderUserImg = styled.Image`
   border-radius: 100px;
   width: 40px;
   height: 40px;
-  border-color: ${({ theme }) => theme.lightGray};
-  border-width: 1px;
 `;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NativeSyntheticEvent, ScrollView, TextLayoutEventData, View } from 'react-native';
-import FAIcon from 'react-native-vector-icons/FontAwesome5';
+import FI from 'react-native-vector-icons/Feather';
 import MI from 'react-native-vector-icons/MaterialIcons';
 
 import { useTheme } from '@emotion/react';
@@ -69,7 +69,7 @@ export const CommunityChatScreen: React.FC = () => {
     <S.CommunityChatWrapper>
       <Header isRow>
         <GoBackIcon />
-        <CommunityHeader {...COMMUNITY_POST} />
+        <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} />
       </Header>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -154,7 +154,7 @@ export const CommunityChatScreen: React.FC = () => {
             </ScaleOpacity>
           ) : (
             <ScaleOpacity onPress={() => {}}>
-              <FAIcon name="image" size={28} color={theme.black} />
+              <FI name="image" size={28} color={theme.black} />
             </ScaleOpacity>
           )}
         </S.CommunityChatInputContainer>

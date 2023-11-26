@@ -52,8 +52,6 @@ export const CommunityImage = styled.Image`
   border-radius: 100px;
   width: 40px;
   height: 40px;
-  border-color: ${({ theme }) => theme.lightGray};
-  border-width: 1px;
 `;
 
 export const CommunityUserThinkBox = styled.View`

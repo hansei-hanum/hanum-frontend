@@ -120,12 +120,12 @@ export const CommunityMainScreen: React.FC = () => {
           </S.CommunityUserContainer>
           {COMMUNITY_LIST.map(({ author, content, time, type }, index) => {
             return (
-              <S.CommunityMainBox>
+              <S.CommunityMainBox key={index}>
                 <CommunityHeader
                   author={author}
                   type={type}
                   time={time}
-                  style={{ width: '100%', flex: 0 }}
+                  style={{ width: '100%' }}
                 />
                 <CommunityPost
                   author={author}
