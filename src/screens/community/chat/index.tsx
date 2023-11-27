@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, TextInput, View } from 'react-native';
 import FI from 'react-native-vector-icons/Feather';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -22,6 +22,8 @@ import { UserLogo } from 'src/assets';
 import * as S from './styled';
 
 export const CommunityChatScreen: React.FC = () => {
+  const chatRef = useRef<TextInput>(null);
+
   const { userProfile } = useGetUser();
 
   const [selectedImage, setSelectedImage] = useState<string | undefined>('');
@@ -34,6 +36,12 @@ export const CommunityChatScreen: React.FC = () => {
 
   const onChangeChat = (text: string) => {
     setChat(text);
+  };
+
+  const replyToChat = () => {
+    console.log('replyToChat');
+    setChat('');
+    chatRef.current?.focus();
   };
 
   const openImagePicker = () => {
@@ -71,39 +79,53 @@ export const CommunityChatScreen: React.FC = () => {
         <GoBackIcon />
         <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} />
       </Header>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: 10,
-          rowGap: 10,
-        }}
-      >
-        <CommunityPost
-          author={COMMUNITY_POST.author}
-          content={COMMUNITY_POST.content}
-          time={COMMUNITY_POST.time}
-          type={COMMUNITY_POST.type}
-          imageHeights={imageHeights}
-          index={0}
-          isSingle
-        />
-        <Text size={16} style={{ paddingHorizontal: 14, paddingBottom: 10 }}>
-          댓글 {COMMUNITY_POST.chats.length}
-        </Text>
-        <S.CommunityChatContainer>
-          {COMMUNITY_POST.chats.map(({ author, time, message, replies }, i) => {
+      <S.CommunityChatContainer>
+        <FlatList
+          onEndReached={() => {
+            console.log('onEndReached');
+          }}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={COMMUNITY_POST.chats}
+          keyExtractor={(_, index) => index.toString()}
+          contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
+          StickyHeaderComponent={() => (
+            <View
+              style={{
+                height: 10,
+                backgroundColor: theme.background,
+                borderColor: 'red',
+                borderWidth: 1,
+              }}
+            />
+          )}
+          ListHeaderComponent={
+            <>
+              <CommunityPost
+                author={COMMUNITY_POST.author}
+                content={COMMUNITY_POST.content}
+                time={COMMUNITY_POST.time}
+                type={COMMUNITY_POST.type}
+                imageHeights={imageHeights}
+                index={0}
+                isSingle
+              />
+              <Text size={16} style={{ paddingHorizontal: 14, paddingBottom: 10 }}>
+                댓글 {COMMUNITY_POST.chats.length}
+              </Text>
+            </>
+          }
+          renderItem={({ item: { author, time, message, replies }, index }) => {
             return (
               <CommunityChat
                 author={author}
                 time={time}
                 message={message}
-                i={i}
-                key={i}
+                i={index}
                 children={
                   <>
                     <S.CommunityReplyContainer>
-                      <ScaleOpacity onPress={() => {}}>
+                      <ScaleOpacity onPress={replyToChat}>
                         <Text size={14} color={theme.placeholder}>
                           답글 달기
                         </Text>
@@ -113,18 +135,18 @@ export const CommunityChatScreen: React.FC = () => {
                           onPress={() => {
                             setShowReply((prev) => {
                               const temp = [...prev];
-                              temp[i] = !temp[i];
+                              temp[index] = !temp[index];
                               return temp;
                             });
                           }}
                         >
                           <Text size={14} color={theme.placeholder}>
-                            {showReply[i] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
+                            {showReply[index] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
                           </Text>
                         </ScaleOpacity>
                       )}
                     </S.CommunityReplyContainer>
-                    {showReply[i] && (
+                    {showReply[index] && (
                       <View style={{ rowGap: 20 }}>
                         {replies.map(({ author, time, message }, i) => {
                           return (
@@ -144,15 +166,16 @@ export const CommunityChatScreen: React.FC = () => {
                 }
               />
             );
-          })}
-        </S.CommunityChatContainer>
-      </ScrollView>
+          }}
+        />
+      </S.CommunityChatContainer>
       <S.CommunityChatBottomContainer behavior="padding" keyboardVerticalOffset={10}>
         <S.CommunityChatImage source={userProfile ? { uri: userProfile } : UserLogo} />
         <S.CommunityChatInputContainer>
           <S.CommunityChatInput
             placeholder="댓글을 입력하세요."
             placeholderTextColor={theme.placeholder}
+            ref={chatRef}
             value={chat}
             onChangeText={onChangeChat}
           />

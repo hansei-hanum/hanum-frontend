@@ -4,8 +4,8 @@ import {
   TextInput,
   Easing,
   LayoutAnimation,
-  ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -100,69 +100,59 @@ export const CommunityMainScreen: React.FC = () => {
         )}
       </Header>
       {!isFocused ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingTop: isIos ? 20 : 0,
-            paddingBottom: 40,
-            rowGap: 16,
-          }}
-        >
-          <S.CommunityUserContainer>
-            <S.CommunityImage
-              source={userProfile ? { uri: userProfile } : UserLogo}
-              style={{ resizeMode: 'contain' }}
-            />
-            <S.CommunityUserThinkBox>
-              <Text size={16} color={theme.placeholder}>
-                어떤 생각을 하고 계신가요?
-              </Text>
-            </S.CommunityUserThinkBox>
-          </S.CommunityUserContainer>
-          {COMMUNITY_LIST.map(({ author, content, time, type }, index) => {
-            return (
-              <S.CommunityMainBox key={index}>
-                <CommunityHeader
-                  author={author}
-                  type={type}
-                  time={time}
-                  style={{ width: '100%' }}
-                />
-                <CommunityPost
-                  author={author}
-                  content={content}
-                  time={time}
-                  type={type}
-                  index={index}
-                  imageHeights={imageHeights}
-                />
-                <S.CommunityMainBottom>
+        <FlatList
+          data={COMMUNITY_LIST}
+          keyExtractor={(_, index) => index.toString()}
+          contentContainerStyle={{ paddingTop: isIos ? 20 : 0, paddingBottom: 40, rowGap: 16 }}
+          ListHeaderComponent={
+            <S.CommunityUserContainer>
+              <S.CommunityImage
+                source={userProfile ? { uri: userProfile } : UserLogo}
+                style={{ resizeMode: 'contain' }}
+              />
+              <S.CommunityUserThinkBox>
+                <Text size={16} color={theme.placeholder}>
+                  어떤 생각을 하고 계신가요?
+                </Text>
+              </S.CommunityUserThinkBox>
+            </S.CommunityUserContainer>
+          }
+          renderItem={({ item: { author, type, time, content }, index }) => (
+            <S.CommunityMainBox>
+              <CommunityHeader author={author} type={type} time={time} style={{ width: '100%' }} />
+              <CommunityPost
+                author={author}
+                content={content}
+                time={time}
+                type={type}
+                index={index}
+                imageHeights={imageHeights}
+              />
+              <S.CommunityMainBottom>
+                <S.CommunityMainBottomIconContainer>
+                  <ScaleOpacity onPress={() => onLikeClick(index)}>
+                    {likes[index] ? (
+                      <MCI name="cards-heart" size={24} color={theme.danger} />
+                    ) : (
+                      <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+                    )}
+                  </ScaleOpacity>
+                  <Text size={14} color={theme.placeholder}>
+                    좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                  </Text>
+                </S.CommunityMainBottomIconContainer>
+                <ScaleOpacity onPress={() => navigate('CommunityChat')}>
                   <S.CommunityMainBottomIconContainer>
-                    <ScaleOpacity onPress={() => onLikeClick(index)}>
-                      {likes[index] ? (
-                        <MCI name="cards-heart" size={24} color={theme.danger} />
-                      ) : (
-                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                      )}
-                    </ScaleOpacity>
+                    <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
                     <Text size={14} color={theme.placeholder}>
-                      좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                      댓글 {content.comments}
                     </Text>
                   </S.CommunityMainBottomIconContainer>
-                  <ScaleOpacity onPress={() => navigate('CommunityChat')}>
-                    <S.CommunityMainBottomIconContainer>
-                      <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
-                      <Text size={14} color={theme.placeholder}>
-                        댓글 {content.comments}
-                      </Text>
-                    </S.CommunityMainBottomIconContainer>
-                  </ScaleOpacity>
-                </S.CommunityMainBottom>
-              </S.CommunityMainBox>
-            );
-          })}
-        </ScrollView>
+                </ScaleOpacity>
+              </S.CommunityMainBottom>
+            </S.CommunityMainBox>
+          )}
+        />
       ) : (
         <S.TextWrapper2 style={opacityAnimation}>
           <Text size={15}>This Is Search 잉기</Text>

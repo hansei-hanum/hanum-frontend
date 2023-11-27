@@ -11,13 +11,14 @@ export const CommunityChatWrapper = styled.SafeAreaView`
 `;
 
 export const CommunityChatContainer = styled.View`
+  flex: 1;
   padding-top: 4px;
-  padding: 0 14px;
   row-gap: 24px;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
 `;
+
 export const CommunityChatImage = styled.Image`
   border-radius: 100px;
   width: 40px;
@@ -31,6 +32,8 @@ export const CommunityChatBottomContainer = styled(isIos ? KeyboardAvoidingView 
   justify-content: center;
   padding: ${isIos ? '10px' : '14px'} 10px;
   column-gap: 10px;
+  background-color: ${({ theme }) => theme.background};
+  z-index: 999;
 `;
 
 export const CommunityChatInputContainer = styled.View`
@@ -49,6 +52,7 @@ export const CommunityChatInput = styled.TextInput`
   padding: ${isIos ? '12px' : '8px'} 0;
   font-size: 15px;
   background-color: transparent;
+  color: ${({ theme }) => theme.default};
 `;
 
 export const CommunityChatImageWrapper = styled.View`

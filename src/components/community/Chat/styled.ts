@@ -6,6 +6,7 @@ export const CommunityChatContent = styled.View`
   flex-direction: row;
   column-gap: 6px;
   width: 100%;
+  padding: 0 14px;
 `;
 
 export const CommunityChatImage = styled.Image`
