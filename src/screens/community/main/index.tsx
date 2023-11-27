@@ -141,9 +141,9 @@ export const CommunityMainScreen: React.FC = () => {
                   <S.CommunityMainBottomIconContainer>
                     <ScaleOpacity onPress={() => onLikeClick(index)}>
                       {likes[index] ? (
-                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                      ) : (
                         <MCI name="cards-heart" size={24} color={theme.danger} />
+                      ) : (
+                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
                       )}
                     </ScaleOpacity>
                     <Text size={14} color={theme.placeholder}>

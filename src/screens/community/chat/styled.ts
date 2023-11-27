@@ -56,6 +56,9 @@ export const CommunityChatImageWrapper = styled.View`
   padding: 10px 10px;
 `;
 
-export const CommunityReplyChatContainer = styled.View`
-  row-gap: 20px;
+export const CommunityReplyContainer = styled.View`
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
 `;

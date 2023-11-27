@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import FI from 'react-native-vector-icons/Feather';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -102,25 +102,30 @@ export const CommunityChatScreen: React.FC = () => {
                 key={i}
                 children={
                   <>
-                    {replies && replies.length > 0 && (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          setShowReply((prev) => {
-                            const temp = [...prev];
-                            temp[i] = !temp[i];
-                            return temp;
-                          });
-                        }}
-                        style={{ marginTop: 4, marginBottom: 10 }}
-                      >
+                    <S.CommunityReplyContainer>
+                      <ScaleOpacity onPress={() => {}}>
                         <Text size={14} color={theme.placeholder}>
-                          {showReply[i] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
+                          답글 달기
                         </Text>
-                      </TouchableOpacity>
-                    )}
+                      </ScaleOpacity>
+                      {replies && replies.length > 0 && (
+                        <ScaleOpacity
+                          onPress={() => {
+                            setShowReply((prev) => {
+                              const temp = [...prev];
+                              temp[i] = !temp[i];
+                              return temp;
+                            });
+                          }}
+                        >
+                          <Text size={14} color={theme.placeholder}>
+                            {showReply[i] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
+                          </Text>
+                        </ScaleOpacity>
+                      )}
+                    </S.CommunityReplyContainer>
                     {showReply[i] && (
-                      <S.CommunityReplyChatContainer>
+                      <View style={{ rowGap: 20 }}>
                         {replies.map(({ author, time, message }, i) => {
                           return (
                             <CommunityChat
@@ -133,7 +138,7 @@ export const CommunityChatScreen: React.FC = () => {
                             />
                           );
                         })}
-                      </S.CommunityReplyChatContainer>
+                      </View>
                     )}
                   </>
                 }
