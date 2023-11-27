@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, NativeSyntheticEvent, ScrollView, TextLayoutEventData, View } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import FI from 'react-native-vector-icons/Feather';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -7,6 +7,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { useTheme } from '@emotion/react';
 
 import {
+  CommunityChat,
   CommunityHeader,
   CommunityPost,
   GoBackIcon,
@@ -17,46 +18,19 @@ import {
 import { COMMUNITY_POST } from 'src/constants';
 import { useGetImagesHeight, useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
-import { getPostTime } from 'src/utils';
 
 import * as S from './styled';
 
 export const CommunityChatScreen: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<string | undefined>('');
-
   const { userProfile } = useGetUser();
 
+  const [selectedImage, setSelectedImage] = useState<string | undefined>('');
   const [chat, setChat] = useState<string>('');
-  const [isOverlay, setIsOverlay] = useState<Array<boolean>>([]);
-  const [isShow, setIsShow] = useState<Array<boolean>>([]);
+  const [showReply, setShowReply] = useState<Array<boolean>>([]);
 
   const theme = useTheme();
 
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
-
-  const showMore = (index: number) => {
-    setIsShow((prev) => {
-      const temp = [...prev];
-      temp[index] = true;
-      return temp;
-    });
-  };
-
-  const showLess = (index: number) => {
-    setIsShow((prev) => {
-      const temp = [...prev];
-      temp[index] = false;
-      return temp;
-    });
-  };
-
-  const overlay = (index: number) => {
-    setIsOverlay((prev) => {
-      const temp = [...prev];
-      temp[index] = true;
-      return temp;
-    });
-  };
 
   const onChangeChat = (text: string) => {
     setChat(text);
@@ -114,53 +88,56 @@ export const CommunityChatScreen: React.FC = () => {
           index={0}
           isSingle
         />
-        <Text size={15} style={{ paddingHorizontal: 10 }}>
+        <Text size={16} style={{ paddingHorizontal: 14, paddingBottom: 10 }}>
           댓글 {COMMUNITY_POST.chats.length}
         </Text>
         <S.CommunityChatContainer>
-          {COMMUNITY_POST.chats.map(({ author, time, message }, i) => {
+          {COMMUNITY_POST.chats.map(({ author, time, message, replies }, i) => {
             return (
-              <S.CommunityChatContent key={i}>
-                <S.CommunityChatImage source={author.image ? { uri: author.image } : UserLogo} />
-                <View style={{ rowGap: 4, flex: 1 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text size={13}>{author.name}</Text>
-                    <Text size={13} color={theme.placeholder}>
-                      {'  '}
-                      {getPostTime(time)}
-                    </Text>
-                  </View>
-                  {!isShow[i] ? (
-                    <S.ChatContainer>
-                      <S.Chat
-                        numberOfLines={14}
-                        ellipsizeMode="tail"
-                        onTextLayout={(event: NativeSyntheticEvent<TextLayoutEventData>) => {
-                          event.nativeEvent.lines.length >= 14 && overlay(i);
+              <CommunityChat
+                author={author}
+                time={time}
+                message={message}
+                i={i}
+                key={i}
+                children={
+                  <>
+                    {replies && replies.length > 0 && (
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => {
+                          setShowReply((prev) => {
+                            const temp = [...prev];
+                            temp[i] = !temp[i];
+                            return temp;
+                          });
                         }}
+                        style={{ marginTop: 4, marginBottom: 10 }}
                       >
-                        {message}
-                      </S.Chat>
-                      {isOverlay[i] && (
-                        <ScaleOpacity onPress={() => showMore(i)}>
-                          <Text size={14} color={theme.placeholder}>
-                            더보기
-                          </Text>
-                        </ScaleOpacity>
-                      )}
-                    </S.ChatContainer>
-                  ) : (
-                    <S.ChatContainer>
-                      <S.Chat>{message}</S.Chat>
-                      <ScaleOpacity onPress={() => showLess(i)}>
                         <Text size={14} color={theme.placeholder}>
-                          간략하게 보기
+                          {showReply[i] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
                         </Text>
-                      </ScaleOpacity>
-                    </S.ChatContainer>
-                  )}
-                </View>
-              </S.CommunityChatContent>
+                      </TouchableOpacity>
+                    )}
+                    {showReply[i] && (
+                      <S.CommunityReplyChatContainer>
+                        {replies.map(({ author, time, message }, i) => {
+                          return (
+                            <CommunityChat
+                              author={author}
+                              time={time}
+                              message={message}
+                              i={i}
+                              key={i}
+                              isReply
+                            />
+                          );
+                        })}
+                      </S.CommunityReplyChatContainer>
+                    )}
+                  </>
+                }
+              />
             );
           })}
         </S.CommunityChatContainer>

@@ -41,7 +41,7 @@ export const CommunityUserContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   column-gap: 10px;
-  padding: 10px;
+  padding: 14px;
   border-top-color: ${({ theme }) => theme.lightGray};
   border-bottom-color: ${({ theme }) => theme.lightGray};
   border-top-width: 1px;
@@ -77,7 +77,7 @@ export const CommunityMainBox = styled.View`
 `;
 
 export const CommunityMainBottom = styled.View`
-  width: 78%;
+  width: 74%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

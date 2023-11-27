@@ -2,7 +2,6 @@ import { KeyboardAvoidingView, View } from 'react-native';
 
 import styled from '@emotion/native';
 
-import { fonts } from 'src/styles';
 import { isIos } from 'src/utils';
 
 export const CommunityChatWrapper = styled.SafeAreaView`
@@ -13,46 +12,16 @@ export const CommunityChatWrapper = styled.SafeAreaView`
 
 export const CommunityChatContainer = styled.View`
   padding-top: 4px;
-  padding: 0 10px;
+  padding: 0 14px;
   row-gap: 24px;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
 `;
-
-export const CommunityChatContent = styled.View`
-  flex-direction: row;
-  column-gap: 6px;
-  width: 100%;
-`;
-
 export const CommunityChatImage = styled.Image`
   border-radius: 100px;
   width: 40px;
   height: 40px;
-`;
-
-export const CommunityChatUser = styled.View`
-  flex-direction: row;
-`;
-
-export const CommunityChatBox = styled.View`
-  padding: 8px;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.lightGray};
-`;
-
-export const ChatContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 2px;
-`;
-
-export const Chat = styled.Text`
-  font-size: 15px;
-  font-family: ${fonts.medium};
-  color: ${({ theme }) => theme.default};
 `;
 
 export const CommunityChatBottomContainer = styled(isIos ? KeyboardAvoidingView : View)`
@@ -85,4 +54,8 @@ export const CommunityChatInput = styled.TextInput`
 export const CommunityChatImageWrapper = styled.View`
   flex: 1;
   padding: 10px 10px;
+`;
+
+export const CommunityReplyChatContainer = styled.View`
+  row-gap: 20px;
 `;

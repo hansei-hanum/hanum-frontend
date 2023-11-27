@@ -10,7 +10,7 @@ export const CommunityPostContainer = styled.View`
 
 export const CommunityPostContentWrapper = styled.View`
   width: 100%;
-  padding: 0 10px;
+  padding: 0 14px;
 `;
 
 export const CommunityPostImageWrapper = styled.View`

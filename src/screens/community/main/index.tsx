@@ -7,7 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useTheme } from '@emotion/react';
 
@@ -15,6 +16,7 @@ import { CommunityHeader, CommunityPost, Header, ScaleOpacity, Text } from 'src/
 import { useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants';
+import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
@@ -102,7 +104,7 @@ export const CommunityMainScreen: React.FC = () => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
-            paddingTop: 20,
+            paddingTop: isIos ? 20 : 0,
             paddingBottom: 40,
             rowGap: 16,
           }}
@@ -113,7 +115,7 @@ export const CommunityMainScreen: React.FC = () => {
               style={{ resizeMode: 'contain' }}
             />
             <S.CommunityUserThinkBox>
-              <Text size={15} color={theme.placeholder}>
+              <Text size={16} color={theme.placeholder}>
                 어떤 생각을 하고 계신가요?
               </Text>
             </S.CommunityUserThinkBox>
@@ -138,11 +140,11 @@ export const CommunityMainScreen: React.FC = () => {
                 <S.CommunityMainBottom>
                   <S.CommunityMainBottomIconContainer>
                     <ScaleOpacity onPress={() => onLikeClick(index)}>
-                      <Icon
-                        name="thumb-up-alt"
-                        size={24}
-                        color={likes[index] ? theme.primary : theme.placeholder}
-                      />
+                      {likes[index] ? (
+                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+                      ) : (
+                        <MCI name="cards-heart" size={24} color={theme.danger} />
+                      )}
                     </ScaleOpacity>
                     <Text size={14} color={theme.placeholder}>
                       좋아요 {likes[index] ? content.likes + 1 : content.likes}
@@ -150,7 +152,7 @@ export const CommunityMainScreen: React.FC = () => {
                   </S.CommunityMainBottomIconContainer>
                   <ScaleOpacity onPress={() => navigate('CommunityChat')}>
                     <S.CommunityMainBottomIconContainer>
-                      <Icon name="comment" size={24} color={theme.placeholder} />
+                      <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
                       <Text size={14} color={theme.placeholder}>
                         댓글 {content.comments}
                       </Text>

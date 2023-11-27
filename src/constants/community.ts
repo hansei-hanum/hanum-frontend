@@ -119,8 +119,52 @@ export const COMMUNITY_LIST: CommunityListItems[] = [
   },
 ];
 
+export interface ReplyItems {
+  author: {
+    name: string;
+    image: null;
+    isHidden: boolean;
+  };
+  time: string;
+  message: string;
+  likes: number;
+}
+
+export const REPLY_LIST: ReplyItems[] = [
+  {
+    author: {
+      name: '너검무검',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-25T15:30:00.000Z',
+    message: '잉기 디찌?',
+    likes: 3,
+  },
+  {
+    author: {
+      name: '너검무검',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-25T15:30:00.000Z',
+    message: '잉기 디찌?',
+    likes: 3,
+  },
+  {
+    author: {
+      name: '너검무검',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-25T15:30:00.000Z',
+    message: '잉기 디찌?',
+    likes: 3,
+  },
+];
+
 export interface CommunityChatListItems extends Omit<CommunityListItems, 'content' | 'type'> {
-  replies: number;
+  replies: ReplyItems[];
   message: string;
   likes: number;
 }
@@ -135,7 +179,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
     time: '2023-11-26T14:00:00.000Z',
     message: '잉기 디밍기?',
     likes: 5,
-    replies: 10,
+    replies: [],
   },
   {
     author: {
@@ -146,7 +190,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
     time: '2023-11-25T15:30:00.000Z',
     message: '잉기 디찌?',
     likes: 3,
-    replies: 7,
+    replies: [],
   },
   {
     author: {
@@ -157,7 +201,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
     time: '2023-11-25T15:30:00.000Z',
     message: '잉기 디푹?',
     likes: 5,
-    replies: 5,
+    replies: REPLY_LIST,
   },
   {
     author: {
@@ -169,7 +213,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
     message:
       '잉기 디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad디asdfdsafdasgjhfgsdahjfgdashjfdsajhFhjsdagjhksad',
     likes: 5,
-    replies: 5,
+    replies: [],
   },
 ];
 
