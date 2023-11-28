@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, View } from 'react-native';
+import { KeyboardAvoidingView, TextInput, View } from 'react-native';
 
 import styled from '@emotion/native';
 
@@ -47,7 +47,7 @@ export const CommunityChatInputContainer = styled.View`
   padding: 0 10px;
 `;
 
-export const CommunityChatInput = styled.TextInput`
+export const CommunityChatInput = styled(TextInput)`
   flex: 1;
   padding: ${isIos ? '12px' : '8px'} 0;
   font-size: 15px;

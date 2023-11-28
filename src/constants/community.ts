@@ -173,7 +173,7 @@ export interface CommunityChatListItems extends Omit<CommunityListItems, 'conten
 export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
   {
     author: {
-      name: '김민수',
+      name: 'kigmin',
       image: null,
       isHidden: false,
     },
@@ -184,7 +184,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
   },
   {
     author: {
-      name: '너검무검',
+      name: 'nigga',
       image: null,
       isHidden: false,
     },
@@ -195,7 +195,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
   },
   {
     author: {
-      name: '기모링',
+      name: 'naega',
       image: null,
       isHidden: false,
     },
@@ -206,7 +206,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
   },
   {
     author: {
-      name: '기모링',
+      name: 'di12',
       image: null,
       isHidden: false,
     },

@@ -36,12 +36,13 @@ export const CommunityChatScreen: React.FC = () => {
 
   const onChangeChat = (text: string) => {
     setChat(text);
+    chatRef.current?.focus();
   };
 
-  const replyToChat = () => {
-    console.log('replyToChat');
+  const onSendChat = () => {
+    console.log('onSendChat');
     setChat('');
-    chatRef.current?.focus();
+    chatRef.current?.blur();
   };
 
   const openImagePicker = () => {
@@ -110,7 +111,7 @@ export const CommunityChatScreen: React.FC = () => {
                 index={0}
                 isSingle
               />
-              <Text size={16} style={{ paddingHorizontal: 14, paddingBottom: 10 }}>
+              <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
                 댓글 {COMMUNITY_POST.chats.length}
               </Text>
             </>
@@ -125,7 +126,7 @@ export const CommunityChatScreen: React.FC = () => {
                 children={
                   <>
                     <S.CommunityReplyContainer>
-                      <ScaleOpacity onPress={replyToChat}>
+                      <ScaleOpacity onPress={() => onChangeChat(`@${author.name} `)}>
                         <Text size={14} color={theme.placeholder}>
                           답글 달기
                         </Text>
@@ -173,14 +174,38 @@ export const CommunityChatScreen: React.FC = () => {
         <S.CommunityChatImage source={userProfile ? { uri: userProfile } : UserLogo} />
         <S.CommunityChatInputContainer>
           <S.CommunityChatInput
-            placeholder="댓글을 입력하세요."
+            placeholder="댓글을 입력하세요"
             placeholderTextColor={theme.placeholder}
             ref={chatRef}
-            value={chat}
             onChangeText={onChangeChat}
-          />
+          >
+            {chat.includes('@') ? (
+              <Text size={16} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                {chat.split(' ').map((word, index) => {
+                  if (word.includes('@')) {
+                    return (
+                      <Text key={index} size={16} color={theme.primary}>
+                        {word}
+                      </Text>
+                    );
+                  } else {
+                    return (
+                      <Text key={index} size={16} color={theme.black}>
+                        {' '}
+                        {word}
+                      </Text>
+                    );
+                  }
+                })}
+              </Text>
+            ) : (
+              <Text size={16} color={theme.placeholder}>
+                {chat}
+              </Text>
+            )}
+          </S.CommunityChatInput>
           {chat.length > 0 || (selectedImage && selectedImage?.length > 0) ? (
-            <ScaleOpacity onPress={() => {}}>
+            <ScaleOpacity onPress={onSendChat}>
               <MI name="send" size={28} color={theme.primary} />
             </ScaleOpacity>
           ) : (
