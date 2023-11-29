@@ -15,7 +15,7 @@ import {
   ScaleOpacity,
   Text,
 } from 'src/components';
-import { COMMUNITY_POST } from 'src/constants';
+import { COMMUNITY_POST, COMMUNITY_USER_LIST } from 'src/constants';
 import { useGetImagesHeight, useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 
@@ -29,6 +29,7 @@ export const CommunityChatScreen: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | undefined>('');
   const [chat, setChat] = useState<string>('');
   const [showReply, setShowReply] = useState<Array<boolean>>([]);
+  const [isMention, setIsMention] = useState<boolean>(false);
 
   const theme = useTheme();
 
@@ -37,12 +38,22 @@ export const CommunityChatScreen: React.FC = () => {
   const onChangeChat = (text: string) => {
     setChat(text);
     chatRef.current?.focus();
+    if (chat.length < 1) {
+      setIsMention(false);
+    }
+    if (chat.includes('@')) {
+      setIsMention(false);
+    }
   };
 
   const onSendChat = () => {
-    console.log('onSendChat');
     setChat('');
     chatRef.current?.blur();
+  };
+
+  const isMentioned = (id: string) => {
+    onChangeChat(`@${id} `);
+    setIsMention(true);
   };
 
   const openImagePicker = () => {
@@ -76,100 +87,127 @@ export const CommunityChatScreen: React.FC = () => {
 
   return (
     <S.CommunityChatWrapper>
-      <Header isRow>
+      <Header isRow style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1 }}>
         <GoBackIcon />
         <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} />
       </Header>
-      <S.CommunityChatContainer>
-        <FlatList
-          onEndReached={() => {
-            console.log('onEndReached');
-          }}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          data={COMMUNITY_POST.chats}
-          keyExtractor={(_, index) => index.toString()}
-          contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
-          StickyHeaderComponent={() => (
-            <View
-              style={{
-                height: 10,
-                backgroundColor: theme.background,
-                borderColor: 'red',
-                borderWidth: 1,
+      {!chat.includes('@') || isMention || chat.includes(' ') ? (
+        <S.CommunityChatContainer>
+          <FlatList
+            onEndReached={() => {
+              console.log('onEndReached');
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={COMMUNITY_POST.chats}
+            keyExtractor={(_, index) => index.toString()}
+            contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
+            ListHeaderComponent={
+              <>
+                <CommunityPost
+                  author={COMMUNITY_POST.author}
+                  content={COMMUNITY_POST.content}
+                  time={COMMUNITY_POST.time}
+                  type={COMMUNITY_POST.type}
+                  imageHeights={imageHeights}
+                  index={0}
+                  isSingle
+                />
+                <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
+                  댓글 {COMMUNITY_POST.chats.length}
+                </Text>
+              </>
+            }
+            renderItem={({ item: { author, time, message, replies }, index }) => {
+              return (
+                <CommunityChat
+                  author={author}
+                  time={time}
+                  message={message}
+                  i={index}
+                  children={
+                    <>
+                      <S.CommunityReplyContainer>
+                        <ScaleOpacity onPress={() => isMentioned(author.name)}>
+                          <Text size={14} color={theme.placeholder}>
+                            답글 달기
+                          </Text>
+                        </ScaleOpacity>
+                        {replies && replies.length > 0 && (
+                          <ScaleOpacity
+                            onPress={() => {
+                              setShowReply((prev) => {
+                                const temp = [...prev];
+                                temp[index] = !temp[index];
+                                return temp;
+                              });
+                            }}
+                          >
+                            <Text size={14} color={theme.placeholder}>
+                              {showReply[index] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
+                            </Text>
+                          </ScaleOpacity>
+                        )}
+                      </S.CommunityReplyContainer>
+                      {showReply[index] && (
+                        <View style={{ rowGap: 20 }}>
+                          {replies.map(({ author, time, message }, i) => {
+                            return (
+                              <CommunityChat
+                                author={author}
+                                time={time}
+                                message={message}
+                                i={i}
+                                key={i}
+                                isReply
+                              />
+                            );
+                          })}
+                        </View>
+                      )}
+                    </>
+                  }
+                />
+              );
+            }}
+          />
+        </S.CommunityChatContainer>
+      ) : (
+        <View style={{ width: '100%', flex: 1 }}>
+          {chat.length < 2 ? (
+            <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 14 }}>
+              @뒤에 유저 이름을 써주세요
+            </Text>
+          ) : (
+            <FlatList
+              data={COMMUNITY_USER_LIST}
+              keyExtractor={(_, index) => index.toString()}
+              contentContainerStyle={{
+                width: '100%',
+                alignItems: 'flex-start',
+                padding: 14,
+                rowGap: 24,
+              }}
+              renderItem={({ item: { name, image, id } }) => {
+                return (
+                  <ScaleOpacity onPress={() => isMentioned(id)}>
+                    <S.CommunityUserContainer>
+                      <S.CommunityUserImage source={image ? { uri: image } : UserLogo} />
+                      <View>
+                        <Text size={16}>{name}</Text>
+                        <Text size={14} color={theme.placeholder}>
+                          {id}
+                        </Text>
+                      </View>
+                    </S.CommunityUserContainer>
+                  </ScaleOpacity>
+                );
               }}
             />
           )}
-          ListHeaderComponent={
-            <>
-              <CommunityPost
-                author={COMMUNITY_POST.author}
-                content={COMMUNITY_POST.content}
-                time={COMMUNITY_POST.time}
-                type={COMMUNITY_POST.type}
-                imageHeights={imageHeights}
-                index={0}
-                isSingle
-              />
-              <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
-                댓글 {COMMUNITY_POST.chats.length}
-              </Text>
-            </>
-          }
-          renderItem={({ item: { author, time, message, replies }, index }) => {
-            return (
-              <CommunityChat
-                author={author}
-                time={time}
-                message={message}
-                i={index}
-                children={
-                  <>
-                    <S.CommunityReplyContainer>
-                      <ScaleOpacity onPress={() => onChangeChat(`@${author.name} `)}>
-                        <Text size={14} color={theme.placeholder}>
-                          답글 달기
-                        </Text>
-                      </ScaleOpacity>
-                      {replies && replies.length > 0 && (
-                        <ScaleOpacity
-                          onPress={() => {
-                            setShowReply((prev) => {
-                              const temp = [...prev];
-                              temp[index] = !temp[index];
-                              return temp;
-                            });
-                          }}
-                        >
-                          <Text size={14} color={theme.placeholder}>
-                            {showReply[index] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
-                          </Text>
-                        </ScaleOpacity>
-                      )}
-                    </S.CommunityReplyContainer>
-                    {showReply[index] && (
-                      <View style={{ rowGap: 20 }}>
-                        {replies.map(({ author, time, message }, i) => {
-                          return (
-                            <CommunityChat
-                              author={author}
-                              time={time}
-                              message={message}
-                              i={i}
-                              key={i}
-                              isReply
-                            />
-                          );
-                        })}
-                      </View>
-                    )}
-                  </>
-                }
-              />
-            );
-          }}
-        />
-      </S.CommunityChatContainer>
+        </View>
+      )}
+
       <S.CommunityChatBottomContainer behavior="padding" keyboardVerticalOffset={10}>
         <S.CommunityChatImage source={userProfile ? { uri: userProfile } : UserLogo} />
         <S.CommunityChatInputContainer>
@@ -177,33 +215,9 @@ export const CommunityChatScreen: React.FC = () => {
             placeholder="댓글을 입력하세요"
             placeholderTextColor={theme.placeholder}
             ref={chatRef}
+            value={chat}
             onChangeText={onChangeChat}
-          >
-            {chat.includes('@') ? (
-              <Text size={16} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                {chat.split(' ').map((word, index) => {
-                  if (word.includes('@')) {
-                    return (
-                      <Text key={index} size={16} color={theme.primary}>
-                        {word}
-                      </Text>
-                    );
-                  } else {
-                    return (
-                      <Text key={index} size={16} color={theme.black}>
-                        {' '}
-                        {word}
-                      </Text>
-                    );
-                  }
-                })}
-              </Text>
-            ) : (
-              <Text size={16} color={theme.placeholder}>
-                {chat}
-              </Text>
-            )}
-          </S.CommunityChatInput>
+          />
           {chat.length > 0 || (selectedImage && selectedImage?.length > 0) ? (
             <ScaleOpacity onPress={onSendChat}>
               <MI name="send" size={28} color={theme.primary} />

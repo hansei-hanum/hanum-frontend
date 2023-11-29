@@ -238,3 +238,57 @@ export const COMMUNITY_POST: CommunityPostItems = {
   type: 'STUDENT',
   chats: COMMUNITY_CHAT_LIST,
 };
+
+export interface CommunityUserItems {
+  name: string;
+  image: string | null;
+  id: string;
+}
+
+export const COMMUNITY_USER_LIST: CommunityUserItems[] = [
+  {
+    name: '김민수',
+    image: null,
+    id: 'kimmin',
+  },
+  {
+    name: '김잉기',
+    image: null,
+    id: 'kiminggi',
+  },
+  {
+    name: '김민수',
+    image: null,
+    id: 'kimmin',
+  },
+  {
+    name: '김민수',
+    image: null,
+    id: 'kimmin',
+  },
+  {
+    name: '김잉기',
+    image: null,
+    id: 'kiminggi',
+  },
+  {
+    name: '김민수',
+    image: null,
+    id: 'kimmin',
+  },
+  {
+    name: '김민수',
+    image: null,
+    id: 'kimmin',
+  },
+  {
+    name: '김잉기',
+    image: null,
+    id: 'kiminggi',
+  },
+  {
+    name: '김민수',
+    image: null,
+    id: 'kimmin',
+  },
+];
