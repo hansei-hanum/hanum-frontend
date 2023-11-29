@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, TextInput, View } from 'react-native';
+import { Animated, KeyboardAvoidingView, TextInput, View } from 'react-native';
 
 import styled from '@emotion/native';
 
@@ -24,15 +24,27 @@ export const CommunityChatImage = styled.Image`
   height: 40px;
 `;
 
+export const CommunityChatBottom = styled(isIos ? KeyboardAvoidingView : View)`
+  position: relative;
+  width: 100%;
+  background-color: ${({ theme }) => theme.background};
+`;
+
 export const CommunityChatBottomContainer = styled(isIos ? KeyboardAvoidingView : View)`
   width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: ${isIos ? '10px' : '14px'} 10px;
+  background-color: ${({ theme }) => theme.background};
+`;
+
+export const CommunityChatBottomWrapper = styled.View`
   column-gap: 10px;
   background-color: ${({ theme }) => theme.background};
-  z-index: 999;
+  flex-direction: row;
+  width: 100%;
+  padding: ${isIos ? '10px' : '14px'} 10px;
+  z-index: 99;
 `;
 
 export const CommunityChatInputContainer = styled.View`
@@ -82,4 +94,19 @@ export const CommunityUserImage = styled.Image`
   border-radius: 100px;
   width: 40px;
   height: 40px;
+`;
+
+export const CommunityChatReplyContainer = styled(Animated.View)`
+  width: 100%;
+  padding: 14px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  background-color: ${({ theme }) => theme.background};
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ theme }) => theme.lightGray};
+  border-top-width: 1px;
+  border-top-color: ${({ theme }) => theme.lightGray};
 `;

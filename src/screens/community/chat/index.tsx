@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, TextInput, View } from 'react-native';
 import FI from 'react-native-vector-icons/Feather';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { Animated } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
@@ -18,10 +20,14 @@ import {
 import { COMMUNITY_POST, COMMUNITY_USER_LIST } from 'src/constants';
 import { useGetImagesHeight, useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
+import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
 export const CommunityChatScreen: React.FC = () => {
+  const bottomRef = useRef<View>(null);
+  const replyTranslateY = useRef<any>(new Animated.Value(0)).current;
+
   const chatRef = useRef<TextInput>(null);
 
   const { userProfile } = useGetUser();
@@ -51,9 +57,25 @@ export const CommunityChatScreen: React.FC = () => {
     chatRef.current?.blur();
   };
 
-  const isMentioned = (id: string) => {
+  const isMentioned = (id: string, isReply?: boolean) => {
     onChangeChat(`@${id} `);
     setIsMention(true);
+    console.log(bottomRef.current);
+    if (isReply) {
+      Animated.timing(replyTranslateY, {
+        toValue: isIos ? -62 : -71.6,
+        duration: 250,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  const closeReply = () => {
+    Animated.timing(replyTranslateY, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
   };
 
   const openImagePicker = () => {
@@ -128,7 +150,7 @@ export const CommunityChatScreen: React.FC = () => {
                   children={
                     <>
                       <S.CommunityReplyContainer>
-                        <ScaleOpacity onPress={() => isMentioned(author.name)}>
+                        <ScaleOpacity onPress={() => isMentioned(author.name, true)}>
                           <Text size={14} color={theme.placeholder}>
                             답글 달기
                           </Text>
@@ -207,28 +229,42 @@ export const CommunityChatScreen: React.FC = () => {
           )}
         </View>
       )}
-
-      <S.CommunityChatBottomContainer behavior="padding" keyboardVerticalOffset={10}>
-        <S.CommunityChatImage source={userProfile ? { uri: userProfile } : UserLogo} />
-        <S.CommunityChatInputContainer>
-          <S.CommunityChatInput
-            placeholder="댓글을 입력하세요"
-            placeholderTextColor={theme.placeholder}
-            ref={chatRef}
-            value={chat}
-            onChangeText={onChangeChat}
-          />
-          {chat.length > 0 || (selectedImage && selectedImage?.length > 0) ? (
-            <ScaleOpacity onPress={onSendChat}>
-              <MI name="send" size={28} color={theme.primary} />
+      <S.CommunityChatBottom behavior="padding" keyboardVerticalOffset={10}>
+        <S.CommunityChatBottomContainer behavior="padding" keyboardVerticalOffset={10}>
+          <S.CommunityChatReplyContainer
+            ref={replyTranslateY}
+            style={{ transform: [{ translateY: replyTranslateY }] }}
+          >
+            <Text size={14} color={theme.placeholder}>
+              {chat}님에게 답글 남기는 중
+            </Text>
+            <ScaleOpacity onPress={closeReply}>
+              <MI name="cancel" size={24} color={theme.placeholder} />
             </ScaleOpacity>
-          ) : (
-            <ScaleOpacity onPress={openImagePicker}>
-              <FI name="image" size={28} color={theme.black} />
-            </ScaleOpacity>
-          )}
-        </S.CommunityChatInputContainer>
-      </S.CommunityChatBottomContainer>
+          </S.CommunityChatReplyContainer>
+          <S.CommunityChatBottomWrapper ref={bottomRef}>
+            <S.CommunityChatImage source={userProfile ? { uri: userProfile } : UserLogo} />
+            <S.CommunityChatInputContainer>
+              <S.CommunityChatInput
+                placeholder="댓글을 입력하세요"
+                placeholderTextColor={theme.placeholder}
+                ref={chatRef}
+                value={chat}
+                onChangeText={onChangeChat}
+              />
+              {chat.length > 0 || (selectedImage && selectedImage?.length > 0) ? (
+                <ScaleOpacity onPress={onSendChat}>
+                  <MI name="send" size={28} color={theme.primary} />
+                </ScaleOpacity>
+              ) : (
+                <ScaleOpacity onPress={openImagePicker}>
+                  <FI name="image" size={28} color={theme.black} />
+                </ScaleOpacity>
+              )}
+            </S.CommunityChatInputContainer>
+          </S.CommunityChatBottomWrapper>
+        </S.CommunityChatBottomContainer>
+      </S.CommunityChatBottom>
     </S.CommunityChatWrapper>
   );
 };
