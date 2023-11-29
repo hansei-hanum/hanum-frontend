@@ -36,6 +36,7 @@ export const CommunityChatScreen: React.FC = () => {
   const [chat, setChat] = useState<string>('');
   const [showReply, setShowReply] = useState<Array<boolean>>([]);
   const [isMention, setIsMention] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string>('');
 
   const theme = useTheme();
 
@@ -58,9 +59,9 @@ export const CommunityChatScreen: React.FC = () => {
   };
 
   const isMentioned = (id: string, isReply?: boolean) => {
+    setUserId(id);
     onChangeChat(`@${id} `);
     setIsMention(true);
-    console.log(bottomRef.current);
     if (isReply) {
       Animated.timing(replyTranslateY, {
         toValue: isIos ? -62 : -71.6,
@@ -236,7 +237,7 @@ export const CommunityChatScreen: React.FC = () => {
             style={{ transform: [{ translateY: replyTranslateY }] }}
           >
             <Text size={14} color={theme.placeholder}>
-              {chat}님에게 답글 남기는 중
+              {userId}님에게 답글 남기는 중
             </Text>
             <ScaleOpacity onPress={closeReply}>
               <MI name="cancel" size={24} color={theme.placeholder} />
