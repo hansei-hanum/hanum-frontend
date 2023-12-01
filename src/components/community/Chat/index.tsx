@@ -12,14 +12,14 @@ import { CommunityPostProps } from '../Post';
 import * as S from './styled';
 
 export interface CommunityChatProps extends Pick<CommunityPostProps, 'author' | 'time'> {
-  i: number;
+  index: number;
   message: string;
   isReply?: boolean;
   children?: React.ReactNode;
 }
 
 export const CommunityChat: React.FC<CommunityChatProps> = ({
-  i,
+  index,
   author,
   time,
   message,
@@ -55,7 +55,7 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
 
   const theme = useTheme();
   return (
-    <S.CommunityChatContent key={i}>
+    <S.CommunityChatContent key={index}>
       <S.CommunityChatImage
         source={author.image ? { uri: author.image } : UserLogo}
         style={isReply && { width: 36, height: 36 }}
@@ -68,19 +68,19 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
             {getPostTime(time)}
           </Text>
         </View>
-        {!isShow[i] ? (
+        {!isShow[index] ? (
           <S.ChatContainer>
             <S.Chat
               numberOfLines={14}
               ellipsizeMode="tail"
               onTextLayout={(event: NativeSyntheticEvent<TextLayoutEventData>) => {
-                event.nativeEvent.lines.length >= 14 && overlay(i);
+                event.nativeEvent.lines.length >= 14 && overlay(index);
               }}
             >
               {message}
             </S.Chat>
-            {isOverlay[i] && (
-              <ScaleOpacity onPress={() => showMore(i)}>
+            {isOverlay[index] && (
+              <ScaleOpacity onPress={() => showMore(index)}>
                 <Text size={14} color={theme.placeholder}>
                   더보기
                 </Text>
@@ -90,7 +90,7 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
         ) : (
           <S.ChatContainer>
             <S.Chat>{message}</S.Chat>
-            <ScaleOpacity onPress={() => showLess(i)}>
+            <ScaleOpacity onPress={() => showLess(index)}>
               <Text size={14} color={theme.placeholder}>
                 간략하게 보기
               </Text>

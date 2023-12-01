@@ -131,8 +131,7 @@ export const CalendarScreen: React.FC = () => {
             }}
             style={{
               marginTop: 30,
-              paddingLeft: 20,
-              paddingRight: 20,
+              paddingHorizontal: 20,
               paddingBottom: 40,
               borderBottomWidth: 0.4,
               borderBottomColor: theme.placeholder,

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
+
 import { useTheme } from '@emotion/react';
 
 import { Button, Text, HanumPayHeader, AuthFailedModal, Spinner } from 'src/components';

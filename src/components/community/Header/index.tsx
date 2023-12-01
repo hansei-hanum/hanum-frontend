@@ -19,6 +19,7 @@ export interface CommunityHeaderProps extends Pick<CommunityPostProps, 'author' 
 
 export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ author, type, time, style }) => {
   const theme = useTheme();
+
   return (
     <S.CommunityHeader style={style}>
       <S.CommunityHeaderTitle>

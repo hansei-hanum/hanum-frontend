@@ -161,3 +161,108 @@ export const CommunityMainScreen: React.FC = () => {
     </S.CommunityMainWrapper>
   );
 };
+
+// import React, { useEffect, useState } from 'react';
+// import {
+//   Dimensions,
+//   FlatList,
+//   Image,
+//   PermissionsAndroid,
+//   Platform,
+//   SafeAreaView,
+//   Text,
+//   View,
+// } from 'react-native';
+// import RNFS from 'react-native-fs';
+
+// import {
+//   CameraRoll,
+//   GetPhotosParams,
+//   AssetType,
+//   PhotoIdentifier,
+// } from '@react-native-camera-roll/camera-roll';
+
+// import { isAndroid, isIos } from 'src/utils';
+
+// export const CommunityMainScreen = () => {
+//   const [photos, setPhotos] = useState<PhotoIdentifier[]>([]);
+//   async function hasAndroidPermission() {
+//     const getCheckPermissionPromise = () => {
+//       if (+Platform.Version >= 33) {
+//         return Promise.all([
+//           PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES),
+//           PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO),
+//         ]).then(
+//           ([hasReadMediaImagesPermission, hasReadMediaVideoPermission]) =>
+//             hasReadMediaImagesPermission && hasReadMediaVideoPermission,
+//         );
+//       } else {
+//         return PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+//       }
+//     };
+
+//     const hasPermission = await getCheckPermissionPromise();
+//     if (hasPermission) {
+//       return true;
+//     }
+//     const getRequestPermissionPromise = () => {
+//       if (+Platform.Version >= 33) {
+//         return PermissionsAndroid.requestMultiple([
+//           PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+//           PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+//         ]).then(
+//           (statuses) =>
+//             statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES] ===
+//               PermissionsAndroid.RESULTS.GRANTED &&
+//             statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO] ===
+//               PermissionsAndroid.RESULTS.GRANTED,
+//         );
+//       } else {
+//         return PermissionsAndroid.request(
+//           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+//         ).then((status) => status === PermissionsAndroid.RESULTS.GRANTED);
+//       }
+//     };
+
+//     return await getRequestPermissionPromise();
+//   }
+
+//   async function savePicture() {
+//     if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
+//       return;
+//     }
+
+//     CameraRoll.getPhotos({
+//       first: 20,
+//       assetType: 'Photos',
+//     })
+//       .then((r) => {
+//         setPhotos(r.edges);
+//         console.log(
+//           r.edges.map((item) => item.node.image.uri),
+//           'noe',
+//         );
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   }
+
+//   useEffect(() => {
+//     savePicture();
+//   }, []);
+
+//   return (
+//     <SafeAreaView>
+//       <View style={{ borderColor: 'red', borderWidth: 1, flexDirection: 'row' }}>
+//         {photos.map((item) => (
+//           <Image
+//             key={item.node.image.uri}
+//             source={{ uri: item.node.image.uri }}
+//             style={{ width: 100, height: 100, borderColor: 'blue', borderWidth: 1 }}
+//           />
+//         ))}
+//       </View>
+//     </SafeAreaView>
+//   );
+// };
