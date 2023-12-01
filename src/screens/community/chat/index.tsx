@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { PermissionsAndroid, Platform, TextInput, View } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Platform, TextInput, TouchableOpacity, View } from 'react-native';
 import { Animated } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
-import { Button } from 'react-native';
+import Permissions, { PERMISSIONS } from 'react-native-permissions';
 
 import { useTheme } from '@emotion/react';
-import BottomSheet, { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import {
   CommunityHeader,
@@ -19,7 +19,7 @@ import {
 } from 'src/components';
 import { COMMUNITY_POST } from 'src/constants';
 import { isIos } from 'src/utils';
-import { ChatList, MentionUserList } from 'src/layouts';
+import { ChatList, ImageBottomSheet, MentionUserList } from 'src/layouts';
 import { useGetUser } from 'src/hooks';
 
 import * as S from './styled';
@@ -30,56 +30,108 @@ const REPLY_BOX_ANDROID_OFFSET = -71.6;
 export const CommunityChatScreen: React.FC = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const snapPoints = useMemo(() => ['100%', '70%'], []);
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
+  const [isImageBottomSheetOpen, setIsImageBottomSheetOpen] = useState<boolean>(false);
 
-  async function hasAndroidPermission() {
-    console.log('hasAndroidPermission');
-    const getCheckPermissionPromise = () => {
-      if (+Platform.Version >= 33) {
-        return Promise.all([
-          PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES),
-          PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO),
-        ]).then(
-          ([hasReadMediaImagesPermission, hasReadMediaVideoPermission]) =>
-            hasReadMediaImagesPermission && hasReadMediaVideoPermission,
-        );
-      } else {
-        return PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+  const openImageBottomSheet = () => {
+    setIsImageBottomSheetOpen(true);
+    bottomSheetModalRef.current.present();
+  };
+
+  const checkAndroidPermissions = useCallback(async () => {
+    if (parseInt(Platform.Version as string, 10) >= 33) {
+      const permissions = await Permissions.checkMultiple([
+        PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+        PERMISSIONS.ANDROID.READ_MEDIA_VIDEO,
+      ]);
+      if (permissions) {
+        openImageBottomSheet();
       }
-    };
+      if (
+        permissions[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.GRANTED &&
+        permissions[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.GRANTED
+      ) {
+        setHasPermission(true);
+        return;
+      }
 
-    const hasPermission = await getCheckPermissionPromise();
-    if (hasPermission) {
-      return true;
+      const res = await Permissions.requestMultiple([
+        PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+        PERMISSIONS.ANDROID.READ_MEDIA_VIDEO,
+      ]);
+      if (res) {
+        openImageBottomSheet();
+      }
+      if (
+        res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.GRANTED &&
+        res[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.GRANTED
+      ) {
+        setHasPermission(true);
+      }
+      if (
+        res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.DENIED ||
+        res[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.DENIED
+      ) {
+        checkAndroidPermissions();
+      }
+    } else {
+      const permission = await Permissions.check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      if (permission) {
+        openImageBottomSheet();
+      }
+      if (permission === Permissions.RESULTS.GRANTED) {
+        setHasPermission(true);
+        return;
+      }
+      const res = await Permissions.request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      if (res) {
+        openImageBottomSheet();
+      }
+      if (res) {
+        bottomSheetModalRef.current.present();
+      }
+      if (res === Permissions.RESULTS.GRANTED) {
+        setHasPermission(true);
+      }
+      if (res === Permissions.RESULTS.DENIED) {
+        checkAndroidPermissions();
+      }
     }
-    const getRequestPermissionPromise = () => {
-      if (+Platform.Version >= 33) {
-        return PermissionsAndroid.requestMultiple([
-          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-          PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
-        ]).then(
-          (statuses) =>
-            statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES] ===
-              PermissionsAndroid.RESULTS.GRANTED &&
-            statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO] ===
-              PermissionsAndroid.RESULTS.GRANTED,
-        );
-      } else {
-        return PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        ).then((status) => status === PermissionsAndroid.RESULTS.GRANTED);
-      }
-    };
-
-    return await getRequestPermissionPromise();
-  }
-
-  const handlePresentModalPress = useCallback(async () => {
-    await hasAndroidPermission();
   }, []);
 
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
+  const checkPermission = useCallback(async () => {
+    if (Platform.OS === 'ios') {
+      const permission = await Permissions.check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+      if (permission) {
+        openImageBottomSheet();
+      }
+      if (
+        permission === Permissions.RESULTS.GRANTED ||
+        permission === Permissions.RESULTS.LIMITED
+      ) {
+        setHasPermission(true);
+        return;
+      }
+
+      const res = await Permissions.request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+      if (res) {
+        openImageBottomSheet();
+      }
+      if (res === Permissions.RESULTS.GRANTED || res === Permissions.RESULTS.LIMITED) {
+        setHasPermission(true);
+      }
+    } else if (Platform.OS === 'android') {
+      checkAndroidPermissions();
+    }
+  }, [checkAndroidPermissions]);
+
+  const handlePresentModalPress = useCallback(() => {
+    checkPermission();
+  }, [checkPermission]);
+
+  const handleDismissModalPress = useCallback(() => {
+    bottomSheetModalRef.current.close();
+    setIsImageBottomSheetOpen(false);
   }, []);
 
   const { userProfile } = useGetUser();
@@ -91,7 +143,6 @@ export const CommunityChatScreen: React.FC = () => {
   const [chat, setChat] = useState<string>('');
   const [isMention, setIsMention] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
-  const [getDeviceImage, setGetDeviceImage] = useState<boolean>(false);
 
   const theme = useTheme();
 
@@ -188,26 +239,26 @@ export const CommunityChatScreen: React.FC = () => {
                 </ScaleOpacity>
               ) : (
                 <ScaleOpacity onPress={handlePresentModalPress}>
-                  <FI name="image" size={28} color={theme.black} />
+                  <FI name="image" size={28} color={theme.default} />
                 </ScaleOpacity>
               )}
             </S.BottomSendInputContainer>
           </S.BottomSendInputSection>
         </S.BottomInputContainer>
       </S.BottomInputWrapper>
-      <BottomSheetModalProvider>
-        <BottomSheetModal
-          style={{ zIndex: 99 }}
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        >
-          <View style={{ width: 100, height: 100 }}>
-            <Text size={24}>Awesome 🎉</Text>
-          </View>
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
+      {isImageBottomSheetOpen && (
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}
+          activeOpacity={1}
+          onPress={handleDismissModalPress}
+        />
+      )}
+      <ImageBottomSheet bottomSheetModalRef={bottomSheetModalRef} hasPermission={hasPermission} />
     </S.CommunityChatWrapper>
   );
 };

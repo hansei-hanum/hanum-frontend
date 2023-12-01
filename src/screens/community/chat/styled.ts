@@ -73,3 +73,11 @@ export const BottomInputReplyBox = styled(Animated.View)`
   border-top-width: 1px;
   border-top-color: ${({ theme }) => theme.lightGray};
 `;
+
+export const ModalDummyContainer = styled.View`
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
