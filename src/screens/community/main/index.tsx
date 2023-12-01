@@ -12,9 +12,15 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useTheme } from '@emotion/react';
 
-import { CommunityHeader, CommunityPost, Header, ScaleOpacity, Text } from 'src/components';
+import {
+  CommunityHeader,
+  CommunityPost,
+  CommunityUserImage,
+  Header,
+  ScaleOpacity,
+  Text,
+} from 'src/components';
 import { useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
-import { UserLogo } from 'src/assets';
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
 
@@ -31,15 +37,15 @@ export const CommunityMainScreen: React.FC = () => {
 
   const searchRef = useRef<TextInput>(null);
 
-  const [isFocused, setIsFocused] = useState(false);
+  const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [likes, setLikes] = useState<Array<boolean>>([]);
 
-  const value = useRef(new Animated.Value(0)).current;
+  const searchAnimationValue = useRef(new Animated.Value(0)).current;
 
-  const show = () => {
-    setIsFocused(true);
+  const showSearchScreen = () => {
+    setIsSearchScreen(true);
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    Animated.timing(value, {
+    Animated.timing(searchAnimationValue, {
       toValue: 0,
       duration: 200,
       easing: Easing.linear,
@@ -47,19 +53,18 @@ export const CommunityMainScreen: React.FC = () => {
     }).start();
   };
 
-  const hidden = () => {
-    setIsFocused(false);
-    if (isFocused) {
-      searchRef.current && searchRef.current.blur();
-    }
+  const closeSearchScreen = () => {
+    setIsSearchScreen(false);
+    searchRef.current?.blur();
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   };
 
   const searchBarAnimation = {
-    flex: value.interpolate({ inputRange: [0, 1], outputRange: [1, 1] }),
+    flex: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 1] }),
   };
   const opacityAnimation = {
-    opacity: value.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
+    opacity: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
+    scale: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0.9] }),
   };
 
   const onLikeClick = (index: number) => {
@@ -87,29 +92,26 @@ export const CommunityMainScreen: React.FC = () => {
             placeholderTextColor={theme.placeholder}
             selectionColor={theme.placeholder}
             ref={searchRef}
-            onFocus={show}
+            onFocus={showSearchScreen}
           />
           <Icon name="search" size={24} color={theme.placeholder} />
         </S.CommunityMainSearchBarContainer>
-        {isFocused && (
+        {isSearchScreen && (
           <S.CommunityMainIconWrapper style={opacityAnimation}>
-            <TouchableOpacity activeOpacity={0.8} onPress={hidden}>
-              <Icon name="cancel" size={24} color={theme.placeholder} />
+            <TouchableOpacity activeOpacity={0.8} onPress={closeSearchScreen}>
+              <Icon name="close" size={30} color={theme.placeholder} />
             </TouchableOpacity>
           </S.CommunityMainIconWrapper>
         )}
       </Header>
-      {!isFocused ? (
+      {!isSearchScreen ? (
         <FlatList
           data={COMMUNITY_LIST}
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle={{ paddingTop: isIos ? 20 : 0, paddingBottom: 40, rowGap: 16 }}
           ListHeaderComponent={
             <S.CommunityUserContainer>
-              <S.CommunityImage
-                source={userProfile ? { uri: userProfile } : UserLogo}
-                style={{ resizeMode: 'contain' }}
-              />
+              <CommunityUserImage userImage={userProfile} />
               <S.CommunityUserThinkBox>
                 <Text size={16} color={theme.placeholder}>
                   어떤 생각을 하고 계신가요?

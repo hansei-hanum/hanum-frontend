@@ -25,6 +25,7 @@ export const AuthMainScreen: React.FC = () => {
     isAgreeModal: false,
     isCurrentStudentModal: false,
   });
+
   const isAgreeModal = modalVisible.isAgreeModal;
 
   const [auth, setAuth] = useRecoilState(authAtom);

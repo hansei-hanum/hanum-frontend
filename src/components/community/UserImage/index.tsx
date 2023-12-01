@@ -9,5 +9,7 @@ export interface CommunityUserImageProps {
 }
 
 export const CommunityUserImage: React.FC<CommunityUserImageProps> = ({ userImage }) => {
-  return <S.CommunityUserImage source={userImage ? { uri: userImage } : UserLogo} />;
+  return (
+    <S.CommunityUserImage resizeMode="contain" source={userImage ? { uri: userImage } : UserLogo} />
+  );
 };
