@@ -4,13 +4,13 @@ import styled from '@emotion/native';
 
 import { isIos } from 'src/utils';
 
-export const CommunityChatBottom = styled(isIos ? KeyboardAvoidingView : View)`
+export const BottomInputWrapper = styled(isIos ? KeyboardAvoidingView : View)`
   position: relative;
   width: 100%;
   background-color: ${({ theme }) => theme.background};
 `;
 
-export const CommunityChatBottomContainer = styled(isIos ? KeyboardAvoidingView : View)`
+export const BottomInputContainer = styled(isIos ? KeyboardAvoidingView : View)`
   width: 100%;
   flex-direction: row;
   align-items: center;
@@ -18,7 +18,7 @@ export const CommunityChatBottomContainer = styled(isIos ? KeyboardAvoidingView 
   background-color: ${({ theme }) => theme.background};
 `;
 
-export const CommunityChatBottomWrapper = styled.View`
+export const BottomSendInputSection = styled.View`
   column-gap: 10px;
   background-color: ${({ theme }) => theme.background};
   flex-direction: row;
@@ -27,7 +27,7 @@ export const CommunityChatBottomWrapper = styled.View`
   z-index: 99;
 `;
 
-export const CommunityChatInputContainer = styled.View`
+export const BottomSendInputContainer = styled.View`
   flex: 1;
   align-items: center;
   background-color: ${({ theme }) => theme.lightGray};
@@ -38,7 +38,7 @@ export const CommunityChatInputContainer = styled.View`
   padding: 0 10px;
 `;
 
-export const CommunityChatInput = styled(TextInput)`
+export const BottomSendInput = styled(TextInput)`
   flex: 1;
   padding: ${isIos ? '12px' : '8px'} 0;
   font-size: 15px;
@@ -46,12 +46,7 @@ export const CommunityChatInput = styled(TextInput)`
   color: ${({ theme }) => theme.default};
 `;
 
-export const CommunityChatImageWrapper = styled.View`
-  flex: 1;
-  padding: 10px 10px;
-`;
-
-export const CommunityChatReplyContainer = styled(Animated.View)`
+export const BottomInputReplyBox = styled(Animated.View)`
   width: 100%;
   padding: 14px;
   flex-direction: row;

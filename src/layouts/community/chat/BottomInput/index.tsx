@@ -10,7 +10,7 @@ import { useGetUser } from 'src/hooks';
 
 import * as S from './styled';
 
-interface CommunityChatBottomInputProps {
+export interface BottomInputProps {
   replyTranslateY: any;
   userId: string;
   closeReplyBox: () => void;
@@ -20,7 +20,7 @@ interface CommunityChatBottomInputProps {
   chat: string;
 }
 
-export const CommunityChatBottomInput: React.FC<CommunityChatBottomInputProps> = ({
+export const BottomInput: React.FC<BottomInputProps> = ({
   replyTranslateY,
   userId,
   closeReplyBox,
@@ -34,9 +34,9 @@ export const CommunityChatBottomInput: React.FC<CommunityChatBottomInputProps> =
   const { userProfile } = useGetUser();
 
   return (
-    <S.CommunityChatBottom behavior="padding" keyboardVerticalOffset={10}>
-      <S.CommunityChatBottomContainer behavior="padding" keyboardVerticalOffset={10}>
-        <S.CommunityChatReplyContainer
+    <S.BottomInputWrapper behavior="padding" keyboardVerticalOffset={10}>
+      <S.BottomInputContainer behavior="padding" keyboardVerticalOffset={10}>
+        <S.BottomInputReplyBox
           ref={replyTranslateY}
           style={{ transform: [{ translateY: replyTranslateY }] }}
         >
@@ -46,11 +46,11 @@ export const CommunityChatBottomInput: React.FC<CommunityChatBottomInputProps> =
           <ScaleOpacity onPress={closeReplyBox}>
             <MI name="cancel" size={24} color={theme.placeholder} />
           </ScaleOpacity>
-        </S.CommunityChatReplyContainer>
-        <S.CommunityChatBottomWrapper>
-          <CommunityUserImage userProfile={userProfile} />
-          <S.CommunityChatInputContainer>
-            <S.CommunityChatInput
+        </S.BottomInputReplyBox>
+        <S.BottomSendInputSection>
+          <CommunityUserImage userImage={userProfile} />
+          <S.BottomSendInputContainer>
+            <S.BottomSendInput
               placeholder="댓글을 입력하세요"
               placeholderTextColor={theme.placeholder}
               ref={chatRef}
@@ -66,9 +66,9 @@ export const CommunityChatBottomInput: React.FC<CommunityChatBottomInputProps> =
                 <FI name="image" size={28} color={theme.black} />
               </ScaleOpacity>
             )}
-          </S.CommunityChatInputContainer>
-        </S.CommunityChatBottomWrapper>
-      </S.CommunityChatBottomContainer>
-    </S.CommunityChatBottom>
+          </S.BottomSendInputContainer>
+        </S.BottomSendInputSection>
+      </S.BottomInputContainer>
+    </S.BottomInputWrapper>
   );
 };

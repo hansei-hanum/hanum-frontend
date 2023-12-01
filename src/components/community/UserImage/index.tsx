@@ -5,9 +5,9 @@ import { UserLogo } from 'src/assets';
 import * as S from './styled';
 
 export interface CommunityUserImageProps {
-  userProfile?: string | null;
+  userImage?: string | null;
 }
 
-export const CommunityUserImage: React.FC<CommunityUserImageProps> = ({ userProfile }) => {
-  return <S.CommunityChatImage source={userProfile ? { uri: userProfile } : UserLogo} />;
+export const CommunityUserImage: React.FC<CommunityUserImageProps> = ({ userImage }) => {
+  return <S.CommunityUserImage source={userImage ? { uri: userImage } : UserLogo} />;
 };
