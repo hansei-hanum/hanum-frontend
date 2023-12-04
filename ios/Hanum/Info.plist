@@ -91,6 +91,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
   <key>NSPhotoLibraryUsageDescription</key>
-  <string>Allow access to the photo library for selecting images</string>
+  <string>대나무숲에 사진을 올리기 위해서는 사진첩 점근 권한이 필요해요.</string>
 </dict>
 </plist>
