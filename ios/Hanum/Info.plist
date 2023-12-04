@@ -89,8 +89,8 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow access to the photo library for selecting images</string>
 	<false/>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Allow access to the photo library for selecting images</string>
 </dict>
 </plist>
