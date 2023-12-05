@@ -1,3 +1,3 @@
 export * from './MetionUserList';
 export * from './ChatList';
-export * from './ImageBottomSheet';
+export * from './ImageList';

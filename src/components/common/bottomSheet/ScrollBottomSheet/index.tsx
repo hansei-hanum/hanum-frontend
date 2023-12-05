@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dimensions, StyleSheet } from 'react-native';
-import React, { useCallback, useImperativeHandle, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   AnimatedScrollViewProps,
@@ -16,14 +16,18 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-roll';
+
+import { ScaleOpacity } from '../../ScaleOpacity';
+
 import * as S from './styled';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
 interface ScrollBottomSheetProps extends AnimatedScrollViewProps {
-  children?: React.ReactNode;
   scrollHeight: number;
+  hasPermission: boolean;
 }
 
 export type ScrollBottomSheetRefProps = {
@@ -34,7 +38,7 @@ export type ScrollBottomSheetRefProps = {
 export const ScrollBottomSheet = React.forwardRef<
   ScrollBottomSheetRefProps,
   ScrollBottomSheetProps
->(({ children, scrollHeight, ...rest }: ScrollBottomSheetProps, ref) => {
+>(({ scrollHeight, hasPermission, ...rest }: ScrollBottomSheetProps, ref) => {
   const inset = useSafeAreaInsets();
   const translateY = useSharedValue(0);
   const active = useSharedValue(false);
@@ -129,6 +133,26 @@ export const ScrollBottomSheet = React.forwardRef<
     },
   });
 
+  const [photos, setPhotos] = useState<PhotoIdentifier[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchPhotos = useCallback(async () => {
+    const res = await CameraRoll.getPhotos({
+      first: 27,
+      assetType: 'Photos',
+    });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    setPhotos(res?.edges);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (hasPermission) {
+      console.log('hasPermission');
+      fetchPhotos();
+    }
+  }, [hasPermission, fetchPhotos]);
+
   return (
     <>
       <Animated.View
@@ -150,15 +174,28 @@ export const ScrollBottomSheet = React.forwardRef<
         <S.ScrollBottomSheetContainer style={rBottomSheetStyle}>
           <S.ScrollBottomSheetLine />
           <GestureDetector gesture={gesture}>
-            <Animated.ScrollView
+            <Animated.FlatList
+              data={isLoading ? Array(15).fill('') : photos}
               {...rest}
               scrollEnabled={enableScroll}
               bounces={false}
               scrollEventThrottle={16}
               onScroll={onScroll}
-            >
-              {children}
-            </Animated.ScrollView>
+              numColumns={3}
+              contentContainerStyle={{ paddingBottom: 70, paddingTop: 10 }}
+              renderItem={({ item }) => {
+                return (
+                  <ScaleOpacity style={{ width: '33%' }} onPress={() => console.log('pressed')}>
+                    <S.Image
+                      key={item?.node?.image?.uri}
+                      source={{ uri: item?.node?.image?.uri }}
+                      height={140}
+                      resizeMode="cover"
+                    />
+                  </ScaleOpacity>
+                );
+              }}
+            />
           </GestureDetector>
         </S.ScrollBottomSheetContainer>
       </GestureDetector>

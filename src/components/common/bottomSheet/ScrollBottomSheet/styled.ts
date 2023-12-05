@@ -22,3 +22,10 @@ export const ScrollBottomSheetLine = styled.View`
   margin: 15px 0;
   border-radius: 2px;
 `;
+
+export const Image = styled.Image`
+  height: 140px;
+  width: 100%;
+  border-color: ${({ theme }) => theme.lightGray};
+  border-width: 0.6px;
+`;
