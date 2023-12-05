@@ -539,7 +539,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Hanum/Hanum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 663NYARW47;
+				DEVELOPMENT_TEAM = SX3VDZQ993;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Hanum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "한움";
@@ -555,7 +555,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanowl.hanum;
+				PRODUCT_BUNDLE_IDENTIFIER = com.choi138.hanum;
 				PRODUCT_NAME = Hanum;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -576,7 +576,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Hanum/Hanum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 663NYARW47;
+				DEVELOPMENT_TEAM = SX3VDZQ993;
 				INFOPLIST_FILE = Hanum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "한움";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
@@ -591,7 +591,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanowl.hanum;
+				PRODUCT_BUNDLE_IDENTIFIER = com.choi138.hanum;
 				PRODUCT_NAME = Hanum;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
