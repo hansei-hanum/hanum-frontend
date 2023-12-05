@@ -85,7 +85,7 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
                   )}
                 </S.ChatReplyContainer>
                 {showReply[index] && (
-                  <View style={{ rowGap: 20 }}>
+                  <View style={{ rowGap: 20, marginBottom: 10 }}>
                     {replies.map(({ author, time, message }, index) => (
                       <CommunityChat
                         author={author}

@@ -21,6 +21,8 @@ export const BottomInputWrapper = styled(isIos ? KeyboardAvoidingView : View)`
   position: relative;
   width: 100%;
   background-color: ${({ theme }) => theme.background};
+  border-top-width: 1px;
+  border-top-color: ${({ theme }) => theme.lightGray};
 `;
 
 export const BottomInputContainer = styled(isIos ? KeyboardAvoidingView : View)`

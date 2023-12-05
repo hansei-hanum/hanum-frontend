@@ -9,3 +9,4 @@ export * from './Status';
 export * from './Spinner';
 export * from './Header';
 export * from './ScaleOpacity';
+export * from './bottomSheet';
