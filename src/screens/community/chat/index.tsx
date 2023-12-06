@@ -17,12 +17,15 @@ import {
   Header,
   ScaleOpacity,
   Text,
-  ScrollBottomSheetRefProps,
-  ScrollBottomSheet,
 } from 'src/components';
 import { COMMUNITY_POST } from 'src/constants';
 import { isIos } from 'src/utils';
-import { ChatList, ImagesList, MentionUserList } from 'src/layouts';
+import {
+  ChatList,
+  MentionUserList,
+  ScrollBottomSheet,
+  ScrollBottomSheetRefProps,
+} from 'src/layouts';
 import { useGetUser } from 'src/hooks';
 
 import * as S from './styled';

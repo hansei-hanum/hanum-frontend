@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -18,7 +18,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-roll';
 
-import { ScaleOpacity } from '../../ScaleOpacity';
+import { Spinner } from 'src/components';
+
+import { ScaleOpacity } from '../../../../components/common/ScaleOpacity';
 
 import * as S from './styled';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -40,11 +42,16 @@ export const ScrollBottomSheet = React.forwardRef<
   ScrollBottomSheetProps
 >(({ scrollHeight, hasPermission, ...rest }: ScrollBottomSheetProps, ref) => {
   const inset = useSafeAreaInsets();
+
   const translateY = useSharedValue(0);
   const active = useSharedValue(false);
-  const [enableScroll, setEnableScroll] = useState(false);
   const scrollBegin = useSharedValue(0);
   const scrollY = useSharedValue(0);
+
+  const [enableScroll, setEnableScroll] = useState(false);
+  const [photos, setPhotos] = useState<PhotoIdentifier[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [getPhotosNum, setGetPhotosNum] = useState(60);
 
   const scrollTo = useCallback(
     (destination: number) => {
@@ -133,18 +140,22 @@ export const ScrollBottomSheet = React.forwardRef<
     },
   });
 
-  const [photos, setPhotos] = useState<PhotoIdentifier[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const fetchPhotos = useCallback(async () => {
+    setIsLoading(true);
     const res = await CameraRoll.getPhotos({
-      first: 27,
+      first: getPhotosNum,
       assetType: 'Photos',
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     setPhotos(res?.edges);
     setIsLoading(false);
-  }, []);
+  }, [getPhotosNum]);
+
+  const endReached = () => {
+    if (!isLoading) {
+      setGetPhotosNum((prev) => prev + getPhotosNum);
+    }
+  };
 
   useEffect(() => {
     if (hasPermission) {
@@ -175,14 +186,23 @@ export const ScrollBottomSheet = React.forwardRef<
           <S.ScrollBottomSheetLine />
           <GestureDetector gesture={gesture}>
             <Animated.FlatList
-              data={isLoading ? Array(15).fill('') : photos}
+              data={photos}
               {...rest}
               scrollEnabled={enableScroll}
               bounces={false}
               scrollEventThrottle={16}
               onScroll={onScroll}
               numColumns={3}
-              contentContainerStyle={{ paddingBottom: 70, paddingTop: 10 }}
+              contentContainerStyle={{ paddingBottom: 100, paddingTop: 10 }}
+              onEndReached={endReached}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={
+                isLoading ? (
+                  <View style={{ marginTop: 10 }}>
+                    <Spinner />
+                  </View>
+                ) : null
+              }
               renderItem={({ item }) => {
                 return (
                   <ScaleOpacity style={{ width: '33%' }} onPress={() => console.log('pressed')}>
