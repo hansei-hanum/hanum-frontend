@@ -1,11 +1,11 @@
-import { Dimensions } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { Animated, Dimensions } from 'react-native';
+import ReAnimated from 'react-native-reanimated';
 
 import styled from '@emotion/native';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export const ScrollBottomSheetContainer = styled(Animated.View)`
+export const ScrollBottomSheetContainer = styled(ReAnimated.View)`
   height: ${`${SCREEN_HEIGHT}px`};
   width: 100%;
   background-color: ${({ theme }) => theme.background};
@@ -35,7 +35,7 @@ export const Image = styled.Image`
 
 export const ScrollBottomButtonWrapper = styled(Animated.View)`
   position: absolute;
-  bottom: 30px;
+  bottom: 0px;
   width: 100%;
   padding: 0 14px;
 `;
@@ -58,4 +58,12 @@ export const WarningContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
+`;
+
+export const PermissionDeninedContainer = styled.View`
+  width: 100%;
+  height: 30%;
+  row-gap: 20px;
+  align-items: center;
+  justify-content: center;
 `;

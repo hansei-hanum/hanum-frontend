@@ -7,7 +7,6 @@ import FI from 'react-native-vector-icons/Feather';
 import Permissions, { PERMISSIONS } from 'react-native-permissions';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { runOnJS } from 'react-native-reanimated';
 
 import { useTheme } from '@emotion/react';
 
@@ -34,7 +33,15 @@ import * as S from './styled';
 const REPLY_BOX_IOS_OFFSET = -62;
 const REPLY_BOX_ANDROID_OFFSET = -71.6;
 
-const SCROLL_HEIGHT = -500;
+const HAS_PERMISSION_SCROLL_HEIGHT = -500;
+const NO_PERMISSION_SCROLL_HEIGHT = -300;
+
+const status = {
+  isAllGranted: { granted: true, limited: true },
+  isBlocked: { granted: false, limited: false },
+  isGranted: { granted: true, limited: false },
+  isLimited: { granted: false, limited: true },
+};
 
 export interface PhotoPermissionProps {
   granted: boolean;
@@ -46,21 +53,25 @@ export const CommunityChatScreen: React.FC = () => {
 
   const scrollBottomSheetRef = useRef<ScrollBottomSheetRefProps>(null);
 
-  const [showButton, setShowButton] = useState(false);
-  const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [permission, setPermission] = useState<PhotoPermissionProps>({
     granted: false,
     limited: false,
   });
 
-  const openImageBottomSheet = useCallback(() => {
+  const permissionHeight =
+    permission.granted || permission.limited
+      ? HAS_PERMISSION_SCROLL_HEIGHT
+      : NO_PERMISSION_SCROLL_HEIGHT;
+
+  const openImageBottomSheet = useCallback(({ granted, limited }: PhotoPermissionProps) => {
     const isActive = scrollBottomSheetRef?.current?.isActive();
     if (isActive) {
-      runOnJS(setShowButton)(false);
       scrollBottomSheetRef?.current?.scrollTo(0);
     } else {
-      runOnJS(setShowButton)(true);
-      scrollBottomSheetRef?.current?.scrollTo(SCROLL_HEIGHT);
+      console.log(permission);
+      scrollBottomSheetRef?.current?.scrollTo(
+        granted || limited ? HAS_PERMISSION_SCROLL_HEIGHT : NO_PERMISSION_SCROLL_HEIGHT,
+      );
     }
     chatRef.current?.blur();
   }, []);
@@ -75,8 +86,8 @@ export const CommunityChatScreen: React.FC = () => {
         permissions[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.GRANTED &&
         permissions[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.GRANTED
       ) {
-        setPermission({ granted: true, limited: false });
-        openImageBottomSheet();
+        setPermission(status.isGranted);
+        openImageBottomSheet(status.isGranted);
         return;
       }
       const res = await Permissions.requestMultiple([
@@ -87,8 +98,8 @@ export const CommunityChatScreen: React.FC = () => {
         res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.GRANTED &&
         res[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.GRANTED
       ) {
-        setPermission({ granted: true, limited: false });
-        openImageBottomSheet();
+        setPermission(status.isGranted);
+        openImageBottomSheet(status.isGranted);
       }
       if (
         res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.DENIED ||
@@ -100,27 +111,27 @@ export const CommunityChatScreen: React.FC = () => {
         res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.BLOCKED ||
         res[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.BLOCKED
       ) {
-        setPermission({ granted: false, limited: false });
-        openImageBottomSheet();
+        setPermission(status.isBlocked);
+        openImageBottomSheet(status.isBlocked);
       }
     } else {
       const permission = await Permissions.check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
       if (permission === Permissions.RESULTS.GRANTED) {
-        setPermission({ granted: true, limited: true });
-        openImageBottomSheet();
+        setPermission(status.isGranted);
+        openImageBottomSheet(status.isGranted);
         return;
       }
       const res = await Permissions.request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
       if (res === Permissions.RESULTS.GRANTED) {
-        setPermission({ granted: true, limited: true });
-        openImageBottomSheet();
+        setPermission(status.isGranted);
+        openImageBottomSheet(status.isGranted);
       }
       if (res === Permissions.RESULTS.DENIED) {
         checkAndroidPermissions();
       }
       if (res === Permissions.RESULTS.BLOCKED) {
-        setPermission({ granted: false, limited: false });
-        openImageBottomSheet();
+        setPermission(status.isBlocked);
+        openImageBottomSheet(status.isBlocked);
       }
     }
   }, []);
@@ -128,26 +139,25 @@ export const CommunityChatScreen: React.FC = () => {
   const checkPermission = useCallback(async () => {
     if (Platform.OS === 'ios') {
       const permission = await Permissions.check(PERMISSIONS.IOS.PHOTO_LIBRARY);
-      console.log('permission', permission);
       if (permission === Permissions.RESULTS.GRANTED) {
-        setPermission({ granted: true, limited: false });
-        openImageBottomSheet();
+        setPermission(status.isGranted);
+        openImageBottomSheet(status.isGranted);
         return;
       } else if (permission === Permissions.RESULTS.LIMITED) {
-        setPermission({ granted: false, limited: true });
-        openImageBottomSheet();
+        setPermission(status.isLimited);
+        openImageBottomSheet(status.isLimited);
         return;
       }
       const res = await Permissions.request(PERMISSIONS.IOS.PHOTO_LIBRARY);
       if (res === Permissions.RESULTS.GRANTED) {
-        setPermission({ granted: true, limited: false });
-        openImageBottomSheet();
+        setPermission(status.isGranted);
+        openImageBottomSheet(status.isGranted);
       } else if (res === Permissions.RESULTS.LIMITED) {
-        setPermission({ granted: false, limited: true });
-        openImageBottomSheet();
+        setPermission(status.isLimited);
+        openImageBottomSheet(status.isLimited);
       } else {
-        setPermission({ granted: false, limited: false });
-        openImageBottomSheet();
+        setPermission(status.isBlocked);
+        openImageBottomSheet(status.isBlocked);
       }
     } else if (Platform.OS === 'android') {
       checkAndroidPermissions();
@@ -272,10 +282,8 @@ export const CommunityChatScreen: React.FC = () => {
       </S.BottomInputWrapper>
       <ScrollBottomSheet
         ref={scrollBottomSheetRef}
-        scrollHeight={SCROLL_HEIGHT}
+        scrollHeight={permissionHeight}
         permission={permission}
-        showButton={showButton}
-        setShowButton={setShowButton}
       />
     </GestureHandlerRootView>
   );
