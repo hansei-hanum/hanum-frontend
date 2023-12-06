@@ -15,17 +15,47 @@ export const ScrollBottomSheetContainer = styled(Animated.View)`
 `;
 
 export const ScrollBottomSheetLine = styled.View`
-  width: 75;
-  height: 4;
+  width: 75px;
+  height: 4px;
   background-color: ${({ theme }) => theme.placeholder};
   align-self: center;
   margin: 15px 0;
   border-radius: 2px;
 `;
 
+export const ImageWrapper = styled.View`
+  width: 33.3%;
+  position: relative;
+`;
+
 export const Image = styled.Image`
   height: 140px;
   width: 100%;
-  border-color: ${({ theme }) => theme.lightGray};
-  border-width: 0.6px;
+`;
+
+export const ScrollBottomButtonWrapper = styled(Animated.View)`
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  padding: 0 14px;
+`;
+
+export const IconWrapper = styled.View`
+  position: absolute;
+  margin-top: 6px;
+  margin-right: 6px;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  background-color: ${({ theme }) => theme.white};
+  border-radius: 50px;
+`;
+
+export const WarningContainer = styled.View`
+  width: 100%;
+  background-color: ${({ theme }) => theme.modalBg};
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
 `;

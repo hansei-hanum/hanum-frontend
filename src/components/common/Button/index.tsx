@@ -47,8 +47,8 @@ export const ButtonElement: React.FC<ButtonProps> = ({
         backgroundColor: backgroundColor
           ? backgroundColor
           : isWhite
-          ? theme.secondary
-          : theme.primary,
+            ? theme.secondary
+            : theme.primary,
         borderRadius: isModalBtn ? 16 : 10,
         opacity: isDisabled || isLoading ? 0.4 : 1,
         paddingVertical: 14,
