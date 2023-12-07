@@ -21,7 +21,6 @@ export const MentionUserList: React.FC<MentionUserListProps> = ({ onMention }) =
       keyExtractor={(_, index) => index.toString()}
       contentContainerStyle={{
         width: '100%',
-        alignItems: 'flex-start',
         padding: 14,
         rowGap: 24,
       }}

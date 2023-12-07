@@ -184,6 +184,17 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
   },
   {
     author: {
+      name: '김띠띠',
+      image: null,
+      isHidden: false,
+    },
+    time: '2023-11-08T00:59:36.119Z',
+    message: '<311:qlskssk2> 나는야 김띠띠',
+    likes: 5,
+    replies: [],
+  },
+  {
+    author: {
       name: 'nigga',
       image: null,
       isHidden: false,

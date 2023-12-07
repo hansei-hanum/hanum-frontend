@@ -299,7 +299,7 @@ export const ScrollBottomSheet = React.forwardRef<
                             style={{
                               opacity: selectedPhotos[index] ? 0.5 : 1,
                               borderColor: theme.lightGray,
-                              borderWidth: 1,
+                              borderWidth: 0.4,
                             }}
                           />
                         </S.ImageWrapper>

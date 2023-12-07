@@ -174,7 +174,7 @@ export const CommunityChatScreen: React.FC = () => {
   const chatRef = useRef<TextInput>(null);
 
   const [chat, setChat] = useState<string>('');
-  const [isMention, setIsMention] = useState<boolean>(false);
+  const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
 
   const theme = useTheme();
@@ -182,18 +182,15 @@ export const CommunityChatScreen: React.FC = () => {
   const onChangeChat = (text: string) => {
     setChat(text);
     chatRef.current?.focus();
-    if (chat.length < 1) {
-      setIsMention(false);
-    }
-    if (chat.includes('@')) {
-      setIsMention(false);
+    if (chat.length < 1 || chat.includes('@')) {
+      setMentionListOpen(true);
     }
   };
 
   const onMention = (id: string, isReply?: boolean) => {
     setUserId(id);
-    onChangeChat(`@${id} `);
-    setIsMention(true);
+    onChangeChat(`${chat.split('@').slice(0, -1).join('@')}@${id} `);
+    setMentionListOpen(false);
     if (isReply) {
       openReplyBox();
     }
@@ -226,6 +223,12 @@ export const CommunityChatScreen: React.FC = () => {
     }).start();
   };
 
+  const checkIfStringHasSpaceAfterAt = (inputString: string): boolean => {
+    const regex = /(?:^[^\s]+ )?(@\S*$)/;
+    console.log(regex.test(inputString), inputString);
+    return regex.test(inputString);
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1, paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -235,7 +238,7 @@ export const CommunityChatScreen: React.FC = () => {
         <GoBackIcon />
         <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} />
       </Header>
-      {!chat.includes('@') || isMention || chat.includes(' ') ? (
+      {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
         <ChatList onMention={onMention} />
       ) : (
         <View style={{ width: '100%', flex: 1 }}>

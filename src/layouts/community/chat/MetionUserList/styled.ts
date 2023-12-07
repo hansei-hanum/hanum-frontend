@@ -5,4 +5,7 @@ export const MentionUserContainer = styled.View`
   align-items: center;
   column-gap: 10px;
   justify-content: center;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
