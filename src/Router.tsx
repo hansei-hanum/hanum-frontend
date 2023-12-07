@@ -5,6 +5,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { ThemeProvider } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
@@ -101,7 +102,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={data ? 'Main' : 'AuthMain'}
+          initialRouteName={'Main'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -128,6 +129,9 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimTimeTable" component={SC.EoullimTimeTableScreen} />
             <Stack.Screen name="EoullimRaffle" component={SC.EoullimRaffleScreen} />
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
+          </Stack.Group>
+          <Stack.Group>
+            <Stack.Screen name="CommunityChat" component={SC.CommunityChatScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />

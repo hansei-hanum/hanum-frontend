@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Linking, Image } from 'react-native';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
 import { Button, Modal, Text } from 'src/components';
@@ -24,6 +25,7 @@ export const AuthMainScreen: React.FC = () => {
     isAgreeModal: false,
     isCurrentStudentModal: false,
   });
+
   const isAgreeModal = modalVisible.isAgreeModal;
 
   const [auth, setAuth] = useRecoilState(authAtom);

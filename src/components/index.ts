@@ -6,3 +6,4 @@ export * from './showMore';
 export * from './userInfo';
 export * from './hanumPay';
 export * from './eoullim';
+export * from './community';

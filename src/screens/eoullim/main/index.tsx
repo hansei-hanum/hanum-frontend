@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useIsFocused } from '@react-navigation/native';
+
 import { useTheme } from '@emotion/react';
 
 import { AuthFailedModal, EoullimBox, GoBackIcon, Text, Spinner } from 'src/components';

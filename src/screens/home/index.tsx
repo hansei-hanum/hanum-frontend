@@ -6,9 +6,10 @@ import { Notifier } from 'react-native-notifier';
 import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
+import { useNavigation } from '@react-navigation/native';
+
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
-import { useNavigation } from '@react-navigation/native';
 
 import { Timer, Calendar, Header, LunchTable } from 'src/components';
 import { isAndroid, isIos } from 'src/utils';

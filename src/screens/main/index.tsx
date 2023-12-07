@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Platform } from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import { useTheme } from '@emotion/react';
 
 import { HomeScreen, ShowMoreScreen, ScheduleScreen, LunchTableScreen } from 'src/screens';
@@ -46,13 +46,13 @@ export const MainScreen: React.FC = () => {
           color: theme.default,
         },
       }}
-      initialRouteName="홈"
+      initialRouteName="대나무숲"
     >
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: "홈",
+          title: '홈',
           tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
         }}
       />
@@ -60,7 +60,7 @@ export const MainScreen: React.FC = () => {
         name="TimeTable"
         component={ScheduleScreen}
         options={{
-          title: "시간표",
+          title: '시간표',
           tabBarIcon: ({ color }) => <Icons name="access-time" size={size} color={color} />,
         }}
       />
@@ -68,22 +68,22 @@ export const MainScreen: React.FC = () => {
         name="Meal"
         component={LunchTableScreen}
         options={{
-          title: "급식표",
+          title: '급식표',
           tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,
         }}
       />
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name="대나무숲"
         component={CommunityMainScreen}
         options={{
           tabBarIcon: ({ color }) => <Icons name="article" size={size + 4} color={color} />,
         }}
-      /> */}
+      />
       <BottomTab.Screen
         name="More"
         component={ShowMoreScreen}
         options={{
-          title: "더보기",
+          title: '더보기',
           tabBarIcon: ({ color }) => <Icons name="menu" size={size} color={color} />,
         }}
       />

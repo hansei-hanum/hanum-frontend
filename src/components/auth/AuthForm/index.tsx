@@ -31,7 +31,7 @@ export const Auth: React.FC<AuthProps> = ({
     <S.AuthWrapper>
       <S.AuthContainer behavior="padding" keyboardVerticalOffset={15}>
         <S.AuthInputContainer>
-          <GoBackIcon size={28} isLoading={isLoading} />
+          <GoBackIcon isLoading={isLoading} />
           <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (

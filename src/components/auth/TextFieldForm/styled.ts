@@ -1,5 +1,6 @@
-import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
+
+import styled from '@emotion/native';
 
 export const TextFieldFormInputWrapper = styled.View`
   width: 100%;

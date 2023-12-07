@@ -3,9 +3,11 @@ import { Switch, View } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import messaging from '@react-native-firebase/messaging';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
 import moment from 'moment-timezone';
 
 import { Button, Header, Modal, Spinner, Text } from 'src/components';
@@ -14,8 +16,6 @@ import { MealIcon } from 'src/assets';
 import { themeAtom } from 'src/atoms';
 import { useGetMealData } from 'src/hooks';
 import { GetMealResponse } from 'src/api';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as S from './styled';
 
@@ -36,11 +36,9 @@ export const LunchTableScreen: React.FC = () => {
   const toggleNotifyClick = () => {
     setNotifyClick(!notifyClick);
     if (!notifyClick) {
-      console.log("Subscribe to topic 'meal'");
       AsyncStorage.setItem('mealNotificationEnabled', 'true');
       messaging().subscribeToTopic('meal');
     } else {
-      console.log("Unsubscribe from topic 'meal'");
       AsyncStorage.setItem('mealNotificationEnabled', 'false');
       messaging().unsubscribeFromTopic('meal');
     }
@@ -55,7 +53,6 @@ export const LunchTableScreen: React.FC = () => {
       }
     });
   }, []);
-
 
   const filteredMealList = meal?.filter((meal) => new Date(meal.date).getDate() >= krDate.date());
 
@@ -101,8 +98,7 @@ export const LunchTableScreen: React.FC = () => {
           contentContainerStyle={{
             paddingTop: 30,
             paddingBottom: 40,
-            paddingLeft: 20,
-            paddingRight: 20,
+            paddingHorizontal: 20,
             rowGap: 25,
           }}
         >
