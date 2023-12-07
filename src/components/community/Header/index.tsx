@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';

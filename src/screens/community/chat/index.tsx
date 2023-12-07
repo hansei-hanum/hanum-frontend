@@ -5,7 +5,6 @@ import { Animated } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
 import Permissions, { PERMISSIONS } from 'react-native-permissions';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@emotion/react';
@@ -232,7 +231,7 @@ export const CommunityChatScreen: React.FC = () => {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, paddingTop: inset.top, paddingBottom: inset.bottom }}>
+    <S.CommunityChatWrapper style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
         isRow
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
@@ -299,6 +298,6 @@ export const CommunityChatScreen: React.FC = () => {
         permission={permission}
       />
       <BottomSheet ref={bottomSheetRef} snapTo="30%" />
-    </GestureHandlerRootView>
+    </S.CommunityChatWrapper>
   );
 };

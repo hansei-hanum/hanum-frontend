@@ -13,6 +13,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@emotion/react';
 
+import * as S from './styled';
+
 type BottomSheetProps = {
   snapTo: string;
   children?: ReactNode;
@@ -109,14 +111,11 @@ export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
             close();
           }}
         >
-          <Animated.View
-            style={[styles.backDrop, backDropAnimation, { backgroundColor: 'black' }]}
-          />
+          <S.BottomSheetBackDrop style={[backDropAnimation, { backgroundColor: 'black' }]} />
         </TouchableWithoutFeedback>
         <GestureDetector gesture={pan}>
-          <Animated.View
+          <S.BottomSheetContainer
             style={[
-              styles.container,
               animationStyle,
               {
                 backgroundColor: theme.background,
@@ -128,7 +127,7 @@ export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
               <View style={styles.line} />
             </View>
             {children}
-          </Animated.View>
+          </S.BottomSheetContainer>
         </GestureDetector>
       </>
     );

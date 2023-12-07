@@ -6,6 +6,7 @@ export const useBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const openBottomSheet = () => {
+    console.log('openBottomSheet', bottomSheetRef.current);
     bottomSheetRef.current?.expand();
   };
 

@@ -9,12 +9,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@emotion/react';
 
 import {
-  BottomSheet,
   CommunityHeader,
   CommunityPost,
   CommunityUserImage,
@@ -25,10 +24,13 @@ import {
 import { useBottomSheet, useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
+import { CommunityBottomSheet } from 'src/layouts';
 
 import * as S from './styled';
 
 export const CommunityMainScreen: React.FC = () => {
+  const inset = useSafeAreaInsets();
+
   const { bottomSheetRef, openBottomSheet } = useBottomSheet();
 
   const navigate = useNavigate();
@@ -88,97 +90,95 @@ export const CommunityMainScreen: React.FC = () => {
   }, [COMMUNITY_LIST, getHeightsForImage]);
 
   return (
-    <S.CommunityMainWrapper>
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.background }}>
-        <Header isRow>
-          <S.CommunityMainSearchBarContainer style={searchBarAnimation}>
-            <S.CommunityMainSearchBar
-              placeholder="대나무숲 게시글 검색하기"
-              placeholderTextColor={theme.placeholder}
-              selectionColor={theme.placeholder}
-              ref={searchRef}
-              onFocus={showSearchScreen}
-            />
-            <Icon name="search" size={24} color={theme.placeholder} />
-          </S.CommunityMainSearchBarContainer>
-          {isSearchScreen && (
-            <S.CommunityMainIconWrapper style={opacityAnimation}>
-              <TouchableOpacity activeOpacity={0.8} onPress={closeSearchScreen}>
-                <Icon name="close" size={30} color={theme.placeholder} />
-              </TouchableOpacity>
-            </S.CommunityMainIconWrapper>
-          )}
-        </Header>
-        {!isSearchScreen ? (
-          <FlatList
-            data={COMMUNITY_LIST}
-            keyExtractor={(_, index) => index.toString()}
-            contentContainerStyle={{ paddingTop: isIos ? 20 : 0, paddingBottom: 40, rowGap: 16 }}
-            ListHeaderComponent={
-              <S.CommunityUserContainer>
-                <CommunityUserImage userImage={userProfile} />
-                <S.CommunityUserThinkBox>
-                  <Text size={16} color={theme.placeholder}>
-                    어떤 생각을 하고 계신가요?
-                  </Text>
-                </S.CommunityUserThinkBox>
-              </S.CommunityUserContainer>
-            }
-            renderItem={({ item: { author, type, time, content }, index }) => (
-              <S.CommunityMainBox>
-                <CommunityHeader
-                  author={author}
-                  type={type}
-                  time={time}
-                  style={{ width: '100%' }}
-                  openBottomSheet={openBottomSheet}
-                />
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => navigate('CommunityChat')}
-                  style={{ width: '100%' }}
-                >
-                  <CommunityPost
-                    author={author}
-                    content={content}
-                    time={time}
-                    type={type}
-                    index={index}
-                    imageHeights={imageHeights}
-                  />
-                </TouchableOpacity>
-                <S.CommunityMainBottom>
-                  <ScaleOpacity onPress={() => onLikeClick(index)}>
-                    <S.CommunityMainBottomIconContainer>
-                      {likes[index] ? (
-                        <MCI name="cards-heart" size={24} color={theme.danger} />
-                      ) : (
-                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                      )}
-                      <Text size={14} color={theme.placeholder}>
-                        좋아요 {likes[index] ? content.likes + 1 : content.likes}
-                      </Text>
-                    </S.CommunityMainBottomIconContainer>
-                  </ScaleOpacity>
-                  <ScaleOpacity onPress={() => navigate('CommunityChat')}>
-                    <S.CommunityMainBottomIconContainer>
-                      <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
-                      <Text size={14} color={theme.placeholder}>
-                        댓글 {content.comments}
-                      </Text>
-                    </S.CommunityMainBottomIconContainer>
-                  </ScaleOpacity>
-                </S.CommunityMainBottom>
-              </S.CommunityMainBox>
-            )}
+    <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
+      <Header isRow>
+        <S.CommunityMainSearchBarContainer style={searchBarAnimation}>
+          <S.CommunityMainSearchBar
+            placeholder="대나무숲 게시글 검색하기"
+            placeholderTextColor={theme.placeholder}
+            selectionColor={theme.placeholder}
+            ref={searchRef}
+            onFocus={showSearchScreen}
           />
-        ) : (
-          <S.TextWrapper2 style={opacityAnimation}>
-            <Text size={15}>This Is Search 잉기</Text>
-          </S.TextWrapper2>
+          <Icon name="search" size={24} color={theme.placeholder} />
+        </S.CommunityMainSearchBarContainer>
+        {isSearchScreen && (
+          <S.CommunityMainIconWrapper style={opacityAnimation}>
+            <TouchableOpacity activeOpacity={0.8} onPress={closeSearchScreen}>
+              <Icon name="close" size={30} color={theme.placeholder} />
+            </TouchableOpacity>
+          </S.CommunityMainIconWrapper>
         )}
-        <BottomSheet ref={bottomSheetRef} snapTo="40%" />
-      </GestureHandlerRootView>
+      </Header>
+      {!isSearchScreen ? (
+        <FlatList
+          data={COMMUNITY_LIST}
+          keyExtractor={(_, index) => index.toString()}
+          contentContainerStyle={{ paddingTop: isIos ? 20 : 0, paddingBottom: 40, rowGap: 16 }}
+          ListHeaderComponent={
+            <S.CommunityUserContainer>
+              <CommunityUserImage userImage={userProfile} />
+              <S.CommunityUserThinkBox>
+                <Text size={16} color={theme.placeholder}>
+                  어떤 생각을 하고 계신가요?
+                </Text>
+              </S.CommunityUserThinkBox>
+            </S.CommunityUserContainer>
+          }
+          renderItem={({ item: { author, type, time, content }, index }) => (
+            <S.CommunityMainBox>
+              <CommunityHeader
+                author={author}
+                type={type}
+                time={time}
+                style={{ width: '100%' }}
+                openBottomSheet={openBottomSheet}
+              />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigate('CommunityChat')}
+                style={{ width: '100%' }}
+              >
+                <CommunityPost
+                  author={author}
+                  content={content}
+                  time={time}
+                  type={type}
+                  index={index}
+                  imageHeights={imageHeights}
+                />
+              </TouchableOpacity>
+              <S.CommunityMainBottom>
+                <ScaleOpacity onPress={() => onLikeClick(index)}>
+                  <S.CommunityMainBottomIconContainer>
+                    {likes[index] ? (
+                      <MCI name="cards-heart" size={24} color={theme.danger} />
+                    ) : (
+                      <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+                    )}
+                    <Text size={14} color={theme.placeholder}>
+                      좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </ScaleOpacity>
+                <ScaleOpacity onPress={() => navigate('CommunityChat')}>
+                  <S.CommunityMainBottomIconContainer>
+                    <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
+                    <Text size={14} color={theme.placeholder}>
+                      댓글 {content.comments}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </ScaleOpacity>
+              </S.CommunityMainBottom>
+            </S.CommunityMainBox>
+          )}
+        />
+      ) : (
+        <S.TextWrapper2 style={opacityAnimation}>
+          <Text size={15}>This Is Search 잉기</Text>
+        </S.TextWrapper2>
+      )}
+      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} />
     </S.CommunityMainWrapper>
   );
 };

@@ -1,11 +1,12 @@
 import { Animated } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import styled from '@emotion/native';
 
 import { fonts } from 'src/styles';
 import { isIos } from 'src/utils';
 
-export const CommunityMainWrapper = styled.SafeAreaView`
+export const CommunityMainWrapper = styled(GestureHandlerRootView)`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
 `;
