@@ -68,7 +68,6 @@ export const CommunityChatScreen: React.FC = () => {
     if (isActive) {
       scrollBottomSheetRef?.current?.scrollTo(0);
     } else {
-      console.log(permission);
       scrollBottomSheetRef?.current?.scrollTo(
         granted || limited ? HAS_PERMISSION_SCROLL_HEIGHT : NO_PERMISSION_SCROLL_HEIGHT,
       );
@@ -211,6 +210,11 @@ export const CommunityChatScreen: React.FC = () => {
   const sendChat = () => {
     setChat('');
     chatRef.current?.blur();
+    Animated.timing(replyTranslateY, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
   };
 
   const closeReplyBox = () => {

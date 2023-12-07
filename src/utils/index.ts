@@ -5,4 +5,4 @@ export * from './checkOs';
 export * from './formattedMoney';
 export * from './formattedDepartment';
 export * from './responsiveSize';
-export * from './getTime';
+export * from './getPrevTimeString';

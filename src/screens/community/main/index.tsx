@@ -131,18 +131,18 @@ export const CommunityMainScreen: React.FC = () => {
                 imageHeights={imageHeights}
               />
               <S.CommunityMainBottom>
-                <S.CommunityMainBottomIconContainer>
-                  <ScaleOpacity onPress={() => onLikeClick(index)}>
+                <ScaleOpacity onPress={() => onLikeClick(index)}>
+                  <S.CommunityMainBottomIconContainer>
                     {likes[index] ? (
                       <MCI name="cards-heart" size={24} color={theme.danger} />
                     ) : (
                       <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
                     )}
-                  </ScaleOpacity>
-                  <Text size={14} color={theme.placeholder}>
-                    좋아요 {likes[index] ? content.likes + 1 : content.likes}
-                  </Text>
-                </S.CommunityMainBottomIconContainer>
+                    <Text size={14} color={theme.placeholder}>
+                      좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </ScaleOpacity>
                 <ScaleOpacity onPress={() => navigate('CommunityChat')}>
                   <S.CommunityMainBottomIconContainer>
                     <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />

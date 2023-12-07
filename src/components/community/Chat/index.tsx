@@ -5,7 +5,7 @@ import { useTheme } from '@emotion/react';
 
 import { UserLogo } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
-import { getPostTime } from 'src/utils';
+import { getPrevTimeString } from 'src/utils';
 
 import { CommunityPostProps } from '../Post';
 
@@ -65,7 +65,7 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
           <Text size={13}>{author.name}</Text>
           <Text size={13} color={theme.placeholder}>
             {'  '}
-            {getPostTime(time)}
+            {getPrevTimeString(time)}
           </Text>
         </View>
         {!isShow[index] ? (

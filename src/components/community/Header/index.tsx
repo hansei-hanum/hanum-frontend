@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react';
 
 import { UserLogo } from 'src/assets';
 import { Text } from 'src/components';
-import { getPostTime } from 'src/utils';
+import { getPrevTimeString } from 'src/utils';
 
 import { CommunityPostProps } from '../Post';
 
@@ -31,7 +31,7 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ author, type, 
           <Text size={16}>{author.isHidden ? '익명' : author.name}</Text>
           <S.CommunityHeaderUserSection>
             <Text size={14} color={theme.placeholder}>
-              {getPostTime(time)}
+              {getPrevTimeString(time)}
             </Text>
             {type === 'ALL' && <Icon name="public" size={16} color={theme.placeholder} />}
             {type === 'PRIVATE' && <Icon name="lock" size={16} color={theme.placeholder} />}

@@ -12,7 +12,6 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import ReAnimated, {
   AnimatedScrollViewProps,
-  Extrapolate,
   interpolate,
   runOnJS,
   useAnimatedProps,
@@ -107,7 +106,7 @@ export const ScrollBottomSheet = React.forwardRef<
       }
     })
     .onEnd(() => {
-      if (translateY.value > scrollHeight) {
+      if (translateY.value > scrollHeight / 1.2) {
         scrollTo(0);
         runOnJS(setSelectedPhotos)([]);
       } else if (translateY.value < context.value.y) {
@@ -124,7 +123,7 @@ export const ScrollBottomSheet = React.forwardRef<
       translateY.value,
       [MAX_TRANSLATE_Y + 50, MAX_TRANSLATE_Y],
       [25, 5],
-      Extrapolate.CLAMP,
+      'clamp',
     );
 
     return {
