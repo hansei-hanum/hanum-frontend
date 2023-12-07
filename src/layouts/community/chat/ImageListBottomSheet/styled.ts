@@ -35,7 +35,7 @@ export const Image = styled.Image`
 
 export const ScrollBottomButtonWrapper = styled(Animated.View)`
   position: absolute;
-  bottom: 0px;
+  bottom: -50px;
   width: 100%;
   padding: 0 14px;
 `;

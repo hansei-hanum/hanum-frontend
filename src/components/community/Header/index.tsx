@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -6,7 +6,7 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '@emotion/react';
 
 import { UserLogo } from 'src/assets';
-import { Text } from 'src/components';
+import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString } from 'src/utils';
 
 import { CommunityPostProps } from '../Post';
@@ -15,9 +15,16 @@ import * as S from './styled';
 
 export interface CommunityHeaderProps extends Pick<CommunityPostProps, 'author' | 'type' | 'time'> {
   style?: StyleProp<ViewStyle>;
+  openBottomSheet: () => void;
 }
 
-export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ author, type, time, style }) => {
+export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
+  author,
+  type,
+  time,
+  style,
+  openBottomSheet,
+}) => {
   const theme = useTheme();
 
   return (
@@ -39,7 +46,9 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ author, type, 
           </S.CommunityHeaderUserSection>
         </View>
       </S.CommunityHeaderTitle>
-      <Icon name="more-horiz" size={24} color={theme.placeholder} />
+      <ScaleOpacity onPress={openBottomSheet}>
+        <Icon name="more-horiz" size={24} color={theme.placeholder} />
+      </ScaleOpacity>
     </S.CommunityHeader>
   );
 };

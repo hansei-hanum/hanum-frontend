@@ -37,22 +37,22 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
-interface ScrollBottomSheetProps extends AnimatedScrollViewProps {
+interface ImageListBottomSheetProps extends AnimatedScrollViewProps {
   scrollHeight: number;
   permission: PhotoPermissionProps;
 }
 
-export type ScrollBottomSheetRefProps = {
+export type ImageListBottomSheetRefProps = {
   scrollTo: (destination: number) => void;
   isActive: () => boolean;
 };
-const REPLY_BOX_IOS_OFFSET = -30;
-const REPLY_BOX_ANDROID_OFFSET = -60.6;
+const REPLY_BOX_IOS_OFFSET = -70;
+const REPLY_BOX_ANDROID_OFFSET = -40.6;
 
-export const ScrollBottomSheet = React.forwardRef<
-  ScrollBottomSheetRefProps,
-  ScrollBottomSheetProps
->(({ scrollHeight, permission, ...rest }: ScrollBottomSheetProps, ref) => {
+export const ImageListBottomSheet = React.forwardRef<
+  ImageListBottomSheetRefProps,
+  ImageListBottomSheetProps
+>(({ scrollHeight, permission, ...rest }: ImageListBottomSheetProps, ref) => {
   const hasPermission = permission.granted || permission.limited;
 
   const theme = useTheme();
