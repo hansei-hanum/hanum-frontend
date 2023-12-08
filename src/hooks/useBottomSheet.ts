@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { runOnJS } from 'react-native-reanimated';
 
 import { useSetRecoilState } from 'recoil';
 
@@ -10,13 +11,12 @@ export const useBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const openBottomSheet = () => {
-    setBackDropVisible(true);
-    bottomSheetRef.current?.expand();
+    runOnJS(setBackDropVisible)(true);
+    bottomSheetRef.current?.scrollTo(-300);
   };
 
   const closeBottomSheet = () => {
-    setBackDropVisible(false);
-    bottomSheetRef.current?.close();
+    bottomSheetRef.current?.scrollTo(0);
   };
 
   return {

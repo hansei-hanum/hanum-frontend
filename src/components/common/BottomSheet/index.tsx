@@ -1,10 +1,10 @@
-import React, { ReactNode, forwardRef, useCallback, useImperativeHandle } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
-import { Dimensions, StyleSheet, View } from 'react-native';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Dimensions, StyleSheet } from 'react-native';
+import React, { useCallback, useImperativeHandle } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import {
+import ReAnimated, {
   interpolate,
-  runOnJS,
+  useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -12,155 +12,119 @@ import {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '@emotion/react';
-import { useRecoilState } from 'recoil';
-
-import { backDropVisibleAtom } from 'src/atoms';
-
 import * as S from './styled';
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-type BottomSheetProps = {
-  snapTo: string;
-  children?: ReactNode;
+const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
+
+interface BottomSheetProps {
+  scrollHeight: number;
+  children?: React.ReactNode;
   withModal?: boolean;
-};
-
-export interface BottomSheetRefProps {
-  expand: () => void;
-  close: () => void;
+  modalBackDropVisible?: boolean;
 }
 
-export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
-  ({ snapTo, children, withModal }: BottomSheetProps, ref) => {
-    const [backDropVisible, setBackDropVisible] = useRecoilState(backDropVisibleAtom);
-    const theme = useTheme();
+export type BottomSheetRefProps = {
+  scrollTo: (destination: number) => void;
+  isActive: () => boolean;
+};
 
+export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
+  ({ scrollHeight, children, modalBackDropVisible }: BottomSheetProps, ref) => {
     const inset = useSafeAreaInsets();
 
-    const { height } = Dimensions.get('screen');
+    const translateY = useSharedValue(0);
+    const active = useSharedValue(false);
 
-    const percentage = parseFloat(snapTo.replace('%', '')) / 100; // 50% -> 0.5
-    const closeHeight = height;
-    const openHeight = height - height * percentage;
+    const scrollTo = useCallback(
+      (destination: number) => {
+        'worklet';
+        active.value = destination !== 0;
 
-    const topAnimation = useSharedValue(closeHeight);
-    const context = useSharedValue(0);
-
-    const expand = useCallback(() => {
-      'worklet';
-      topAnimation.value = withTiming(openHeight, {
-        duration: 200,
-      });
-    }, [openHeight, topAnimation]);
-
-    const close = useCallback(() => {
-      'worklet';
-      runOnJS(setBackDropVisible)(false);
-      topAnimation.value = withTiming(closeHeight, {
-        duration: 200,
-      });
-    }, [closeHeight, topAnimation]);
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        expand,
-        close,
-      }),
-      [expand, close],
+        translateY.value = withSpring(destination, {
+          damping: 100,
+          stiffness: 400,
+        });
+      },
+      [active, translateY],
     );
 
-    const animationStyle = useAnimatedStyle(() => {
-      const top = topAnimation.value;
-      return { top };
-    });
+    const isActive = useCallback(() => {
+      'worklet';
+      return active.value;
+    }, [active]);
 
-    const pan = Gesture.Pan()
-      .onBegin(() => {
-        context.value = topAnimation.value;
+    useImperativeHandle(ref, () => ({ scrollTo, isActive }), [scrollTo, isActive]);
+
+    const context = useSharedValue({ y: 0 });
+    const gesture = Gesture.Pan()
+      .onStart(() => {
+        context.value = { y: translateY.value };
       })
       .onUpdate((event) => {
-        if (event.translationY < 0) {
-          topAnimation.value = withSpring(openHeight, {
-            damping: 100,
-            stiffness: 400,
-          });
-        } else {
-          topAnimation.value = withSpring(context.value + event.translationY, {
-            damping: 100,
-            stiffness: 400,
-          });
-        }
+        translateY.value = event.translationY + context.value.y;
+        translateY.value = Math.max(translateY.value, MAX_TRANSLATE_Y);
       })
       .onEnd(() => {
-        if (topAnimation.value > openHeight + 20) {
-          topAnimation.value = withSpring(closeHeight, {
-            damping: 100,
-            stiffness: 400,
-          });
-          runOnJS(setBackDropVisible)(false);
+        if (translateY.value > scrollHeight / 1.2) {
+          scrollTo(0);
         } else {
-          topAnimation.value = withSpring(openHeight, {
-            damping: 100,
-            stiffness: 400,
-          });
+          scrollTo(scrollHeight);
         }
       });
 
-    const backDropAnimation = useAnimatedStyle(() => {
-      const animation = interpolate(topAnimation.value, [closeHeight, openHeight], [0, 0.5]);
-      let opacity = 0;
-      if (withModal) {
-        opacity = backDropVisible ? 0.5 : 0;
-      } else {
-        opacity = animation;
-      }
-      const display = opacity === 0 ? 'none' : 'flex';
+    const rBottomSheetStyle = useAnimatedStyle(() => {
+      const borderRadius = interpolate(
+        translateY.value,
+        [MAX_TRANSLATE_Y + 50, MAX_TRANSLATE_Y],
+        [25, 5],
+        'clamp',
+      );
+
       return {
-        opacity,
-        display,
+        borderRadius,
+        transform: [{ translateY: translateY.value }],
       };
     });
 
+    const rBackdropStyle = useAnimatedStyle(() => {
+      return {
+        opacity: withTiming(active.value || modalBackDropVisible ? 1 : 0),
+      };
+    }, [modalBackDropVisible]);
+
+    const rBackdropProps = useAnimatedProps(() => {
+      return {
+        pointerEvents: active.value ? 'auto' : 'none',
+      } as any;
+    }, []);
+
+    const onTouchStart = () => {
+      scrollTo(0);
+    };
+
     return (
       <>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            close();
-          }}
-        >
-          <S.BottomSheetBackDrop style={[backDropAnimation, { backgroundColor: theme.black }]} />
-        </TouchableWithoutFeedback>
-        <GestureDetector gesture={pan}>
-          <S.BottomSheetContainer
-            style={[
-              animationStyle,
-              {
-                backgroundColor: theme.background,
-                paddingBottom: inset.bottom,
-              },
-            ]}
-          >
-            <View style={styles.lineContainer}>
-              <View style={styles.line} />
-            </View>
+        <ReAnimated.View
+          onTouchStart={onTouchStart}
+          animatedProps={rBackdropProps}
+          style={[
+            {
+              ...StyleSheet.absoluteFillObject,
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              paddingBottom: inset.bottom,
+              zIndex: 9998,
+            },
+            rBackdropStyle,
+          ]}
+        />
+        <GestureDetector gesture={gesture}>
+          <S.ScrollBottomSheetContainer style={rBottomSheetStyle}>
+            <S.ScrollBottomSheetLine />
             {children}
-          </S.BottomSheetContainer>
+          </S.ScrollBottomSheetContainer>
         </GestureDetector>
       </>
     );
   },
 );
-
-const styles = StyleSheet.create({
-  lineContainer: {
-    marginVertical: 10,
-    alignItems: 'center',
-  },
-  line: {
-    width: 50,
-    height: 4,
-    backgroundColor: 'gray',
-    borderRadius: 20,
-  },
-});

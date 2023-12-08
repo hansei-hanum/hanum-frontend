@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { runOnJS } from 'react-native-reanimated';
+import { KeyboardAvoidingView, Share } from 'react-native';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import {
   BottomSheet,
   BottomSheetRefProps,
   Button,
+  ButtonContainer,
   Modal,
   ScaleOpacity,
   Text,
 } from 'src/components';
 import { COMMUNITY_BOTTOM_SHEET_OPTION_LIST, CommunityBottomSheetTextEnum } from 'src/constants';
-import { useBottomSheet } from 'src/hooks';
 import { backDropVisibleAtom } from 'src/atoms';
 
 import * as S from './styled';
@@ -26,7 +26,6 @@ export interface CommunityBottomSheetProps {
 }
 
 export interface openModalProps {
-  share: boolean;
   report: boolean;
   block: boolean;
 }
@@ -35,31 +34,56 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
   closeBottomSheet,
 }) => {
+  const [loading, setLoading] = useState(false);
   const setBackDropVisible = useSetRecoilState(backDropVisibleAtom);
   const theme = useTheme();
 
   const [modalOpen, setModalOpen] = useState<openModalProps>({
-    share: false,
     report: false,
     block: false,
   });
 
   const onPress = (option: CommunityBottomSheetTextEnum) => {
     closeBottomSheet();
-    runOnJS(setBackDropVisible)(true);
     switch (option) {
       case CommunityBottomSheetTextEnum.SHARE:
-        return setModalOpen({ share: true, report: false, block: false });
+        setBackDropVisible(false);
+        return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
-        return setModalOpen({ share: false, report: true, block: false });
+        return setModalOpen({ report: true, block: false });
       case CommunityBottomSheetTextEnum.BLOCK:
-        return setModalOpen({ share: false, report: false, block: true });
+        return setModalOpen({ report: false, block: true });
     }
+  };
+
+  const sharePost = async () => {
+    await Share.share({
+      url: 'app://',
+    });
+  };
+
+  const onModalButtonPress = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setBackDropVisible(false);
+      setModalOpen({ report: false, block: false });
+    }, 500);
+  };
+
+  const onModalCancelPress = () => {
+    setBackDropVisible(false);
+    setModalOpen({ report: false, block: false });
   };
 
   return (
     <>
-      <BottomSheet ref={bottomSheetRef} snapTo="35%" withModal>
+      <BottomSheet
+        ref={bottomSheetRef}
+        scrollHeight={-300}
+        withModal
+        modalBackDropVisible={modalOpen.block || modalOpen.report}
+      >
         <S.CommunityBottomSheetContainer>
           {COMMUNITY_BOTTOM_SHEET_OPTION_LIST.map(({ text, isBlock, icon }, index) => (
             <ScaleOpacity key={index} onPress={() => onPress(text)}>
@@ -80,55 +104,46 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           ))}
         </S.CommunityBottomSheetContainer>
       </BottomSheet>
-      {modalOpen.share && (
-        <Modal
-          backDropVisible={false}
-          modalVisible={modalOpen.share}
-          title="공유하기"
-          text="공유하기 기능은 준비 중입니다."
-          button={
-            <Button
-              onPress={() => {
-                setBackDropVisible(false);
-                setModalOpen({ share: false, report: false, block: false });
-              }}
-            >
-              확인
-            </Button>
-          }
-        />
-      )}
       {modalOpen.report && (
-        <Modal
-          backDropVisible={false}
-          modalVisible={modalOpen.share}
-          title="공유하기"
-          text="공유하기 기능은 준비 중입니다."
-          button={
-            <Button
-              onPress={() => {
-                setModalOpen({ share: false, report: false, block: false });
-              }}
-            >
-              확인
-            </Button>
-          }
-        />
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
+          <Modal
+            backDropVisible={false}
+            modalVisible={modalOpen.report}
+            title="게시글 신고하기"
+            text={`이 게시글을 신고하는 이유를 알려주세요.\n반복되는 허위 신고가 확인될 경우 대나무숲 서비스 이용이 제한될 수 있어요.`}
+            button={
+              <ButtonContainer>
+                <Button onPress={onModalCancelPress} isModalBtn isWhite>
+                  취소
+                </Button>
+                <Button onPress={onModalButtonPress} isModalBtn isLoading={loading}>
+                  신고하기
+                </Button>
+              </ButtonContainer>
+            }
+          >
+            <S.CommunityBottomSheetReportInput
+              placeholder="신고 사유를 입력해주세요"
+              placeholderTextColor={theme.placeholder}
+            />
+          </Modal>
+        </KeyboardAvoidingView>
       )}
       {modalOpen.block && (
         <Modal
           backDropVisible={false}
-          modalVisible={modalOpen.share}
-          title="공유하기"
-          text="공유하기 기능은 준비 중입니다."
+          modalVisible={modalOpen.block}
+          title="이 사용자 차단하기"
+          text={`“박찬영” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
           button={
-            <Button
-              onPress={() => {
-                setModalOpen({ share: false, report: false, block: false });
-              }}
-            >
-              확인
-            </Button>
+            <ButtonContainer>
+              <Button onPress={onModalCancelPress} isModalBtn isWhite>
+                다시 생각할래요
+              </Button>
+              <Button onPress={onModalButtonPress} isModalBtn isLoading={loading}>
+                확인했어요
+              </Button>
+            </ButtonContainer>
           }
         />
       )}

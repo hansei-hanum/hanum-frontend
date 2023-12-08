@@ -297,7 +297,7 @@ export const CommunityChatScreen: React.FC = () => {
         scrollHeight={permissionHeight}
         permission={permission}
       />
-      <BottomSheet ref={bottomSheetRef} snapTo="30%" />
+      {/* <BottomSheet ref={bottomSheetRef} snapTo="30%" /> */}
     </S.CommunityChatWrapper>
   );
 };

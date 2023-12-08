@@ -13,6 +13,7 @@ export interface ModalProps {
   button: React.ReactNode;
   modalVisible: boolean;
   backDropVisible?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -22,6 +23,7 @@ export const Modal: React.FC<ModalProps> = ({
   modalVisible,
   linkText,
   backDropVisible = true,
+  children,
 }) => {
   return (
     <>
@@ -46,6 +48,7 @@ export const Modal: React.FC<ModalProps> = ({
                   : text}
               </Text>
             )}
+            {children}
             {button}
           </S.ModalContainer>
         </S.ModalWrapper>
