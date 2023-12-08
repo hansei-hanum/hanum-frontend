@@ -5,16 +5,17 @@ import styled from '@emotion/native';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export const ScrollBottomSheetContainer = styled(ReAnimated.View)`
+export const ImageListBottomSheetContainer = styled(ReAnimated.View)`
   height: ${`${SCREEN_HEIGHT}px`};
   width: 100%;
   background-color: ${({ theme }) => theme.background};
   position: absolute;
   top: ${`${SCREEN_HEIGHT}px`};
   border-radius: 25px;
+  z-index: 9999;
 `;
 
-export const ScrollBottomSheetLine = styled.View`
+export const ImageListBottomSheetLine = styled.View`
   width: 75px;
   height: 4px;
   background-color: ${({ theme }) => theme.placeholder};
@@ -33,11 +34,12 @@ export const Image = styled.Image`
   width: 100%;
 `;
 
-export const ScrollBottomButtonWrapper = styled(Animated.View)`
+export const ImageListBottomSheetButtonWrapper = styled(Animated.View)`
   position: absolute;
   bottom: -50px;
   width: 100%;
   padding: 0 14px;
+  z-index: 9999;
 `;
 
 export const IconWrapper = styled.View`

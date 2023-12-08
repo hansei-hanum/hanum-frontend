@@ -4,7 +4,6 @@ import {
   Dimensions,
   FlatList,
   Linking,
-  StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -28,7 +27,7 @@ import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-ro
 
 import { useTheme } from '@emotion/react';
 
-import { Button, Icon, ScaleOpacity, Spinner, Text } from 'src/components';
+import { BackDrop, Button, Icon, ScaleOpacity, Spinner, Text } from 'src/components';
 import { PhotoPermissionProps } from 'src/screens';
 import { isIos } from 'src/utils';
 
@@ -230,21 +229,14 @@ export const ImageListBottomSheet = React.forwardRef<
 
   return (
     <>
-      <ReAnimated.View
+      <BackDrop
         onTouchStart={onTouchStart}
-        animatedProps={rBackdropProps}
-        style={[
-          {
-            ...StyleSheet.absoluteFillObject,
-            backgroundColor: 'rgba(0,0,0,0.4)',
-            paddingBottom: inset.bottom,
-          },
-          rBackdropStyle,
-        ]}
+        rBackdropStyle={rBackdropStyle}
+        rBackdropProps={rBackdropProps}
       />
       <GestureDetector gesture={gesture}>
-        <S.ScrollBottomSheetContainer style={rBottomSheetStyle}>
-          <S.ScrollBottomSheetLine />
+        <S.ImageListBottomSheetContainer style={rBottomSheetStyle}>
+          <S.ImageListBottomSheetLine />
           {permission ? (
             <>
               {permission.limited && (
@@ -321,16 +313,16 @@ export const ImageListBottomSheet = React.forwardRef<
               </Button>
             </S.PermissionDeninedContainer>
           )}
-        </S.ScrollBottomSheetContainer>
+        </S.ImageListBottomSheetContainer>
       </GestureDetector>
-      <S.ScrollBottomButtonWrapper
+      <S.ImageListBottomSheetButtonWrapper
         ref={buttonTranslateY}
         style={{
           transform: [{ translateY: buttonTranslateY }],
         }}
       >
         <Button>선택된 사진 ({selectedPhotos.filter((item) => item).length})</Button>
-      </S.ScrollBottomButtonWrapper>
+      </S.ImageListBottomSheetButtonWrapper>
     </>
   );
 });

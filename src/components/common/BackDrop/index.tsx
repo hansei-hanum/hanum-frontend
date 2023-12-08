@@ -1,42 +1,35 @@
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
-import { SharedValue, interpolate, useAnimatedStyle } from 'react-native-reanimated';
-
-import { useTheme } from '@emotion/react';
-
-import * as S from './styled';
+import { StyleSheet } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export interface BackDropProps {
-  close: () => void;
-  topAnimation: SharedValue<number>;
-  closeHeight: number;
-  openHeight: number;
+  onTouchStart: () => void;
+  rBackdropStyle: {
+    opacity: 0 | 1;
+  };
+  rBackdropProps: object;
 }
 
 export const BackDrop: React.FC<BackDropProps> = ({
-  close,
-  topAnimation,
-  closeHeight,
-  openHeight,
+  onTouchStart,
+  rBackdropStyle,
+  rBackdropProps,
 }) => {
-  const theme = useTheme();
-
-  const backDropAnimation = useAnimatedStyle(() => {
-    const opacity = interpolate(topAnimation.value, [closeHeight, openHeight], [0, 0.5]);
-    const display = opacity === 0 ? 'none' : 'flex';
-    return {
-      opacity,
-      display,
-    };
-  });
-
+  const inset = useSafeAreaInsets();
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        close();
-      }}
-    >
-      <S.BackDropElement style={[backDropAnimation, { backgroundColor: theme.black }]} />
-    </TouchableWithoutFeedback>
+    <Animated.View
+      onTouchStart={onTouchStart}
+      animatedProps={rBackdropProps}
+      style={[
+        {
+          ...StyleSheet.absoluteFillObject,
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          paddingBottom: inset.bottom,
+          zIndex: 9998,
+        },
+        rBackdropStyle,
+      ]}
+    />
   );
 };

@@ -4,7 +4,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { KeyboardAvoidingView, Share } from 'react-native';
 
 import { useTheme } from '@emotion/react';
-import { useSetRecoilState } from 'recoil';
 
 import {
   BottomSheet,
@@ -16,12 +15,12 @@ import {
   Text,
 } from 'src/components';
 import { COMMUNITY_BOTTOM_SHEET_OPTION_LIST, CommunityBottomSheetTextEnum } from 'src/constants';
-import { backDropVisibleAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export interface CommunityBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
+  isChatScreen?: boolean;
   closeBottomSheet: () => void;
 }
 
@@ -32,10 +31,10 @@ export interface openModalProps {
 
 export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
+  isChatScreen,
   closeBottomSheet,
 }) => {
   const [loading, setLoading] = useState(false);
-  const setBackDropVisible = useSetRecoilState(backDropVisibleAtom);
   const theme = useTheme();
 
   const [modalOpen, setModalOpen] = useState<openModalProps>({
@@ -47,7 +46,6 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     closeBottomSheet();
     switch (option) {
       case CommunityBottomSheetTextEnum.SHARE:
-        setBackDropVisible(false);
         return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
         return setModalOpen({ report: true, block: false });
@@ -66,13 +64,11 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setBackDropVisible(false);
       setModalOpen({ report: false, block: false });
     }, 500);
   };
 
   const onModalCancelPress = () => {
-    setBackDropVisible(false);
     setModalOpen({ report: false, block: false });
   };
 
@@ -80,13 +76,12 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     <>
       <BottomSheet
         ref={bottomSheetRef}
-        scrollHeight={-300}
-        withModal
+        scrollHeight={isChatScreen ? -250 : -300}
         modalBackDropVisible={modalOpen.block || modalOpen.report}
       >
         <S.CommunityBottomSheetContainer>
-          {COMMUNITY_BOTTOM_SHEET_OPTION_LIST.map(({ text, isBlock, icon }, index) => (
-            <ScaleOpacity key={index} onPress={() => onPress(text)}>
+          {COMMUNITY_BOTTOM_SHEET_OPTION_LIST.map(({ text, isBlock, icon }) => (
+            <ScaleOpacity key={text} onPress={() => onPress(text)}>
               <S.CommunityBottomSheetListContainer>
                 <S.CommunityBottomSheetList>
                   {isBlock ? (

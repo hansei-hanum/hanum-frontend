@@ -1,18 +1,12 @@
 import { useRef } from 'react';
-import { runOnJS } from 'react-native-reanimated';
 
-import { useSetRecoilState } from 'recoil';
-
-import { backDropVisibleAtom } from 'src/atoms';
 import { BottomSheetRefProps } from 'src/components';
 
 export const useBottomSheet = () => {
-  const setBackDropVisible = useSetRecoilState(backDropVisibleAtom);
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-  const openBottomSheet = () => {
-    runOnJS(setBackDropVisible)(true);
-    bottomSheetRef.current?.scrollTo(-300);
+  const openBottomSheet = (isChat?: boolean) => {
+    bottomSheetRef.current?.scrollTo(isChat ? -250 : -300);
   };
 
   const closeBottomSheet = () => {

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions } from 'react-native';
 import React, { useCallback, useImperativeHandle } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import ReAnimated, {
+import {
   interpolate,
   useAnimatedProps,
   useAnimatedStyle,
@@ -10,7 +10,8 @@ import ReAnimated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { BackDrop } from '../BackDrop';
 
 import * as S from './styled';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -20,7 +21,6 @@ const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 interface BottomSheetProps {
   scrollHeight: number;
   children?: React.ReactNode;
-  withModal?: boolean;
   modalBackDropVisible?: boolean;
 }
 
@@ -31,8 +31,6 @@ export type BottomSheetRefProps = {
 
 export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
   ({ scrollHeight, children, modalBackDropVisible }: BottomSheetProps, ref) => {
-    const inset = useSafeAreaInsets();
-
     const translateY = useSharedValue(0);
     const active = useSharedValue(false);
 
@@ -105,18 +103,10 @@ export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProp
 
     return (
       <>
-        <ReAnimated.View
+        <BackDrop
           onTouchStart={onTouchStart}
-          animatedProps={rBackdropProps}
-          style={[
-            {
-              ...StyleSheet.absoluteFillObject,
-              backgroundColor: 'rgba(0,0,0,0.4)',
-              paddingBottom: inset.bottom,
-              zIndex: 9998,
-            },
-            rBackdropStyle,
-          ]}
+          rBackdropStyle={rBackdropStyle}
+          rBackdropProps={rBackdropProps}
         />
         <GestureDetector gesture={gesture}>
           <S.ScrollBottomSheetContainer style={rBottomSheetStyle}>

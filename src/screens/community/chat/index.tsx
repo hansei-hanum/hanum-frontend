@@ -10,7 +10,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@emotion/react';
 
 import {
-  BottomSheet,
   CommunityHeader,
   CommunityUserImage,
   GoBackIcon,
@@ -25,6 +24,7 @@ import {
   MentionUserList,
   ImageListBottomSheet,
   ImageListBottomSheetRefProps,
+  CommunityBottomSheet,
 } from 'src/layouts';
 import { useBottomSheet, useGetUser } from 'src/hooks';
 
@@ -49,7 +49,7 @@ export interface PhotoPermissionProps {
 }
 
 export const CommunityChatScreen: React.FC = () => {
-  const { bottomSheetRef, openBottomSheet } = useBottomSheet();
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const inset = useSafeAreaInsets();
 
@@ -240,7 +240,7 @@ export const CommunityChatScreen: React.FC = () => {
         <CommunityHeader
           {...COMMUNITY_POST}
           style={{ flex: 1 }}
-          openBottomSheet={openBottomSheet}
+          openBottomSheet={() => openBottomSheet(true)}
         />
       </Header>
       {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
@@ -297,7 +297,11 @@ export const CommunityChatScreen: React.FC = () => {
         scrollHeight={permissionHeight}
         permission={permission}
       />
-      {/* <BottomSheet ref={bottomSheetRef} snapTo="30%" /> */}
+      <CommunityBottomSheet
+        isChatScreen
+        bottomSheetRef={bottomSheetRef}
+        closeBottomSheet={closeBottomSheet}
+      />
     </S.CommunityChatWrapper>
   );
 };
