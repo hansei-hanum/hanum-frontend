@@ -18,6 +18,7 @@ export const lightTheme: Theme = {
   },
   modalBg: '#FEFEFE',
   tabBarBg: '#FFFFFF',
+  backDrop: 'rgba(0, 0, 0, 0.5)',
 };
 
 export const darkTheme: Theme = {
@@ -38,4 +39,5 @@ export const darkTheme: Theme = {
   },
   modalBg: '#333539',
   tabBarBg: '#373A40',
+  backDrop: 'rgba(0, 0, 0, 0.5)',
 };

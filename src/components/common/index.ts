@@ -10,3 +10,4 @@ export * from './Spinner';
 export * from './Header';
 export * from './ScaleOpacity';
 export * from './BottomSheet';
+export * from './BackDrop';

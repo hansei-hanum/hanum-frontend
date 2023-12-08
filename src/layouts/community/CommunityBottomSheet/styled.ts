@@ -3,7 +3,6 @@ import styled from '@emotion/native';
 export const CommunityBottomSheetContainer = styled.View`
   row-gap: 30px;
   padding: 20px;
-  justify-content: center;
   flex: 1;
 `;
 

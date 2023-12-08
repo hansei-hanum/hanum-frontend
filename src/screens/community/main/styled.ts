@@ -75,6 +75,7 @@ export const CommunityMainBox = styled.View`
   border-top-width: 1px;
   border-bottom-width: 1px;
   padding: 10px 0;
+  position: relative;
 `;
 
 export const CommunityMainBottom = styled.View`

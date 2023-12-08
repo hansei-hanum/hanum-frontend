@@ -12,12 +12,20 @@ export interface ModalProps {
   text?: string | React.ReactNode;
   button: React.ReactNode;
   modalVisible: boolean;
+  backDropVisible?: boolean;
 }
 
-export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible, linkText }) => {
+export const Modal: React.FC<ModalProps> = ({
+  title,
+  text,
+  button,
+  modalVisible,
+  linkText,
+  backDropVisible = true,
+}) => {
   return (
     <>
-      <S.ModalDummyContainer />
+      {backDropVisible && <S.ModalDummyContainer />}
       <ModalElement animationType="slide" transparent={true} visible={modalVisible}>
         <S.ModalWrapper>
           <S.ModalContainer>

@@ -16,6 +16,7 @@ import * as S from './styled';
 export interface CommunityHeaderProps extends Pick<CommunityPostProps, 'author' | 'type' | 'time'> {
   style?: StyleProp<ViewStyle>;
   openBottomSheet: () => void;
+  onPress?: () => void;
 }
 
 export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
@@ -46,7 +47,14 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
           </S.CommunityHeaderUserSection>
         </View>
       </S.CommunityHeaderTitle>
-      <ScaleOpacity onPress={openBottomSheet}>
+      <ScaleOpacity
+        onPress={openBottomSheet}
+        style={{
+          alignItems: 'flex-end',
+          flexGrow: 0.1,
+          paddingVertical: 8,
+        }}
+      >
         <Icon name="more-horiz" size={24} color={theme.placeholder} />
       </ScaleOpacity>
     </S.CommunityHeader>

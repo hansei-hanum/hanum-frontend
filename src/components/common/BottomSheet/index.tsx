@@ -2,8 +2,9 @@ import React, { ReactNode, forwardRef, useCallback, useImperativeHandle } from '
 import { TouchableWithoutFeedback } from 'react-native';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
+import {
   interpolate,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -12,12 +13,16 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilState } from 'recoil';
+
+import { backDropVisibleAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 type BottomSheetProps = {
   snapTo: string;
   children?: ReactNode;
+  withModal?: boolean;
 };
 
 export interface BottomSheetRefProps {
@@ -26,7 +31,8 @@ export interface BottomSheetRefProps {
 }
 
 export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
-  ({ snapTo, children }: BottomSheetProps, ref) => {
+  ({ snapTo, children, withModal }: BottomSheetProps, ref) => {
+    const [backDropVisible, setBackDropVisible] = useRecoilState(backDropVisibleAtom);
     const theme = useTheme();
 
     const inset = useSafeAreaInsets();
@@ -42,12 +48,17 @@ export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
 
     const expand = useCallback(() => {
       'worklet';
-      topAnimation.value = withTiming(openHeight);
+      topAnimation.value = withTiming(openHeight, {
+        duration: 200,
+      });
     }, [openHeight, topAnimation]);
 
     const close = useCallback(() => {
       'worklet';
-      topAnimation.value = withTiming(closeHeight);
+      runOnJS(setBackDropVisible)(false);
+      topAnimation.value = withTiming(closeHeight, {
+        duration: 200,
+      });
     }, [closeHeight, topAnimation]);
 
     useImperativeHandle(
@@ -82,11 +93,12 @@ export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
         }
       })
       .onEnd(() => {
-        if (topAnimation.value > openHeight + 50) {
+        if (topAnimation.value > openHeight + 20) {
           topAnimation.value = withSpring(closeHeight, {
             damping: 100,
             stiffness: 400,
           });
+          runOnJS(setBackDropVisible)(false);
         } else {
           topAnimation.value = withSpring(openHeight, {
             damping: 100,
@@ -96,7 +108,13 @@ export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
       });
 
     const backDropAnimation = useAnimatedStyle(() => {
-      const opacity = interpolate(topAnimation.value, [closeHeight, openHeight], [0, 0.5]);
+      const animation = interpolate(topAnimation.value, [closeHeight, openHeight], [0, 0.5]);
+      let opacity = 0;
+      if (withModal) {
+        opacity = backDropVisible ? 0.5 : 0;
+      } else {
+        opacity = animation;
+      }
       const display = opacity === 0 ? 'none' : 'flex';
       return {
         opacity,
@@ -111,7 +129,7 @@ export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
             close();
           }}
         >
-          <S.BottomSheetBackDrop style={[backDropAnimation, { backgroundColor: 'black' }]} />
+          <S.BottomSheetBackDrop style={[backDropAnimation, { backgroundColor: theme.black }]} />
         </TouchableWithoutFeedback>
         <GestureDetector gesture={pan}>
           <S.BottomSheetContainer
@@ -135,12 +153,6 @@ export const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
 );
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    zIndex: 9999,
-  },
   lineContainer: {
     marginVertical: 10,
     alignItems: 'center',
@@ -150,10 +162,5 @@ const styles = StyleSheet.create({
     height: 4,
     backgroundColor: 'gray',
     borderRadius: 20,
-  },
-  backDrop: {
-    ...StyleSheet.absoluteFillObject,
-    display: 'none',
-    zIndex: 9998,
   },
 });

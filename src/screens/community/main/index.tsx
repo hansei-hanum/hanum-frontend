@@ -6,6 +6,7 @@ import {
   LayoutAnimation,
   TouchableOpacity,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,7 +32,7 @@ import * as S from './styled';
 export const CommunityMainScreen: React.FC = () => {
   const inset = useSafeAreaInsets();
 
-  const { bottomSheetRef, openBottomSheet } = useBottomSheet();
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const navigate = useNavigate();
 
@@ -126,51 +127,54 @@ export const CommunityMainScreen: React.FC = () => {
             </S.CommunityUserContainer>
           }
           renderItem={({ item: { author, type, time, content }, index }) => (
-            <S.CommunityMainBox>
-              <CommunityHeader
-                author={author}
-                type={type}
-                time={time}
-                style={{ width: '100%' }}
-                openBottomSheet={openBottomSheet}
-              />
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigate('CommunityChat')}
-                style={{ width: '100%' }}
-              >
-                <CommunityPost
+            <TouchableWithoutFeedback onPress={() => navigate('CommunityChat')}>
+              <S.CommunityMainBox>
+                <CommunityHeader
                   author={author}
-                  content={content}
-                  time={time}
                   type={type}
-                  index={index}
-                  imageHeights={imageHeights}
+                  time={time}
+                  style={{ width: '100%' }}
+                  openBottomSheet={openBottomSheet}
+                  onPress={() => navigate('CommunityChat')}
                 />
-              </TouchableOpacity>
-              <S.CommunityMainBottom>
-                <ScaleOpacity onPress={() => onLikeClick(index)}>
-                  <S.CommunityMainBottomIconContainer>
-                    {likes[index] ? (
-                      <MCI name="cards-heart" size={24} color={theme.danger} />
-                    ) : (
-                      <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                    )}
-                    <Text size={14} color={theme.placeholder}>
-                      좋아요 {likes[index] ? content.likes + 1 : content.likes}
-                    </Text>
-                  </S.CommunityMainBottomIconContainer>
-                </ScaleOpacity>
-                <ScaleOpacity onPress={() => navigate('CommunityChat')}>
-                  <S.CommunityMainBottomIconContainer>
-                    <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
-                    <Text size={14} color={theme.placeholder}>
-                      댓글 {content.comments}
-                    </Text>
-                  </S.CommunityMainBottomIconContainer>
-                </ScaleOpacity>
-              </S.CommunityMainBottom>
-            </S.CommunityMainBox>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => navigate('CommunityChat')}
+                  style={{ width: '100%' }}
+                >
+                  <CommunityPost
+                    author={author}
+                    content={content}
+                    time={time}
+                    type={type}
+                    index={index}
+                    imageHeights={imageHeights}
+                  />
+                </TouchableOpacity>
+                <S.CommunityMainBottom>
+                  <ScaleOpacity onPress={() => onLikeClick(index)}>
+                    <S.CommunityMainBottomIconContainer>
+                      {likes[index] ? (
+                        <MCI name="cards-heart" size={24} color={theme.danger} />
+                      ) : (
+                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+                      )}
+                      <Text size={14} color={theme.placeholder}>
+                        좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                      </Text>
+                    </S.CommunityMainBottomIconContainer>
+                  </ScaleOpacity>
+                  <ScaleOpacity onPress={() => navigate('CommunityChat')}>
+                    <S.CommunityMainBottomIconContainer>
+                      <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
+                      <Text size={14} color={theme.placeholder}>
+                        댓글 {content.comments}
+                      </Text>
+                    </S.CommunityMainBottomIconContainer>
+                  </ScaleOpacity>
+                </S.CommunityMainBottom>
+              </S.CommunityMainBox>
+            </TouchableWithoutFeedback>
           )}
         />
       ) : (
@@ -178,7 +182,7 @@ export const CommunityMainScreen: React.FC = () => {
           <Text size={15}>This Is Search 잉기</Text>
         </S.TextWrapper2>
       )}
-      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} />
+      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>
   );
 };
