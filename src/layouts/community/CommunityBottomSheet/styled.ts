@@ -6,6 +6,7 @@ export const CommunityBottomSheetContainer = styled.View`
   row-gap: 30px;
   padding: 20px;
   flex: 1;
+  z-index: 9999;
 `;
 
 export const CommunityBottomSheetListContainer = styled.View`

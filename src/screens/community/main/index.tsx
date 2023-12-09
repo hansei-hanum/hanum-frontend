@@ -134,7 +134,7 @@ export const CommunityMainScreen: React.FC = () => {
                   type={type}
                   time={time}
                   style={{ width: '100%' }}
-                  openBottomSheet={() => openBottomSheet(false)}
+                  openBottomSheet={openBottomSheet}
                   onPress={() => navigate('CommunityChat')}
                 />
                 <TouchableOpacity

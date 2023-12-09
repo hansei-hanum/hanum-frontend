@@ -225,6 +225,11 @@ export const CommunityChatScreen: React.FC = () => {
     return regex.test(inputString);
   };
 
+  const onOptionPress = () => {
+    chatRef.current?.blur();
+    openBottomSheet();
+  };
+
   return (
     <S.CommunityChatWrapper style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -232,11 +237,7 @@ export const CommunityChatScreen: React.FC = () => {
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
       >
         <GoBackIcon />
-        <CommunityHeader
-          {...COMMUNITY_POST}
-          style={{ flex: 1 }}
-          openBottomSheet={() => openBottomSheet(true)}
-        />
+        <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} openBottomSheet={onOptionPress} />
       </Header>
       {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
         <ChatList onMention={onMention} />
@@ -292,11 +293,7 @@ export const CommunityChatScreen: React.FC = () => {
         scrollHeight={permissionHeight}
         permission={permission}
       />
-      <CommunityBottomSheet
-        isChatScreen
-        bottomSheetRef={bottomSheetRef}
-        closeBottomSheet={closeBottomSheet}
-      />
+      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityChatWrapper>
   );
 };

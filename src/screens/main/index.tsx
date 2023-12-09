@@ -35,11 +35,13 @@ export const MainScreen: React.FC = () => {
           backgroundColor: theme.tabBarBg,
           height: iosCheckHeight ? 78 : 64,
           paddingBottom: iosCheckHeight ? 26 : 10,
+          position: 'absolute',
         },
         tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
           fontSize: 12,
         },
+
         tabBarIconStyle: {
           paddingBottom: 0,
           marginBottom: Platform.OS == 'ios' ? -8 : -10,

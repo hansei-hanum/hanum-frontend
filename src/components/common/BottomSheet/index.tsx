@@ -11,6 +11,9 @@ import {
   withTiming,
 } from 'react-native-reanimated';
 
+import { Portal } from '@gorhom/portal';
+import { useTheme } from '@emotion/react';
+
 import { BottomSheetRefProps } from 'src/types';
 
 import { BackDrop } from '../BackDrop';
@@ -28,6 +31,7 @@ interface BottomSheetProps {
 
 export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
   ({ scrollHeight, children, modalBackDropVisible }: BottomSheetProps, ref) => {
+    const theme = useTheme();
     const translateY = useSharedValue(0);
     const active = useSharedValue(false);
 
@@ -105,12 +109,16 @@ export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProp
           rBackdropStyle={rBackdropStyle}
           rBackdropProps={rBackdropProps}
         />
-        <GestureDetector gesture={gesture}>
-          <S.ScrollBottomSheetContainer style={rBottomSheetStyle}>
-            <S.ScrollBottomSheetLine />
-            {children}
-          </S.ScrollBottomSheetContainer>
-        </GestureDetector>
+        <Portal>
+          <GestureDetector gesture={gesture}>
+            <S.ScrollBottomSheetContainer
+              style={[rBottomSheetStyle, { backgroundColor: theme.background }]}
+            >
+              <S.ScrollBottomSheetLine style={{ backgroundColor: theme.placeholder }} />
+              {children}
+            </S.ScrollBottomSheetContainer>
+          </GestureDetector>
+        </Portal>
       </>
     );
   },

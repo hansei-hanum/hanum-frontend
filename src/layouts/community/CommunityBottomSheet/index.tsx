@@ -8,8 +8,8 @@ import { useTheme } from '@emotion/react';
 import { BottomSheet, Button, ButtonContainer, Modal, ScaleOpacity, Text } from 'src/components';
 import {
   COMMUNITY_BOTTOM_SHEET_OPTION_LIST,
-  COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT,
   CommunityBottomSheetTextEnum,
+  REPORT_BOTTOM_SHEET_HEIGHT,
 } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 
@@ -19,7 +19,6 @@ import * as S from './styled';
 
 export interface CommunityBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
-  isChatScreen?: boolean;
   closeBottomSheet: () => void;
 }
 
@@ -30,7 +29,6 @@ export interface openModalProps {
 
 export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
-  isChatScreen,
   closeBottomSheet,
 }) => {
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
@@ -79,11 +77,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     <>
       <BottomSheet
         ref={bottomSheetRef}
-        scrollHeight={
-          isChatScreen
-            ? COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT
-            : COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT
-        }
+        scrollHeight={REPORT_BOTTOM_SHEET_HEIGHT}
         modalBackDropVisible={modalOpen.block || modalOpen.report}
       >
         <S.CommunityBottomSheetContainer>

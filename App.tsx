@@ -4,8 +4,10 @@ import Toast from 'react-native-toast-message';
 import { NotifierWrapper } from 'react-native-notifier';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import CodePush from 'react-native-code-push';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { RecoilRoot } from 'recoil';
+import { PortalProvider } from '@gorhom/portal';
 
 import { Router } from 'src/Router';
 
@@ -15,16 +17,20 @@ LogBox.ignoreAllLogs();
 
 function App() {
   return (
-    <RecoilRoot>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <QueryClientProvider client={client}>
-          <NotifierWrapper>
-            <Router />
-            <Toast />
-          </NotifierWrapper>
-        </QueryClientProvider>
-      </GestureHandlerRootView>
-    </RecoilRoot>
+    <SafeAreaProvider>
+      <RecoilRoot>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <PortalProvider>
+            <QueryClientProvider client={client}>
+              <NotifierWrapper>
+                <Router />
+                <Toast />
+              </NotifierWrapper>
+            </QueryClientProvider>
+          </PortalProvider>
+        </GestureHandlerRootView>
+      </RecoilRoot>
+    </SafeAreaProvider>
   );
 }
 
