@@ -9,9 +9,10 @@ import { BottomSheet, Button, ButtonContainer, Modal, ScaleOpacity, Text } from 
 import {
   COMMUNITY_BOTTOM_SHEET_OPTION_LIST,
   CommunityBottomSheetTextEnum,
-  REPORT_BOTTOM_SHEET_HEIGHT,
+  COMMUNITY_BOTTOM_SHEET_HEIGHT,
 } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
+import { RPH } from 'src/utils';
 
 import { ReportBottomSheet } from '../ReportBottomSheet';
 
@@ -26,6 +27,8 @@ export interface openModalProps {
   report: boolean;
   block: boolean;
 }
+
+const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-60);
 
 export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
@@ -47,7 +50,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
         return setTimeout(() => {
-          reportBottomSheetRef.current?.scrollTo(-400);
+          reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
         }, 400);
 
       case CommunityBottomSheetTextEnum.BLOCK:
@@ -77,7 +80,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     <>
       <BottomSheet
         ref={bottomSheetRef}
-        scrollHeight={REPORT_BOTTOM_SHEET_HEIGHT}
+        scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
         modalBackDropVisible={modalOpen.block || modalOpen.report}
       >
         <S.CommunityBottomSheetContainer>
@@ -100,7 +103,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           ))}
         </S.CommunityBottomSheetContainer>
       </BottomSheet>
-      <ReportBottomSheet ref={reportBottomSheetRef} scrollHeight={-400} />
+      <ReportBottomSheet ref={reportBottomSheetRef} scrollHeight={REPORT_BOTTOM_SHEET_HEIGHT} />
       {modalOpen.block && (
         <Modal
           backDropVisible={false}

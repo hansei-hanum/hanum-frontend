@@ -121,7 +121,6 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
       scrollTo(0);
       flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
       runOnJS(setEnableScroll)(false);
-      console.log(enableScroll, 'onTouchStart');
     }, [scrollTo]);
 
     const onScroll = useAnimatedScrollHandler({
@@ -184,7 +183,11 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
                     <TouchableHighlight onPress={() => null} key={index}>
                       <S.ReportBottmoSheetOptionList
                         style={[
-                          { borderTopColor: theme.lightGray, borderTopWidth: 1 },
+                          {
+                            borderTopColor: theme.lightGray,
+                            borderTopWidth: 1,
+                            backgroundColor: theme.modalBg,
+                          },
                           index === REPORT_LIST.length - 1 && {
                             borderBottomWidth: 1,
                             borderBottomColor: theme.lightGray,
