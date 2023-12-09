@@ -30,6 +30,7 @@ import { useTheme } from '@emotion/react';
 import { BackDrop, Button, Icon, ScaleOpacity, Spinner, Text } from 'src/components';
 import { PhotoPermissionProps } from 'src/screens';
 import { isIos } from 'src/utils';
+import { BottomSheetRefProps } from 'src/types';
 
 import * as S from './styled';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -41,15 +42,11 @@ interface ImageListBottomSheetProps extends AnimatedScrollViewProps {
   permission: PhotoPermissionProps;
 }
 
-export type ImageListBottomSheetRefProps = {
-  scrollTo: (destination: number) => void;
-  isActive: () => boolean;
-};
 const REPLY_BOX_IOS_OFFSET = -70;
 const REPLY_BOX_ANDROID_OFFSET = -40.6;
 
 export const ImageListBottomSheet = React.forwardRef<
-  ImageListBottomSheetRefProps,
+  BottomSheetRefProps,
   ImageListBottomSheetProps
 >(({ scrollHeight, permission, ...rest }: ImageListBottomSheetProps, ref) => {
   const hasPermission = permission.granted || permission.limited;
@@ -105,15 +102,23 @@ export const ImageListBottomSheet = React.forwardRef<
       }
     })
     .onEnd(() => {
-      if (translateY.value > scrollHeight / 1.2) {
-        scrollTo(0);
-        runOnJS(setSelectedPhotos)([]);
-      } else if (translateY.value < context.value.y) {
-        scrollTo(-SCREEN_HEIGHT + inset.top);
-        runOnJS(setEnableScroll)(true);
+      if (hasPermission) {
+        if (translateY.value > scrollHeight / 1.2) {
+          scrollTo(0);
+          runOnJS(setSelectedPhotos)([]);
+        } else if (translateY.value < context.value.y) {
+          scrollTo(-SCREEN_HEIGHT + inset.top);
+          runOnJS(setEnableScroll)(true);
+        } else {
+          runOnJS(setEnableScroll)(false);
+          scrollTo(scrollHeight);
+        }
       } else {
-        runOnJS(setEnableScroll)(false);
-        scrollTo(scrollHeight);
+        if (translateY.value > scrollHeight / 1.2) {
+          scrollTo(0);
+        } else {
+          scrollTo(scrollHeight);
+        }
       }
     });
 
@@ -237,7 +242,7 @@ export const ImageListBottomSheet = React.forwardRef<
       <GestureDetector gesture={gesture}>
         <S.ImageListBottomSheetContainer style={rBottomSheetStyle}>
           <S.ImageListBottomSheetLine />
-          {permission ? (
+          {hasPermission ? (
             <>
               {permission.limited && (
                 <S.WarningContainer>
@@ -249,57 +254,55 @@ export const ImageListBottomSheet = React.forwardRef<
                   </ScaleOpacity>
                 </S.WarningContainer>
               )}
-              <GestureDetector gesture={gesture}>
-                <ReAnimated.FlatList
-                  data={photos}
-                  {...rest}
-                  scrollEnabled={enableScroll}
-                  bounces={false}
-                  scrollEventThrottle={16}
-                  onScroll={onScroll}
-                  numColumns={3}
-                  contentContainerStyle={{
-                    width: '100%',
-                    ...(!permission.limited && { paddingTop: 10 }),
-                    paddingBottom: 100,
-                  }}
-                  onEndReached={endReached}
-                  onEndReachedThreshold={0.5}
-                  initialScrollIndex={0}
-                  ref={flatListRef}
-                  ListFooterComponent={
-                    isLoading ? (
-                      <View style={{ marginTop: 10 }}>
-                        <Spinner />
-                      </View>
-                    ) : null
-                  }
-                  renderItem={({ item, index }) => {
-                    return (
-                      <TouchableWithoutFeedback onPress={() => selectPhoto(index)}>
-                        <S.ImageWrapper>
-                          {selectedPhotos[index] && (
-                            <S.IconWrapper>
-                              <Icons name="checkmark-circle" color={theme.primary} size={24} />
-                            </S.IconWrapper>
-                          )}
-                          <S.Image
-                            key={item?.node?.image?.uri}
-                            source={{ uri: item?.node?.image?.uri }}
-                            height={140}
-                            resizeMode="cover"
-                            style={{
-                              opacity: selectedPhotos[index] ? 0.5 : 1,
-                              borderColor: theme.lightGray,
-                              borderWidth: 0.4,
-                            }}
-                          />
-                        </S.ImageWrapper>
-                      </TouchableWithoutFeedback>
-                    );
-                  }}
-                />
-              </GestureDetector>
+              <ReAnimated.FlatList
+                data={photos}
+                {...rest}
+                scrollEnabled={enableScroll}
+                bounces={false}
+                scrollEventThrottle={16}
+                onScroll={onScroll}
+                numColumns={3}
+                contentContainerStyle={{
+                  width: '100%',
+                  ...(!permission.limited && { paddingTop: 10 }),
+                  paddingBottom: 100,
+                }}
+                onEndReached={endReached}
+                onEndReachedThreshold={0.5}
+                initialScrollIndex={0}
+                ref={flatListRef}
+                ListFooterComponent={
+                  isLoading ? (
+                    <View style={{ marginTop: 10 }}>
+                      <Spinner />
+                    </View>
+                  ) : null
+                }
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableWithoutFeedback onPress={() => selectPhoto(index)}>
+                      <S.ImageWrapper>
+                        {selectedPhotos[index] && (
+                          <S.IconWrapper>
+                            <Icons name="checkmark-circle" color={theme.primary} size={24} />
+                          </S.IconWrapper>
+                        )}
+                        <S.Image
+                          key={item?.node?.image?.uri}
+                          source={{ uri: item?.node?.image?.uri }}
+                          height={140}
+                          resizeMode="cover"
+                          style={{
+                            opacity: selectedPhotos[index] ? 0.5 : 1,
+                            borderColor: theme.lightGray,
+                            borderWidth: 0.4,
+                          }}
+                        />
+                      </S.ImageWrapper>
+                    </TouchableWithoutFeedback>
+                  );
+                }}
+              />
             </>
           ) : (
             <S.PermissionDeninedContainer>

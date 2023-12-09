@@ -1,12 +1,20 @@
 import { useRef } from 'react';
 
-import { BottomSheetRefProps } from 'src/components';
+import {
+  COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT,
+  COMMUNITY_MAIN_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT,
+} from 'src/constants';
+import { BottomSheetRefProps } from 'src/types';
 
 export const useBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-  const openBottomSheet = (isChat?: boolean) => {
-    bottomSheetRef.current?.scrollTo(isChat ? -250 : -300);
+  const openBottomSheet = (isChatScreen: boolean) => {
+    bottomSheetRef.current?.scrollTo(
+      isChatScreen
+        ? COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT
+        : COMMUNITY_MAIN_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT,
+    );
   };
 
   const closeBottomSheet = () => {

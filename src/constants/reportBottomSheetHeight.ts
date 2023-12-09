@@ -1,0 +1,4 @@
+import { RPH } from 'src/utils';
+
+export const COMMUNITY_MAIN_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT = -RPH(36);
+export const COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT = -RPH(28);

@@ -11,6 +11,8 @@ import {
   withTiming,
 } from 'react-native-reanimated';
 
+import { BottomSheetRefProps } from 'src/types';
+
 import { BackDrop } from '../BackDrop';
 
 import * as S from './styled';
@@ -23,11 +25,6 @@ interface BottomSheetProps {
   children?: React.ReactNode;
   modalBackDropVisible?: boolean;
 }
-
-export type BottomSheetRefProps = {
-  scrollTo: (destination: number) => void;
-  isActive: () => boolean;
-};
 
 export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
   ({ scrollHeight, children, modalBackDropVisible }: BottomSheetProps, ref) => {

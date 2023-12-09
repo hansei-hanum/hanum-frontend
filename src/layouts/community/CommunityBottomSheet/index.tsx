@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { KeyboardAvoidingView, Share } from 'react-native';
+import { Share } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
+import { BottomSheet, Button, ButtonContainer, Modal, ScaleOpacity, Text } from 'src/components';
 import {
-  BottomSheet,
-  BottomSheetRefProps,
-  Button,
-  ButtonContainer,
-  Modal,
-  ScaleOpacity,
-  Text,
-} from 'src/components';
-import { COMMUNITY_BOTTOM_SHEET_OPTION_LIST, CommunityBottomSheetTextEnum } from 'src/constants';
+  COMMUNITY_BOTTOM_SHEET_OPTION_LIST,
+  COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT,
+  CommunityBottomSheetTextEnum,
+} from 'src/constants';
+import { BottomSheetRefProps } from 'src/types';
+
+import { ReportBottomSheet } from '../ReportBottomSheet';
 
 import * as S from './styled';
 
@@ -34,6 +33,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   isChatScreen,
   closeBottomSheet,
 }) => {
+  const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
 
@@ -48,7 +48,10 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
       case CommunityBottomSheetTextEnum.SHARE:
         return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
-        return setModalOpen({ report: true, block: false });
+        return setTimeout(() => {
+          reportBottomSheetRef.current?.scrollTo(-400);
+        }, 400);
+
       case CommunityBottomSheetTextEnum.BLOCK:
         return setModalOpen({ report: false, block: true });
     }
@@ -76,7 +79,11 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     <>
       <BottomSheet
         ref={bottomSheetRef}
-        scrollHeight={isChatScreen ? -250 : -300}
+        scrollHeight={
+          isChatScreen
+            ? COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT
+            : COMMUNITY_CHAT_SCREEN_REPORT_BOTTOM_SHEET_HEIGHT
+        }
         modalBackDropVisible={modalOpen.block || modalOpen.report}
       >
         <S.CommunityBottomSheetContainer>
@@ -99,31 +106,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           ))}
         </S.CommunityBottomSheetContainer>
       </BottomSheet>
-      {modalOpen.report && (
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
-          <Modal
-            backDropVisible={false}
-            modalVisible={modalOpen.report}
-            title="게시글 신고하기"
-            text={`이 게시글을 신고하는 이유를 알려주세요.\n반복되는 허위 신고가 확인될 경우 대나무숲 서비스 이용이 제한될 수 있어요.`}
-            button={
-              <ButtonContainer>
-                <Button onPress={onModalCancelPress} isModalBtn isWhite>
-                  취소
-                </Button>
-                <Button onPress={onModalButtonPress} isModalBtn isLoading={loading}>
-                  신고하기
-                </Button>
-              </ButtonContainer>
-            }
-          >
-            <S.CommunityBottomSheetReportInput
-              placeholder="신고 사유를 입력해주세요"
-              placeholderTextColor={theme.placeholder}
-            />
-          </Modal>
-        </KeyboardAvoidingView>
-      )}
+      <ReportBottomSheet ref={reportBottomSheetRef} scrollHeight={-400} />
       {modalOpen.block && (
         <Modal
           backDropVisible={false}

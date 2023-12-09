@@ -18,23 +18,18 @@ import {
   Text,
 } from 'src/components';
 import { COMMUNITY_POST } from 'src/constants';
-import { isIos } from 'src/utils';
-import {
-  ChatList,
-  MentionUserList,
-  ImageListBottomSheet,
-  ImageListBottomSheetRefProps,
-  CommunityBottomSheet,
-} from 'src/layouts';
+import { RPH, isIos } from 'src/utils';
+import { ChatList, MentionUserList, ImageListBottomSheet, CommunityBottomSheet } from 'src/layouts';
 import { useBottomSheet, useGetUser } from 'src/hooks';
+import { BottomSheetRefProps } from 'src/types';
 
 import * as S from './styled';
 
 const REPLY_BOX_IOS_OFFSET = -62;
 const REPLY_BOX_ANDROID_OFFSET = -71.6;
 
-const HAS_PERMISSION_SCROLL_HEIGHT = -500;
-const NO_PERMISSION_SCROLL_HEIGHT = -300;
+const HAS_PERMISSION_SCROLL_HEIGHT = -RPH(70);
+const NO_PERMISSION_SCROLL_HEIGHT = -RPH(38);
 
 const status = {
   isAllGranted: { granted: true, limited: true },
@@ -53,7 +48,7 @@ export const CommunityChatScreen: React.FC = () => {
 
   const inset = useSafeAreaInsets();
 
-  const ImageListBottomSheetRef = useRef<ImageListBottomSheetRefProps>(null);
+  const ImageListBottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const [permission, setPermission] = useState<PhotoPermissionProps>({
     granted: false,

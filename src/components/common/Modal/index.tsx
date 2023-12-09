@@ -40,7 +40,7 @@ export const Modal: React.FC<ModalProps> = ({
               <Text size={16} style={{ width: '100%' }}>
                 {typeof text === 'string'
                   ? text?.split('\n').map((line, index) => (
-                      <Text size={16} key={line} style={{ width: '100%' }}>
+                      <Text size={16} key={index} style={{ width: '100%' }}>
                         {line}
                         {index !== text.split('\n').length - 1 && <>{'\n'}</>}
                       </Text>
