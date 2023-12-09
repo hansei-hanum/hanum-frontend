@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Share } from 'react-native';
+import { Animated, Dimensions, Share } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
@@ -14,7 +14,7 @@ import {
 import { BottomSheetRefProps } from 'src/types';
 import { RPH } from 'src/utils';
 
-import { ReportBottomSheet } from '../ReportBottomSheet';
+import { ReportBottomSheet } from '../Report/BottomSheet';
 
 import * as S from './styled';
 
@@ -27,6 +27,7 @@ export interface openModalProps {
   report: boolean;
   block: boolean;
 }
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-60);
 
@@ -34,8 +35,11 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
   closeBottomSheet,
 }) => {
+  const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
+
   const [loading, setLoading] = useState(false);
+
   const theme = useTheme();
 
   const [modalOpen, setModalOpen] = useState<openModalProps>({
@@ -44,6 +48,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   });
 
   const onPress = (option: CommunityBottomSheetTextEnum) => {
+    reportScreenAnimationValue.setValue(SCREEN_WIDTH);
     closeBottomSheet();
     switch (option) {
       case CommunityBottomSheetTextEnum.SHARE:
@@ -103,7 +108,11 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           ))}
         </S.CommunityBottomSheetContainer>
       </BottomSheet>
-      <ReportBottomSheet ref={reportBottomSheetRef} scrollHeight={REPORT_BOTTOM_SHEET_HEIGHT} />
+      <ReportBottomSheet
+        reportScreenAnimationValue={reportScreenAnimationValue}
+        ref={reportBottomSheetRef}
+        scrollHeight={REPORT_BOTTOM_SHEET_HEIGHT}
+      />
       {modalOpen.block && (
         <Modal
           backDropVisible={false}

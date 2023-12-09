@@ -4,7 +4,7 @@ import { fonts } from 'src/styles';
 
 export const CommunityBottomSheetContainer = styled.View`
   row-gap: 30px;
-  padding: 20px;
+  padding: 14px;
   flex: 1;
   z-index: 9999;
 `;

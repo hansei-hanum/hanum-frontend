@@ -1,3 +1,3 @@
 export * from './chat';
 export * from './CommunityBottomSheet';
-export * from './ReportBottomSheet';
+export * from './Report/BottomSheet';
