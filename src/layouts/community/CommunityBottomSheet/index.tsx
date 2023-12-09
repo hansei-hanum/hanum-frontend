@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Animated, Dimensions, Share } from 'react-native';
+import { Animated, Share } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
@@ -10,6 +10,7 @@ import {
   COMMUNITY_BOTTOM_SHEET_OPTION_LIST,
   CommunityBottomSheetTextEnum,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
+  SCREEN_WIDTH,
 } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 import { RPH } from 'src/utils';
@@ -27,7 +28,6 @@ export interface openModalProps {
   report: boolean;
   block: boolean;
 }
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-60);
 

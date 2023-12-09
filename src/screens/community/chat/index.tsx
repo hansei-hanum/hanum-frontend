@@ -18,7 +18,7 @@ import {
   Text,
 } from 'src/components';
 import { COMMUNITY_POST } from 'src/constants';
-import { RPH, isIos } from 'src/utils';
+import { RPH, isAndroid, isIos } from 'src/utils';
 import { ChatList, MentionUserList, ImageListBottomSheet, CommunityBottomSheet } from 'src/layouts';
 import { useBottomSheet, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
@@ -133,7 +133,7 @@ export const CommunityChatScreen: React.FC = () => {
   }, []);
 
   const checkPermission = useCallback(async () => {
-    if (Platform.OS === 'ios') {
+    if (isIos) {
       const permission = await Permissions.check(PERMISSIONS.IOS.PHOTO_LIBRARY);
       if (permission === Permissions.RESULTS.GRANTED) {
         setPermission(status.isGranted);
@@ -155,7 +155,7 @@ export const CommunityChatScreen: React.FC = () => {
         setPermission(status.isBlocked);
         openImageBottomSheet(status.isBlocked);
       }
-    } else if (Platform.OS === 'android') {
+    } else if (isAndroid) {
       checkAndroidPermissions();
     }
   }, [checkAndroidPermissions]);

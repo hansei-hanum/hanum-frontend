@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Animated, Dimensions, FlatList } from 'react-native';
+import { Animated, FlatList } from 'react-native';
 import React, { useCallback, useImperativeHandle, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
@@ -20,6 +20,7 @@ import { Portal } from '@gorhom/portal';
 
 import { BackDrop } from 'src/components';
 import { BottomSheetRefProps } from 'src/types';
+import { SCREEN_HEIGHT } from 'src/constants';
 
 import { OptionWindow } from '../OptionWindow';
 import { ReportCompleteWindow } from '../CompleteWindow';
@@ -30,8 +31,6 @@ interface ReportBottomSheetProps extends AnimatedScrollViewProps {
   scrollHeight: number;
   reportScreenAnimationValue: Animated.Value;
 }
-
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 

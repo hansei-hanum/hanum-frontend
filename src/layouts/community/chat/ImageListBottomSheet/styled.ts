@@ -1,9 +1,9 @@
-import { Animated, Dimensions } from 'react-native';
+import { Animated } from 'react-native';
 import ReAnimated from 'react-native-reanimated';
 
 import styled from '@emotion/native';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+import { SCREEN_HEIGHT } from 'src/constants';
 
 export const ImageListBottomSheetContainer = styled(ReAnimated.View)`
   height: ${`${SCREEN_HEIGHT}px`};

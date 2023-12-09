@@ -1,10 +1,8 @@
-import { Animated, Dimensions } from 'react-native';
 import ReAnimated from 'react-native-reanimated';
 
 import styled from '@emotion/native';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+import { SCREEN_HEIGHT } from 'src/constants';
 
 export const ReportBottomSheetContainer = styled(ReAnimated.View)`
   height: ${`${SCREEN_HEIGHT}px`};

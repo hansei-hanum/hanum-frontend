@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Animated,
-  Dimensions,
-  FlatList,
-  Linking,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Animated, FlatList, Linking, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import ReAnimated, {
@@ -31,9 +24,9 @@ import { BackDrop, Button, Icon, ScaleOpacity, Spinner, Text } from 'src/compone
 import { PhotoPermissionProps } from 'src/screens';
 import { isIos } from 'src/utils';
 import { BottomSheetRefProps } from 'src/types';
+import { SCREEN_HEIGHT } from 'src/constants';
 
 import * as S from './styled';
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 

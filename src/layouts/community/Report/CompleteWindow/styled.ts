@@ -1,8 +1,8 @@
-import { Animated, Dimensions } from 'react-native';
+import { Animated } from 'react-native';
 
 import styled from '@emotion/native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+import { SCREEN_WIDTH } from 'src/constants';
 
 export const ReportScreen = styled(Animated.View)`
   position: absolute;

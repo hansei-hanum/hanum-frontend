@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Dimensions } from 'react-native';
+
 import React, { useCallback, useImperativeHandle } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
@@ -15,11 +15,11 @@ import { Portal } from '@gorhom/portal';
 import { useTheme } from '@emotion/react';
 
 import { BottomSheetRefProps } from 'src/types';
+import { SCREEN_HEIGHT } from 'src/constants';
 
 import { BackDrop } from '../BackDrop';
 
 import * as S from './styled';
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 

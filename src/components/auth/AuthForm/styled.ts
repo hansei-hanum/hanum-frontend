@@ -1,8 +1,8 @@
-import { KeyboardAvoidingView, Platform, View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 
 import styled from '@emotion/native';
 
-import { iosCheckHeight, isAndroid } from 'src/utils';
+import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 
 export const AuthWrapper = styled.SafeAreaView`
   width: 100%;
@@ -10,7 +10,7 @@ export const AuthWrapper = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.background};
 `;
 
-export const AuthContainer = styled(Platform.OS == 'ios' ? KeyboardAvoidingView : View)`
+export const AuthContainer = styled(isIos ? KeyboardAvoidingView : View)`
   width: 100%;
   flex: 1;
   padding: 0 20px;
