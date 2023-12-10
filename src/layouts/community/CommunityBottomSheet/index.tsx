@@ -54,9 +54,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
       case CommunityBottomSheetTextEnum.SHARE:
         return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
-        return setTimeout(() => {
-          reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
-        }, 400);
+        return reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
 
       case CommunityBottomSheetTextEnum.BLOCK:
         return setModalOpen({ report: false, block: true });

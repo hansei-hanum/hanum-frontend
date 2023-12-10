@@ -130,6 +130,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
     }, []);
 
     const onTouchStart = useCallback(() => {
+      setEnableScroll(false);
       scrollTo(0);
       flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
     }, [scrollTo]);
@@ -152,6 +153,9 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
     });
 
     const openReportScreen = () => {
+      scrollTo(scrollHeight);
+      setEnableScroll(false);
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
       setReportWindowOpen(true);
       const traslateX = Animated.timing(reportScreenAnimationValue, {
         toValue: 0,
@@ -175,6 +179,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
             >
               <S.ReportBottomSheetLine style={{ backgroundColor: theme.placeholder }} />
               <ReportCompleteWindow
+                setReportWindowOpen={setReportWindowOpen}
                 reportBottomSheetRef={ref as React.RefObject<BottomSheetRefProps>}
                 reportScreenAnimationValue={reportScreenAnimationValue}
                 theme={theme}

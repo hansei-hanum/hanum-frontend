@@ -19,12 +19,14 @@ export interface ReportCompleteProps {
   reportScreenAnimationValue: Animated.Value;
   theme: Theme;
   reportBottomSheetRef: React.RefObject<BottomSheetRefProps>;
+  setReportWindowOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
   reportScreenAnimationValue,
   reportBottomSheetRef,
   theme,
+  setReportWindowOpen,
 }) => {
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
@@ -72,6 +74,7 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
       </S.CompleteWindowContentContainer>
       <TouchableOpacity
         onPress={() => {
+          setReportWindowOpen(false);
           reportBottomSheetRef.current?.scrollTo(0);
         }}
         onPressIn={handlePressIn}
