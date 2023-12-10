@@ -6,3 +6,4 @@ export * from './communityBottomSheetOptionList';
 export * from './reportBottomSheetHeight';
 export * from './report';
 export * from './screen';
+export * from './reportCompleteWindowContent';

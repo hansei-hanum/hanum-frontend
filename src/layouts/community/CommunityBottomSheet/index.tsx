@@ -15,7 +15,7 @@ import {
 import { BottomSheetRefProps } from 'src/types';
 import { RPH } from 'src/utils';
 
-import { ReportBottomSheet } from '../Report/BottomSheet';
+import { ReportBottomSheet } from '../report/BottomSheet';
 
 import * as S from './styled';
 

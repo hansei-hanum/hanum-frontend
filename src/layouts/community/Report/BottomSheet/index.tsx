@@ -48,6 +48,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
     const scrollY = useSharedValue(0);
 
     const [enableScroll, setEnableScroll] = useState(false);
+    const [reportWindowOpen, setReportWindowOpen] = useState(false);
 
     const scrollTo = useCallback(
       (destination: number) => {
@@ -82,15 +83,23 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
         }
       })
       .onEnd(() => {
-        if (translateY.value > scrollHeight / 1.2) {
-          runOnJS(setEnableScroll)(false);
-          scrollTo(0);
-        } else if (translateY.value < context.value.y) {
-          scrollTo(-SCREEN_HEIGHT + inset.top);
-          runOnJS(setEnableScroll)(true);
+        if (!reportWindowOpen) {
+          if (translateY.value > scrollHeight / 1.2) {
+            runOnJS(setEnableScroll)(false);
+            scrollTo(0);
+          } else if (translateY.value < context.value.y) {
+            scrollTo(-SCREEN_HEIGHT + inset.top);
+            runOnJS(setEnableScroll)(true);
+          } else {
+            runOnJS(setEnableScroll)(false);
+            scrollTo(scrollHeight);
+          }
         } else {
-          runOnJS(setEnableScroll)(false);
-          scrollTo(scrollHeight);
+          if (translateY.value > scrollHeight / 1.2) {
+            scrollTo(0);
+          } else {
+            scrollTo(scrollHeight);
+          }
         }
       });
 
@@ -143,6 +152,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
     });
 
     const openReportScreen = () => {
+      setReportWindowOpen(true);
       const traslateX = Animated.timing(reportScreenAnimationValue, {
         toValue: 0,
         duration: 200,
@@ -165,6 +175,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
             >
               <S.ReportBottomSheetLine style={{ backgroundColor: theme.placeholder }} />
               <ReportCompleteWindow
+                reportBottomSheetRef={ref as React.RefObject<BottomSheetRefProps>}
                 reportScreenAnimationValue={reportScreenAnimationValue}
                 theme={theme}
               />
