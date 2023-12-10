@@ -7,6 +7,7 @@ export const useBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const openBottomSheet = () => {
+    console.log(COMMUNITY_BOTTOM_SHEET_HEIGHT, 'asd');
     bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
   };
 

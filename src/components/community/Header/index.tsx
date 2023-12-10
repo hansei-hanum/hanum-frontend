@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -8,6 +8,7 @@ import { useTheme } from '@emotion/react';
 import { UserLogo } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString } from 'src/utils';
+import { useNavigate } from 'src/hooks';
 
 import { CommunityPostProps } from '../Post';
 
@@ -28,6 +29,8 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
 }) => {
   const theme = useTheme();
 
+  const navigate = useNavigate();
+
   return (
     <S.CommunityHeader style={style}>
       <S.CommunityHeaderTitle>
@@ -47,6 +50,11 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
           </S.CommunityHeaderUserSection>
         </View>
       </S.CommunityHeaderTitle>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigate('CommunityChat')}
+        style={{ height: 40, flexGrow: 1 }}
+      />
       <ScaleOpacity
         onPress={openBottomSheet}
         style={{

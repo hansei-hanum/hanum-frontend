@@ -9,6 +9,7 @@ import { isIos } from 'src/utils';
 export const CommunityMainWrapper = styled(GestureHandlerRootView)`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
+  padding-bottom: 40px;
 `;
 
 export const CommunityMainSearchBarContainer = styled(Animated.View)`

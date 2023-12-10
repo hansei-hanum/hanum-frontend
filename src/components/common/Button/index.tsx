@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { useTheme } from '@emotion/react';
 
@@ -32,6 +33,16 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   const theme = useTheme();
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
+  const buttonBgColor = () => {
+    if (backgroundColor) {
+      return [backgroundColor, backgroundColor];
+    } else if (isWhite) {
+      return [theme.secondary, theme.secondary];
+    } else {
+      return theme.primaryLinear;
+    }
+  };
+
   return (
     <TouchableOpacity
       {...(!isDisabled &&
@@ -40,28 +51,27 @@ export const ButtonElement: React.FC<ButtonProps> = ({
           onPressIn: handlePressIn,
           onPressOut: handlePressOut,
         })}
+      style={{ ...scaleAnimatedStyle, width: isModalBtn ? '48%' : '100%' }}
       activeOpacity={isLoading || isDisabled ? 0.4 : 0.8}
-      style={{
-        ...scaleAnimatedStyle,
-        width: isModalBtn ? '48%' : '100%',
-        backgroundColor: backgroundColor
-          ? backgroundColor
-          : isWhite
-            ? theme.secondary
-            : theme.primary,
-        borderRadius: isModalBtn ? 16 : 10,
-        opacity: isDisabled || isLoading ? 0.4 : 1,
-        paddingVertical: 14,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        columnGap: 6,
-      }}
     >
-      {isLoading && <Spinner color={theme.white} size={20} />}
-      <Text size={16} isCenter color={isWhite ? theme.default : theme.white}>
-        {children}
-      </Text>
+      <LinearGradient
+        colors={buttonBgColor()}
+        style={{
+          width: isModalBtn ? '48%' : '100%',
+          borderRadius: isModalBtn ? 16 : 10,
+          opacity: isDisabled || isLoading ? 0.4 : 1,
+          paddingVertical: 14,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          columnGap: 6,
+        }}
+      >
+        {isLoading && <Spinner color={theme.white} size={20} />}
+        <Text size={16} isCenter color={isWhite ? theme.default : theme.white}>
+          {children}
+        </Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };

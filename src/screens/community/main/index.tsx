@@ -127,54 +127,46 @@ export const CommunityMainScreen: React.FC = () => {
             </S.CommunityUserContainer>
           }
           renderItem={({ item: { author, type, time, content }, index }) => (
-            <TouchableWithoutFeedback onPress={() => navigate('CommunityChat')}>
-              <S.CommunityMainBox>
-                <CommunityHeader
-                  author={author}
-                  type={type}
-                  time={time}
-                  style={{ width: '100%' }}
-                  openBottomSheet={openBottomSheet}
-                  onPress={() => navigate('CommunityChat')}
-                />
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => navigate('CommunityChat')}
-                  style={{ width: '100%' }}
-                >
-                  <CommunityPost
-                    author={author}
-                    content={content}
-                    time={time}
-                    type={type}
-                    index={index}
-                    imageHeights={imageHeights}
-                  />
-                </TouchableOpacity>
-                <S.CommunityMainBottom>
-                  <ScaleOpacity onPress={() => onLikeClick(index)}>
-                    <S.CommunityMainBottomIconContainer>
-                      {likes[index] ? (
-                        <MCI name="cards-heart" size={24} color={theme.danger} />
-                      ) : (
-                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                      )}
-                      <Text size={14} color={theme.placeholder}>
-                        좋아요 {likes[index] ? content.likes + 1 : content.likes}
-                      </Text>
-                    </S.CommunityMainBottomIconContainer>
-                  </ScaleOpacity>
-                  <ScaleOpacity onPress={() => navigate('CommunityChat')}>
-                    <S.CommunityMainBottomIconContainer>
-                      <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
-                      <Text size={14} color={theme.placeholder}>
-                        댓글 {content.comments}
-                      </Text>
-                    </S.CommunityMainBottomIconContainer>
-                  </ScaleOpacity>
-                </S.CommunityMainBottom>
-              </S.CommunityMainBox>
-            </TouchableWithoutFeedback>
+            <S.CommunityMainBox>
+              <CommunityHeader
+                author={author}
+                type={type}
+                time={time}
+                style={{ width: '100%' }}
+                openBottomSheet={openBottomSheet}
+                onPress={() => navigate('CommunityChat')}
+              />
+              <CommunityPost
+                author={author}
+                content={content}
+                time={time}
+                type={type}
+                index={index}
+                imageHeights={imageHeights}
+              />
+              <S.CommunityMainBottom>
+                <ScaleOpacity onPress={() => onLikeClick(index)}>
+                  <S.CommunityMainBottomIconContainer>
+                    {likes[index] ? (
+                      <MCI name="cards-heart" size={24} color={theme.danger} />
+                    ) : (
+                      <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+                    )}
+                    <Text size={14} color={theme.placeholder}>
+                      좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </ScaleOpacity>
+                <ScaleOpacity onPress={() => navigate('CommunityChat')}>
+                  <S.CommunityMainBottomIconContainer>
+                    <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
+                    <Text size={14} color={theme.placeholder}>
+                      댓글 {content.comments}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </ScaleOpacity>
+              </S.CommunityMainBottom>
+            </S.CommunityMainBox>
           )}
         />
       ) : (

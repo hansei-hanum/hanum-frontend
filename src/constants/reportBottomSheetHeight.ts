@@ -1,3 +1,3 @@
-import { RPH } from 'src/utils';
+import { SCREEN_HEIGHT } from './screen';
 
-export const COMMUNITY_BOTTOM_SHEET_HEIGHT = -RPH(29);
+export const COMMUNITY_BOTTOM_SHEET_HEIGHT = -((29 / 100) * SCREEN_HEIGHT);

@@ -54,6 +54,7 @@
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-image-picker": "^7.0.3",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-notifier": "^1.9.0",
     "react-native-permissions": "^3.9.0",
     "react-native-qrcode-scanner": "^1.5.5",

@@ -20,5 +20,6 @@ declare module '@emotion/react' {
     modalBg: string;
     tabBarBg: string;
     backDrop: string;
+    primaryLinear: string[];
   }
 }

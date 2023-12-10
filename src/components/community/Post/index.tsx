@@ -1,11 +1,12 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import { useTheme } from '@emotion/react';
 
 import { Text } from 'src/components';
 import { RPH } from 'src/utils';
+import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -36,18 +37,22 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
 
   const theme = useTheme();
 
+  const navigate = useNavigate();
+
   return (
     <S.CommunityPostContainer>
       <S.CommunityPostContentWrapper style={isSingle && { paddingTop: 12 }}>
-        {content.image.length <= 0 ? (
-          <Text size={18} style={{ width: '100%' }}>
-            {content.message}
-          </Text>
-        ) : (
-          <Text size={16} style={{ width: '100%' }}>
-            {content.message}
-          </Text>
-        )}
+        <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('CommunityChat')}>
+          {content.image.length <= 0 ? (
+            <Text size={18} style={{ width: '100%' }}>
+              {content.message}
+            </Text>
+          ) : (
+            <Text size={16} style={{ width: '100%' }}>
+              {content.message}
+            </Text>
+          )}
+        </TouchableOpacity>
       </S.CommunityPostContentWrapper>
       {content.image.length > 0 && (
         <Swiper
