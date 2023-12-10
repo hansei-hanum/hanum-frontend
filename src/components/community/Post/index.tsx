@@ -6,7 +6,6 @@ import { useTheme } from '@emotion/react';
 
 import { Text } from 'src/components';
 import { RPH } from 'src/utils';
-import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -25,6 +24,7 @@ export interface CommunityPostProps {
   type: 'ALL' | 'PRIVATE' | 'STUDENT';
   imageHeights: number[];
   isSingle?: boolean;
+  onPress?: () => void;
 }
 
 export const CommunityPost: React.FC<CommunityPostProps> = ({
@@ -32,17 +32,16 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   imageHeights,
   index,
   isSingle,
+  onPress,
 }) => {
   const imageHeight = imageHeights[index * content.image.length];
 
   const theme = useTheme();
 
-  const navigate = useNavigate();
-
   return (
     <S.CommunityPostContainer>
       <S.CommunityPostContentWrapper style={isSingle && { paddingTop: 12 }}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('CommunityChat')}>
+        <TouchableOpacity activeOpacity={onPress ? 0.8 : 1} onPress={onPress}>
           {content.image.length <= 0 ? (
             <Text size={18} style={{ width: '100%' }}>
               {content.message}

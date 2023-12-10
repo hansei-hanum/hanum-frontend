@@ -8,7 +8,6 @@ import { useTheme } from '@emotion/react';
 import { UserLogo } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString } from 'src/utils';
-import { useNavigate } from 'src/hooks';
 
 import { CommunityPostProps } from '../Post';
 
@@ -26,10 +25,9 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   time,
   style,
   openBottomSheet,
+  onPress,
 }) => {
   const theme = useTheme();
-
-  const navigate = useNavigate();
 
   return (
     <S.CommunityHeader style={style}>
@@ -50,11 +48,7 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
           </S.CommunityHeaderUserSection>
         </View>
       </S.CommunityHeaderTitle>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => navigate('CommunityChat')}
-        style={{ height: 40, flexGrow: 1 }}
-      />
+      <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={{ height: 40, flexGrow: 1 }} />
       <ScaleOpacity
         onPress={openBottomSheet}
         style={{

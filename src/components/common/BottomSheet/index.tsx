@@ -21,8 +21,6 @@ import { BackDrop } from '../BackDrop';
 
 import * as S from './styled';
 
-console.log(SCREEN_HEIGHT, 'asd');
-
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
 interface BottomSheetProps {

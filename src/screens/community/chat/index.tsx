@@ -7,6 +7,8 @@ import FI from 'react-native-vector-icons/Feather';
 import Permissions, { PERMISSIONS } from 'react-native-permissions';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { StackScreenProps } from '@react-navigation/stack';
+
 import { useTheme } from '@emotion/react';
 
 import {
@@ -22,6 +24,7 @@ import { RPH, isAndroid, isIos } from 'src/utils';
 import { ChatList, MentionUserList, ImageListBottomSheet, CommunityBottomSheet } from 'src/layouts';
 import { useBottomSheet, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
+import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
@@ -42,8 +45,11 @@ export interface PhotoPermissionProps {
   granted: boolean;
   limited: boolean;
 }
+export type CommunityMainScreenProps = StackScreenProps<RootStackParamList, 'CommunityChat'>;
 
-export const CommunityChatScreen: React.FC = () => {
+export const CommunityChatScreen: React.FC<CommunityMainScreenProps> = ({ route }) => {
+  const { id } = route.params;
+  console.log(id, 'id');
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const inset = useSafeAreaInsets();
