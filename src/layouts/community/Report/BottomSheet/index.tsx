@@ -36,6 +36,7 @@ const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
 export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBottomSheetProps>(
   ({ scrollHeight, reportScreenAnimationValue }: ReportBottomSheetProps, ref) => {
+    const reportWindowHeight = scrollHeight + 180;
     const theme = useTheme();
 
     const flatListRef = useRef<FlatList>(null);
@@ -95,10 +96,10 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
             scrollTo(scrollHeight);
           }
         } else {
-          if (translateY.value > scrollHeight / 1.2) {
+          if (translateY.value > reportWindowHeight / 1.2) {
             scrollTo(0);
           } else {
-            scrollTo(scrollHeight);
+            scrollTo(reportWindowHeight);
           }
         }
       });
@@ -153,7 +154,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
     });
 
     const openReportScreen = () => {
-      scrollTo(scrollHeight);
+      scrollTo(reportWindowHeight);
       setEnableScroll(false);
       flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
       setReportWindowOpen(true);

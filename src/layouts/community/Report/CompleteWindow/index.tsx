@@ -1,9 +1,6 @@
 import React from 'react';
-import { Animated, TouchableOpacity, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Animated, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import MaskedView from '@react-native-masked-view/masked-view';
 
 import { Theme } from '@emotion/react';
 
@@ -11,7 +8,6 @@ import { RPH, RPW } from 'src/utils';
 import { Text } from 'src/components';
 import { usePressingAnimation } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
-import { COMPLETE_WINDOW_CONTENT_LIST } from 'src/constants';
 
 import * as S from './styled';
 
@@ -30,7 +26,6 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
 }) => {
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
-  const size = RPW(18);
   return (
     <S.CompleteWindowContainer
       style={{
@@ -39,39 +34,15 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
       }}
     >
       <S.CompleteWindowHeader>
-        <MaskedView
-          style={{ width: size, flexDirection: 'row', height: size }}
-          maskElement={
-            <View
-              style={{
-                backgroundColor: 'transparent',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Icon name="checkmark-circle-outline" size={size} color="white" />
-            </View>
-          }
-        >
-          <LinearGradient colors={theme.primaryLinear} style={{ flex: 1 }} />
-        </MaskedView>
-        <Text size={22} fontFamily="bold" color={theme.default}>
-          알려주셔서 고맙습니다
+        <Icon name="checkmark-circle-outline" size={RPW(18)} color={theme.primary} />
+        <Text size={22} fontFamily="bold" color={theme.default} isCenter>
+          신고가 완료됐어요
         </Text>
-        <Text size={14} fontFamily="medium" color={theme.placeholder}>
-          신고 용도:
+        <Text size={14} color={theme.placeholder} isCenter>
+          신고가 처리되면 처리 결과를 알려드릴게요.{'\n'}이 사용자의 게시글이 불쾌할 경우 차단할 수
+          있어요.
         </Text>
       </S.CompleteWindowHeader>
-      <S.CompleteWindowContentContainer>
-        {COMPLETE_WINDOW_CONTENT_LIST.map(({ icon, text }) => (
-          <S.CompleteWindowContent key={text}>
-            <Icon name={icon} size={30} color={theme.default} />
-            <Text size={14} color={theme.default}>
-              {text}
-            </Text>
-          </S.CompleteWindowContent>
-        ))}
-      </S.CompleteWindowContentContainer>
       <TouchableOpacity
         onPress={() => {
           setReportWindowOpen(false);
@@ -83,26 +54,20 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
           ...scaleAnimatedStyle,
           width: '100%',
           position: 'absolute',
-          bottom: RPH(48),
+          bottom: RPH(69),
+          borderRadius: 10,
+          paddingVertical: 14,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          columnGap: 6,
+          backgroundColor: theme.primary,
         }}
         activeOpacity={0.8}
       >
-        <LinearGradient
-          colors={theme.primaryLinear}
-          style={{
-            width: '100%',
-            borderRadius: 10,
-            paddingVertical: 14,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            columnGap: 6,
-          }}
-        >
-          <Text size={16} isCenter color={theme.default}>
-            확인
-          </Text>
-        </LinearGradient>
+        <Text size={16} isCenter color={theme.default}>
+          확인
+        </Text>
       </TouchableOpacity>
     </S.CompleteWindowContainer>
   );
