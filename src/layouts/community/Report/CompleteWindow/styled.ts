@@ -1,4 +1,4 @@
-import { Animated } from 'react-native';
+import { Animated, TouchableOpacity } from 'react-native';
 
 import styled from '@emotion/native';
 
@@ -14,6 +14,7 @@ export const CompleteWindowContainer = styled(Animated.View)`
   align-items: center;
   padding: 0 20px;
   padding-top: 20px;
+  row-gap: 20px;
 `;
 
 export const CompleteWindowHeader = styled.View`
@@ -22,16 +23,11 @@ export const CompleteWindowHeader = styled.View`
   align-items: center;
 `;
 
-export const CompleteWindowContentContainer = styled.View`
-  margin-top: 50px;
-  row-gap: 10px;
-`;
-
-export const CompleteWindowContent = styled.View`
-  flex-direction: row;
-  column-gap: 10px;
-  padding: 0 20px;
+export const CompleteWindowButtonContainer = styled(TouchableOpacity)`
   width: 100%;
+  border-radius: 10px;
+  padding: 14px 0;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
+  margin-top: 30px;
 `;

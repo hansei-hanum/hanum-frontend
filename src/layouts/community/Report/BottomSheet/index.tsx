@@ -21,6 +21,7 @@ import { Portal } from '@gorhom/portal';
 import { BackDrop } from 'src/components';
 import { BottomSheetRefProps } from 'src/types';
 import { SCREEN_HEIGHT } from 'src/constants';
+import { RPH, checkHeight } from 'src/utils';
 
 import { OptionWindow } from '../OptionWindow';
 import { ReportCompleteWindow } from '../CompleteWindow';
@@ -32,11 +33,9 @@ interface ReportBottomSheetProps extends AnimatedScrollViewProps {
   reportScreenAnimationValue: Animated.Value;
 }
 
-const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
-
 export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBottomSheetProps>(
   ({ scrollHeight, reportScreenAnimationValue }: ReportBottomSheetProps, ref) => {
-    const reportWindowHeight = scrollHeight + 180;
+    const reportWindowHeight = scrollHeight + (checkHeight ? 180 : RPH(14));
     const theme = useTheme();
 
     const flatListRef = useRef<FlatList>(null);
@@ -50,6 +49,8 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
 
     const [enableScroll, setEnableScroll] = useState(false);
     const [reportWindowOpen, setReportWindowOpen] = useState(false);
+
+    const MAX_TRANSLATE_Y = !reportWindowOpen ? -SCREEN_HEIGHT + 50 : reportWindowHeight - 50;
 
     const scrollTo = useCallback(
       (destination: number) => {
@@ -97,6 +98,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
           }
         } else {
           if (translateY.value > reportWindowHeight / 1.2) {
+            runOnJS(setReportWindowOpen)(false);
             scrollTo(0);
           } else {
             scrollTo(reportWindowHeight);
@@ -133,6 +135,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
     const onTouchStart = useCallback(() => {
       setEnableScroll(false);
       scrollTo(0);
+      setReportWindowOpen(false);
       flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
     }, [scrollTo]);
 
@@ -180,6 +183,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
             >
               <S.ReportBottomSheetLine style={{ backgroundColor: theme.placeholder }} />
               <ReportCompleteWindow
+                reportWindowHeight={reportWindowHeight}
                 setReportWindowOpen={setReportWindowOpen}
                 reportBottomSheetRef={ref as React.RefObject<BottomSheetRefProps>}
                 reportScreenAnimationValue={reportScreenAnimationValue}

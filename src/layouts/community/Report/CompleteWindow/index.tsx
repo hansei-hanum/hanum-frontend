@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Theme } from '@emotion/react';
 
-import { RPH, RPW } from 'src/utils';
+import { RPW } from 'src/utils';
 import { Text } from 'src/components';
 import { usePressingAnimation } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
@@ -16,6 +16,7 @@ export interface ReportCompleteProps {
   theme: Theme;
   reportBottomSheetRef: React.RefObject<BottomSheetRefProps>;
   setReportWindowOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  reportWindowHeight: number;
 }
 
 export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
@@ -23,6 +24,7 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
   reportBottomSheetRef,
   theme,
   setReportWindowOpen,
+  reportWindowHeight,
 }) => {
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
 
@@ -43,7 +45,7 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
           있어요.
         </Text>
       </S.CompleteWindowHeader>
-      <TouchableOpacity
+      <S.CompleteWindowButtonContainer
         onPress={() => {
           setReportWindowOpen(false);
           reportBottomSheetRef.current?.scrollTo(0);
@@ -52,23 +54,16 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
         onPressOut={handlePressOut}
         style={{
           ...scaleAnimatedStyle,
-          width: '100%',
-          position: 'absolute',
-          bottom: RPH(69),
-          borderRadius: 10,
-          paddingVertical: 14,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          columnGap: 6,
           backgroundColor: theme.primary,
+          position: 'absolute',
+          top: -reportWindowHeight - 140,
         }}
         activeOpacity={0.8}
       >
-        <Text size={16} isCenter color={theme.default}>
+        <Text size={16} isCenter color={theme.white}>
           확인
         </Text>
-      </TouchableOpacity>
+      </S.CompleteWindowButtonContainer>
     </S.CompleteWindowContainer>
   );
 };

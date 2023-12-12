@@ -119,7 +119,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           text={`“박찬영” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
           button={
             <ButtonContainer>
-              <Button onPress={onModalCancelPress} isModalBtn isWhite>
+              <Button onPress={onModalCancelPress} isModalBtn isWhite isDisabled={loading}>
                 다시 생각할래요
               </Button>
               <Button onPress={onModalButtonPress} isModalBtn isLoading={loading}>
