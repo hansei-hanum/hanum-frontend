@@ -10,7 +10,7 @@ export const useFetchUser = (): UseQueryResult<
 > => {
   return useQuery('useFetchUser', fetchUser, {
     onError: (error) => {
-      console.log(error, 'error');
+      console.log(error.response?.data, 'useFetchUser error');
     },
     staleTime: Infinity,
     retry: 0,

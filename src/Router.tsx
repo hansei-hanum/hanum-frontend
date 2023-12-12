@@ -110,7 +110,9 @@ export const Router: React.FC = () => {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            cardStyle: { backgroundColor: isDark ? '#2A2B2E' : '#FEFEFE' },
+            cardStyle: {
+              backgroundColor: isDark ? '#2A2B2E' : '#FEFEFE',
+            },
             ...(isAndroid &&
               isDark && {
                 cardStyleInterpolator: ({ current }) => ({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, TouchableOpacity } from 'react-native';
+import { Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Theme } from '@emotion/react';

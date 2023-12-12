@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
-import { Modal as ModalElement } from 'react-native';
+import ModalElement from 'react-native-modal';
 
 import { Text } from '../Text';
 
@@ -27,8 +27,7 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   return (
     <>
-      {backDropVisible && <S.ModalDummyContainer />}
-      <ModalElement animationType="slide" transparent={true} visible={modalVisible}>
+      <ModalElement isVisible={modalVisible} backdropOpacity={backDropVisible ? 0.5 : 0.2}>
         <S.ModalWrapper>
           <S.ModalContainer>
             <Text size={24} fontFamily="bold">

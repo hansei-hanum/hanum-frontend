@@ -21,7 +21,6 @@ import { Portal } from '@gorhom/portal';
 import { BackDrop } from 'src/components';
 import { BottomSheetRefProps } from 'src/types';
 import { SCREEN_HEIGHT } from 'src/constants';
-import { RPH, checkHeight } from 'src/utils';
 
 import { OptionWindow } from '../OptionWindow';
 import { ReportCompleteWindow } from '../CompleteWindow';
@@ -35,7 +34,7 @@ interface ReportBottomSheetProps extends AnimatedScrollViewProps {
 
 export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBottomSheetProps>(
   ({ scrollHeight, reportScreenAnimationValue }: ReportBottomSheetProps, ref) => {
-    const reportWindowHeight = scrollHeight + (checkHeight ? 180 : RPH(14));
+    const reportWindowHeight = -320;
     const theme = useTheme();
 
     const flatListRef = useRef<FlatList>(null);

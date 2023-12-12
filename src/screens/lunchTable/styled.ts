@@ -1,4 +1,5 @@
 import { BlurView } from '@react-native-community/blur';
+
 import styled from '@emotion/native';
 
 export const LunchTableWrapper = styled.SafeAreaView`
@@ -6,6 +7,7 @@ export const LunchTableWrapper = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.background};
   width: 100%;
 `;
+
 export const LunchTableContainer = styled.ScrollView`
   flex: 1;
   flex-direction: column;

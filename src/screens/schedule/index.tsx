@@ -46,7 +46,9 @@ export const ScheduleScreen: React.FC = () => {
     );
   } else {
     return (
-      <AuthFailedModal isStudent modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <ScheduleContainer>
+        <AuthFailedModal isStudent modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      </ScheduleContainer>
     );
   }
 };

@@ -1,5 +1,6 @@
-import styled from '@emotion/native';
 import { TextInput } from '@react-native-material/core';
+
+import styled from '@emotion/native';
 
 import { fonts } from 'src/styles';
 
