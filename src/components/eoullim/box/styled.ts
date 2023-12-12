@@ -1,5 +1,6 @@
-import styled from '@emotion/native';
 import { BlurView } from '@react-native-community/blur';
+
+import styled from '@emotion/native';
 
 import { fonts } from 'src/styles';
 

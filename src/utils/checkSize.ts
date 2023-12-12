@@ -1,9 +1,7 @@
-import { Dimensions } from 'react-native';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'src/constants';
 
 import { isIos } from './checkOs';
 
-const { height, width } = Dimensions.get('window');
-
-export const checkHeight = height > 800 ? true : false;
-export const checkWidth = width > 376 ? true : false;
+export const checkHeight = SCREEN_HEIGHT > 800 ? true : false;
+export const checkWidth = SCREEN_WIDTH > 376 ? true : false;
 export const iosCheckHeight = isIos && checkHeight ? true : false;

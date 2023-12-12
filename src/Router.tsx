@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Appearance, StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,10 +16,28 @@ import { darkTheme, lightTheme } from './styles';
 import { themeAtom } from './atoms';
 import { isAndroid } from './utils';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export type RootStackParamList = {
-  WebView: { url: string };
+  AuthMain: undefined;
+  Phone: undefined;
+  Name: undefined;
+  VerifyCode: undefined;
+  Verify: undefined;
+  Main: undefined;
+  Calendar: undefined;
+  UserInfo: undefined;
+  WebView: undefined;
+  HanumPayMain: undefined;
+  HanumPayQR: undefined;
+  HanumPayStatus: undefined;
+  HanumPay: undefined;
+  EoullimMain: undefined;
+  EoullimVote: undefined;
+  EoullimTimeTable: undefined;
+  EoullimRaffle: undefined;
+  EoullimStatus: undefined;
+  CommunityChat: { id: number };
 };
 
 export const Router: React.FC = () => {
@@ -53,14 +71,6 @@ export const Router: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    Appearance.addChangeListener(() => {
-      const setTheme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
-      setThemeValue(setTheme);
-    });
-    return () => {};
-  }, []);
-
-  useEffect(() => {
     async function prepare() {
       await fetch();
       await getTheme();
@@ -76,7 +86,7 @@ export const Router: React.FC = () => {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {}, [isReady]);
+  const onLayoutRootView = useCallback(async () => { }, [isReady]);
 
   const [isUpdating] = useCodePush();
 
@@ -92,17 +102,19 @@ export const Router: React.FC = () => {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            cardStyle: { backgroundColor: isDark ? '#2A2B2E' : '#FEFEFE' },
+            cardStyle: {
+              backgroundColor: isDark ? '#2A2B2E' : '#FEFEFE',
+            },
             ...(isAndroid &&
               isDark && {
-                cardStyleInterpolator: ({ current }) => ({
-                  cardStyle: {
-                    opacity: current.progress,
-                  },
-                }),
+              cardStyleInterpolator: ({ current }) => ({
+                cardStyle: {
+                  opacity: current.progress,
+                },
               }),
+            }),
           }}
-          initialRouteName={'Main'}
+          initialRouteName={data ? 'Main' : 'AuthMain'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />

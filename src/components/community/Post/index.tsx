@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import { useTheme } from '@emotion/react';
@@ -24,6 +24,7 @@ export interface CommunityPostProps {
   type: 'ALL' | 'PRIVATE' | 'STUDENT';
   imageHeights: number[];
   isSingle?: boolean;
+  onPress?: () => void;
 }
 
 export const CommunityPost: React.FC<CommunityPostProps> = ({
@@ -31,6 +32,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   imageHeights,
   index,
   isSingle,
+  onPress,
 }) => {
   const imageHeight = imageHeights[index * content.image.length];
 
@@ -39,15 +41,17 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   return (
     <S.CommunityPostContainer>
       <S.CommunityPostContentWrapper style={isSingle && { paddingTop: 12 }}>
-        {content.image.length <= 0 ? (
-          <Text size={18} style={{ width: '100%' }}>
-            {content.message}
-          </Text>
-        ) : (
-          <Text size={16} style={{ width: '100%' }}>
-            {content.message}
-          </Text>
-        )}
+        <TouchableOpacity activeOpacity={onPress ? 0.8 : 1} onPress={onPress}>
+          {content.image.length <= 0 ? (
+            <Text size={18} style={{ width: '100%' }}>
+              {content.message}
+            </Text>
+          ) : (
+            <Text size={16} style={{ width: '100%' }}>
+              {content.message}
+            </Text>
+          )}
+        </TouchableOpacity>
       </S.CommunityPostContentWrapper>
       {content.image.length > 0 && (
         <Swiper

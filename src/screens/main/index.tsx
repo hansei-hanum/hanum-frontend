@@ -1,20 +1,21 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { useTheme } from '@emotion/react';
 
 import { HomeScreen, ShowMoreScreen, ScheduleScreen, LunchTableScreen } from 'src/screens';
-import { iosCheckHeight } from 'src/utils';
+import { isIos } from 'src/utils';
 
 import { CommunityMainScreen } from '../community';
 
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
+  const inset = useSafeAreaInsets();
   const theme = useTheme();
 
   const size = 25;
@@ -33,16 +34,18 @@ export const MainScreen: React.FC = () => {
           borderRightColor: theme.secondary,
           borderRightWidth: 1,
           backgroundColor: theme.tabBarBg,
-          height: iosCheckHeight ? 78 : 64,
-          paddingBottom: iosCheckHeight ? 26 : 10,
+          height: isIos ? 78 : 64,
+          paddingBottom: isIos ? inset.bottom - 10 : 10,
+          position: 'absolute',
         },
         tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
           fontSize: 12,
         },
+
         tabBarIconStyle: {
           paddingBottom: 0,
-          marginBottom: Platform.OS == 'ios' ? -8 : -10,
+          marginBottom: isIos ? -8 : -10,
           color: theme.default,
         },
       }}

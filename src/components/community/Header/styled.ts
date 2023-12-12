@@ -9,9 +9,10 @@ export const CommunityHeader = styled.View`
 
 export const CommunityHeaderTitle = styled.View`
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   column-gap: 10px;
+  flex-grow: 0.1;
 `;
 
 export const CommunityHeaderUserSection = styled.View`

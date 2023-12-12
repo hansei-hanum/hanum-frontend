@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  TextInput,
-  Easing,
-  LayoutAnimation,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import { Animated, TextInput, LayoutAnimation, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
+import { StackScreenProps } from '@react-navigation/stack';
 
 import { useTheme } from '@emotion/react';
 
@@ -20,14 +17,20 @@ import {
   ScaleOpacity,
   Text,
 } from 'src/components';
-import { useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
+import { useBottomSheet, useGetImagesHeight, useGetUser } from 'src/hooks';
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
+import { CommunityBottomSheet } from 'src/layouts';
+import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
-export const CommunityMainScreen: React.FC = () => {
-  const navigate = useNavigate();
+export type CommunityMainScreenProps = StackScreenProps<RootStackParamList, 'Main'>;
+
+export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ navigation }) => {
+  const inset = useSafeAreaInsets();
+
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
@@ -42,26 +45,32 @@ export const CommunityMainScreen: React.FC = () => {
 
   const searchAnimationValue = useRef(new Animated.Value(0)).current;
 
+  const config = {
+    duration: 250,
+    create: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+    },
+  };
+
   const showSearchScreen = () => {
     setIsSearchScreen(true);
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    Animated.timing(searchAnimationValue, {
-      toValue: 0,
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
+    LayoutAnimation.configureNext(config);
   };
 
   const closeSearchScreen = () => {
     setIsSearchScreen(false);
     searchRef.current?.blur();
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    LayoutAnimation.configureNext(config);
   };
 
   const searchBarAnimation = {
     flex: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 1] }),
   };
+
   const opacityAnimation = {
     opacity: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
     scale: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0.9] }),
@@ -83,10 +92,17 @@ export const CommunityMainScreen: React.FC = () => {
     });
   }, [COMMUNITY_LIST, getHeightsForImage]);
 
+  const onChatScreenNavigate = (index: number) => {
+    navigation.navigate('CommunityChat', { id: index });
+  };
+
   return (
-    <S.CommunityMainWrapper>
+    <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <Header isRow>
         <S.CommunityMainSearchBarContainer style={searchBarAnimation}>
+          <TouchableWithoutFeedback onPress={showSearchScreen}>
+            <Icon name="search" size={24} color={theme.placeholder} />
+          </TouchableWithoutFeedback>
           <S.CommunityMainSearchBar
             placeholder="대나무숲 게시글 검색하기"
             placeholderTextColor={theme.placeholder}
@@ -94,7 +110,6 @@ export const CommunityMainScreen: React.FC = () => {
             ref={searchRef}
             onFocus={showSearchScreen}
           />
-          <Icon name="search" size={24} color={theme.placeholder} />
         </S.CommunityMainSearchBarContainer>
         {isSearchScreen && (
           <S.CommunityMainIconWrapper style={opacityAnimation}>
@@ -120,46 +135,47 @@ export const CommunityMainScreen: React.FC = () => {
             </S.CommunityUserContainer>
           }
           renderItem={({ item: { author, type, time, content }, index }) => (
-            <TouchableOpacity activeOpacity={0.8} onPress={() => navigate('CommunityChat')}>
-              <S.CommunityMainBox>
-                <CommunityHeader
-                  author={author}
-                  type={type}
-                  time={time}
-                  style={{ width: '100%' }}
-                />
-                <CommunityPost
-                  author={author}
-                  content={content}
-                  time={time}
-                  type={type}
-                  index={index}
-                  imageHeights={imageHeights}
-                />
-                <S.CommunityMainBottom>
-                  <ScaleOpacity onPress={() => onLikeClick(index)}>
-                    <S.CommunityMainBottomIconContainer>
-                      {likes[index] ? (
-                        <MCI name="cards-heart" size={24} color={theme.danger} />
-                      ) : (
-                        <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                      )}
-                      <Text size={14} color={theme.placeholder}>
-                        좋아요 {likes[index] ? content.likes + 1 : content.likes}
-                      </Text>
-                    </S.CommunityMainBottomIconContainer>
-                  </ScaleOpacity>
-                  <ScaleOpacity onPress={() => navigate('CommunityChat')}>
-                    <S.CommunityMainBottomIconContainer>
-                      <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
-                      <Text size={14} color={theme.placeholder}>
-                        댓글 {content.comments}
-                      </Text>
-                    </S.CommunityMainBottomIconContainer>
-                  </ScaleOpacity>
-                </S.CommunityMainBottom>
-              </S.CommunityMainBox>
-            </TouchableOpacity>
+            <S.CommunityMainBox>
+              <CommunityHeader
+                author={author}
+                type={type}
+                time={time}
+                style={{ width: '100%' }}
+                openBottomSheet={openBottomSheet}
+                onPress={() => onChatScreenNavigate(index)}
+              />
+              <CommunityPost
+                author={author}
+                content={content}
+                time={time}
+                type={type}
+                onPress={() => onChatScreenNavigate(index)}
+                index={index}
+                imageHeights={imageHeights}
+              />
+              <S.CommunityMainBottom>
+                <ScaleOpacity onPress={() => onLikeClick(index)}>
+                  <S.CommunityMainBottomIconContainer>
+                    {likes[index] ? (
+                      <MCI name="cards-heart" size={24} color={theme.danger} />
+                    ) : (
+                      <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+                    )}
+                    <Text size={14} color={theme.placeholder}>
+                      좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </ScaleOpacity>
+                <ScaleOpacity onPress={() => onChatScreenNavigate(index)}>
+                  <S.CommunityMainBottomIconContainer>
+                    <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
+                    <Text size={14} color={theme.placeholder}>
+                      댓글 {content.comments}
+                    </Text>
+                  </S.CommunityMainBottomIconContainer>
+                </ScaleOpacity>
+              </S.CommunityMainBottom>
+            </S.CommunityMainBox>
           )}
         />
       ) : (
@@ -167,111 +183,7 @@ export const CommunityMainScreen: React.FC = () => {
           <Text size={15}>This Is Search 잉기</Text>
         </S.TextWrapper2>
       )}
+      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>
   );
 };
-
-// import React, { useEffect, useState } from 'react';
-// import {
-//   Dimensions,
-//   FlatList,
-//   Image,
-//   PermissionsAndroid,
-//   Platform,
-//   SafeAreaView,
-//   Text,
-//   View,
-// } from 'react-native';
-// import RNFS from 'react-native-fs';
-
-// import {
-//   CameraRoll,
-//   GetPhotosParams,
-//   AssetType,
-//   PhotoIdentifier,
-// } from '@react-native-camera-roll/camera-roll';
-
-// import { isAndroid, isIos } from 'src/utils';
-
-// export const CommunityMainScreen = () => {
-//   const [photos, setPhotos] = useState<PhotoIdentifier[]>([]);
-//   async function hasAndroidPermission() {
-//     const getCheckPermissionPromise = () => {
-//       if (+Platform.Version >= 33) {
-//         return Promise.all([
-//           PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES),
-//           PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO),
-//         ]).then(
-//           ([hasReadMediaImagesPermission, hasReadMediaVideoPermission]) =>
-//             hasReadMediaImagesPermission && hasReadMediaVideoPermission,
-//         );
-//       } else {
-//         return PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
-//       }
-//     };
-
-//     const hasPermission = await getCheckPermissionPromise();
-//     if (hasPermission) {
-//       return true;
-//     }
-//     const getRequestPermissionPromise = () => {
-//       if (+Platform.Version >= 33) {
-//         return PermissionsAndroid.requestMultiple([
-//           PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-//           PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
-//         ]).then(
-//           (statuses) =>
-//             statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES] ===
-//               PermissionsAndroid.RESULTS.GRANTED &&
-//             statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO] ===
-//               PermissionsAndroid.RESULTS.GRANTED,
-//         );
-//       } else {
-//         return PermissionsAndroid.request(
-//           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-//         ).then((status) => status === PermissionsAndroid.RESULTS.GRANTED);
-//       }
-//     };
-
-//     return await getRequestPermissionPromise();
-//   }
-
-//   async function savePicture() {
-//     if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
-//       return;
-//     }
-
-//     CameraRoll.getPhotos({
-//       first: 20,
-//       assetType: 'Photos',
-//     })
-//       .then((r) => {
-//         setPhotos(r.edges);
-//         console.log(
-//           r.edges.map((item) => item.node.image.uri),
-//           'noe',
-//         );
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   }
-
-//   useEffect(() => {
-//     savePicture();
-//   }, []);
-
-//   return (
-//     <SafeAreaView>
-//       <View style={{ borderColor: 'red', borderWidth: 1, flexDirection: 'row' }}>
-//         {photos.map((item) => (
-//           <Image
-//             key={item.node.image.uri}
-//             source={{ uri: item.node.image.uri }}
-//             style={{ width: 100, height: 100, borderColor: 'blue', borderWidth: 1 }}
-//           />
-//         ))}
-//       </View>
-//     </SafeAreaView>
-//   );
-// };

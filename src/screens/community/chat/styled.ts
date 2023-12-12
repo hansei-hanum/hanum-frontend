@@ -1,14 +1,14 @@
 import { View } from 'react-native';
 import { Animated, KeyboardAvoidingView, TextInput } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import styled from '@emotion/native';
 
 import { isIos } from 'src/utils';
 
-export const CommunityChatWrapper = styled.SafeAreaView`
+export const CommunityChatWrapper = styled(GestureHandlerRootView)`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
-  width: 100%;
 `;
 
 export const CommunityUserImage = styled.Image`

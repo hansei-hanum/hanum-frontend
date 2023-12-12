@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useTheme } from '@emotion/react';
 
 import { UserLogo } from 'src/assets';
-import { Text } from 'src/components';
+import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString } from 'src/utils';
 
 import { CommunityPostProps } from '../Post';
@@ -15,9 +15,18 @@ import * as S from './styled';
 
 export interface CommunityHeaderProps extends Pick<CommunityPostProps, 'author' | 'type' | 'time'> {
   style?: StyleProp<ViewStyle>;
+  openBottomSheet: () => void;
+  onPress?: () => void;
 }
 
-export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ author, type, time, style }) => {
+export const CommunityHeader: React.FC<CommunityHeaderProps> = ({
+  author,
+  type,
+  time,
+  style,
+  openBottomSheet,
+  onPress,
+}) => {
   const theme = useTheme();
 
   return (
@@ -39,7 +48,17 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ author, type, 
           </S.CommunityHeaderUserSection>
         </View>
       </S.CommunityHeaderTitle>
-      <Icon name="more-horiz" size={24} color={theme.placeholder} />
+      <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={{ height: 40, flexGrow: 1 }} />
+      <ScaleOpacity
+        onPress={openBottomSheet}
+        style={{
+          alignItems: 'flex-end',
+          flexGrow: 0.1,
+          paddingVertical: 8,
+        }}
+      >
+        <Icon name="more-horiz" size={24} color={theme.placeholder} />
+      </ScaleOpacity>
     </S.CommunityHeader>
   );
 };

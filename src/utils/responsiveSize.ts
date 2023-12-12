@@ -1,11 +1,9 @@
-import { Dimensions } from 'react-native';
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from 'src/constants';
 
 export const RPH = (percentage: number) => {
-  return (percentage / 100) * screenHeight;
+  return (percentage / 100) * SCREEN_HEIGHT;
 };
 
 export const RPW = (percentage: number) => {
-  return (percentage / 100) * screenWidth;
+  return (percentage / 100) * SCREEN_WIDTH;
 };

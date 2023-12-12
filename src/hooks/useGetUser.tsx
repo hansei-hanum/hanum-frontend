@@ -4,8 +4,8 @@ import { useFetchUser } from './query';
 
 export const useGetUser = () => {
   const { data, isLoading } = useFetchUser();
-  const useProfile = data?.data;
-  const verifyUser = useProfile?.verification;
+  const userProfile = data?.data;
+  const verifyUser = userProfile?.verification;
   const type = verifyUser?.type;
   const classroom = verifyUser?.classroom;
   const grade = verifyUser?.grade;
@@ -36,8 +36,8 @@ export const useGetUser = () => {
 
   return {
     isLoading,
-    userData: useProfile,
-    userProfile: useProfile?.profile,
+    userData: userProfile,
+    userProfile: userProfile?.profile,
     classroom,
     grade,
     department: formattedDepartment(department),

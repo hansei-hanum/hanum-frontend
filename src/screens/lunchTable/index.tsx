@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, View } from 'react-native';
-import { WithLocalSvg } from 'react-native-svg';
+import { View } from 'react-native';
 
-import messaging from '@react-native-firebase/messaging';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 import moment from 'moment-timezone';
 
-import { Button, Header, Modal, Spinner, Text } from 'src/components';
+import { Button, LunchTableContainer, Modal, Spinner, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
-import { MealIcon } from 'src/assets';
 import { themeAtom } from 'src/atoms';
-import { useGetMealData } from 'src/hooks';
+import { useGetMealData, useGetUser } from 'src/hooks';
 import { GetMealResponse } from 'src/api';
 
 import * as S from './styled';
@@ -22,6 +18,7 @@ import * as S from './styled';
 const WEEKDAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
 
 export const LunchTableScreen: React.FC = () => {
+  const { userData } = useGetUser();
   const { isLoading, meal } = useGetMealData();
 
   const krDate = moment().tz('Asia/Seoul');
@@ -30,29 +27,7 @@ export const LunchTableScreen: React.FC = () => {
 
   const theme = useTheme();
 
-  const [notifyClick, setNotifyClick] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  const toggleNotifyClick = () => {
-    setNotifyClick(!notifyClick);
-    if (!notifyClick) {
-      AsyncStorage.setItem('mealNotificationEnabled', 'true');
-      messaging().subscribeToTopic('meal');
-    } else {
-      AsyncStorage.setItem('mealNotificationEnabled', 'false');
-      messaging().unsubscribeFromTopic('meal');
-    }
-  };
-
-  useEffect(() => {
-    AsyncStorage.getItem('mealNotificationEnabled').then((value) => {
-      if (value === 'true') {
-        setNotifyClick(true);
-      } else {
-        setNotifyClick(false);
-      }
-    });
-  }, []);
 
   const filteredMealList = meal?.filter((meal) => new Date(meal.date).getDate() >= krDate.date());
 
@@ -61,37 +36,20 @@ export const LunchTableScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused && !isLoading && !meal) {
+    if ((isFocused && !userData) || (isFocused && !meal && !isLoading)) {
       setModalVisible(true);
     }
   }, [isFocused]);
 
-  return (
-    <S.LunchTableWrapper>
-      <Header>
-        <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
-          <WithLocalSvg width={34} height={34} asset={MealIcon} />
-          <Text size={20} fontFamily="bold">
-            급식표
-          </Text>
-        </View>
-        <S.LunchTableAlertContainer>
-          <Text size={17} fontFamily="medium">
-            매일 아침 알림 받기
-          </Text>
-          <Switch
-            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
-            trackColor={{ false: theme.lightGray, true: theme.primary }}
-            thumbColor={notifyClick ? theme.white : theme.white}
-            ios_backgroundColor={theme.lightGray}
-            onValueChange={toggleNotifyClick}
-            value={notifyClick}
-          />
-        </S.LunchTableAlertContainer>
-      </Header>
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <LunchTableContainer>
         <Spinner isCenter />
-      ) : !isLoading && meal ? (
+      </LunchTableContainer>
+    );
+  } else if (!isLoading && meal && userData) {
+    return (
+      <LunchTableContainer>
         <S.LunchTableContainer
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -148,7 +106,11 @@ export const LunchTableScreen: React.FC = () => {
               ))}
           </S.LunchTableBoxContainer>
         </S.LunchTableContainer>
-      ) : (
+      </LunchTableContainer>
+    );
+  } else {
+    return (
+      <LunchTableContainer>
         <Modal
           modalVisible={modalVisible}
           title="급식 정보 불러오기 실패"
@@ -163,7 +125,7 @@ export const LunchTableScreen: React.FC = () => {
             </Button>
           }
         />
-      )}
-    </S.LunchTableWrapper>
-  );
+      </LunchTableContainer>
+    );
+  }
 };

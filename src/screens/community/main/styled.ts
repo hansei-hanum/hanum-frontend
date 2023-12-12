@@ -1,13 +1,15 @@
 import { Animated } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import styled from '@emotion/native';
 
 import { fonts } from 'src/styles';
 import { isIos } from 'src/utils';
 
-export const CommunityMainWrapper = styled.SafeAreaView`
+export const CommunityMainWrapper = styled(GestureHandlerRootView)`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
+  padding-bottom: 40px;
 `;
 
 export const CommunityMainSearchBarContainer = styled(Animated.View)`
@@ -17,6 +19,7 @@ export const CommunityMainSearchBarContainer = styled(Animated.View)`
   padding: ${isIos ? '12px' : '0px'} 12px;
   border-radius: 12px;
   background-color: ${({ theme }) => theme.secondary};
+  column-gap: 10px;
 `;
 
 export const CommunityMainSearchBar = styled.TextInput`
@@ -74,6 +77,7 @@ export const CommunityMainBox = styled.View`
   border-top-width: 1px;
   border-bottom-width: 1px;
   padding: 10px 0;
+  position: relative;
 `;
 
 export const CommunityMainBottom = styled.View`

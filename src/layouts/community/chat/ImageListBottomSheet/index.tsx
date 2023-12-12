@@ -1,13 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Animated,
-  Dimensions,
-  FlatList,
-  Linking,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Animated, FlatList, Linking, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import ReAnimated, {
@@ -28,31 +20,28 @@ import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-ro
 
 import { useTheme } from '@emotion/react';
 
-import { Button, Icon, ScaleOpacity, Spinner, Text } from 'src/components';
+import { BackDrop, Button, Icon, ScaleOpacity, Spinner, Text } from 'src/components';
 import { PhotoPermissionProps } from 'src/screens';
 import { isIos } from 'src/utils';
+import { BottomSheetRefProps } from 'src/types';
+import { SCREEN_HEIGHT } from 'src/constants';
 
 import * as S from './styled';
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
-interface ScrollBottomSheetProps extends AnimatedScrollViewProps {
+interface ImageListBottomSheetProps extends AnimatedScrollViewProps {
   scrollHeight: number;
   permission: PhotoPermissionProps;
 }
 
-export type ScrollBottomSheetRefProps = {
-  scrollTo: (destination: number) => void;
-  isActive: () => boolean;
-};
-const REPLY_BOX_IOS_OFFSET = -30;
-const REPLY_BOX_ANDROID_OFFSET = -60.6;
+const REPLY_BOX_IOS_OFFSET = -70;
+const REPLY_BOX_ANDROID_OFFSET = -40.6;
 
-export const ScrollBottomSheet = React.forwardRef<
-  ScrollBottomSheetRefProps,
-  ScrollBottomSheetProps
->(({ scrollHeight, permission, ...rest }: ScrollBottomSheetProps, ref) => {
+export const ImageListBottomSheet = React.forwardRef<
+  BottomSheetRefProps,
+  ImageListBottomSheetProps
+>(({ scrollHeight, permission, ...rest }: ImageListBottomSheetProps, ref) => {
   const hasPermission = permission.granted || permission.limited;
 
   const theme = useTheme();
@@ -106,15 +95,23 @@ export const ScrollBottomSheet = React.forwardRef<
       }
     })
     .onEnd(() => {
-      if (translateY.value > scrollHeight / 1.2) {
-        scrollTo(0);
-        runOnJS(setSelectedPhotos)([]);
-      } else if (translateY.value < context.value.y) {
-        scrollTo(-SCREEN_HEIGHT + inset.top);
-        runOnJS(setEnableScroll)(true);
+      if (hasPermission) {
+        if (translateY.value > scrollHeight / 1.2) {
+          scrollTo(0);
+          runOnJS(setSelectedPhotos)([]);
+        } else if (translateY.value < context.value.y) {
+          scrollTo(-SCREEN_HEIGHT + inset.top);
+          runOnJS(setEnableScroll)(true);
+        } else {
+          runOnJS(setEnableScroll)(false);
+          scrollTo(scrollHeight);
+        }
       } else {
-        runOnJS(setEnableScroll)(false);
-        scrollTo(scrollHeight);
+        if (translateY.value > scrollHeight / 1.2) {
+          scrollTo(0);
+        } else {
+          scrollTo(scrollHeight);
+        }
       }
     });
 
@@ -230,22 +227,15 @@ export const ScrollBottomSheet = React.forwardRef<
 
   return (
     <>
-      <ReAnimated.View
+      <BackDrop
         onTouchStart={onTouchStart}
-        animatedProps={rBackdropProps}
-        style={[
-          {
-            ...StyleSheet.absoluteFillObject,
-            backgroundColor: 'rgba(0,0,0,0.4)',
-            paddingBottom: inset.bottom,
-          },
-          rBackdropStyle,
-        ]}
+        rBackdropStyle={rBackdropStyle}
+        rBackdropProps={rBackdropProps}
       />
       <GestureDetector gesture={gesture}>
-        <S.ScrollBottomSheetContainer style={rBottomSheetStyle}>
-          <S.ScrollBottomSheetLine />
-          {permission ? (
+        <S.ImageListBottomSheetContainer style={rBottomSheetStyle}>
+          <S.ImageListBottomSheetLine />
+          {hasPermission ? (
             <>
               {permission.limited && (
                 <S.WarningContainer>
@@ -257,57 +247,55 @@ export const ScrollBottomSheet = React.forwardRef<
                   </ScaleOpacity>
                 </S.WarningContainer>
               )}
-              <GestureDetector gesture={gesture}>
-                <ReAnimated.FlatList
-                  data={photos}
-                  {...rest}
-                  scrollEnabled={enableScroll}
-                  bounces={false}
-                  scrollEventThrottle={16}
-                  onScroll={onScroll}
-                  numColumns={3}
-                  contentContainerStyle={{
-                    width: '100%',
-                    ...(!permission.limited && { paddingTop: 10 }),
-                    paddingBottom: 100,
-                  }}
-                  onEndReached={endReached}
-                  onEndReachedThreshold={0.5}
-                  initialScrollIndex={0}
-                  ref={flatListRef}
-                  ListFooterComponent={
-                    isLoading ? (
-                      <View style={{ marginTop: 10 }}>
-                        <Spinner />
-                      </View>
-                    ) : null
-                  }
-                  renderItem={({ item, index }) => {
-                    return (
-                      <TouchableWithoutFeedback onPress={() => selectPhoto(index)}>
-                        <S.ImageWrapper>
-                          {selectedPhotos[index] && (
-                            <S.IconWrapper>
-                              <Icons name="checkmark-circle" color={theme.primary} size={24} />
-                            </S.IconWrapper>
-                          )}
-                          <S.Image
-                            key={item?.node?.image?.uri}
-                            source={{ uri: item?.node?.image?.uri }}
-                            height={140}
-                            resizeMode="cover"
-                            style={{
-                              opacity: selectedPhotos[index] ? 0.5 : 1,
-                              borderColor: theme.lightGray,
-                              borderWidth: 0.4,
-                            }}
-                          />
-                        </S.ImageWrapper>
-                      </TouchableWithoutFeedback>
-                    );
-                  }}
-                />
-              </GestureDetector>
+              <ReAnimated.FlatList
+                data={photos}
+                {...rest}
+                scrollEnabled={enableScroll}
+                bounces={false}
+                scrollEventThrottle={16}
+                onScroll={onScroll}
+                numColumns={3}
+                contentContainerStyle={{
+                  width: '100%',
+                  ...(!permission.limited && { paddingTop: 10 }),
+                  paddingBottom: 100,
+                }}
+                onEndReached={endReached}
+                onEndReachedThreshold={0.5}
+                initialScrollIndex={0}
+                ref={flatListRef}
+                ListFooterComponent={
+                  isLoading ? (
+                    <View style={{ marginTop: 10 }}>
+                      <Spinner />
+                    </View>
+                  ) : null
+                }
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableWithoutFeedback onPress={() => selectPhoto(index)}>
+                      <S.ImageWrapper>
+                        {selectedPhotos[index] && (
+                          <S.IconWrapper>
+                            <Icons name="checkmark-circle" color={theme.primary} size={24} />
+                          </S.IconWrapper>
+                        )}
+                        <S.Image
+                          key={item?.node?.image?.uri}
+                          source={{ uri: item?.node?.image?.uri }}
+                          height={140}
+                          resizeMode="cover"
+                          style={{
+                            opacity: selectedPhotos[index] ? 0.5 : 1,
+                            borderColor: theme.lightGray,
+                            borderWidth: 0.4,
+                          }}
+                        />
+                      </S.ImageWrapper>
+                    </TouchableWithoutFeedback>
+                  );
+                }}
+              />
             </>
           ) : (
             <S.PermissionDeninedContainer>
@@ -321,16 +309,16 @@ export const ScrollBottomSheet = React.forwardRef<
               </Button>
             </S.PermissionDeninedContainer>
           )}
-        </S.ScrollBottomSheetContainer>
+        </S.ImageListBottomSheetContainer>
       </GestureDetector>
-      <S.ScrollBottomButtonWrapper
+      <S.ImageListBottomSheetButtonWrapper
         ref={buttonTranslateY}
         style={{
           transform: [{ translateY: buttonTranslateY }],
         }}
       >
         <Button>선택된 사진 ({selectedPhotos.filter((item) => item).length})</Button>
-      </S.ScrollBottomButtonWrapper>
+      </S.ImageListBottomSheetButtonWrapper>
     </>
   );
 });

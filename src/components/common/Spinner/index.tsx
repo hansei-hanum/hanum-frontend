@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ActivityIndicator } from '@react-native-material/core';
+
 import { useTheme } from '@emotion/react';
 
 export interface SpinnerProps {

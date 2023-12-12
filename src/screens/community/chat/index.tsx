@@ -5,8 +5,9 @@ import { Animated } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
 import Permissions, { PERMISSIONS } from 'react-native-permissions';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { StackScreenProps } from '@react-navigation/stack';
 
 import { useTheme } from '@emotion/react';
 
@@ -19,22 +20,19 @@ import {
   Text,
 } from 'src/components';
 import { COMMUNITY_POST } from 'src/constants';
-import { isIos } from 'src/utils';
-import {
-  ChatList,
-  MentionUserList,
-  ScrollBottomSheet,
-  ScrollBottomSheetRefProps,
-} from 'src/layouts';
-import { useGetUser } from 'src/hooks';
+import { RPH, isAndroid, isIos } from 'src/utils';
+import { ChatList, MentionUserList, ImageListBottomSheet, CommunityBottomSheet } from 'src/layouts';
+import { useBottomSheet, useGetUser } from 'src/hooks';
+import { BottomSheetRefProps } from 'src/types';
+import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
 const REPLY_BOX_IOS_OFFSET = -62;
 const REPLY_BOX_ANDROID_OFFSET = -71.6;
 
-const HAS_PERMISSION_SCROLL_HEIGHT = -500;
-const NO_PERMISSION_SCROLL_HEIGHT = -300;
+const HAS_PERMISSION_SCROLL_HEIGHT = -RPH(70);
+const NO_PERMISSION_SCROLL_HEIGHT = -RPH(38);
 
 const status = {
   isAllGranted: { granted: true, limited: true },
@@ -47,11 +45,16 @@ export interface PhotoPermissionProps {
   granted: boolean;
   limited: boolean;
 }
+export type CommunityMainScreenProps = StackScreenProps<RootStackParamList, 'CommunityChat'>;
 
-export const CommunityChatScreen: React.FC = () => {
+export const CommunityChatScreen: React.FC<CommunityMainScreenProps> = ({ route }) => {
+  const { id } = route.params;
+  console.log(id, 'id');
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+
   const inset = useSafeAreaInsets();
 
-  const scrollBottomSheetRef = useRef<ScrollBottomSheetRefProps>(null);
+  const ImageListBottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const [permission, setPermission] = useState<PhotoPermissionProps>({
     granted: false,
@@ -64,11 +67,11 @@ export const CommunityChatScreen: React.FC = () => {
       : NO_PERMISSION_SCROLL_HEIGHT;
 
   const openImageBottomSheet = useCallback(({ granted, limited }: PhotoPermissionProps) => {
-    const isActive = scrollBottomSheetRef?.current?.isActive();
+    const isActive = ImageListBottomSheetRef?.current?.isActive();
     if (isActive) {
-      scrollBottomSheetRef?.current?.scrollTo(0);
+      ImageListBottomSheetRef?.current?.scrollTo(0);
     } else {
-      scrollBottomSheetRef?.current?.scrollTo(
+      ImageListBottomSheetRef?.current?.scrollTo(
         granted || limited ? HAS_PERMISSION_SCROLL_HEIGHT : NO_PERMISSION_SCROLL_HEIGHT,
       );
     }
@@ -136,7 +139,7 @@ export const CommunityChatScreen: React.FC = () => {
   }, []);
 
   const checkPermission = useCallback(async () => {
-    if (Platform.OS === 'ios') {
+    if (isIos) {
       const permission = await Permissions.check(PERMISSIONS.IOS.PHOTO_LIBRARY);
       if (permission === Permissions.RESULTS.GRANTED) {
         setPermission(status.isGranted);
@@ -158,7 +161,7 @@ export const CommunityChatScreen: React.FC = () => {
         setPermission(status.isBlocked);
         openImageBottomSheet(status.isBlocked);
       }
-    } else if (Platform.OS === 'android') {
+    } else if (isAndroid) {
       checkAndroidPermissions();
     }
   }, [checkAndroidPermissions]);
@@ -225,18 +228,22 @@ export const CommunityChatScreen: React.FC = () => {
 
   const checkIfStringHasSpaceAfterAt = (inputString: string): boolean => {
     const regex = /(?:^[^\s]+ )?(@\S*$)/;
-    console.log(regex.test(inputString), inputString);
     return regex.test(inputString);
   };
 
+  const onOptionPress = () => {
+    chatRef.current?.blur();
+    openBottomSheet();
+  };
+
   return (
-    <GestureHandlerRootView style={{ flex: 1, paddingTop: inset.top, paddingBottom: inset.bottom }}>
+    <S.CommunityChatWrapper style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
         isRow
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
       >
         <GoBackIcon />
-        <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} />
+        <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} openBottomSheet={onOptionPress} />
       </Header>
       {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
         <ChatList onMention={onMention} />
@@ -287,11 +294,12 @@ export const CommunityChatScreen: React.FC = () => {
           </S.BottomSendInputSection>
         </S.BottomInputContainer>
       </S.BottomInputWrapper>
-      <ScrollBottomSheet
-        ref={scrollBottomSheetRef}
+      <ImageListBottomSheet
+        ref={ImageListBottomSheetRef}
         scrollHeight={permissionHeight}
         permission={permission}
       />
-    </GestureHandlerRootView>
+      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
+    </S.CommunityChatWrapper>
   );
 };

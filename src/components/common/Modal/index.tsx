@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
-import { Modal as ModalElement } from 'react-native';
+import ModalElement from 'react-native-modal';
 
 import { Text } from '../Text';
 
@@ -12,13 +12,22 @@ export interface ModalProps {
   text?: string | React.ReactNode;
   button: React.ReactNode;
   modalVisible: boolean;
+  backDropVisible?: boolean;
+  children?: React.ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible, linkText }) => {
+export const Modal: React.FC<ModalProps> = ({
+  title,
+  text,
+  button,
+  modalVisible,
+  linkText,
+  backDropVisible = true,
+  children,
+}) => {
   return (
     <>
-      <S.ModalDummyContainer />
-      <ModalElement animationType="slide" transparent={true} visible={modalVisible}>
+      <ModalElement isVisible={modalVisible} backdropOpacity={backDropVisible ? 0.5 : 0.2}>
         <S.ModalWrapper>
           <S.ModalContainer>
             <Text size={24} fontFamily="bold">
@@ -30,7 +39,7 @@ export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible,
               <Text size={16} style={{ width: '100%' }}>
                 {typeof text === 'string'
                   ? text?.split('\n').map((line, index) => (
-                      <Text size={16} key={line} style={{ width: '100%' }}>
+                      <Text size={16} key={index} style={{ width: '100%' }}>
                         {line}
                         {index !== text.split('\n').length - 1 && <>{'\n'}</>}
                       </Text>
@@ -38,6 +47,7 @@ export const Modal: React.FC<ModalProps> = ({ title, text, button, modalVisible,
                   : text}
               </Text>
             )}
+            {children}
             {button}
           </S.ModalContainer>
         </S.ModalWrapper>

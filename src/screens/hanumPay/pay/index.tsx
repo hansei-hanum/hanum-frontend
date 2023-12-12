@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useIsFocused } from '@react-navigation/native';
+
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
 import { Auth } from 'src/components';
