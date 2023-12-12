@@ -1,15 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  TextInput,
-  Easing,
-  LayoutAnimation,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import { Animated, TextInput, LayoutAnimation, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -51,26 +45,32 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
 
   const searchAnimationValue = useRef(new Animated.Value(0)).current;
 
+  const config = {
+    duration: 250,
+    create: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+    },
+  };
+
   const showSearchScreen = () => {
     setIsSearchScreen(true);
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    Animated.timing(searchAnimationValue, {
-      toValue: 0,
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
+    LayoutAnimation.configureNext(config);
   };
 
   const closeSearchScreen = () => {
     setIsSearchScreen(false);
     searchRef.current?.blur();
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    LayoutAnimation.configureNext(config);
   };
 
   const searchBarAnimation = {
     flex: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 1] }),
   };
+
   const opacityAnimation = {
     opacity: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
     scale: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0.9] }),
@@ -100,6 +100,9 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <Header isRow>
         <S.CommunityMainSearchBarContainer style={searchBarAnimation}>
+          <TouchableWithoutFeedback onPress={showSearchScreen}>
+            <Icon name="search" size={24} color={theme.placeholder} />
+          </TouchableWithoutFeedback>
           <S.CommunityMainSearchBar
             placeholder="대나무숲 게시글 검색하기"
             placeholderTextColor={theme.placeholder}
@@ -107,7 +110,6 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
             ref={searchRef}
             onFocus={showSearchScreen}
           />
-          <Icon name="search" size={24} color={theme.placeholder} />
         </S.CommunityMainSearchBarContainer>
         {isSearchScreen && (
           <S.CommunityMainIconWrapper style={opacityAnimation}>

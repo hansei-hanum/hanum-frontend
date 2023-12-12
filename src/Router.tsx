@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Appearance, StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -71,14 +71,6 @@ export const Router: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    Appearance.addChangeListener(() => {
-      const setTheme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
-      setThemeValue(setTheme);
-    });
-    return () => {};
-  }, []);
-
-  useEffect(() => {
     async function prepare() {
       await fetch();
       await getTheme();
@@ -94,7 +86,7 @@ export const Router: React.FC = () => {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {}, [isReady]);
+  const onLayoutRootView = useCallback(async () => { }, [isReady]);
 
   const [isUpdating] = useCodePush();
 
@@ -115,14 +107,14 @@ export const Router: React.FC = () => {
             },
             ...(isAndroid &&
               isDark && {
-                cardStyleInterpolator: ({ current }) => ({
-                  cardStyle: {
-                    opacity: current.progress,
-                  },
-                }),
+              cardStyleInterpolator: ({ current }) => ({
+                cardStyle: {
+                  opacity: current.progress,
+                },
               }),
+            }),
           }}
-          initialRouteName={'Main'}
+          initialRouteName={data ? 'Main' : 'AuthMain'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />

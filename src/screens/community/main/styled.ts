@@ -19,6 +19,7 @@ export const CommunityMainSearchBarContainer = styled(Animated.View)`
   padding: ${isIos ? '12px' : '0px'} 12px;
   border-radius: 12px;
   background-color: ${({ theme }) => theme.secondary};
+  column-gap: 10px;
 `;
 
 export const CommunityMainSearchBar = styled.TextInput`
