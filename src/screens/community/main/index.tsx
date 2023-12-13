@@ -10,7 +10,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useTheme } from '@emotion/react';
 
 import {
-  CommunityHeader,
+  CommunityPostHeader,
   CommunityPost,
   CommunityUserImage,
   Header,
@@ -138,7 +138,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           }
           renderItem={({ item: { author, type, time, content }, index }) => (
             <S.CommunityMainBox>
-              <CommunityHeader
+              <CommunityPostHeader
                 author={author}
                 type={type}
                 time={time}

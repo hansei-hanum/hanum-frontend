@@ -10,7 +10,7 @@ import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 
 import { useTheme } from '@emotion/react';
 
-import { GoBackIcon, ScaleOpacity, Text } from 'src/components';
+import { CommunityHeader, ScaleOpacity, Text } from 'src/components';
 import { useGetUser } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { POST_OPTION_LIST, PostOptionEnum } from 'src/constants';
@@ -69,19 +69,20 @@ export const CommunityPostScreen: React.FC = () => {
 
   return (
     <S.CommunityPostWrapper>
-      <S.CommunityPostHeader>
-        <GoBackIcon />
-        <Text size={16}>게시글 작성하기</Text>
-        <ScaleOpacity
-          onPress={() => {
-            setText('');
-          }}
-        >
-          <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
-            공유
-          </Text>
-        </ScaleOpacity>
-      </S.CommunityPostHeader>
+      <CommunityHeader
+        title="게시글 작성하기"
+        leftContent={
+          <ScaleOpacity
+            onPress={() => {
+              setText('');
+            }}
+          >
+            <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
+              공유
+            </Text>
+          </ScaleOpacity>
+        }
+      />
       <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ height: '100%' }}>
         <S.CommunityPostSection>
           <S.CommunityPostUserSection>
@@ -134,7 +135,7 @@ export const CommunityPostScreen: React.FC = () => {
                   <S.CommunityPostImageWrapper key={item}>
                     <S.CommunityPostImage source={{ uri: item }} />
                     <S.CommunityPostImageIconWrapper>
-                      <Icons name="close" size={26} color={theme.black} />
+                      <Icons name="close" size={26} color={theme.default} />
                     </S.CommunityPostImageIconWrapper>
                   </S.CommunityPostImageWrapper>
                 </ScaleOpacity>

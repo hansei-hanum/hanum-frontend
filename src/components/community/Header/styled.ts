@@ -1,28 +1,14 @@
 import styled from '@emotion/native';
 
-export const CommunityHeader = styled.View`
+import { isIos } from 'src/utils';
+
+export const CommunityHeaderContainer = styled.View`
+  width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-`;
-
-export const CommunityHeaderTitle = styled.View`
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  column-gap: 10px;
-  flex-grow: 0.1;
-`;
-
-export const CommunityHeaderUserSection = styled.View`
-  flex-direction: row;
-  align-items: center;
-  column-gap: 4px;
-`;
-
-export const CommunityHeaderUserImg = styled.Image`
-  border-radius: 100px;
-  width: 40px;
-  height: 40px;
+  padding: 14px;
+  padding-top: ${isIos ? 0 : '14px'};
+  background-color: ${({ theme }) => theme.background};
+  z-index: 9999;
 `;

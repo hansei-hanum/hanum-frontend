@@ -12,7 +12,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useTheme } from '@emotion/react';
 
 import {
-  CommunityHeader,
+  CommunityPostHeader,
   CommunityUserImage,
   GoBackIcon,
   Header,
@@ -243,7 +243,11 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
       >
         <GoBackIcon />
-        <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} openBottomSheet={onOptionPress} />
+        <CommunityPostHeader
+          {...COMMUNITY_POST}
+          style={{ flex: 1 }}
+          openBottomSheet={onOptionPress}
+        />
       </Header>
       {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
         <ChatList onMention={onMention} />

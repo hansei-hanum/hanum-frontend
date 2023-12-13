@@ -94,5 +94,5 @@ export const CommunityPostImageIconWrapper = styled.View`
   right: 0;
   border-radius: 50px;
   margin: 6px;
-  background-color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.modalBg};
 `;
