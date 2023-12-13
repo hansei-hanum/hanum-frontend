@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 
 import { GoBackIcon, Text } from 'src/components';
 
@@ -14,7 +15,7 @@ export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ title, leftCon
     <S.CommunityHeaderContainer>
       <GoBackIcon />
       <Text size={16}>{title}</Text>
-      {leftContent}
+      {!leftContent ? <View style={{ flexGrow: 0.1 }} /> : <>{leftContent}</>}
     </S.CommunityHeaderContainer>
   );
 };

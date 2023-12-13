@@ -39,6 +39,7 @@ export type RootStackParamList = {
   EoullimStatus: undefined;
   CommunityChat: { id: number };
   CommunityPost: undefined;
+  CommunityVisibleType: undefined;
 };
 
 export const Router: React.FC = () => {
@@ -146,6 +147,7 @@ export const Router: React.FC = () => {
           <Stack.Group>
             <Stack.Screen name="CommunityChat" component={SC.CommunityChatScreen} />
             <Stack.Screen name="CommunityPost" component={SC.CommunityPostScreen} />
+            <Stack.Screen name="CommunityVisibleType" component={SC.VisibleTypeScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />

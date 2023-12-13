@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import FI from 'react-native-vector-icons/Feather';
 import Icons from 'react-native-vector-icons/Ionicons';
@@ -9,24 +9,27 @@ import { TextInput } from 'react-native';
 import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 
-import { CommunityHeader, ScaleOpacity, Text } from 'src/components';
-import { useGetUser } from 'src/hooks';
+import { CommunityHeader, Icon, ScaleOpacity, Text } from 'src/components';
+import { useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { POST_OPTION_LIST, PostOptionEnum } from 'src/constants';
+import { visibleTypeAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const CommunityPostScreen: React.FC = () => {
+  const visibleType = useRecoilValue(visibleTypeAtom);
+
+  const navigate = useNavigate();
+
   const textInputRef = useRef<TextInput>(null);
 
   const theme = useTheme();
 
   const { userProfile, userData } = useGetUser();
 
-  const [visibleType, setVisibleType] = useState<
-    'ALL' | 'STUDENT' | 'PRIVATE' | 'CURRENT STUDENT' | 'TEACHER' | 'GRADUATE'
-  >('ALL');
   const [text, setText] = useState<string>('');
   const [selectedImage, setSelectedImage] = useState<(string | undefined)[]>();
 
@@ -39,7 +42,7 @@ export const CommunityPostScreen: React.FC = () => {
       case PostOptionEnum.IMAGE_UPLOAD:
         return openImagePicker();
       case PostOptionEnum.VISIBLE:
-        return console.log('visible');
+        return navigate('CommunityVisibleType');
 
       case PostOptionEnum.ANONYMOUS:
         return console.log('anonymous');
@@ -93,14 +96,14 @@ export const CommunityPostScreen: React.FC = () => {
             <View style={{ rowGap: 2 }}>
               <Text size={16}>{userData?.name || '박찬영'}</Text>
               <S.CommunityPostVisibleTypeWrapper>
-                {visibleType === 'ALL' && <Icon name="public" size={16} color={theme.white} />}
-                {visibleType === 'PRIVATE' && <Icon name="lock" size={16} color={theme.white} />}
+                {visibleType === 'ALL' && <MI name="public" size={16} color={theme.white} />}
+                {visibleType === 'LIMITED' && <MI name="lock" size={16} color={theme.white} />}
                 {visibleType === 'STUDENT' && (
                   <MCI name="account-group" size={16} color={theme.white} />
                 )}
                 <Text size={12} color={theme.white} fontFamily="bold">
                   공개범위:{' '}
-                  {visibleType === 'ALL' ? '전체' : visibleType === 'PRIVATE' ? '비공개' : '학생'}
+                  {visibleType === 'ALL' ? '전체' : visibleType === 'LIMITED' ? '제한됨' : '학생'}
                 </Text>
               </S.CommunityPostVisibleTypeWrapper>
             </View>
@@ -144,11 +147,11 @@ export const CommunityPostScreen: React.FC = () => {
           )}
         </S.CommunityPostImageSection>
         <S.CommunityPostSection>
-          {POST_OPTION_LIST.map(({ iconName, text }, index) => (
+          {POST_OPTION_LIST.map(({ icon, text }, index) => (
             <ScaleOpacity key={index} onPress={() => onOptionClick(text)} style={{ width: '100%' }}>
               <S.CommunityBottomSheetListContainer>
                 <S.CommunityBottomSheetList>
-                  <FI name={iconName} size={30} color={theme.default} />
+                  <Icon icon={icon} includeBackground={false} />
                   <Text size={15}>{text}</Text>
                 </S.CommunityBottomSheetList>
                 <Entypo name="chevron-thin-right" size={20} color={theme.placeholder} />

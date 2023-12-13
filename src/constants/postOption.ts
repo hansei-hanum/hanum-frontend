@@ -6,20 +6,20 @@ export enum PostOptionEnum {
 
 export interface PostOptionItems {
   text: PostOptionEnum;
-  iconName: string;
+  icon: string;
 }
 
 export const POST_OPTION_LIST: PostOptionItems[] = [
   {
     text: PostOptionEnum.IMAGE_UPLOAD,
-    iconName: 'image',
+    icon: '🖼️',
   },
   {
     text: PostOptionEnum.VISIBLE,
-    iconName: 'lock',
+    icon: '🔒',
   },
   {
     text: PostOptionEnum.ANONYMOUS,
-    iconName: 'eye',
+    icon: '👁️',
   },
 ];
