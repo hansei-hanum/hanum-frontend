@@ -4,9 +4,18 @@ import { fonts } from 'src/styles';
 import { RPH, isIos } from 'src/utils';
 
 export const CommunityPostWrapper = styled.SafeAreaView`
-  flex: 1;
   background-color: ${({ theme }) => theme.background};
   width: 100%;
+`;
+
+export const CommunityPostSection = styled.View`
+  padding: 14px;
+  row-gap: 24px;
+`;
+
+export const CommunityPostImageSection = styled.View`
+  width: 100%;
+  padding-left: 14px;
 `;
 
 export const CommunityPostHeader = styled.View`
@@ -49,8 +58,9 @@ export const CommunityPostTextInput = styled.TextInput`
   background-color: ${({ theme }) => theme.secondary};
   font-size: 16px;
   color: ${({ theme }) => theme.default};
-  font-family: ${fonts.regular};
+  font-family: ${fonts.medium};
   text-align-vertical: top;
+  flex-grow: 0.6;
 `;
 
 export const CommunityBottomSheetListContainer = styled.View`
@@ -66,10 +76,23 @@ export const CommunityBottomSheetList = styled(CommunityBottomSheetListContainer
   justify-content: center;
 `;
 
-export const CommunityPostButtonWrapper = styled.View`
-  width: 100%;
-  padding: 14px;
+export const CommunityPostImageWrapper = styled.View`
+  position: relative;
+`;
+
+export const CommunityPostImage = styled.Image`
+  width: 130px;
+  height: 130px;
+  border-radius: 16px;
+  border-color: ${({ theme }) => theme.secondary};
+  border-width: 1px;
+`;
+
+export const CommunityPostImageIconWrapper = styled.View`
   position: absolute;
-  bottom: 0px;
-  background-color: ${({ theme }) => theme.background};
+  top: 0;
+  right: 0;
+  border-radius: 50px;
+  margin: 6px;
+  background-color: ${({ theme }) => theme.white};
 `;
