@@ -9,6 +9,8 @@ import { useTheme } from '@emotion/react';
 
 import { Button, CommunityHeader, Icon, ScaleOpacity, Text } from 'src/components';
 import { ANONYMITY_OPTION_LIST } from 'src/constants';
+import { isIos } from 'src/utils';
+import { fonts } from 'src/styles';
 
 import * as S from './styled';
 
@@ -40,37 +42,37 @@ export const AnonymitySettingsScreen: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CommunityHeader title="공개 범위" />
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-        <S.VisibleTypeWrapper>
-          <S.VisibleTypeContainer>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} enabled={isIos}>
+        <S.AnonymitySettingsWrapper>
+          <S.AnonymitySettingsContainer>
             {ANONYMITY_OPTION_LIST.map(({ icon, title, description }, index) => (
               <ScaleOpacity onPress={() => onPressVisibleType(index)}>
-                <S.VisibleTypeListContainer>
-                  <S.VisibleTypeList>
+                <S.AnonymitySettingsListContainer>
+                  <S.AnonymitySettingsList>
                     <Icon icon={icon} size={34} includeBackground={false} />
                     <Text.Column>
                       <Text size={18}>{title}</Text>
                       <Text size={15}>{description}</Text>
                     </Text.Column>
-                  </S.VisibleTypeList>
+                  </S.AnonymitySettingsList>
                   <MCI
                     name={selectedOption[index] ? 'circle-slice-8' : 'circle-outline'}
                     size={30}
                     color={selectedOption[index] ? theme.primary : theme.placeholder}
                   />
-                </S.VisibleTypeListContainer>
+                </S.AnonymitySettingsListContainer>
               </ScaleOpacity>
             ))}
-            <S.VisibleTypeBoxContainer style={{ opacity: fadeAnim }}>
+            <S.AnonymityNicknameWrapper style={{ opacity: fadeAnim }}>
               <TextInput
                 placeholder="사용할 닉네임을 입력하세요"
                 placeholderTextColor={theme.placeholder}
                 value={text}
                 onChangeText={onChangeText}
-                style={{ color: theme.default }}
+                style={{ color: theme.default, fontFamily: fonts.medium, padding: isIos ? 0 : 8 }}
               />
-            </S.VisibleTypeBoxContainer>
-          </S.VisibleTypeContainer>
+            </S.AnonymityNicknameWrapper>
+          </S.AnonymitySettingsContainer>
           <Button
             onPress={() => {
               navigation.goBack();
@@ -78,7 +80,7 @@ export const AnonymitySettingsScreen: React.FC = () => {
           >
             완료
           </Button>
-        </S.VisibleTypeWrapper>
+        </S.AnonymitySettingsWrapper>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

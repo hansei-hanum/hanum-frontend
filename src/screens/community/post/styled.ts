@@ -1,16 +1,28 @@
+import { Animated, KeyboardAvoidingView } from 'react-native';
+
 import styled from '@emotion/native';
 
 import { fonts } from 'src/styles';
-import { RPH, isIos } from 'src/utils';
+import { isIos } from 'src/utils';
 
 export const CommunityPostWrapper = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.background};
   width: 100%;
+  height: 100%;
+  flex: 1;
+`;
+
+export const CommunityPostContainer = styled(KeyboardAvoidingView)`
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  flex: 1;
 `;
 
 export const CommunityPostSection = styled.View`
   padding: 14px;
   row-gap: 24px;
+  flex-grow: 1;
 `;
 
 export const CommunityPostImageSection = styled.View`
@@ -25,7 +37,6 @@ export const CommunityPostHeader = styled.View`
   justify-content: space-between;
   padding: 14px;
   padding-top: ${isIos ? 0 : '14px'};
-  background-color: ${({ theme }) => theme.background};
   z-index: 9999;
 `;
 
@@ -53,14 +64,12 @@ export const CommunityPostVisibleTypeWrapper = styled.View`
 export const CommunityPostTextInput = styled.TextInput`
   width: 100%;
   padding: 10px;
-  height: ${`${RPH(26)}px`};
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.secondary};
   font-size: 16px;
   color: ${({ theme }) => theme.default};
   font-family: ${fonts.medium};
   text-align-vertical: top;
-  flex-grow: 0.6;
+  flex: 1;
 `;
 
 export const CommunityBottomSheetListContainer = styled.View`
@@ -95,4 +104,14 @@ export const CommunityPostImageIconWrapper = styled.View`
   border-radius: 50px;
   margin: 6px;
   background-color: ${({ theme }) => theme.modalBg};
+`;
+
+export const CommunityPostIconContainer = styled(Animated.View)`
+  width: 100%;
+  border-top-color: ${({ theme }) => theme.secondary};
+  border-top-width: 1px;
+  padding: 14px;
+  padding-bottom: ${isIos ? 0 : '14px'};
+  flex-direction: row;
+  justify-content: space-between;
 `;
