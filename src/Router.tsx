@@ -117,7 +117,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={data ? 'Main' : 'AuthMain'}
+          initialRouteName={'Main'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />

@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, TextInput, LayoutAnimation, TouchableOpacity, FlatList } from 'react-native';
+import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -13,14 +12,13 @@ import {
   CommunityPostHeader,
   CommunityPost,
   CommunityUserImage,
-  Header,
   ScaleOpacity,
   Text,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useGetUser } from 'src/hooks';
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
-import { CommunityBottomSheet } from 'src/layouts';
+import { CommunityBottomSheet, CommunityMainAnimatedHeader } from 'src/layouts';
 import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
@@ -38,43 +36,8 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
 
   const theme = useTheme();
 
-  const searchRef = useRef<TextInput>(null);
-
   const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [likes, setLikes] = useState<Array<boolean>>([]);
-
-  const searchAnimationValue = useRef(new Animated.Value(0)).current;
-
-  const config = {
-    duration: 250,
-    create: {
-      type: LayoutAnimation.Types.easeInEaseOut,
-      property: LayoutAnimation.Properties.opacity,
-    },
-    update: {
-      type: LayoutAnimation.Types.easeInEaseOut,
-    },
-  };
-
-  const showSearchScreen = () => {
-    setIsSearchScreen(true);
-    LayoutAnimation.configureNext(config);
-  };
-
-  const closeSearchScreen = () => {
-    setIsSearchScreen(false);
-    searchRef.current?.blur();
-    LayoutAnimation.configureNext(config);
-  };
-
-  const searchBarAnimation = {
-    flex: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 1] }),
-  };
-
-  const opacityAnimation = {
-    opacity: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
-    scale: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0.9] }),
-  };
 
   const onLikeClick = (index: number) => {
     setLikes((prev) => {
@@ -96,34 +59,40 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
     navigation.navigate('CommunityChat', { id: index });
   };
 
+  const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [hidden, setHidden] = useState(false);
+
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    scrollY.setValue(offsetY);
+    setHidden(offsetY > 0);
+    Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+      useNativeDriver: false,
+    });
+  };
+
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
-      <Header isRow>
-        <S.CommunityMainSearchBarContainer style={searchBarAnimation}>
-          <TouchableWithoutFeedback onPress={showSearchScreen}>
-            <Icon name="search" size={24} color={theme.placeholder} />
-          </TouchableWithoutFeedback>
-          <S.CommunityMainSearchBar
-            placeholder="대나무숲 게시글 검색하기"
-            placeholderTextColor={theme.placeholder}
-            selectionColor={theme.placeholder}
-            ref={searchRef}
-            onFocus={showSearchScreen}
-          />
-        </S.CommunityMainSearchBarContainer>
-        {isSearchScreen && (
-          <S.CommunityMainIconWrapper style={opacityAnimation}>
-            <TouchableOpacity activeOpacity={0.8} onPress={closeSearchScreen}>
-              <Icon name="close" size={30} color={theme.placeholder} />
-            </TouchableOpacity>
-          </S.CommunityMainIconWrapper>
-        )}
-      </Header>
+      <CommunityMainAnimatedHeader
+        hidden={hidden}
+        scrollY={scrollY}
+        HEADER_HEIGHT={HEADER_HEIGHT}
+        setIsSearchScreen={setIsSearchScreen}
+        isSearchScreen={isSearchScreen}
+      />
       {!isSearchScreen ? (
         <FlatList
+          onScroll={onScroll}
+          scrollEventThrottle={16}
           data={COMMUNITY_LIST}
           keyExtractor={(_, index) => index.toString()}
-          contentContainerStyle={{ paddingTop: isIos ? 20 : 0, paddingBottom: 40, rowGap: 16 }}
+          contentContainerStyle={{
+            paddingTop: isIos ? inset.top + 24 : 68,
+            paddingBottom: 40,
+            rowGap: 16,
+          }}
           ListHeaderComponent={
             <S.CommunityUserWrapper>
               <ScaleOpacity onPress={() => navigation.navigate('CommunityPost')}>
@@ -183,7 +152,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           )}
         />
       ) : (
-        <S.TextWrapper2 style={opacityAnimation}>
+        <S.TextWrapper2 style={[{ paddingTop: inset.top + 24 }]}>
           <Text size={15}>This Is Search 잉기</Text>
         </S.TextWrapper2>
       )}

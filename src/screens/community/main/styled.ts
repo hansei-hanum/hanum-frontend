@@ -98,3 +98,24 @@ export const TextWrapper2 = styled(Animated.View)`
   flex: 1;
   height: 100%;
 `;
+
+export const CommunityMainAnimatedHeader = styled(Animated.View)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  justify-content: flex-end;
+  align-items: flex-end;
+  background-color: ${({ theme }) => theme.background};
+  flex-direction: row;
+  padding: 0 14px;
+  padding-bottom: 10px;
+`;
+
+export const CommunityMainSearchBarWrapper = styled(Animated.View)`
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
