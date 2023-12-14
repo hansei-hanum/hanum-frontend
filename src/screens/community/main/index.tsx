@@ -125,16 +125,18 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle={{ paddingTop: isIos ? 20 : 0, paddingBottom: 40, rowGap: 16 }}
           ListHeaderComponent={
-            <ScaleOpacity onPress={() => navigation.navigate('CommunityPost')}>
-              <S.CommunityUserContainer>
-                <CommunityUserImage userImage={userProfile} />
-                <S.CommunityUserThinkBox>
-                  <Text size={16} color={theme.placeholder}>
-                    어떤 생각을 하고 계신가요?
-                  </Text>
-                </S.CommunityUserThinkBox>
-              </S.CommunityUserContainer>
-            </ScaleOpacity>
+            <S.CommunityUserWrapper>
+              <ScaleOpacity onPress={() => navigation.navigate('CommunityPost')}>
+                <S.CommunityUserContainer>
+                  <CommunityUserImage userImage={userProfile} />
+                  <S.CommunityUserThinkBox>
+                    <Text size={16} color={theme.placeholder}>
+                      어떤 생각을 하고 계신가요?
+                    </Text>
+                  </S.CommunityUserThinkBox>
+                </S.CommunityUserContainer>
+              </ScaleOpacity>
+            </S.CommunityUserWrapper>
           }
           renderItem={({ item: { author, type, time, content }, index }) => (
             <S.CommunityMainBox>

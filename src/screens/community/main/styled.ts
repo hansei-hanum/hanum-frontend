@@ -36,7 +36,10 @@ export const CommunityMainIconWrapper = styled(Animated.View)`
 `;
 
 export const CommunityUserWrapper = styled.View`
-  margin: 0 20px;
+  border-top-color: ${({ theme }) => theme.lightGray};
+  border-bottom-color: ${({ theme }) => theme.lightGray};
+  border-top-width: 1px;
+  border-bottom-width: 1px;
 `;
 
 export const CommunityUserContainer = styled.View`
@@ -45,10 +48,6 @@ export const CommunityUserContainer = styled.View`
   justify-content: space-between;
   column-gap: 10px;
   padding: 14px;
-  border-top-color: ${({ theme }) => theme.lightGray};
-  border-bottom-color: ${({ theme }) => theme.lightGray};
-  border-top-width: 1px;
-  border-bottom-width: 1px;
 `;
 
 export const CommunityImage = styled.Image`
