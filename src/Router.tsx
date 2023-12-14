@@ -38,6 +38,9 @@ export type RootStackParamList = {
   EoullimRaffle: undefined;
   EoullimStatus: undefined;
   CommunityChat: { id: number };
+  CommunityPost: undefined;
+  CommunityVisibleType: undefined;
+  CommunityAnonymitySettings: undefined;
 };
 
 export const Router: React.FC = () => {
@@ -86,7 +89,7 @@ export const Router: React.FC = () => {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => { }, [isReady]);
+  const onLayoutRootView = useCallback(async () => {}, [isReady]);
 
   const [isUpdating] = useCodePush();
 
@@ -107,12 +110,12 @@ export const Router: React.FC = () => {
             },
             ...(isAndroid &&
               isDark && {
-              cardStyleInterpolator: ({ current }) => ({
-                cardStyle: {
-                  opacity: current.progress,
-                },
+                cardStyleInterpolator: ({ current }) => ({
+                  cardStyle: {
+                    opacity: current.progress,
+                  },
+                }),
               }),
-            }),
           }}
           initialRouteName={data ? 'Main' : 'AuthMain'}
         >
@@ -144,6 +147,12 @@ export const Router: React.FC = () => {
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="CommunityChat" component={SC.CommunityChatScreen} />
+            <Stack.Screen name="CommunityPost" component={SC.CommunityPostScreen} />
+            <Stack.Screen name="CommunityVisibleType" component={SC.VisibleTypeScreen} />
+            <Stack.Screen
+              name="CommunityAnonymitySettings"
+              component={SC.AnonymitySettingsScreen}
+            />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />

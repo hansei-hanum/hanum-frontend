@@ -10,7 +10,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useTheme } from '@emotion/react';
 
 import {
-  CommunityHeader,
+  CommunityPostHeader,
   CommunityPost,
   CommunityUserImage,
   Header,
@@ -125,18 +125,20 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle={{ paddingTop: isIos ? 20 : 0, paddingBottom: 40, rowGap: 16 }}
           ListHeaderComponent={
-            <S.CommunityUserContainer>
-              <CommunityUserImage userImage={userProfile} />
-              <S.CommunityUserThinkBox>
-                <Text size={16} color={theme.placeholder}>
-                  어떤 생각을 하고 계신가요?
-                </Text>
-              </S.CommunityUserThinkBox>
-            </S.CommunityUserContainer>
+            <ScaleOpacity onPress={() => navigation.navigate('CommunityPost')}>
+              <S.CommunityUserContainer>
+                <CommunityUserImage userImage={userProfile} />
+                <S.CommunityUserThinkBox>
+                  <Text size={16} color={theme.placeholder}>
+                    어떤 생각을 하고 계신가요?
+                  </Text>
+                </S.CommunityUserThinkBox>
+              </S.CommunityUserContainer>
+            </ScaleOpacity>
           }
           renderItem={({ item: { author, type, time, content }, index }) => (
             <S.CommunityMainBox>
-              <CommunityHeader
+              <CommunityPostHeader
                 author={author}
                 type={type}
                 time={time}

@@ -12,7 +12,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useTheme } from '@emotion/react';
 
 import {
-  CommunityHeader,
+  CommunityPostHeader,
   CommunityUserImage,
   GoBackIcon,
   Header,
@@ -45,11 +45,11 @@ export interface PhotoPermissionProps {
   granted: boolean;
   limited: boolean;
 }
-export type CommunityMainScreenProps = StackScreenProps<RootStackParamList, 'CommunityChat'>;
+export type CommunityChatScreenProps = StackScreenProps<RootStackParamList, 'CommunityChat'>;
 
-export const CommunityChatScreen: React.FC<CommunityMainScreenProps> = ({ route }) => {
+export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route }) => {
   const { id } = route.params;
-  console.log(id, 'id');
+  console.log(id);
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const inset = useSafeAreaInsets();
@@ -243,7 +243,11 @@ export const CommunityChatScreen: React.FC<CommunityMainScreenProps> = ({ route 
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
       >
         <GoBackIcon />
-        <CommunityHeader {...COMMUNITY_POST} style={{ flex: 1 }} openBottomSheet={onOptionPress} />
+        <CommunityPostHeader
+          {...COMMUNITY_POST}
+          style={{ flex: 1 }}
+          openBottomSheet={onOptionPress}
+        />
       </Header>
       {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
         <ChatList onMention={onMention} />

@@ -12,7 +12,7 @@ import { RPH, iosCheckHeight } from 'src/utils';
 
 import * as S from './styled';
 
-export interface OptionWindowProps {
+export interface OptionListProps {
   flatListRef: React.RefObject<FlatList>;
   enableScroll: boolean;
   onScroll: ScrollHandlerProcessed<Record<string, unknown>>;
@@ -20,7 +20,7 @@ export interface OptionWindowProps {
   theme: Theme;
 }
 
-export const OptionWindow: React.FC<OptionWindowProps> = ({
+export const OptionList: React.FC<OptionListProps> = ({
   flatListRef,
   enableScroll,
   onPress,

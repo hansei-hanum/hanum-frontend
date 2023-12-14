@@ -22,7 +22,7 @@ import { BackDrop } from 'src/components';
 import { BottomSheetRefProps } from 'src/types';
 import { SCREEN_HEIGHT } from 'src/constants';
 
-import { OptionWindow } from '../OptionWindow';
+import { OptionList } from '../OptionList';
 import { ReportCompleteWindow } from '../CompleteWindow';
 
 import * as S from './styled';
@@ -188,7 +188,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
                 reportScreenAnimationValue={reportScreenAnimationValue}
                 theme={theme}
               />
-              <OptionWindow
+              <OptionList
                 theme={theme}
                 flatListRef={flatListRef}
                 enableScroll={enableScroll}
