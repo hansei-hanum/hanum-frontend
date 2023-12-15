@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useRef, useState } from 'react';
-import { Platform, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Switch, TextInput, View } from 'react-native';
 import { Animated } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -173,12 +173,16 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
   const { userProfile } = useGetUser();
 
   const replyTranslateY = useRef<any>(new Animated.Value(0)).current;
+  const anonymousTranslateY = useRef<any>(new Animated.Value(0)).current;
 
   const chatRef = useRef<TextInput>(null);
 
   const [chat, setChat] = useState<string>('');
   const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
+  const [paddingBottom, setPaddingBottom] = useState<number>(0);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+  const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
 
   const theme = useTheme();
 
@@ -190,37 +194,57 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
     }
   };
 
+  const onPressChatInput = () => {
+    setPaddingBottom(isReplyChat ? 100 : 50);
+    animateTranslation(
+      anonymousTranslateY,
+      isIos ? REPLY_BOX_IOS_OFFSET : REPLY_BOX_ANDROID_OFFSET,
+    );
+  };
+
+  const onPressOutChatInput = () => {
+    setChat('');
+    setPaddingBottom(0);
+    setIsReplyChat(false);
+    setIsAnonymous(false);
+    animateTranslation(anonymousTranslateY, 0);
+    animateTranslation(replyTranslateY, 0);
+  };
+
   const onMention = (id: string, isReply?: boolean) => {
     setUserId(id);
     onChangeChat(`${chat.split('@').slice(0, -1).join('@')}@${id} `);
     setMentionListOpen(false);
     if (isReply) {
+      setIsReplyChat(true);
       openReplyBox();
     }
   };
 
   const openReplyBox = () => {
-    Animated.timing(replyTranslateY, {
-      toValue: isIos ? REPLY_BOX_IOS_OFFSET : REPLY_BOX_ANDROID_OFFSET,
-      duration: 250,
-      useNativeDriver: false,
-    }).start();
+    animateTranslation(
+      replyTranslateY,
+      isIos ? REPLY_BOX_IOS_OFFSET * 2 + 12 : REPLY_BOX_ANDROID_OFFSET * 2 + 12,
+    );
   };
 
   const sendChat = () => {
+    setPaddingBottom(0);
     setChat('');
     chatRef.current?.blur();
-    Animated.timing(replyTranslateY, {
-      toValue: 0,
-      duration: 250,
-      useNativeDriver: false,
-    }).start();
+    animateTranslation(replyTranslateY, 0);
   };
 
   const closeReplyBox = () => {
+    setIsReplyChat(false);
+    setPaddingBottom(50);
     setChat('');
-    Animated.timing(replyTranslateY, {
-      toValue: 0,
+    animateTranslation(replyTranslateY, 0);
+  };
+
+  const animateTranslation = (animatedValue: Animated.Value, toValue: number) => {
+    Animated.timing(animatedValue, {
+      toValue,
       duration: 250,
       useNativeDriver: false,
     }).start();
@@ -236,6 +260,10 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
     openBottomSheet();
   };
 
+  const toggleAnonymous = () => {
+    setIsAnonymous(!isAnonymous);
+  };
+
   return (
     <S.CommunityChatWrapper style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -249,60 +277,78 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
           openBottomSheet={onOptionPress}
         />
       </Header>
-      {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
-        <ChatList onMention={onMention} />
-      ) : (
-        <View style={{ width: '100%', flex: 1 }}>
-          {chat.length < 2 ? (
-            <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 14 }}>
-              @뒤에 유저 이름을 써주세요
-            </Text>
-          ) : (
-            <MentionUserList onMention={onMention} />
-          )}
-        </View>
-      )}
-      <S.BottomInputWrapper behavior="padding" keyboardVerticalOffset={10}>
-        <S.BottomInputContainer behavior="padding" keyboardVerticalOffset={10}>
-          <S.BottomInputReplyBox
-            ref={replyTranslateY}
-            style={{ transform: [{ translateY: replyTranslateY }] }}
-          >
-            <Text size={14} color={theme.placeholder}>
-              {userId}님에게 답글 남기는 중
-            </Text>
-            <ScaleOpacity onPress={closeReplyBox}>
-              <MI name="cancel" size={24} color={theme.placeholder} />
-            </ScaleOpacity>
-          </S.BottomInputReplyBox>
-          <S.BottomSendInputSection>
-            <CommunityUserImage userImage={userProfile} />
-            <S.BottomSendInputContainer>
-              <S.BottomSendInput
-                placeholder="댓글을 입력하세요"
-                placeholderTextColor={theme.placeholder}
-                ref={chatRef}
-                value={chat}
-                onChangeText={onChangeChat}
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10} style={{ flex: 1 }}>
+        {!mentionListOpen || !checkIfStringHasSpaceAfterAt(chat) ? (
+          <ChatList onMention={onMention} paddingBottom={paddingBottom} />
+        ) : (
+          <View style={{ width: '100%', flex: 1 }}>
+            {chat.length < 2 ? (
+              <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 14 }}>
+                @뒤에 유저 이름을 써주세요
+              </Text>
+            ) : (
+              <MentionUserList onMention={onMention} />
+            )}
+          </View>
+        )}
+        <S.BottomInputWrapper>
+          <S.BottomInputContainer behavior="padding" keyboardVerticalOffset={10}>
+            <S.AnonymousBox
+              ref={anonymousTranslateY}
+              style={{ transform: [{ translateY: anonymousTranslateY }] }}
+            >
+              <Text size={15}>익명 댓글</Text>
+              <Switch
+                style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
+                trackColor={{ false: theme.lightGray, true: theme.primary }}
+                thumbColor={isAnonymous ? theme.white : theme.white}
+                ios_backgroundColor={theme.lightGray}
+                onValueChange={toggleAnonymous}
+                value={isAnonymous}
               />
-              {chat.length > 0 ? (
-                <ScaleOpacity onPress={sendChat}>
-                  <MI name="send" size={28} color={theme.primary} />
-                </ScaleOpacity>
-              ) : (
-                <ScaleOpacity onPress={handlePresentModalPress}>
-                  <FI name="image" size={28} color={theme.default} />
-                </ScaleOpacity>
-              )}
-            </S.BottomSendInputContainer>
-          </S.BottomSendInputSection>
-        </S.BottomInputContainer>
-      </S.BottomInputWrapper>
-      <ImageListBottomSheet
-        ref={ImageListBottomSheetRef}
-        scrollHeight={permissionHeight}
-        permission={permission}
-      />
+            </S.AnonymousBox>
+            <S.BottomInputReplyBox
+              ref={replyTranslateY}
+              style={{ transform: [{ translateY: replyTranslateY }] }}
+            >
+              <Text size={14} color={theme.placeholder}>
+                {userId}님에게 답글 남기는 중
+              </Text>
+              <ScaleOpacity onPress={closeReplyBox}>
+                <MI name="cancel" size={24} color={theme.placeholder} />
+              </ScaleOpacity>
+            </S.BottomInputReplyBox>
+            <S.BottomSendInputSection>
+              <CommunityUserImage userImage={userProfile} />
+              <S.BottomSendInputContainer>
+                <S.BottomSendInput
+                  placeholder="댓글을 입력하세요"
+                  placeholderTextColor={theme.placeholder}
+                  ref={chatRef}
+                  value={chat}
+                  onChangeText={onChangeChat}
+                  onFocus={onPressChatInput}
+                  onBlur={onPressOutChatInput}
+                />
+                {chat.length > 0 ? (
+                  <ScaleOpacity onPress={sendChat}>
+                    <MI name="send" size={28} color={theme.primary} />
+                  </ScaleOpacity>
+                ) : (
+                  <ScaleOpacity onPress={handlePresentModalPress}>
+                    <FI name="image" size={28} color={theme.default} />
+                  </ScaleOpacity>
+                )}
+              </S.BottomSendInputContainer>
+            </S.BottomSendInputSection>
+          </S.BottomInputContainer>
+        </S.BottomInputWrapper>
+        <ImageListBottomSheet
+          ref={ImageListBottomSheetRef}
+          scrollHeight={permissionHeight}
+          permission={permission}
+        />
+      </KeyboardAvoidingView>
       <CommunityBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityChatWrapper>
   );

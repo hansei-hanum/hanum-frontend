@@ -17,7 +17,7 @@ export const CommunityUserImage = styled.Image`
   height: 40px;
 `;
 
-export const BottomInputWrapper = styled(isIos ? KeyboardAvoidingView : View)`
+export const BottomInputWrapper = styled.View`
   position: relative;
   width: 100%;
   background-color: ${({ theme }) => theme.background};
@@ -70,10 +70,16 @@ export const BottomInputReplyBox = styled(Animated.View)`
   position: absolute;
   bottom: 0;
   background-color: ${({ theme }) => theme.background};
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.lightGray};
   border-top-width: 1px;
   border-top-color: ${({ theme }) => theme.lightGray};
+`;
+
+export const AnonymousBox = styled(BottomInputReplyBox)`
+  border-bottom-width: 0px;
+  border-top-width: 1px;
+  justify-content: center;
+  column-gap: 10px;
+  padding-bottom: 4px;
 `;
 
 export const ModalDummyContainer = styled.View`

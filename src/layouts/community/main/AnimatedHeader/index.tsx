@@ -13,6 +13,7 @@ export interface CommunityMainAnimatedHeaderProps {
   HEADER_HEIGHT: number;
   scrollY: Animated.Value;
   hidden: boolean;
+  setHidden: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSearchScreen: React.Dispatch<React.SetStateAction<boolean>>;
   isSearchScreen: boolean;
 }
@@ -22,6 +23,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
   scrollY,
   hidden,
   setIsSearchScreen,
+  setHidden,
   isSearchScreen,
 }) => {
   const theme = useTheme();
@@ -57,11 +59,13 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
   };
 
   const showSearchScreen = () => {
+    setHidden(false);
     setIsSearchScreen(true);
     LayoutAnimation.configureNext(config);
   };
 
   const closeSearchScreen = () => {
+    setHidden(false);
     setIsSearchScreen(false);
     searchRef.current?.blur();
     LayoutAnimation.configureNext(config);
@@ -75,10 +79,20 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
     opacity: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
     scale: searchAnimationValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0.9] }),
   };
+
+  const getHeaderHeight = () => {
+    if (isSearchScreen) {
+      return HEADER_HEIGHT + insets.top;
+    }
+    if (hidden) {
+      return headerHeight;
+    }
+    return HEADER_HEIGHT + insets.top;
+  };
   return (
     <S.CommunityMainAnimatedHeader
       style={{
-        height: hidden ? headerHeight : isSearchScreen ? headerHeight : HEADER_HEIGHT + insets.top,
+        height: getHeaderHeight(),
       }}
     >
       <S.CommunityMainSearchBarWrapper

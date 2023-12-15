@@ -12,9 +12,11 @@ import { MentionUserListProps } from '../MetionUserList';
 
 import * as S from './styled';
 
-type ChatListProps = MentionUserListProps;
+export interface ChatListProps extends MentionUserListProps {
+  paddingBottom?: number;
+}
 
-export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
+export const ChatList: React.FC<ChatListProps> = ({ onMention, paddingBottom = 0 }) => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
@@ -38,14 +40,11 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
   return (
     <S.ChatListContainer>
       <FlatList
-        onEndReached={() => {
-          console.log('onEndReached');
-        }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         data={COMMUNITY_POST.chats}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
+        contentContainerStyle={{ paddingBottom: 10 + paddingBottom, rowGap: 10 }}
         ListHeaderComponent={
           <>
             <CommunityPost

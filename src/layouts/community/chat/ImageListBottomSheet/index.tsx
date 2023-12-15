@@ -317,7 +317,7 @@ export const ImageListBottomSheet = React.forwardRef<
           transform: [{ translateY: buttonTranslateY }],
         }}
       >
-        <Button>선택된 사진 ({selectedPhotos.filter((item) => item).length})</Button>
+        <Button>사진 ({selectedPhotos.filter((item) => item).length}) 보내기</Button>
       </S.ImageListBottomSheetButtonWrapper>
     </>
   );

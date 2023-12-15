@@ -81,6 +81,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
         HEADER_HEIGHT={HEADER_HEIGHT}
         setIsSearchScreen={setIsSearchScreen}
         isSearchScreen={isSearchScreen}
+        setHidden={setHidden}
       />
       {!isSearchScreen ? (
         <FlatList
