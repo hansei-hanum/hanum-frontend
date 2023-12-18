@@ -8,7 +8,6 @@ import { Theme } from '@emotion/react';
 
 import { REPORT_LIST } from 'src/constants';
 import { Text } from 'src/components';
-import { RPH, iosCheckHeight } from 'src/utils';
 
 import * as S from './styled';
 
@@ -47,7 +46,7 @@ export const OptionList: React.FC<OptionListProps> = ({
         numColumns={1}
         contentContainerStyle={{
           width: '100%',
-          paddingBottom: iosCheckHeight ? RPH(10) : RPH(4),
+          paddingBottom: 80,
           paddingTop: 10,
         }}
         initialScrollIndex={0}

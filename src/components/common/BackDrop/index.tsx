@@ -26,7 +26,7 @@ export const BackDrop: React.FC<BackDropProps> = ({
           ...StyleSheet.absoluteFillObject,
           backgroundColor: 'rgba(0,0,0,0.4)',
           paddingBottom: inset.bottom,
-          zIndex: 9998,
+          zIndex: 9999,
         },
         rBackdropStyle,
       ]}

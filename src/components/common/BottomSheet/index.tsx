@@ -21,16 +21,17 @@ import { BackDrop } from '../BackDrop';
 
 import * as S from './styled';
 
-const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
-
 interface BottomSheetProps {
+  maxScrollHeight?: number;
   scrollHeight: number;
   children?: React.ReactNode;
   modalBackDropVisible?: boolean;
 }
 
 export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
-  ({ scrollHeight, children, modalBackDropVisible }: BottomSheetProps, ref) => {
+  ({ scrollHeight, children, modalBackDropVisible, maxScrollHeight }: BottomSheetProps, ref) => {
+    const MAX_TRANSLATE_Y = !maxScrollHeight ? -SCREEN_HEIGHT + 50 : maxScrollHeight - 50;
+
     const theme = useTheme();
     const translateY = useSharedValue(0);
     const active = useSharedValue(false);

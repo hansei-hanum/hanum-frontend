@@ -83,6 +83,7 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     <>
       <BottomSheet
         ref={bottomSheetRef}
+        maxScrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
         scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
         modalBackDropVisible={modalOpen.block || modalOpen.report}
       >

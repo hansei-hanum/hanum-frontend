@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Animated, FlatList, Linking, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Animated,
+  FlatList,
+  Linking,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import ReAnimated, {
@@ -19,16 +26,15 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-roll';
 
 import { useTheme } from '@emotion/react';
+import { Portal } from '@gorhom/portal';
 
-import { BackDrop, Button, Icon, ScaleOpacity, Spinner, Text } from 'src/components';
+import { BackDrop, Button, Icon, ScaleOpacity, Text } from 'src/components';
 import { PhotoPermissionProps } from 'src/screens';
 import { isIos } from 'src/utils';
 import { BottomSheetRefProps } from 'src/types';
 import { SCREEN_HEIGHT } from 'src/constants';
 
 import * as S from './styled';
-
-const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
 
 interface ImageListBottomSheetProps extends AnimatedScrollViewProps {
   scrollHeight: number;
@@ -49,6 +55,7 @@ export const ImageListBottomSheet = React.forwardRef<
   const flatListRef = useRef<FlatList>(null);
 
   const inset = useSafeAreaInsets();
+  const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 20;
 
   const translateY = useSharedValue(0);
   const active = useSharedValue(false);
@@ -99,7 +106,7 @@ export const ImageListBottomSheet = React.forwardRef<
         if (translateY.value > scrollHeight / 1.2) {
           scrollTo(0);
           runOnJS(setSelectedPhotos)([]);
-        } else if (translateY.value < context.value.y) {
+        } else if (translateY.value < context.value.y || -SCREEN_HEIGHT + inset.top) {
           scrollTo(-SCREEN_HEIGHT + inset.top);
           runOnJS(setEnableScroll)(true);
         } else {
@@ -226,15 +233,17 @@ export const ImageListBottomSheet = React.forwardRef<
   }, [selectedPhotos]);
 
   return (
-    <>
+    <Portal>
       <BackDrop
         onTouchStart={onTouchStart}
         rBackdropStyle={rBackdropStyle}
         rBackdropProps={rBackdropProps}
       />
       <GestureDetector gesture={gesture}>
-        <S.ImageListBottomSheetContainer style={rBottomSheetStyle}>
-          <S.ImageListBottomSheetLine />
+        <S.ImageListBottomSheetContainer
+          style={[rBottomSheetStyle, { backgroundColor: theme.background }]}
+        >
+          <S.ImageListBottomSheetLine style={{ backgroundColor: theme.placeholder }} />
           {hasPermission ? (
             <>
               {permission.limited && (
@@ -267,7 +276,7 @@ export const ImageListBottomSheet = React.forwardRef<
                 ListFooterComponent={
                   isLoading ? (
                     <View style={{ marginTop: 10 }}>
-                      <Spinner />
+                      <ActivityIndicator size={26} color={theme.placeholder} />
                     </View>
                   ) : null
                 }
@@ -319,6 +328,6 @@ export const ImageListBottomSheet = React.forwardRef<
       >
         <Button>사진 ({selectedPhotos.filter((item) => item).length}) 보내기</Button>
       </S.ImageListBottomSheetButtonWrapper>
-    </>
+    </Portal>
   );
 });
