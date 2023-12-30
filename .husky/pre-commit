@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "main" ]; then
+  echo "\033[1;31m🚨 메인 브랜치에 직접 커밋을 남길 수 없어요. 브랜치 생성 후 PR을 올려주세요!\033[0m"
+  exit 1
+fi
+
 npm run prepare
