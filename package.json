@@ -3,11 +3,18 @@
   "version": "0.0.1",
   "private": true,
   "repository": "https://github.com/hansei-hanum/hanum-frontend.git",
-  "author": {
-    "name": "GeunWon Choi",
-    "email": "kidjustinchoi@gmail.com",
-    "url": "https://github.com/choi138"
-  },
+  "maintainers": [
+    {
+      "name": "GeunWon Choi",
+      "email": "kidjustinchoi@gmail.com",
+      "url": "https://github.com/choi138"
+    },
+    {
+      "name": "Park Han",
+      "email": "bagkan1211@gmail.com",
+      "url": "https://github.com/phph1211"
+    }
+  ],
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -15,9 +22,12 @@
     "test": "jest",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --fix --cache",
     "format": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
-    "postinstall": "npx react-native setup-ios-permissions && npx pod-install ios"
+    "postinstall": "npx react-native setup-ios-permissions && npx pod-install ios",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@gorhom/bottom-sheet": "^4.4.8",
@@ -93,6 +103,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-native": "^4.0.0",
+    "husky": "^8.0.0",
     "jest": "^29.2.1",
     "metro-react-native-babel-preset": "0.76.8",
     "prettier": "^3.0.3",
