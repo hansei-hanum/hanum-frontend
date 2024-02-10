@@ -7,12 +7,12 @@ import * as S from './styled';
 
 export const WeekDay: React.FC = () => {
   return (
-    <S.ScheduleScreenDayContainer>
+    <S.WeekDayList>
       {DATE_LIST.map((date) => (
-        <S.ScheduleScreenDay key={date}>
+        <S.WeekDayItem key={date}>
           <Text size={16}>{date}</Text>
-        </S.ScheduleScreenDay>
+        </S.WeekDayItem>
       ))}
-    </S.ScheduleScreenDayContainer>
+    </S.WeekDayList>
   );
 };

@@ -11,5 +11,3 @@ export const CalendarTitleContainer = styled.View`
   column-gap: 6px;
   margin-top: 10px;
 `;
-
-export const CalendarScheduleContainer = styled.ScrollView``;

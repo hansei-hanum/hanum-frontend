@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const ScheduleScreenDayContainer = styled.View`
+export const WeekDayList = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -11,7 +11,7 @@ export const ScheduleScreenDayContainer = styled.View`
   padding-top: 40px;
 `;
 
-export const ScheduleScreenDay = styled.View`
+export const WeekDayItem = styled.View`
   flex-grow: 1;
   align-items: center;
   justify-content: center;

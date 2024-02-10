@@ -1,11 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import { ClassList, WeekDay, AuthFailedModal, Spinner, ScheduleContainer } from 'src/components';
+import { TimeTableList, WeekDay, AuthFailedModal, Spinner, TimeTableLayout } from 'src/components';
 import { NUMBER_LIST } from 'src/constants';
 import { useCheckUserType, useGetTimeTable } from 'src/hooks';
 
-export const ScheduleScreen: React.FC = () => {
+export const TimeTableScreen: React.FC = () => {
   const { data, isLoading } = useGetTimeTable();
 
   const { isStudent, modalVisible, setModalVisible } = useCheckUserType();
@@ -19,13 +19,13 @@ export const ScheduleScreen: React.FC = () => {
 
   if (isLoading) {
     return (
-      <ScheduleContainer>
+      <TimeTableLayout>
         <Spinner isCenter />
-      </ScheduleContainer>
+      </TimeTableLayout>
     );
   } else if (isStudent && !isLoading) {
     return (
-      <ScheduleContainer isStudent>
+      <TimeTableLayout isStudent>
         <WeekDay />
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -37,18 +37,18 @@ export const ScheduleScreen: React.FC = () => {
             paddingRight: 10,
           }}
         >
-          <ClassList list={NUMBER_LIST} isNumber />
+          <TimeTableList list={NUMBER_LIST} isNumber />
           {data?.data.map((item) => (
-            <ClassList key={item.date} list={item.data} isToday={checkToday(item.date)} />
+            <TimeTableList key={item.date} list={item.data} isToday={checkToday(item.date)} />
           ))}
         </ScrollView>
-      </ScheduleContainer>
+      </TimeTableLayout>
     );
   } else {
     return (
-      <ScheduleContainer>
+      <TimeTableLayout>
         <AuthFailedModal isStudent modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      </ScheduleContainer>
+      </TimeTableLayout>
     );
   }
 };

@@ -7,23 +7,23 @@ import { ScheduleIcon } from 'src/assets';
 
 import * as S from './styled';
 
-export interface ScheduleContainerProps {
+export interface TimeTableLayoutProps {
   isStudent?: boolean;
   children: React.ReactNode;
 }
 
-export const ScheduleContainer: React.FC<ScheduleContainerProps> = ({ isStudent, children }) => {
+export const TimeTableLayout: React.FC<TimeTableLayoutProps> = ({ isStudent, children }) => {
   const { classroom, grade, department } = useGetUser();
 
   return (
-    <S.ScheduleScreenWrapper>
+    <S.TimeTableContainer>
       <Header>
-        <S.ScheduleScreenIconContainer>
+        <S.TimeTableIconContainer>
           <WithLocalSvg width={32} height={32} asset={ScheduleIcon} />
           <Text size={20} fontFamily="bold">
             시간표
           </Text>
-        </S.ScheduleScreenIconContainer>
+        </S.TimeTableIconContainer>
         {isStudent && (
           <Text size={17}>
             {department} {grade}학년 {classroom}반
@@ -31,6 +31,6 @@ export const ScheduleContainer: React.FC<ScheduleContainerProps> = ({ isStudent,
         )}
       </Header>
       {children}
-    </S.ScheduleScreenWrapper>
+    </S.TimeTableContainer>
   );
 };

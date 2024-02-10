@@ -6,3 +6,4 @@ export * from './formattedMoney';
 export * from './formattedDepartment';
 export * from './responsiveSize';
 export * from './getPrevTimeString';
+export * from './setKoreanLocale';

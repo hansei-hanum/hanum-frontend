@@ -59,7 +59,7 @@ export const Router: React.FC = () => {
       const { data } = await fetchUser();
       setData(data);
     } catch (e) {
-      await AsyncStorage.removeItem('token');
+      // await AsyncStorage.removeItem('token');
       console.log(e, 'error');
     }
   }, []);
@@ -117,7 +117,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'Main'}
+          initialRouteName={data ? 'Main' : 'AuthMain'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
