@@ -47,7 +47,7 @@ export const LunchTableScreen: React.FC = () => {
         <Spinner isCenter />
       </LunchTableContainer>
     );
-  } else if (!isLoading && meal && userData) {
+  } else if (!isLoading && meal && meal?.length > 0 && userData) {
     return (
       <LunchTableContainer>
         <S.LunchTableContainer

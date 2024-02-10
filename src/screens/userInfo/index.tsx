@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import { Button, GoBackIcon, Header, InfoBox, Modal, Text } from 'src/components';
+import { Button, Header, InfoBox, Modal, Text } from 'src/components';
 import { useGetUser, useInitNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets/';
 import { deleteUser, disconnectNotification } from 'src/api';
@@ -48,9 +48,7 @@ export const UserInfoScreen: React.FC = () => {
   return (
     <>
       <S.UserInfoWrapper>
-        <Header>
-          <GoBackIcon />
-        </Header>
+        <Header hasGoBackIcon />
         {userData && (
           <S.UserInfoContainer>
             <S.UserInfoProfileContainer>

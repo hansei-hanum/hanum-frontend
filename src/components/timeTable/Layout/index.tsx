@@ -1,5 +1,4 @@
 import React from 'react';
-import { WithLocalSvg } from 'react-native-svg';
 
 import { Header, Text } from 'src/components';
 import { useGetUser } from 'src/hooks';
@@ -17,13 +16,7 @@ export const TimeTableLayout: React.FC<TimeTableLayoutProps> = ({ isStudent, chi
 
   return (
     <S.TimeTableContainer>
-      <Header>
-        <S.TimeTableIconContainer>
-          <WithLocalSvg width={32} height={32} asset={ScheduleIcon} />
-          <Text size={20} fontFamily="bold">
-            시간표
-          </Text>
-        </S.TimeTableIconContainer>
+      <Header hasIconContainer={{ icon: ScheduleIcon, text: '시간표' }}>
         {isStudent && (
           <Text size={17}>
             {department} {grade}학년 {classroom}반

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { WithLocalSvg } from 'react-native-svg';
 import { Switch } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
@@ -46,13 +44,7 @@ export const LunchTableContainer: React.FC<LunchTableContainerProps> = ({ childr
 
   return (
     <S.LunchTableWrapper>
-      <Header>
-        <View style={{ flexDirection: 'row', columnGap: 6, alignItems: 'center' }}>
-          <WithLocalSvg width={34} height={34} asset={MealIcon} />
-          <Text size={20} fontFamily="bold">
-            급식표
-          </Text>
-        </View>
+      <Header hasIconContainer={{ icon: MealIcon, text: '급식표' }}>
         <S.LunchTableAlertContainer>
           <Text size={17} fontFamily="medium">
             매일 아침 알림 받기

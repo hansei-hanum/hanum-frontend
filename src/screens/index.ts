@@ -4,7 +4,7 @@ export * from './showMore';
 export * from './hanumPay';
 export * from './timeTable';
 export * from './main';
-export * from './calendar';
+export * from './schedule';
 export * from './userInfo';
 export * from './webView';
 export * from './eoullim';

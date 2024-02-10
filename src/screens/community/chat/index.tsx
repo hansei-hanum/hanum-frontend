@@ -14,7 +14,6 @@ import { useTheme } from '@emotion/react';
 import {
   CommunityPostHeader,
   CommunityUserImage,
-  GoBackIcon,
   Header,
   ScaleOpacity,
   Text,
@@ -269,8 +268,8 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
       <Header
         isRow
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
+        hasGoBackIcon
       >
-        <GoBackIcon />
         <CommunityPostHeader
           {...COMMUNITY_POST}
           style={{ flex: 1 }}
