@@ -7,4 +7,4 @@ export * from './userInfo';
 export * from './hanumPay';
 export * from './eoullim';
 export * from './community';
-export * from './LunchTableContainer';
+export * from './mealTable';

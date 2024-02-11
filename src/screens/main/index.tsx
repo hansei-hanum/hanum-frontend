@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { useTheme } from '@emotion/react';
 
-import { HomeScreen, ShowMoreScreen, TimeTableScreen, LunchTableScreen } from 'src/screens';
+import { HomeScreen, ShowMoreScreen, TimeTableScreen, MealTableScreen } from 'src/screens';
 import { isIos } from 'src/utils';
 
 import { CommunityMainScreen } from '../community';
@@ -69,7 +69,7 @@ export const MainScreen: React.FC = () => {
       />
       <BottomTab.Screen
         name="Meal"
-        component={LunchTableScreen}
+        component={MealTableScreen}
         options={{
           title: '급식표',
           tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,

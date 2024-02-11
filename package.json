@@ -51,7 +51,7 @@
     "global": "^4.4.0",
     "lottie-react-native": "6.2.0",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.5.43",
+    "moment-timezone": "^0.5.45",
     "patch-package": "^8.0.0",
     "path": "^0.12.7",
     "react-dom": "^18.2.0",

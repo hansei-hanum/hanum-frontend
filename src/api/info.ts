@@ -9,12 +9,13 @@ export interface GetMonthScheduleValue {
   month: string;
 }
 
-export interface GetMealValue extends GetMonthScheduleValue {}
+export interface GetLunchMenusValue extends GetMonthScheduleValue {}
 
-export interface GetMealResponse {
+export interface GetLunchMenusResponse {
   date: string;
   kcal: number;
   menus: string[];
+  picture?: string;
 }
 
 export const getSchedule = async () => {
@@ -32,7 +33,7 @@ export const getTimeTable = async () => {
   return data;
 };
 
-export const getMeal = async ({ month }: GetMealValue) => {
+export const getMealTable = async ({ month }: GetLunchMenusValue) => {
   const { data } = await infoInstance.get(`${API_SUFFIX.MEAL}${month}`);
   return data;
 };

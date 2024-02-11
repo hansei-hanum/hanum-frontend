@@ -3,7 +3,7 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 
 import { Spinner, Text } from 'src/components';
-import { useGetMealData } from 'src/hooks';
+import { useGetMealTable } from 'src/hooks';
 
 import { Content } from '../Content';
 
@@ -14,11 +14,13 @@ export interface LunchTableProps {
 }
 
 export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
-  const { meal, isLoading } = useGetMealData();
+  const date = new Date();
+
+  const { data, isLoading } = useGetMealTable({ month: `${date.getMonth() + 1}` });
 
   const today = new Date();
 
-  const filterMeal = meal?.filter((meal) => new Date(meal.date).getDate() === today.getDate());
+  const filterMeal = data?.data.filter((meal) => new Date(meal.date).getDate() === today.getDate());
 
   const theme = useTheme();
 

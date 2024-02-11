@@ -9,7 +9,7 @@ import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
 import { Icon, PostSettingForm, ScaleOpacity, Text } from 'src/components';
-import { LIMITED_VISIBLE_TYPE_LIST, VISIBLE_TYPE_LIST } from 'src/constants/visibleType';
+import { LIMITED_VISIBLE_TYPE_LIST, VISIBLE_TYPE_LIST } from 'src/constants/community/visibleTypes';
 import { visibleTypeAtom } from 'src/atoms';
 
 import * as S from './styled';

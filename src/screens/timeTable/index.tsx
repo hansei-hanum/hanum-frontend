@@ -33,8 +33,7 @@ export const TimeTableScreen: React.FC = () => {
           contentContainerStyle={{
             flexDirection: 'row',
             alignItems: 'center',
-            paddingLeft: 10,
-            paddingRight: 10,
+            paddingHorizontal: 10,
           }}
         >
           <TimeTableList list={NUMBER_LIST} isNumber />

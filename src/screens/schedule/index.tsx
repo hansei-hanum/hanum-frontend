@@ -120,6 +120,7 @@ export const CalendarScreen: React.FC = () => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
+            bounces={false}
             contentContainerStyle={{
               padding: 20,
               rowGap: 20,

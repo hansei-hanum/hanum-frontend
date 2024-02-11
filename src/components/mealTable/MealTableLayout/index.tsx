@@ -8,15 +8,15 @@ import { useTheme } from '@emotion/react';
 
 import { MealIcon } from 'src/assets';
 
-import { Header, Text } from '../common';
+import { Header, Text } from '../../common';
 
 import * as S from './styled';
 
-export interface LunchTableContainerProps {
+export interface MealTableLayoutProps {
   children: React.ReactNode;
 }
 
-export const LunchTableContainer: React.FC<LunchTableContainerProps> = ({ children }) => {
+export const MealTableLayout: React.FC<MealTableLayoutProps> = ({ children }) => {
   const theme = useTheme();
 
   const [notifyClick, setNotifyClick] = useState<boolean>(false);
@@ -43,9 +43,9 @@ export const LunchTableContainer: React.FC<LunchTableContainerProps> = ({ childr
   }, []);
 
   return (
-    <S.LunchTableWrapper>
+    <S.MealTableLayoutContainer>
       <Header hasIconContainer={{ icon: MealIcon, text: '급식표' }}>
-        <S.LunchTableAlertContainer>
+        <S.MealTableLayoutAlertContainer>
           <Text size={17} fontFamily="medium">
             매일 아침 알림 받기
           </Text>
@@ -57,9 +57,9 @@ export const LunchTableContainer: React.FC<LunchTableContainerProps> = ({ childr
             onValueChange={toggleNotifyClick}
             value={notifyClick}
           />
-        </S.LunchTableAlertContainer>
+        </S.MealTableLayoutAlertContainer>
       </Header>
       {children}
-    </S.LunchTableWrapper>
+    </S.MealTableLayoutContainer>
   );
 };
