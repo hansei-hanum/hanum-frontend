@@ -72,40 +72,6 @@ export const CommunityPostTextInput = styled.TextInput`
   flex: 1;
 `;
 
-export const CommunityBottomSheetListContainer = styled.View`
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const CommunityBottomSheetList = styled(CommunityBottomSheetListContainer)`
-  width: auto;
-  column-gap: 10px;
-  justify-content: center;
-`;
-
-export const CommunityPostImageWrapper = styled.View`
-  position: relative;
-`;
-
-export const CommunityPostImage = styled.Image`
-  width: 130px;
-  height: 130px;
-  border-radius: 16px;
-  border-color: ${({ theme }) => theme.secondary};
-  border-width: 1px;
-`;
-
-export const CommunityPostImageIconWrapper = styled.View`
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-radius: 50px;
-  margin: 6px;
-  background-color: ${({ theme }) => theme.modalBg};
-`;
-
 export const CommunityPostIconContainer = styled(Animated.View)`
   width: 100%;
   border-top-color: ${({ theme }) => theme.secondary};

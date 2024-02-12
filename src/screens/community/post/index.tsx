@@ -3,35 +3,83 @@ import React, { useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import { TextInput } from 'react-native';
 import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Animated } from 'react-native';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { CommunityHeader, Icon, ScaleOpacity, Text } from 'src/components';
-import { useGetUser, useNavigate } from 'src/hooks';
+import { CommunityHeader, Icon, ImageCard, OptionCard, ScaleOpacity, Text } from 'src/components';
+import { useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
-import { POST_OPTION_LIST, PostOptionEnum } from 'src/constants';
-import { visibleTypeAtom } from 'src/atoms';
+import {
+  ANONYMITY_OPTION_LIST,
+  POST_OPTION_LIST,
+  PostOptionEnum,
+  VISIBLE_TYPE_LIST,
+} from 'src/constants';
+import { anonymityTypeAtom, visibleTypeAtom } from 'src/atoms';
 import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
-export const CommunityPostScreen: React.FC = () => {
+const UserSection: React.FC = () => {
+  const theme = useTheme();
+  const { userProfile, userData } = useGetUser();
+
   const visibleType = useRecoilValue(visibleTypeAtom);
+
+  const setVisibleTypeText = () => {
+    switch (visibleType.text) {
+      case '모두에게 공개':
+        return '전체';
+      case '제한적 공개':
+        return '제한됨';
+      case '학생 공개':
+        return '학생';
+      default:
+        return '';
+    }
+  };
+
+  return (
+    <S.CommunityPostUserSection>
+      <S.CommunityPostUserImage
+        resizeMode="contain"
+        source={userProfile ? { uri: userProfile } : UserLogo}
+      />
+      <View style={{ rowGap: 2 }}>
+        <Text size={16}>{userData?.name || '박찬영'}</Text>
+        <S.CommunityPostVisibleTypeWrapper>
+          {visibleType.text === '모두에게 공개' && (
+            <MI name="public" size={16} color={theme.white} />
+          )}
+          {visibleType.text === '제한적 공개' && <MI name="lock" size={16} color={theme.white} />}
+          {visibleType.text === '학생 공개' && (
+            <MCI name="account-group" size={16} color={theme.white} />
+          )}
+          <Text size={12} color={theme.white} fontFamily="bold">
+            공개범위: {setVisibleTypeText()}
+          </Text>
+        </S.CommunityPostVisibleTypeWrapper>
+      </View>
+    </S.CommunityPostUserSection>
+  );
+};
+
+export const CommunityPostScreen: React.FC = () => {
+  const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
+  const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
+
+  const { animation } = useSetAnimation();
 
   const navigate = useNavigate();
 
   const textInputRef = useRef<TextInput>(null);
 
   const theme = useTheme();
-
-  const { userProfile, userData } = useGetUser();
 
   const [text, setText] = useState<string>('');
   const [selectedImage, setSelectedImage] = useState<(string | undefined)[]>();
@@ -57,7 +105,6 @@ export const CommunityPostScreen: React.FC = () => {
         return openImagePicker();
       case PostOptionEnum.VISIBLE:
         return navigate('CommunityVisibleType');
-
       case PostOptionEnum.ANONYMOUS:
         return navigate('CommunityAnonymitySettings');
     }
@@ -85,43 +132,30 @@ export const CommunityPostScreen: React.FC = () => {
   };
 
   const onKeyboardShow = () => {
-    Animated.timing(keyboardOptionTranslateY, {
-      toValue: isIos ? -10 : 0,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-    Animated.timing(keyboardOptionOpacity, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+    animation({ animation: keyboardOptionTranslateY, value: isIos ? -10 : 0, duration: 400 });
+    animation({ animation: keyboardOptionOpacity, value: 1, duration: 200 });
     setKeyboardShow(true);
   };
 
   const onKeyboardHide = () => {
-    Animated.timing(keyboardOptionTranslateY, {
-      toValue: 0,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-    Animated.timing(keyboardOptionOpacity, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
+    animation({ animation: keyboardOptionTranslateY, value: 0, duration: 400 });
+    animation({ animation: keyboardOptionOpacity, value: 0, duration: 200 });
     setKeyboardShow(false);
+  };
+
+  const onPost = () => {
+    setText('');
+    console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
+    setVisibleType({ text: VISIBLE_TYPE_LIST[0].text, limitType: '' });
+    setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
   };
 
   return (
     <S.CommunityPostWrapper>
       <CommunityHeader
         title="게시글 작성하기"
-        leftContent={
-          <ScaleOpacity
-            onPress={() => {
-              setText('');
-            }}
-          >
+        rightContent={
+          <ScaleOpacity onPress={onPost}>
             <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
               공유
             </Text>
@@ -135,26 +169,7 @@ export const CommunityPostScreen: React.FC = () => {
       >
         <S.CommunityPostSection style={{ flexGrow: 1 }}>
           <TouchableWithoutFeedback onPress={onTextInputBlur}>
-            <S.CommunityPostUserSection>
-              <S.CommunityPostUserImage
-                resizeMode="contain"
-                source={userProfile ? { uri: userProfile } : UserLogo}
-              />
-              <View style={{ rowGap: 2 }}>
-                <Text size={16}>{userData?.name || '박찬영'}</Text>
-                <S.CommunityPostVisibleTypeWrapper>
-                  {visibleType === 'ALL' && <MI name="public" size={16} color={theme.white} />}
-                  {visibleType === 'LIMITED' && <MI name="lock" size={16} color={theme.white} />}
-                  {visibleType === 'STUDENT' && (
-                    <MCI name="account-group" size={16} color={theme.white} />
-                  )}
-                  <Text size={12} color={theme.white} fontFamily="bold">
-                    공개범위:{' '}
-                    {visibleType === 'ALL' ? '전체' : visibleType === 'LIMITED' ? '제한됨' : '학생'}
-                  </Text>
-                </S.CommunityPostVisibleTypeWrapper>
-              </View>
-            </S.CommunityPostUserSection>
+            <UserSection />
           </TouchableWithoutFeedback>
           <S.CommunityPostTextInput
             ref={textInputRef}
@@ -181,37 +196,20 @@ export const CommunityPostScreen: React.FC = () => {
                 }}
               >
                 {selectedImage?.map((item, index) => (
-                  <ScaleOpacity
-                    onPress={() => {
-                      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
-                    }}
-                  >
-                    <S.CommunityPostImageWrapper key={item}>
-                      <S.CommunityPostImage source={{ uri: item }} />
-                      <S.CommunityPostImageIconWrapper>
-                        <Icons name="close" size={26} color={theme.default} />
-                      </S.CommunityPostImageIconWrapper>
-                    </S.CommunityPostImageWrapper>
-                  </ScaleOpacity>
+                  <ImageCard
+                    key={item}
+                    item={item}
+                    index={index}
+                    setSelectedImage={setSelectedImage}
+                    selectedImage={selectedImage}
+                  />
                 ))}
               </ScrollView>
             )}
           </S.CommunityPostImageSection>
           <S.CommunityPostSection>
-            {POST_OPTION_LIST.map(({ icon, text }, index) => (
-              <ScaleOpacity
-                key={index}
-                onPress={() => onOptionClick(text)}
-                style={{ width: '100%' }}
-              >
-                <S.CommunityBottomSheetListContainer>
-                  <S.CommunityBottomSheetList>
-                    <Icon icon={icon} includeBackground={false} />
-                    <Text size={15}>{text}</Text>
-                  </S.CommunityBottomSheetList>
-                  <Entypo name="chevron-thin-right" size={20} color={theme.placeholder} />
-                </S.CommunityBottomSheetListContainer>
-              </ScaleOpacity>
+            {POST_OPTION_LIST.map((props, index) => (
+              <OptionCard key={index} index={index} onOptionClick={onOptionClick} {...props} />
             ))}
           </S.CommunityPostSection>
         </View>

@@ -8,23 +8,28 @@ import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
 import { AnonymitySettingsCard, PostSettingForm } from 'src/components';
-import { ANONYMITY_OPTION_LIST } from 'src/constants';
+import { ANONYMITY_OPTION_LIST, AnonymityOptionItems } from 'src/constants';
 import { isIos } from 'src/utils';
 import { fonts } from 'src/styles';
 import { anonymityTypeAtom } from 'src/atoms';
+import { useSetAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
-export type AnonymityActiveOptionType = { [key in string]?: string };
+export type AnonymityActiveOptionType = {
+  [key in AnonymityOptionItems['title'] | string]?: string;
+};
 
 export const AnonymitySettingsScreen: React.FC = () => {
+  const { animation } = useSetAnimation();
+
   const [anonymityType, setAnonymityType] = useRecoilState(anonymityTypeAtom);
 
   const navigation = useNavigation();
 
   const theme = useTheme();
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const nicknameAnimation = useRef(new Animated.Value(0)).current;
 
   const [nickname, setNickname] = useState<string>('');
 
@@ -46,33 +51,25 @@ export const AnonymitySettingsScreen: React.FC = () => {
       newState[option] = option;
       return newState;
     });
-    textInputAnimation(index === 2 ? 1 : 0);
+    animation({ animation: nicknameAnimation, value: index === 2 ? 1 : 0 });
   };
 
   const onChangeText = (text: string) => {
     setNickname(text);
   };
 
-  const textInputAnimation = (value: number) => {
-    Animated.timing(fadeAnim, {
-      toValue: value,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const isFocused = useIsFocused();
-
   const onComplete = () => {
     const type = Object.entries(activeOption).find(([key, value]) => value !== '');
-    type && setAnonymityType(type[0]);
+    type && setAnonymityType(type[0] as AnonymityOptionItems['title']);
 
     navigation.goBack();
   };
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     if (isFocused && anonymityType === ANONYMITY_OPTION_LIST[2].title) {
-      textInputAnimation(1);
+      animation({ animation: nicknameAnimation, value: 1 });
     }
   }, [anonymityType, isFocused]);
 
@@ -93,7 +90,7 @@ export const AnonymitySettingsScreen: React.FC = () => {
           />
         ))}
       </S.AnonymitySettingsContainer>
-      <S.AnonymityNicknameWrapper style={{ opacity: fadeAnim }}>
+      <S.AnonymityNicknameWrapper style={{ opacity: nicknameAnimation }}>
         <TextInput
           placeholder="사용할 닉네임을 입력하세요"
           placeholderTextColor={theme.placeholder}

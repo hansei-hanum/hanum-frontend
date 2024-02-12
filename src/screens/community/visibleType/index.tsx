@@ -1,21 +1,23 @@
-import React, { useRef, useState } from 'react';
-import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Switch } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
-import { Icon, PostSettingForm, ScaleOpacity, Text } from 'src/components';
+import { PostSettingForm, Text, VisibleTypeCard } from 'src/components';
 import { LIMITED_VISIBLE_TYPE_LIST, VISIBLE_TYPE_LIST, VisibleTypeItems } from 'src/constants';
 import { visibleTypeAtom } from 'src/atoms';
+import { useSetAnimation } from 'src/hooks';
 
 import * as S from './styled';
 
-type ActiveOptionState = { [key in VisibleTypeItems['text']]?: string };
+export type VisibleActiveOptionType = { [key in VisibleTypeItems['text'] | string]?: string };
 
 export const VisibleTypeScreen: React.FC = () => {
+  const { animation } = useSetAnimation();
+
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
 
   const navigation = useNavigation();
@@ -24,54 +26,64 @@ export const VisibleTypeScreen: React.FC = () => {
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const [activeOption, setActiveOption] = useState<ActiveOptionState>(() => {
-    const initialState: ActiveOptionState = {};
+  const [activeOption, setActiveOption] = useState<VisibleActiveOptionType>(() => {
+    const initialState: VisibleActiveOptionType = {};
     VISIBLE_TYPE_LIST.filter(({ text }) => {
-      initialState[text] = visibleType === text ? text : '';
+      initialState[text] = visibleType.text === text ? text : '';
     });
     return initialState;
   });
 
   const onOptionClick = (index: number) => {
     const option = VISIBLE_TYPE_LIST[index].text;
-    setActiveOption({ [option]: option });
-    setVisibleType(option);
-    Animated.timing(fadeAnim, {
-      toValue: index === 2 ? 1 : 0,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
+    setActiveOption((prev) => {
+      const newState = Object.keys(prev).reduce((acc, key) => {
+        acc[key] = '';
+        return acc;
+      }, {} as VisibleActiveOptionType);
+      newState[option] = option;
+      return newState;
+    });
+    animation({ animation: fadeAnim, value: index === 2 ? 1 : 0 });
   };
 
   const [limitedSelectedType, setLimitedSelectedType] = useState(
-    LIMITED_VISIBLE_TYPE_LIST.map((_, i) => (i === 0 ? true : false)),
+    LIMITED_VISIBLE_TYPE_LIST.map((item) => (item === visibleType.limitType ? true : false)),
   );
 
   const onPressLimitedVisibleType = (index: number) => {
     setLimitedSelectedType((prev) => prev.map((_, i) => (i === index ? true : false)));
   };
 
+  const onComplete = () => {
+    const type = Object.entries(activeOption).find(([key, value]) => value !== '');
+    type &&
+      setVisibleType({
+        text: type[0] as VisibleTypeItems['text'],
+        limitType: LIMITED_VISIBLE_TYPE_LIST.filter((_, i) => limitedSelectedType[i]).toString(),
+      });
+
+    navigation.goBack();
+  };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused && visibleType.text === VISIBLE_TYPE_LIST[2].text) {
+      animation({ animation: fadeAnim, value: 1 });
+    }
+  }, [visibleType, isFocused]);
+
   return (
-    <PostSettingForm
-      headerTitle="공개 범위"
-      onButtonPress={() => {
-        navigation.goBack();
-      }}
-    >
-      {VISIBLE_TYPE_LIST.map(({ icon, text }, index) => (
-        <ScaleOpacity onPress={() => onOptionClick(index)}>
-          <S.VisibleTypeListContainer>
-            <S.VisibleTypeList>
-              <Icon icon={icon} size={34} includeBackground={false} />
-              <Text size={18}>{text}</Text>
-            </S.VisibleTypeList>
-            <MCI
-              name={activeOption[text] ? 'circle-slice-8' : 'circle-outline'}
-              size={30}
-              color={activeOption[text] ? theme.primary : theme.placeholder}
-            />
-          </S.VisibleTypeListContainer>
-        </ScaleOpacity>
+    <PostSettingForm headerTitle="공개 범위" onButtonPress={onComplete}>
+      {VISIBLE_TYPE_LIST.map((props, index) => (
+        <VisibleTypeCard
+          key={index}
+          index={index}
+          activeOption={activeOption}
+          onOptionClick={onOptionClick}
+          {...props}
+        />
       ))}
       <S.VisibleTypeBoxContainer style={{ opacity: fadeAnim }}>
         {LIMITED_VISIBLE_TYPE_LIST.map((item, index) => (

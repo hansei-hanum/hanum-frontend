@@ -7,15 +7,15 @@ import * as S from './styled';
 
 export interface CommunityHeaderProps {
   title: string;
-  leftContent?: React.ReactNode;
+  rightContent?: React.ReactNode;
 }
 
-export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ title, leftContent }) => {
+export const CommunityHeader: React.FC<CommunityHeaderProps> = ({ title, rightContent }) => {
   return (
     <S.CommunityHeaderContainer>
       <GoBackIcon />
       <Text size={16}>{title}</Text>
-      {!leftContent ? <View style={{ flexGrow: 0.1 }} /> : <>{leftContent}</>}
+      {!rightContent ? <View style={{ flexGrow: 0.1 }} /> : <>{rightContent}</>}
     </S.CommunityHeaderContainer>
   );
 };

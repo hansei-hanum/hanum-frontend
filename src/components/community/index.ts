@@ -5,3 +5,5 @@ export * from './UserImage';
 export * from './Header';
 export * from './PostSettingForm';
 export * from './AnonymitySettingsCard';
+export * from './VisibleTypeCard';
+export * from './posts';
