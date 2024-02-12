@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import { Button, MealTableCard, MealTableLayout, Modal, Spinner } from 'src/components';
-import { useGetMealTable, useGetUser } from 'src/hooks';
+import { useGetMealTable, useGetUser, useModal } from 'src/hooks';
 import { GetLunchMenusResponse } from 'src/api';
 
 import * as S from './styled';
@@ -16,7 +16,7 @@ export const MealTableScreen: React.FC = () => {
   const { data, isLoading } = useGetMealTable({ month: `${date.getMonth() + 1}` });
   const mealData = data?.data;
 
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { open, close, isOpen } = useModal();
 
   const filteredMealList = mealData?.filter(
     (meal) => new Date(meal.date).getDate() >= date.getDate(),
@@ -28,7 +28,7 @@ export const MealTableScreen: React.FC = () => {
 
   useEffect(() => {
     if ((isFocused && !userData) || (isFocused && Boolean(!mealData?.length) && !isLoading)) {
-      setModalVisible(true);
+      open();
     }
   }, [isFocused]);
 
@@ -71,13 +71,13 @@ export const MealTableScreen: React.FC = () => {
     return (
       <MealTableLayout>
         <Modal
-          modalVisible={modalVisible}
+          modalVisible={isOpen}
           title="오류"
           text={'급식 정보를 불러오는데 실패했습니다.\n' + '다시 시도해주세요.'}
           button={
             <Button
               onPress={() => {
-                navigation.goBack(), setModalVisible(false);
+                navigation.goBack(), close();
               }}
             >
               확인

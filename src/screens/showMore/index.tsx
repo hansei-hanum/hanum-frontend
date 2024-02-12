@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
-import { Text, Section, Header } from 'src/components';
+import { Text, Section, Header, Spinner } from 'src/components';
 import { useGetUser, useNavigate, usePressingAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import { themeAtom } from 'src/atoms';
@@ -24,7 +24,7 @@ export const ShowMoreScreen: React.FC = () => {
   const navigate = useNavigate();
   const { handlePressIn, handlePressOut, animatedStyle } = usePressingAnimation();
 
-  const { userData, userProfile, verifyUser, formatUser } = useGetUser();
+  const { userData, userProfile, verifyUser, formatUser, isLoading } = useGetUser();
 
   const setTheme = async () => {
     setThemeValue(themeValue === 'dark' ? 'light' : 'dark');
@@ -76,43 +76,48 @@ export const ShowMoreScreen: React.FC = () => {
             }}
           />
         </Header>
-        {userData && (
-          <S.ShowMoreScreenContainer>
-            <TouchableOpacity
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}
-              activeOpacity={1}
-              onPress={() => navigate('UserInfo')}
-            >
-              <S.ShowMoreUserContainer style={[animatedStyle]}>
-                <S.ShowMoreUserInfo>
-                  <S.ShowMoreUserImage
-                    source={userProfile ? userProfile : UserLogo}
-                    style={{
-                      resizeMode: 'contain',
-                      borderColor: theme.lightGray,
-                      borderWidth: 1,
-                    }}
-                  />
-                  <S.ShowMoreUserNameContainer>
-                    <Text size={18} fontFamily="bold">
-                      {userData?.name}
-                    </Text>
-                    <Text
-                      size={13}
-                      fontFamily="medium"
-                      color={verifyUser ? theme.default : theme.danger}
-                    >
-                      {verifyUser ? `${formatUser()}` : '정회원 인증 안 됨'}
-                    </Text>
-                  </S.ShowMoreUserNameContainer>
-                </S.ShowMoreUserInfo>
-                <MaterialIcons name="chevron-right" size={30} color={theme.placeholder} />
-              </S.ShowMoreUserContainer>
-            </TouchableOpacity>
-            <Section />
-          </S.ShowMoreScreenContainer>
-        )}
+        <S.ShowMoreScreenContainer>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            !isLoading &&
+            userData && (
+              <TouchableOpacity
+                onPressIn={handlePressIn}
+                onPressOut={handlePressOut}
+                activeOpacity={1}
+                onPress={() => navigate('UserInfo')}
+              >
+                <S.ShowMoreUserContainer style={[animatedStyle]}>
+                  <S.ShowMoreUserInfo>
+                    <S.ShowMoreUserImage
+                      source={userProfile ? userProfile : UserLogo}
+                      style={{
+                        resizeMode: 'contain',
+                        borderColor: theme.lightGray,
+                        borderWidth: 1,
+                      }}
+                    />
+                    <S.ShowMoreUserNameContainer>
+                      <Text size={18} fontFamily="bold">
+                        {userData?.name}
+                      </Text>
+                      <Text
+                        size={13}
+                        fontFamily="medium"
+                        color={verifyUser ? theme.default : theme.danger}
+                      >
+                        {verifyUser ? `${formatUser()}` : '정회원 인증 안 됨'}
+                      </Text>
+                    </S.ShowMoreUserNameContainer>
+                  </S.ShowMoreUserInfo>
+                  <MaterialIcons name="chevron-right" size={30} color={theme.placeholder} />
+                </S.ShowMoreUserContainer>
+              </TouchableOpacity>
+            )
+          )}
+          <Section />
+        </S.ShowMoreScreenContainer>
       </ScrollView>
     </S.ShowMoreScreenWrapper>
   );

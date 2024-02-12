@@ -9,3 +9,4 @@ export * from './useBlockGesture';
 export * from './useGetUser';
 export * from './useGetImagesHeight';
 export * from './useBottomSheet';
+export * from './useModal';
