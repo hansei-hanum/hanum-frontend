@@ -34,7 +34,7 @@ const CalendarThemeOptions = (theme: Theme) => ({
   monthTextColor: theme.default,
 });
 
-export const CalendarScreen: React.FC = () => {
+export const ScheduleScreen: React.FC = () => {
   setKoreanLocale();
 
   const theme = useTheme();

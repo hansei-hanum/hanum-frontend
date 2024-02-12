@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,9 +24,9 @@ import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
-export type CommunityMainScreenProps = StackScreenProps<RootStackParamList, 'Main'>;
+export type CommunityMainScreenProps = StackScreenProps<RootStackParamList, 'CommunityMain'>;
 
-export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ navigation }) => {
+export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ navigation }: any) => {
   const inset = useSafeAreaInsets();
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();

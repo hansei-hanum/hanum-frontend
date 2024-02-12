@@ -25,7 +25,7 @@ export type RootStackParamList = {
   VerifyCode: undefined;
   Verify: undefined;
   Main: undefined;
-  Calendar: undefined;
+  Schedule: undefined;
   UserInfo: undefined;
   WebView: undefined;
   HanumPayMain: undefined;
@@ -37,6 +37,7 @@ export type RootStackParamList = {
   EoullimTimeTable: undefined;
   EoullimRaffle: undefined;
   EoullimStatus: undefined;
+  CommunityMain: undefined;
   CommunityChat: { id: number };
   CommunityPost: undefined;
   CommunityVisibleType: undefined;
@@ -128,7 +129,7 @@ export const Router: React.FC = () => {
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="Main" component={SC.MainScreen} />
-            <Stack.Screen name="Calendar" component={SC.CalendarScreen} />
+            <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
             <Stack.Screen name="UserInfo" component={SC.UserInfoScreen} />
             <Stack.Screen name="WebView" component={SC.WebViewScreen} />
           </Stack.Group>

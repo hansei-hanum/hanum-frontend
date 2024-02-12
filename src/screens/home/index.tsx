@@ -20,7 +20,7 @@ import { Logo, WhiteLogo } from '../../../assets/images';
 
 import * as S from './styled';
 
-export const HomeScreen: React.FC = ({ navigation }: any) => {
+export const HomeScreen: React.FC = () => {
   const theme = useTheme();
 
   const themeValue = useRecoilValue(themeAtom);
@@ -60,10 +60,6 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         hideOnPress: false,
       });
     });
-  };
-
-  const onPress = () => {
-    navigation.navigate('Meal');
   };
 
   useEffect(() => {
@@ -167,7 +163,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
           mainText="실시간으로 보기"
         /> */}
         <Timer />
-        <LunchTable onPress={onPress} />
+        <LunchTable />
         <Calendar />
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>

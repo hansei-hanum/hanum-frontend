@@ -76,9 +76,10 @@ export const MainScreen: React.FC = () => {
         }}
       />
       <BottomTab.Screen
-        name="대나무숲"
+        name="Community"
         component={CommunityMainScreen}
         options={{
+          title: '대나무숲',
           tabBarIcon: ({ color }) => <Icons name="article" size={size + 4} color={color} />,
         }}
       />
