@@ -1,5 +1,5 @@
 export interface VisibleTypeItems {
-  text: string;
+  text: '모두에게 공개' | '학생 공개' | '제한적 공개';
   icon: string;
 }
 

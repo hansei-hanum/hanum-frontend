@@ -1,5 +1,5 @@
 export interface AnonymityOptionItems {
-  title: string;
+  title: '설명 표시' | '익명으로 표시' | '닉네임 사용';
   description: string;
   icon: string;
 }

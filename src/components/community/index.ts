@@ -4,3 +4,4 @@ export * from './Chat';
 export * from './UserImage';
 export * from './Header';
 export * from './PostSettingForm';
+export * from './AnonymitySettingsCard';

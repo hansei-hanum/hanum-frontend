@@ -23,8 +23,8 @@ export const ShowMoreScreen: React.FC = () => {
         <S.ShowMoreScreenContainer>
           {isLoading ? <Spinner /> : !isLoading && userData && <UserSection />}
           <S.SectionContainer>
-            {SHOW_MORE_LIST.map(({ name, section }) => (
-              <ShowMoreSection name={name} section={section} />
+            {SHOW_MORE_LIST.map(({ name, section }, i) => (
+              <ShowMoreSection name={name} section={section} key={i} />
             ))}
           </S.SectionContainer>
         </S.ShowMoreScreenContainer>

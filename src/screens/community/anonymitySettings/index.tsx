@@ -1,77 +1,105 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TextInput } from 'react-native';
-import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Animated } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilState } from 'recoil';
 
-import { Icon, PostSettingForm, ScaleOpacity, Text } from 'src/components';
+import { AnonymitySettingsCard, PostSettingForm } from 'src/components';
 import { ANONYMITY_OPTION_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
 import { fonts } from 'src/styles';
+import { anonymityTypeAtom } from 'src/atoms';
 
 import * as S from './styled';
 
+export type AnonymityActiveOptionType = { [key in string]?: string };
+
 export const AnonymitySettingsScreen: React.FC = () => {
+  const [anonymityType, setAnonymityType] = useRecoilState(anonymityTypeAtom);
+
   const navigation = useNavigation();
 
   const theme = useTheme();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const [text, setText] = useState<string>('');
-  const [selectedOption, setSelectedOption] = useState(
-    ANONYMITY_OPTION_LIST.map((_, i) => (i === 0 ? true : false)),
-  );
+  const [nickname, setNickname] = useState<string>('');
+
+  const [activeOption, setActiveOption] = useState<AnonymityActiveOptionType>(() => {
+    const initialState: AnonymityActiveOptionType = {};
+    ANONYMITY_OPTION_LIST.filter(({ title }) => {
+      initialState[title] = anonymityType === title ? title : '';
+    });
+    return initialState;
+  });
 
   const onPressVisibleType = (index: number) => {
-    setSelectedOption((prev) => prev.map((_, i) => (i === index ? true : false)));
+    const option = ANONYMITY_OPTION_LIST[index].title;
+    setActiveOption((prev) => {
+      const newState = Object.keys(prev).reduce((acc, key) => {
+        acc[key] = '';
+        return acc;
+      }, {} as AnonymityActiveOptionType);
+      newState[option] = option;
+      return newState;
+    });
+    textInputAnimation(index === 2 ? 1 : 0);
+  };
+
+  const onChangeText = (text: string) => {
+    setNickname(text);
+  };
+
+  const textInputAnimation = (value: number) => {
     Animated.timing(fadeAnim, {
-      toValue: index === 2 ? 1 : 0,
+      toValue: value,
       duration: 100,
       useNativeDriver: true,
     }).start();
   };
 
-  const onChangeText = (text: string) => {
-    setText(text);
+  const isFocused = useIsFocused();
+
+  const onComplete = () => {
+    const type = Object.entries(activeOption).find(([key, value]) => value !== '');
+    type && setAnonymityType(type[0]);
+
+    navigation.goBack();
   };
+
+  useEffect(() => {
+    if (isFocused && anonymityType === ANONYMITY_OPTION_LIST[2].title) {
+      textInputAnimation(1);
+    }
+  }, [anonymityType, isFocused]);
 
   return (
     <PostSettingForm
       keyboardAvoidingViewEnabled={isIos}
       headerTitle="익명성 설정"
-      onButtonPress={() => {
-        navigation.goBack();
-      }}
+      onButtonPress={onComplete}
     >
-      {ANONYMITY_OPTION_LIST.map(({ icon, title, description }, index) => (
-        <ScaleOpacity onPress={() => onPressVisibleType(index)}>
-          <S.AnonymitySettingsListContainer>
-            <S.AnonymitySettingsList>
-              <Icon icon={icon} size={34} includeBackground={false} />
-              <Text.Column>
-                <Text size={18}>{title}</Text>
-                <Text size={15}>{description}</Text>
-              </Text.Column>
-            </S.AnonymitySettingsList>
-            <MCI
-              name={selectedOption[index] ? 'circle-slice-8' : 'circle-outline'}
-              size={30}
-              color={selectedOption[index] ? theme.primary : theme.placeholder}
-            />
-          </S.AnonymitySettingsListContainer>
-        </ScaleOpacity>
-      ))}
+      <S.AnonymitySettingsContainer>
+        {ANONYMITY_OPTION_LIST.map((props, index) => (
+          <AnonymitySettingsCard
+            index={index}
+            activeOption={activeOption}
+            onPressVisibleType={onPressVisibleType}
+            {...props}
+            key={index}
+          />
+        ))}
+      </S.AnonymitySettingsContainer>
       <S.AnonymityNicknameWrapper style={{ opacity: fadeAnim }}>
         <TextInput
           placeholder="사용할 닉네임을 입력하세요"
           placeholderTextColor={theme.placeholder}
-          value={text}
+          value={nickname}
           onChangeText={onChangeText}
-          style={{ color: theme.default, fontFamily: fonts.medium, padding: isIos ? 0 : 8 }}
+          style={{ color: theme.default, fontFamily: fonts.medium, padding: isIos ? 14 : 8 }}
         />
       </S.AnonymityNicknameWrapper>
     </PostSettingForm>
