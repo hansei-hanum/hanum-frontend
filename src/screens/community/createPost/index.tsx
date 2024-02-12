@@ -45,14 +45,14 @@ const UserSection: React.FC = () => {
   };
 
   return (
-    <S.CommunityPostUserSection>
-      <S.CommunityPostUserImage
+    <S.UserSectionContainer>
+      <S.UserSectionImage
         resizeMode="contain"
         source={userProfile ? { uri: userProfile } : UserLogo}
       />
       <View style={{ rowGap: 2 }}>
         <Text size={16}>{userData?.name || '박찬영'}</Text>
-        <S.CommunityPostVisibleTypeWrapper>
+        <S.VisibleTypeContainer>
           {visibleType.text === '모두에게 공개' && (
             <MI name="public" size={16} color={theme.white} />
           )}
@@ -63,13 +63,13 @@ const UserSection: React.FC = () => {
           <Text size={12} color={theme.white} fontFamily="bold">
             공개범위: {setVisibleTypeText()}
           </Text>
-        </S.CommunityPostVisibleTypeWrapper>
+        </S.VisibleTypeContainer>
       </View>
-    </S.CommunityPostUserSection>
+    </S.UserSectionContainer>
   );
 };
 
-export const CommunityPostScreen: React.FC = () => {
+export const CommunityCreatePostScreen: React.FC = () => {
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
@@ -146,12 +146,13 @@ export const CommunityPostScreen: React.FC = () => {
   const onPost = () => {
     setText('');
     console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
+    setSelectedImage([]);
     setVisibleType({ text: VISIBLE_TYPE_LIST[0].text, limitType: '' });
     setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
   };
 
   return (
-    <S.CommunityPostWrapper>
+    <S.CreatePostContainer>
       <CommunityHeader
         title="게시글 작성하기"
         rightContent={
@@ -162,16 +163,16 @@ export const CommunityPostScreen: React.FC = () => {
           </ScaleOpacity>
         }
       />
-      <S.CommunityPostContainer
+      <S.CreatePostInnerContainer
         behavior="padding"
         keyboardVerticalOffset={isIos ? -10 : 0}
         enabled={isIos}
       >
-        <S.CommunityPostSection style={{ flexGrow: 1 }}>
+        <S.CreatePostMainSection style={{ flexGrow: 1 }}>
           <TouchableWithoutFeedback onPress={onTextInputBlur}>
             <UserSection />
           </TouchableWithoutFeedback>
-          <S.CommunityPostTextInput
+          <S.CreatePostTextInput
             ref={textInputRef}
             multiline={true}
             placeholder="어떤 생각을 하고 계신가요?"
@@ -181,9 +182,9 @@ export const CommunityPostScreen: React.FC = () => {
             onFocus={onKeyboardShow}
             onBlur={onKeyboardHide}
           />
-        </S.CommunityPostSection>
+        </S.CreatePostMainSection>
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
-          <S.CommunityPostImageSection>
+          <S.CreatePostImageSection>
             {exitSelectedImage && (
               <ScrollView
                 horizontal={true}
@@ -206,14 +207,14 @@ export const CommunityPostScreen: React.FC = () => {
                 ))}
               </ScrollView>
             )}
-          </S.CommunityPostImageSection>
-          <S.CommunityPostSection>
+          </S.CreatePostImageSection>
+          <S.CreatePostMainSection>
             {POST_OPTION_LIST.map((props, index) => (
               <OptionCard key={index} index={index} onOptionClick={onOptionClick} {...props} />
             ))}
-          </S.CommunityPostSection>
+          </S.CreatePostMainSection>
         </View>
-        <S.CommunityPostIconContainer
+        <S.CreatePostIconContainer
           ref={keyboardOptionTranslateY}
           style={{
             transform: [{ translateY: keyboardOptionTranslateY }],
@@ -225,8 +226,8 @@ export const CommunityPostScreen: React.FC = () => {
               <Icon icon={icon} includeBackground={false} />
             </ScaleOpacity>
           ))}
-        </S.CommunityPostIconContainer>
-      </S.CommunityPostContainer>
-    </S.CommunityPostWrapper>
+        </S.CreatePostIconContainer>
+      </S.CreatePostInnerContainer>
+    </S.CreatePostContainer>
   );
 };

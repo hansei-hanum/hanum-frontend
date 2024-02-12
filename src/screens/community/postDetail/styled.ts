@@ -27,7 +27,8 @@ export const BottomInputWrapper = styled.View`
 
 export const BottomInputContainer = styled(isIos ? KeyboardAvoidingView : View)`
   width: 100%;
-  flex-direction: row;
+  position: relatives;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.background};
@@ -62,24 +63,21 @@ export const BottomSendInput = styled(TextInput)`
 `;
 
 export const BottomInputReplyBox = styled(Animated.View)`
+  /* height: 0; */
   width: 100%;
   padding: 14px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  bottom: 0;
-  background-color: ${({ theme }) => theme.background};
-  border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.lightGray};
 `;
 
-export const AnonymousBox = styled(BottomInputReplyBox)`
-  border-bottom-width: 0px;
-  border-top-width: 1px;
+export const AnonymousBox = styled(Animated.View)`
   justify-content: center;
   column-gap: 10px;
   padding-bottom: 4px;
+  /* width: 100%; */
+  align-items: center;
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const ModalDummyContainer = styled.View`

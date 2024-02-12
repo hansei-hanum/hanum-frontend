@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Switch, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Switch, TextInput, View } from 'react-native';
 import { Animated } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
-import Permissions, { PERMISSIONS } from 'react-native-permissions';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { StackScreenProps } from '@react-navigation/stack';
@@ -19,21 +18,17 @@ import {
   Text,
 } from 'src/components';
 import { COMMUNITY_POST } from 'src/constants';
-import { RPH, isAndroid, isIos } from 'src/utils';
+import { RPH } from 'src/utils';
 import { ChatList, MentionUserList, ImageListBottomSheet, CommunityBottomSheet } from 'src/layouts';
-import { useBottomSheet, useGetUser } from 'src/hooks';
+import { useBottomSheet, useCheckPhotoPermission, useGetUser, useSetAnimation } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
-
-const REPLY_BOX_IOS_OFFSET = -62;
-const REPLY_BOX_ANDROID_OFFSET = -71.6;
-
 const HAS_PERMISSION_SCROLL_HEIGHT = -RPH(70);
 const NO_PERMISSION_SCROLL_HEIGHT = -RPH(38);
 
-const status = {
+export const status = {
   isAllGranted: { granted: true, limited: true },
   isBlocked: { granted: false, limited: false },
   isGranted: { granted: true, limited: false },
@@ -77,102 +72,18 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
     chatRef.current?.blur();
   }, []);
 
-  const checkAndroidPermissions = useCallback(async () => {
-    if (parseInt(Platform.Version as string, 10) >= 33) {
-      const permissions = await Permissions.checkMultiple([
-        PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
-        PERMISSIONS.ANDROID.READ_MEDIA_VIDEO,
-      ]);
-      if (
-        permissions[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.GRANTED &&
-        permissions[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.GRANTED
-      ) {
-        setPermission(status.isGranted);
-        openImageBottomSheet(status.isGranted);
-        return;
-      }
-      const res = await Permissions.requestMultiple([
-        PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
-        PERMISSIONS.ANDROID.READ_MEDIA_VIDEO,
-      ]);
-      if (
-        res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.GRANTED &&
-        res[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.GRANTED
-      ) {
-        setPermission(status.isGranted);
-        openImageBottomSheet(status.isGranted);
-      }
-      if (
-        res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.DENIED ||
-        res[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.DENIED
-      ) {
-        checkAndroidPermissions();
-      }
-      if (
-        res[PERMISSIONS.ANDROID.READ_MEDIA_IMAGES] === Permissions.RESULTS.BLOCKED ||
-        res[PERMISSIONS.ANDROID.READ_MEDIA_VIDEO] === Permissions.RESULTS.BLOCKED
-      ) {
-        setPermission(status.isBlocked);
-        openImageBottomSheet(status.isBlocked);
-      }
-    } else {
-      const permission = await Permissions.check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      if (permission === Permissions.RESULTS.GRANTED) {
-        setPermission(status.isGranted);
-        openImageBottomSheet(status.isGranted);
-        return;
-      }
-      const res = await Permissions.request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      if (res === Permissions.RESULTS.GRANTED) {
-        setPermission(status.isGranted);
-        openImageBottomSheet(status.isGranted);
-      }
-      if (res === Permissions.RESULTS.DENIED) {
-        checkAndroidPermissions();
-      }
-      if (res === Permissions.RESULTS.BLOCKED) {
-        setPermission(status.isBlocked);
-        openImageBottomSheet(status.isBlocked);
-      }
-    }
-  }, []);
-
-  const checkPermission = useCallback(async () => {
-    if (isIos) {
-      const permission = await Permissions.check(PERMISSIONS.IOS.PHOTO_LIBRARY);
-      if (permission === Permissions.RESULTS.GRANTED) {
-        setPermission(status.isGranted);
-        openImageBottomSheet(status.isGranted);
-        return;
-      } else if (permission === Permissions.RESULTS.LIMITED) {
-        setPermission(status.isLimited);
-        openImageBottomSheet(status.isLimited);
-        return;
-      }
-      const res = await Permissions.request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-      if (res === Permissions.RESULTS.GRANTED) {
-        setPermission(status.isGranted);
-        openImageBottomSheet(status.isGranted);
-      } else if (res === Permissions.RESULTS.LIMITED) {
-        setPermission(status.isLimited);
-        openImageBottomSheet(status.isLimited);
-      } else {
-        setPermission(status.isBlocked);
-        openImageBottomSheet(status.isBlocked);
-      }
-    } else if (isAndroid) {
-      checkAndroidPermissions();
-    }
-  }, [checkAndroidPermissions]);
+  const { checkPhotoPermission } = useCheckPhotoPermission({ setPermission, openImageBottomSheet });
 
   const handlePresentModalPress = useCallback(() => {
-    checkPermission();
+    checkPhotoPermission();
   }, []);
 
   const { userProfile } = useGetUser();
 
-  const replyTranslateY = useRef<any>(new Animated.Value(0)).current;
-  const anonymousTranslateY = useRef<any>(new Animated.Value(0)).current;
+  // TODO: reply box Collapse 구현
+  const replyAnimation = useRef(new Animated.Value(0)).current;
+  const anonymousAnimation = useRef(new Animated.Value(0)).current;
+  const { animation } = useSetAnimation();
 
   const chatRef = useRef<TextInput>(null);
 
@@ -182,6 +93,7 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
   const [paddingBottom, setPaddingBottom] = useState<number>(0);
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
+  const [inputFocus, setInputFocus] = useState<boolean>(false);
 
   const theme = useTheme();
 
@@ -194,20 +106,19 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
   };
 
   const onPressChatInput = () => {
+    setInputFocus(true);
     setPaddingBottom(isReplyChat ? 100 : 50);
-    animateTranslation(
-      anonymousTranslateY,
-      isIos ? REPLY_BOX_IOS_OFFSET : REPLY_BOX_ANDROID_OFFSET,
-    );
+    animation({ animation: anonymousAnimation, value: 1 });
   };
 
   const onPressOutChatInput = () => {
+    setInputFocus(false);
     setChat('');
     setPaddingBottom(0);
     setIsReplyChat(false);
     setIsAnonymous(false);
-    animateTranslation(anonymousTranslateY, 0);
-    animateTranslation(replyTranslateY, 0);
+    animation({ animation: anonymousAnimation, value: 0 });
+    animation({ animation: replyAnimation, value: 0, duration: 150 });
   };
 
   const onMention = (id: string, isReply?: boolean) => {
@@ -221,32 +132,21 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
   };
 
   const openReplyBox = () => {
-    animateTranslation(
-      replyTranslateY,
-      isIos ? REPLY_BOX_IOS_OFFSET * 2 + 12 : REPLY_BOX_ANDROID_OFFSET * 2 + 12,
-    );
+    animation({ animation: replyAnimation, value: 1, duration: 250 });
   };
 
   const sendChat = () => {
     setPaddingBottom(0);
     setChat('');
     chatRef.current?.blur();
-    animateTranslation(replyTranslateY, 0);
+    animation({ animation: replyAnimation, value: 0, duration: 100 });
   };
 
   const closeReplyBox = () => {
     setIsReplyChat(false);
     setPaddingBottom(50);
     setChat('');
-    animateTranslation(replyTranslateY, 0);
-  };
-
-  const animateTranslation = (animatedValue: Animated.Value, toValue: number) => {
-    Animated.timing(animatedValue, {
-      toValue,
-      duration: 250,
-      useNativeDriver: false,
-    }).start();
+    animation({ animation: replyAnimation, value: 0, duration: 100 });
   };
 
   const checkIfStringHasSpaceAfterAt = (inputString: string): boolean => {
@@ -292,9 +192,24 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
         )}
         <S.BottomInputWrapper>
           <S.BottomInputContainer behavior="padding" keyboardVerticalOffset={10}>
+            <S.BottomInputReplyBox
+              style={{
+                opacity: replyAnimation,
+                position: inputFocus ? 'relative' : 'absolute',
+              }}
+            >
+              <Text size={14} color={theme.placeholder}>
+                {userId}님에게 답글 남기는 중
+              </Text>
+              <ScaleOpacity onPress={closeReplyBox}>
+                <MI name="cancel" size={24} color={theme.placeholder} />
+              </ScaleOpacity>
+            </S.BottomInputReplyBox>
             <S.AnonymousBox
-              ref={anonymousTranslateY}
-              style={{ transform: [{ translateY: anonymousTranslateY }] }}
+              style={{
+                opacity: anonymousAnimation,
+                position: inputFocus ? 'relative' : 'absolute',
+              }}
             >
               <Text size={15}>익명 댓글</Text>
               <Switch
@@ -306,17 +221,6 @@ export const CommunityChatScreen: React.FC<CommunityChatScreenProps> = ({ route 
                 value={isAnonymous}
               />
             </S.AnonymousBox>
-            <S.BottomInputReplyBox
-              ref={replyTranslateY}
-              style={{ transform: [{ translateY: replyTranslateY }] }}
-            >
-              <Text size={14} color={theme.placeholder}>
-                {userId}님에게 답글 남기는 중
-              </Text>
-              <ScaleOpacity onPress={closeReplyBox}>
-                <MI name="cancel" size={24} color={theme.placeholder} />
-              </ScaleOpacity>
-            </S.BottomInputReplyBox>
             <S.BottomSendInputSection>
               <CommunityUserImage userImage={userProfile} />
               <S.BottomSendInputContainer>
