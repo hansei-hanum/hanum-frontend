@@ -10,7 +10,7 @@ import { Content } from '../Content';
 
 import * as S from './styled';
 
-export const Calendar: React.FC = () => {
+export const Schedule: React.FC = () => {
   const theme = useTheme();
 
   const { data, isLoading } = useGetSchedule();
@@ -30,24 +30,24 @@ export const Calendar: React.FC = () => {
 
   return (
     <Content icon="📆" name="학사일정" navigateUrl="Calendar">
-      <S.CalendarContainer>
+      <S.ScheduleContainer>
         {isLoading ? (
           <Spinner />
         ) : data?.data && data.data.length > 0 ? (
           data.data.slice(0, 4).map(({ date, data }) => (
-            <S.CalendarTextContainer key={date}>
+            <S.ScheduleTextContainer key={date}>
               <Text size={fontSize} color={theme.placeholder}>
                 {formatDate(date)}: {''}
               </Text>
               <Text size={fontSize}>{data.map((item) => item).join('\n')}</Text>
-            </S.CalendarTextContainer>
+            </S.ScheduleTextContainer>
           ))
         ) : (
           <Text size={fontSize} color={theme.placeholder}>
             학사일정이 없습니다.
           </Text>
         )}
-      </S.CalendarContainer>
+      </S.ScheduleContainer>
     </Content>
   );
 };

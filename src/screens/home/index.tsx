@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Calendar, Header, LunchTable } from 'src/components';
+import { Timer, Schedule, Header, LunchTable } from 'src/components';
 import { isAndroid, isIos } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
@@ -164,7 +164,7 @@ export const HomeScreen: React.FC = () => {
         /> */}
         <Timer />
         <LunchTable />
-        <Calendar />
+        <Schedule />
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>
   );

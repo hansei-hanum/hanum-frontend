@@ -4,6 +4,7 @@ import { useFetchUser } from './query';
 
 export const useGetUser = () => {
   const { data, isLoading } = useFetchUser();
+
   const userProfile = data?.data;
   const verifyUser = userProfile?.verification;
   const type = verifyUser?.type;

@@ -9,7 +9,7 @@ import { Theme, useTheme } from '@emotion/react';
 
 import { ContentBox, Text, Spinner, Header } from 'src/components';
 import { useGetMonthSchedule } from 'src/hooks';
-import { setKoreanLocale } from 'src/utils';
+import { setKoreanLocale } from 'src/constants';
 import { CalendarIcon } from 'src/assets';
 
 import * as S from './styled';

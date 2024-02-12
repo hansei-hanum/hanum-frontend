@@ -1,3 +1,8 @@
+export const formattedMoney = (money: string) => {
+  if (money.length < 4) return money;
+  return money.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
 export const formattedDepartment = (department: null | string) => {
   switch (department) {
     case 'CLOUD_SECURITY':
@@ -11,4 +16,8 @@ export const formattedDepartment = (department: null | string) => {
     case 'GAME':
       return '게임과';
   }
+};
+
+export const formattedPhone = (phone: string) => {
+  return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
 };
