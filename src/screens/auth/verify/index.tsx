@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Text, Auth, Modal, Button, CodeInput, Spinner } from 'src/components';
+import { Text, AuthLayout, Modal, Button, CodeInput, Spinner } from 'src/components';
 import { useInitNavigate, useUserVerify } from 'src/hooks';
 import { authAtom, userVerifyAtom } from 'src/atoms';
 import { formattedDepartment } from 'src/utils';
@@ -36,7 +36,7 @@ export const VerifyScreen: React.FC = () => {
 
   return (
     <>
-      <Auth
+      <AuthLayout
         isLoading={isLoading}
         headerText={`정회원 인증 코드를\n` + `입력해주세요`}
         subHeaderText={
@@ -61,7 +61,7 @@ export const VerifyScreen: React.FC = () => {
         onPress={onCheckSubmit}
       >
         <CodeInput value={value} setValue={setValue} isNumber={false} />
-      </Auth>
+      </AuthLayout>
       {modalVisible && (
         <Modal
           title="본인 확인"

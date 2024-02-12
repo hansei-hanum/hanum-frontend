@@ -4,13 +4,13 @@ import styled from '@emotion/native';
 
 import { iosCheckHeight, isAndroid, isIos } from 'src/utils';
 
-export const AuthWrapper = styled.SafeAreaView`
+export const AuthLayoutWrapper = styled.SafeAreaView`
   width: 100%;
   flex: 1;
   background-color: ${({ theme }) => theme.background};
 `;
 
-export const AuthContainer = styled(isIos ? KeyboardAvoidingView : View)`
+export const AuthLayoutContainer = styled(isIos ? KeyboardAvoidingView : View)`
   width: 100%;
   flex: 1;
   padding: 0 20px;
@@ -19,7 +19,7 @@ export const AuthContainer = styled(isIos ? KeyboardAvoidingView : View)`
   justify-content: space-between;
 `;
 
-export const AuthInputContainer = styled.View`
+export const AuthLayoutTopSection = styled.View`
   justify-content: flex-start;
   align-items: flex-start;
   row-gap: 20px;
@@ -31,7 +31,7 @@ export const AuthTextContainer = styled.View`
   row-gap: 6px;
 `;
 
-export const AuthButtonWrapper = styled.View`
+export const AuthLayoutButtonWrapper = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;

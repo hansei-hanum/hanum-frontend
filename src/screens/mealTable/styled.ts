@@ -1,5 +1,7 @@
 import styled from '@emotion/native';
 
+import { isAndroid } from 'src/utils';
+
 export const LunchTableWrapper = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
@@ -15,7 +17,7 @@ export const MealTableContainer = styled.View`
   flex-direction: column;
   row-gap: 30px;
   padding-top: 20px;
-  padding-bottom: 70px;
+  padding-bottom: ${isAndroid ? '100px' : '70px'};
 `;
 
 export const MealTableListContainer = styled.View`

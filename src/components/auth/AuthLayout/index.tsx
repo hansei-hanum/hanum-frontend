@@ -8,7 +8,7 @@ import { isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export interface AuthProps {
+export interface AuthLayoutProps {
   isLoading: boolean;
   headerText: string;
   subHeaderText?: React.ReactNode;
@@ -17,7 +17,7 @@ export interface AuthProps {
   bottomText: string;
 }
 
-export const Auth: React.FC<AuthProps> = ({
+export const AuthLayout: React.FC<AuthLayoutProps> = ({
   children,
   headerText,
   subHeaderText,
@@ -28,9 +28,9 @@ export const Auth: React.FC<AuthProps> = ({
   const isDisabled = useRecoilValue(isDisableAtom);
 
   return (
-    <S.AuthWrapper>
-      <S.AuthContainer behavior="padding" keyboardVerticalOffset={15}>
-        <S.AuthInputContainer>
+    <S.AuthLayoutWrapper>
+      <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
+        <S.AuthLayoutTopSection>
           <GoBackIcon isLoading={isLoading} />
           <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
@@ -44,13 +44,13 @@ export const Auth: React.FC<AuthProps> = ({
             {subHeaderText}
           </S.AuthTextContainer>
           {children}
-        </S.AuthInputContainer>
-        <S.AuthButtonWrapper>
+        </S.AuthLayoutTopSection>
+        <S.AuthLayoutButtonWrapper>
           <Button onPress={onPress} isDisabled={isDisabled} isLoading={isLoading}>
             {bottomText}
           </Button>
-        </S.AuthButtonWrapper>
-      </S.AuthContainer>
-    </S.AuthWrapper>
+        </S.AuthLayoutButtonWrapper>
+      </S.AuthLayoutContainer>
+    </S.AuthLayoutWrapper>
   );
 };

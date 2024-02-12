@@ -6,28 +6,29 @@ import { useIsFocused } from '@react-navigation/native';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { checkNumber, checkString, isAndroid } from 'src/utils';
+import { checkType, isAndroid } from 'src/utils';
 import { useBlockGesture, useNavigate, usePhone } from 'src/hooks';
 import { authAtom, isDisableAtom } from 'src/atoms';
 import { Text } from 'src/components';
+import { NAME_REGEX, PHONE_REGEX } from 'src/constants';
 
-import { Auth } from '../AuthForm';
+import { AuthLayout } from '../AuthLayout';
 
 import * as S from './styled';
 
-export interface TextFieldForm {
+export interface AuthInputFormProps {
   title: string;
   placeHolder: string;
-  isNameScreen?: boolean;
   isPhoneScreen?: boolean;
 }
 
-export const TextFieldForm: React.FC<TextFieldForm> = ({
+export const AuthInputForm: React.FC<AuthInputFormProps> = ({
   title,
   placeHolder,
-  isNameScreen,
   isPhoneScreen,
 }) => {
+  const checkValidType = checkType(isPhoneScreen ? 'number' : 'string');
+
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -35,43 +36,31 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
   const [auth, setAuth] = useRecoilState(authAtom);
   const setIsDisabled = useSetRecoilState(isDisableAtom);
 
-  const [name, setName] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [clicked, setClicked] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('');
+  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
 
   const { mutate: phoneMutate, isLoading: isPhoneLoading } = usePhone();
 
   useBlockGesture(isPhoneLoading);
 
-  const onNameChange = (text: string) => {
-    const newText = checkString(text);
-    const nameRegex = /^[가-힣]{2,10}$/;
-    if (!nameRegex.test(newText)) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
-    setName(newText);
-  };
+  const handleInputChange = (input: string, regex: RegExp) => {
+    const validInput = checkValidType(input);
 
-  const onPhoneChange = (phone: string) => {
-    const newPhone = checkNumber(phone);
-    const phoneRegex = /^010-?\d{4}-?\d{4}$/;
-    if (!phoneRegex.test(newPhone)) {
+    if (!regex.test(validInput)) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-    setPhone(newPhone);
+    setValue(validInput);
   };
 
   const onPhoneSubmit = () => {
     setIsDisabled(true);
-    phoneMutate({ phone: phone });
+    phoneMutate({ phone: value });
   };
 
   const onNameSubmit = () => {
-    setAuth({ ...auth, name: name, phone: '' });
+    setAuth({ ...auth, name: value, phone: '' });
     navigate('Phone');
   };
 
@@ -79,31 +68,33 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
 
   useEffect(() => {
     setAuth({ ...auth, errorMessage: '' });
-    if (isFocused && phone.length === 11) {
+    if (isFocused && isPhoneScreen && value.length === 11) {
       setIsDisabled(false);
     }
   }, [isFocused]);
 
   return (
-    <Auth
+    <AuthLayout
       isLoading={isPhoneLoading}
       headerText={`${title}`}
       bottomText="다음"
-      onPress={isNameScreen ? onNameSubmit : onPhoneSubmit}
+      onPress={isPhoneScreen ? onPhoneSubmit : onNameSubmit}
     >
       <View style={{ flexDirection: 'column', rowGap: isAndroid ? 6 : 0 }}>
         <S.TextFieldFormInputWrapper>
           <S.TextFieldFormInput
-            onFocus={() => setClicked(true)}
-            onBlur={() => setClicked(false)}
-            onChangeText={isNameScreen ? onNameChange : onPhoneChange}
-            value={isNameScreen ? name : phone}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+            onChangeText={(text) =>
+              handleInputChange(text, isPhoneScreen ? PHONE_REGEX : NAME_REGEX)
+            }
+            value={value}
             variant="standard"
-            label={clicked ? placeHolder : ''}
-            placeholder={clicked ? '' : placeHolder}
+            label={isInputFocused ? placeHolder : ''}
+            placeholder={isInputFocused ? '' : placeHolder}
             placeholderTextColor={theme.default}
-            keyboardType={isNameScreen ? 'default' : 'numeric'}
-            maxLength={isNameScreen ? 16 : 11}
+            keyboardType={isPhoneScreen ? 'numeric' : 'default'}
+            maxLength={isPhoneScreen ? 11 : 16}
             color={theme.primary}
             inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
             inputStyle={{ fontSize: 20, color: theme.default }}
@@ -115,6 +106,6 @@ export const TextFieldForm: React.FC<TextFieldForm> = ({
           </Text>
         )}
       </View>
-    </Auth>
+    </AuthLayout>
   );
 };
