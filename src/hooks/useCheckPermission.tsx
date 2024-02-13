@@ -1,20 +1,54 @@
-import { useCallback } from 'react';
-import { Platform } from 'react-native';
+import { useCallback, useState } from 'react';
+import { Platform, TextInput } from 'react-native';
 import Permissions, { PERMISSIONS } from 'react-native-permissions';
 
-import { PhotoPermissionProps, status } from 'src/screens';
+import { PhotoPermissionProps } from 'src/screens';
+import { RPH } from 'src/utils';
+import { BottomSheetRefProps } from 'src/types';
 
 import { isAndroid, isIos } from '../utils/checkOs';
 
+const HAS_PERMISSION_SCROLL_HEIGHT = -RPH(70);
+const NO_PERMISSION_SCROLL_HEIGHT = -RPH(38);
+
+export const status = {
+  isAllGranted: { granted: true, limited: true },
+  isBlocked: { granted: false, limited: false },
+  isGranted: { granted: true, limited: false },
+  isLimited: { granted: false, limited: true },
+};
+
 export interface CheckPermissionProps {
-  setPermission: (value: React.SetStateAction<PhotoPermissionProps>) => void;
-  openImageBottomSheet: ({ granted, limited }: PhotoPermissionProps) => void;
+  ImageListBottomSheetRef: React.RefObject<BottomSheetRefProps>;
+  commentInputRef: React.RefObject<TextInput>;
 }
 
 export const useCheckPhotoPermission = ({
-  setPermission,
-  openImageBottomSheet,
+  ImageListBottomSheetRef,
+  commentInputRef,
 }: CheckPermissionProps) => {
+  const [permission, setPermission] = useState<PhotoPermissionProps>({
+    granted: false,
+    limited: false,
+  });
+
+  const permissionHeight =
+    permission.granted || permission.limited
+      ? HAS_PERMISSION_SCROLL_HEIGHT
+      : NO_PERMISSION_SCROLL_HEIGHT;
+
+  const openImageBottomSheet = useCallback(({ granted, limited }: PhotoPermissionProps) => {
+    const isActive = ImageListBottomSheetRef?.current?.isActive();
+    if (isActive) {
+      ImageListBottomSheetRef?.current?.scrollTo(0);
+    } else {
+      ImageListBottomSheetRef?.current?.scrollTo(
+        granted || limited ? HAS_PERMISSION_SCROLL_HEIGHT : NO_PERMISSION_SCROLL_HEIGHT,
+      );
+    }
+    commentInputRef.current?.blur();
+  }, []);
+
   const checkAndroidPermissions = useCallback(async () => {
     if (parseInt(Platform.Version as string, 10) >= 33) {
       const permissions = await Permissions.checkMultiple([
@@ -103,5 +137,5 @@ export const useCheckPhotoPermission = ({
     }
   }, [checkAndroidPermissions]);
 
-  return { checkPhotoPermission };
+  return { checkPhotoPermission, permissionHeight, permission };
 };

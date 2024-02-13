@@ -12,11 +12,9 @@ import { MentionUserListProps } from '../MetionUserList';
 
 import * as S from './styled';
 
-export interface ChatListProps extends MentionUserListProps {
-  paddingBottom?: number;
-}
+export interface ChatListProps extends MentionUserListProps {}
 
-export const ChatList: React.FC<ChatListProps> = ({ onMention, paddingBottom = 0 }) => {
+export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
@@ -40,11 +38,12 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention, paddingBottom = 0
   return (
     <S.ChatListContainer>
       <FlatList
+        keyboardShouldPersistTaps={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         data={COMMUNITY_POST.chats}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{ paddingBottom: 10 + paddingBottom, rowGap: 10 }}
+        contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
         ListHeaderComponent={
           <>
             <CommunityPost
@@ -85,15 +84,8 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention, paddingBottom = 0
                 </S.ChatReplyContainer>
                 {showReply[index] && (
                   <View style={{ rowGap: 20, marginBottom: 10 }}>
-                    {replies.map(({ author, time, message }, index) => (
-                      <CommunityChat
-                        author={author}
-                        time={time}
-                        message={message}
-                        index={index}
-                        key={index}
-                        isReply
-                      />
+                    {replies.map((props, index) => (
+                      <CommunityChat {...props} index={index} key={index} isReply />
                     ))}
                   </View>
                 )}

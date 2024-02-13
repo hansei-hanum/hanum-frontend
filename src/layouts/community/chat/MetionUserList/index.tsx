@@ -17,6 +17,7 @@ export const MentionUserList: React.FC<MentionUserListProps> = ({ onMention }) =
 
   return (
     <FlatList
+      keyboardShouldPersistTaps={true}
       data={COMMUNITY_USER_LIST}
       keyExtractor={(_, index) => index.toString()}
       contentContainerStyle={{

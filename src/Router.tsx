@@ -147,7 +147,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
           </Stack.Group>
           <Stack.Group>
-            <Stack.Screen name="CommunityChat" component={SC.CommunityChatScreen} />
+            <Stack.Screen name="CommunityChat" component={SC.CommunityPostDetailScreen} />
             <Stack.Screen name="CommunityPost" component={SC.CommunityCreatePostScreen} />
             <Stack.Screen name="CommunityVisibleType" component={SC.VisibleTypeScreen} />
             <Stack.Screen

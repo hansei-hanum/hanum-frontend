@@ -7,3 +7,4 @@ export * from './PostSettingForm';
 export * from './AnonymitySettingsCard';
 export * from './VisibleTypeCard';
 export * from './posts';
+export * from './ReplyBox';
