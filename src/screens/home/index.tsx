@@ -3,7 +3,7 @@ import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
-import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
+import { PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
@@ -12,7 +12,7 @@ import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
 import { Timer, Schedule, Header, LunchTable } from 'src/components';
-import { isAndroid, isIos } from 'src/utils';
+import { isAndroid, isIos, openContactChannel } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
 
@@ -132,14 +132,7 @@ export const HomeScreen: React.FC = () => {
           style={{ width: 98, height: 30, resizeMode: 'contain' }}
         />
         <S.HomeScreenHeaderIconContainer>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => {
-              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
-                Linking.openURL('https://pf.kakao.com/_xkMcxdG'),
-              );
-            }}
-          >
+          <TouchableOpacity activeOpacity={0.5} onPress={openContactChannel}>
             <AntDesign name="customerservice" size={28} color={theme.placeholder} />
           </TouchableOpacity>
         </S.HomeScreenHeaderIconContainer>

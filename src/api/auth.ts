@@ -74,7 +74,6 @@ export const login = async ({ phone, code }: LoginValues) => {
 
 export const fetchUser = async () => {
   const token = await AsyncStorage.getItem('token');
-  if (!token) return null;
   setAccessToken(token);
   const { data } = await authInstance.get(`${API_SUFFIX.USERS}@me/`);
   return data;

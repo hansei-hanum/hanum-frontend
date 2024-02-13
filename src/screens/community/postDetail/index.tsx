@@ -33,7 +33,10 @@ export interface PhotoPermissionProps {
   limited: boolean;
 }
 
-export type CommunityPostDetailScreenProps = StackScreenProps<RootStackParamList, 'CommunityChat'>;
+export type CommunityPostDetailScreenProps = StackScreenProps<
+  RootStackParamList,
+  'CommunityPostDetail'
+>;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { id } = route.params;

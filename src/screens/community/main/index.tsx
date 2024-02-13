@@ -58,7 +58,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
   }, [COMMUNITY_LIST, getHeightsForImage]);
 
   const onChatScreenNavigate = (index: number) => {
-    navigation.navigate('CommunityChat', { id: index });
+    navigation.navigate('CommunityPostDetail', { id: index });
   };
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
@@ -113,7 +113,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           }}
           ListHeaderComponent={
             <S.CommunityUserWrapper>
-              <ScaleOpacity onPress={() => navigation.navigate('CommunityPost')}>
+              <ScaleOpacity onPress={() => navigation.navigate('CommunityCreatePost')}>
                 <S.CommunityUserContainer>
                   <CommunityUserImage userImage={userProfile} />
                   <S.CommunityUserThinkBox>
