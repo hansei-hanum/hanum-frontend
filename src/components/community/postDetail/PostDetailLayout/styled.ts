@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const ChatListContainer = styled.View`
+export const PostDetailLayoutContainer = styled.View`
   flex: 1;
   row-gap: 24px;
   justify-content: flex-start;
@@ -8,7 +8,7 @@ export const ChatListContainer = styled.View`
   width: 100%;
 `;
 
-export const ChatReplyContainer = styled.View`
+export const PostDetailLayoutReplyContainer = styled.View`
   flex-direction: row;
   column-gap: 10px;
   align-items: center;

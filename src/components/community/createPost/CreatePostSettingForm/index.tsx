@@ -3,18 +3,18 @@ import { KeyboardAvoidingView, SafeAreaView } from 'react-native';
 
 import { Button } from 'src/components';
 
-import { CommunityHeader } from '../Header';
+import { CommunityHeader } from '../../Header';
 
 import * as S from './styled';
 
-export interface PostSettingFormProps {
+export interface CreatePostSettingFormProps {
   keyboardAvoidingViewEnabled?: boolean;
   headerTitle: string;
   onButtonPress: () => void;
   children?: React.ReactNode;
 }
 
-export const PostSettingForm: React.FC<PostSettingFormProps> = ({
+export const CreatePostSettingForm: React.FC<CreatePostSettingFormProps> = ({
   keyboardAvoidingViewEnabled = false,
   headerTitle,
   onButtonPress,
@@ -28,10 +28,10 @@ export const PostSettingForm: React.FC<PostSettingFormProps> = ({
         style={{ flex: 1 }}
         enabled={keyboardAvoidingViewEnabled}
       >
-        <S.PostSettingFormWrapper>
-          <S.PostSettingFormContainer>{children}</S.PostSettingFormContainer>
+        <S.CreatePostSettingFormWrapper>
+          <S.CreatePostSettingFormContainer>{children}</S.CreatePostSettingFormContainer>
           <Button onPress={onButtonPress}>완료</Button>
-        </S.PostSettingFormWrapper>
+        </S.CreatePostSettingFormWrapper>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

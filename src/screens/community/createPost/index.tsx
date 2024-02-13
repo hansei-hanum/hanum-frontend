@@ -11,7 +11,7 @@ import { Animated } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { CommunityHeader, Icon, ImageCard, OptionCard, ScaleOpacity, Text } from 'src/components';
+import { CommunityHeader, Icon, PhotoCard, OptionCard, ScaleOpacity, Text } from 'src/components';
 import { useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import {
@@ -197,7 +197,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
                 }}
               >
                 {selectedImage?.map((item, index) => (
-                  <ImageCard
+                  <PhotoCard
                     key={item}
                     item={item}
                     index={index}

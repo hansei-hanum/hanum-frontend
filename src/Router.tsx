@@ -58,6 +58,7 @@ export const Router: React.FC = () => {
   const fetch = useCallback(async () => {
     try {
       const { data } = await fetchUser();
+      console.log(data, 'data');
       setData(data);
     } catch (e) {
       // await AsyncStorage.removeItem('token');

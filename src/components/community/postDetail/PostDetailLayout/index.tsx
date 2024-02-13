@@ -6,15 +6,15 @@ import { useTheme } from '@emotion/react';
 
 import { useGetImagesHeight } from 'src/hooks';
 import { COMMUNITY_POST } from 'src/constants';
-import { CommunityChat, CommunityPost, ScaleOpacity, Text } from 'src/components';
+import { PostCommentCard, CommunityPost, ScaleOpacity, Text } from 'src/components';
 
 import { MentionUserListProps } from '../MetionUserList';
 
 import * as S from './styled';
 
-export interface ChatListProps extends MentionUserListProps {}
+export interface PostDetailLayoutProps extends MentionUserListProps {}
 
-export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
+export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention }) => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
@@ -36,9 +36,9 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
   }, [getHeightsForImage]);
 
   return (
-    <S.ChatListContainer>
+    <S.PostDetailLayoutContainer>
       <FlatList
-        keyboardShouldPersistTaps={true}
+        keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         data={COMMUNITY_POST.chats}
@@ -61,14 +61,14 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
           </>
         }
         renderItem={({ item: { author, time, message, replies }, index }) => (
-          <CommunityChat
+          <PostCommentCard
             author={author}
             time={time}
             message={message}
             index={index}
             children={
               <>
-                <S.ChatReplyContainer>
+                <S.PostDetailLayoutReplyContainer>
                   <ScaleOpacity onPress={() => onMention(author.name, true)}>
                     <Text size={14} color={theme.placeholder}>
                       답글 달기
@@ -81,11 +81,11 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
                       </Text>
                     </ScaleOpacity>
                   )}
-                </S.ChatReplyContainer>
+                </S.PostDetailLayoutReplyContainer>
                 {showReply[index] && (
                   <View style={{ rowGap: 20, marginBottom: 10 }}>
                     {replies.map((props, index) => (
-                      <CommunityChat {...props} index={index} key={index} isReply />
+                      <PostCommentCard {...props} index={index} key={index} isReply />
                     ))}
                   </View>
                 )}
@@ -94,6 +94,6 @@ export const ChatList: React.FC<ChatListProps> = ({ onMention }) => {
           />
         )}
       />
-    </S.ChatListContainer>
+    </S.PostDetailLayoutContainer>
   );
 };

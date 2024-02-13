@@ -7,14 +7,14 @@ import { ScaleOpacity } from 'src/components/common';
 
 import * as S from './styled';
 
-export interface ImageCardProps {
+export interface PhotoCardProps {
   item?: string;
   index: number;
   setSelectedImage: React.Dispatch<React.SetStateAction<(string | undefined)[] | undefined>>;
   selectedImage: (string | undefined)[];
 }
 
-export const ImageCard: React.FC<ImageCardProps> = ({
+export const PhotoCard: React.FC<PhotoCardProps> = ({
   index,
   item,
   selectedImage,
@@ -28,12 +28,12 @@ export const ImageCard: React.FC<ImageCardProps> = ({
         setSelectedImage(selectedImage?.filter((_, i) => i !== index));
       }}
     >
-      <S.CommunityPostImageWrapper>
-        <S.CommunityPostImage source={{ uri: item }} />
-        <S.CommunityPostImageIconWrapper>
+      <S.PhotoCardContainer>
+        <S.PhotoCardImage source={{ uri: item }} />
+        <S.PhotoCardIconWrapper>
           <Icons name="close" size={26} color={theme.default} />
-        </S.CommunityPostImageIconWrapper>
-      </S.CommunityPostImageWrapper>
+        </S.PhotoCardIconWrapper>
+      </S.PhotoCardContainer>
     </ScaleOpacity>
   );
 };

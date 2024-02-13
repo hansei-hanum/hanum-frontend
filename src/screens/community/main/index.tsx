@@ -15,11 +15,12 @@ import {
   CommunityUserImage,
   ScaleOpacity,
   Text,
+  CommunityMainAnimatedHeader,
+  PostOptionBottomSheet,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useGetUser } from 'src/hooks';
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
-import { CommunityBottomSheet, CommunityMainAnimatedHeader } from 'src/layouts';
 import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
@@ -62,17 +63,30 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
 
+  const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
+
   const [hidden, setHidden] = useState(false);
+  const [scrollValue, setScrollValue] = useState(0);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     scrollY.setValue(offsetY);
-    setHidden(offsetY > 0);
+    setHidden(offsetY > 0 && scrollValue !== offsetY);
     Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
       useNativeDriver: false,
     });
   };
+
+  const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setScrollValue(e.nativeEvent.contentOffset.y);
+  };
+
+  useEffect(() => {
+    if (!isSearchScreen) {
+      flatListRef.current?.scrollToOffset({ offset: scrollValue, animated: false });
+    }
+  }, [isSearchScreen]);
 
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
@@ -86,7 +100,9 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
       />
       {!isSearchScreen ? (
         <FlatList
+          ref={flatListRef}
           onScroll={onScroll}
+          onMomentumScrollEnd={onSetScrollY}
           scrollEventThrottle={16}
           data={COMMUNITY_LIST}
           keyExtractor={(_, index) => index.toString()}
@@ -158,7 +174,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           <Text size={15}>This Is Search 잉기</Text>
         </S.TextWrapper2>
       )}
-      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
+      <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>
   );
 };

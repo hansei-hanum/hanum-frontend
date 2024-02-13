@@ -16,9 +16,12 @@ import {
   ReplyBox,
   ScaleOpacity,
   Text,
+  PostDetailLayout,
+  MentionUserList,
+  ImageListBottomSheet,
+  PostOptionBottomSheet,
 } from 'src/components';
 import { CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT, COMMUNITY_POST } from 'src/constants';
-import { ChatList, MentionUserList, ImageListBottomSheet, CommunityBottomSheet } from 'src/layouts';
 import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { RootStackParamList } from 'src/Router';
@@ -117,7 +120,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       </Header>
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10} style={{ flex: 1 }}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
-          <ChatList onMention={onMention} />
+          <PostDetailLayout onMention={onMention} />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
             {comment.length < 2 ? (
@@ -164,7 +167,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           permission={permission}
         />
       </KeyboardAvoidingView>
-      <CommunityBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
+      <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.PostDetailContainer>
   );
 };

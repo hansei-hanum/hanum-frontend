@@ -7,7 +7,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
-import { AnonymitySettingsCard, PostSettingForm } from 'src/components';
+import { AnonymitySettingsCard, CreatePostSettingForm } from 'src/components';
 import { ANONYMITY_OPTION_LIST, AnonymityOptionItems } from 'src/constants';
 import { isIos } from 'src/utils';
 import { fonts } from 'src/styles';
@@ -74,7 +74,7 @@ export const AnonymitySettingsScreen: React.FC = () => {
   }, [anonymityType, isFocused]);
 
   return (
-    <PostSettingForm
+    <CreatePostSettingForm
       keyboardAvoidingViewEnabled={isIos}
       headerTitle="익명성 설정"
       onButtonPress={onComplete}
@@ -99,6 +99,6 @@ export const AnonymitySettingsScreen: React.FC = () => {
           style={{ color: theme.default, fontFamily: fonts.medium, padding: isIos ? 14 : 8 }}
         />
       </S.AnonymityNicknameWrapper>
-    </PostSettingForm>
+    </CreatePostSettingForm>
   );
 };

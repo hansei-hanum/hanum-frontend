@@ -7,18 +7,18 @@ import { UserLogo } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString } from 'src/utils';
 
-import { CommunityPostProps } from '../Post';
+import { CommunityPostProps } from '../../Post';
 
 import * as S from './styled';
 
-export interface CommunityChatProps extends Pick<CommunityPostProps, 'author' | 'time'> {
+export interface PostCommentCardProps extends Pick<CommunityPostProps, 'author' | 'time'> {
   index: number;
   message: string;
   isReply?: boolean;
   children?: React.ReactNode;
 }
 
-export const CommunityChat: React.FC<CommunityChatProps> = ({
+export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   index,
   author,
   time,
@@ -55,8 +55,8 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
 
   const theme = useTheme();
   return (
-    <S.CommunityChatContent key={index}>
-      <S.CommunityChatImage
+    <S.PostCommentCardContainer>
+      <S.PostCommentCardImage
         source={author.image ? { uri: author.image } : UserLogo}
         style={isReply && { width: 36, height: 36 }}
       />
@@ -69,8 +69,8 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
           </Text>
         </View>
         {!isShow[index] ? (
-          <S.ChatContainer>
-            <S.Chat
+          <S.PostCommentCardCommentContainer>
+            <S.PostCommentCardComment
               numberOfLines={14}
               ellipsizeMode="tail"
               onTextLayout={(event: NativeSyntheticEvent<TextLayoutEventData>) => {
@@ -78,7 +78,7 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
               }}
             >
               {message}
-            </S.Chat>
+            </S.PostCommentCardComment>
             {isOverlay[index] && (
               <ScaleOpacity onPress={() => showMore(index)}>
                 <Text size={14} color={theme.placeholder}>
@@ -86,19 +86,19 @@ export const CommunityChat: React.FC<CommunityChatProps> = ({
                 </Text>
               </ScaleOpacity>
             )}
-          </S.ChatContainer>
+          </S.PostCommentCardCommentContainer>
         ) : (
-          <S.ChatContainer>
-            <S.Chat>{message}</S.Chat>
+          <S.PostCommentCardCommentContainer>
+            <S.PostCommentCardComment>{message}</S.PostCommentCardComment>
             <ScaleOpacity onPress={() => showLess(index)}>
               <Text size={14} color={theme.placeholder}>
                 간략하게 보기
               </Text>
             </ScaleOpacity>
-          </S.ChatContainer>
+          </S.PostCommentCardCommentContainer>
         )}
         {children}
       </View>
-    </S.CommunityChatContent>
+    </S.PostCommentCardContainer>
   );
 };

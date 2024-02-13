@@ -103,10 +103,11 @@ export const ImageListBottomSheet = React.forwardRef<
     })
     .onEnd(() => {
       if (hasPermission) {
-        if (translateY.value > scrollHeight / 1.2) {
+        console.log('hasPermission', hasPermission);
+        if (translateY.value > scrollHeight) {
           scrollTo(0);
           runOnJS(setSelectedPhotos)([]);
-        } else if (translateY.value < context.value.y || -SCREEN_HEIGHT + inset.top) {
+        } else if (translateY.value < context.value.y && -SCREEN_HEIGHT + inset.top) {
           scrollTo(-SCREEN_HEIGHT + inset.top);
           runOnJS(setEnableScroll)(true);
         } else {
@@ -252,7 +253,9 @@ export const ImageListBottomSheet = React.forwardRef<
                     권한 설정에 따라 접근이 허가된 일부 사진만 표시돼요.
                   </Text>
                   <ScaleOpacity onPress={openPhotoSettings}>
-                    <Text size={14}>설정</Text>
+                    <Text size={14} color={theme.primary}>
+                      설정
+                    </Text>
                   </ScaleOpacity>
                 </S.WarningContainer>
               )}
@@ -326,7 +329,11 @@ export const ImageListBottomSheet = React.forwardRef<
           transform: [{ translateY: buttonTranslateY }],
         }}
       >
-        <Button>사진 ({selectedPhotos.filter((item) => item).length}) 보내기</Button>
+        <Button backgroundColor={theme.primary}>
+          <Text size={16} color={theme.white}>
+            사진 ({selectedPhotos.filter((item) => item).length}) 보내기
+          </Text>
+        </Button>
       </S.ImageListBottomSheetButtonWrapper>
     </Portal>
   );

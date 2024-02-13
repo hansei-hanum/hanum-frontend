@@ -6,7 +6,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
-import { PostSettingForm, Text, VisibleTypeCard } from 'src/components';
+import { CreatePostSettingForm, Text, VisibleTypeCard } from 'src/components';
 import { LIMITED_VISIBLE_TYPE_LIST, VISIBLE_TYPE_LIST, VisibleTypeItems } from 'src/constants';
 import { visibleTypeAtom } from 'src/atoms';
 import { useSetAnimation } from 'src/hooks';
@@ -75,7 +75,7 @@ export const VisibleTypeScreen: React.FC = () => {
   }, [visibleType, isFocused]);
 
   return (
-    <PostSettingForm headerTitle="공개 범위" onButtonPress={onComplete}>
+    <CreatePostSettingForm headerTitle="공개 범위" onButtonPress={onComplete}>
       {VISIBLE_TYPE_LIST.map((props, index) => (
         <VisibleTypeCard
           key={index}
@@ -100,6 +100,6 @@ export const VisibleTypeScreen: React.FC = () => {
           </S.VisibleTypeLimitContainer>
         ))}
       </S.VisibleTypeBoxContainer>
-    </PostSettingForm>
+    </CreatePostSettingForm>
   );
 };

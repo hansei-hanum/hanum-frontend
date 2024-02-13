@@ -31,7 +31,7 @@ export interface openModalProps {
 
 const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-60);
 
-export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
+export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
   closeBottomSheet,
 }) => {
@@ -87,11 +87,11 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
         modalBackDropVisible={modalOpen.block || modalOpen.report}
       >
-        <S.CommunityBottomSheetContainer>
+        <S.PostOptionBottomSheetContainer>
           {COMMUNITY_BOTTOM_SHEET_OPTION_LIST.map(({ text, isBlock, icon }) => (
             <ScaleOpacity key={text} onPress={() => onPress(text)}>
-              <S.CommunityBottomSheetListContainer>
-                <S.CommunityBottomSheetList>
+              <S.PostOptionBottomSheetOptionContainer>
+                <S.PostOptionBottomSheetIconContainer>
                   {isBlock ? (
                     <Entypo name="block" size={30} color={theme.danger} />
                   ) : (
@@ -100,12 +100,12 @@ export const CommunityBottomSheet: React.FC<CommunityBottomSheetProps> = ({
                   <Text size={15} color={isBlock ? theme.danger : theme.default}>
                     {text}
                   </Text>
-                </S.CommunityBottomSheetList>
+                </S.PostOptionBottomSheetIconContainer>
                 <Icons name="chevron-forward" size={26} color={theme.placeholder} />
-              </S.CommunityBottomSheetListContainer>
+              </S.PostOptionBottomSheetOptionContainer>
             </ScaleOpacity>
           ))}
-        </S.CommunityBottomSheetContainer>
+        </S.PostOptionBottomSheetContainer>
       </BottomSheet>
       <ReportBottomSheet
         reportScreenAnimationValue={reportScreenAnimationValue}

@@ -1,16 +1,16 @@
 import styled from '@emotion/native';
 
-export const CommunityPostImageWrapper = styled.View`
+export const PhotoCardContainer = styled.View`
   position: relative;
 `;
 
-export const CommunityPostImage = styled.Image`
+export const PhotoCardImage = styled.Image`
   width: 130px;
   height: 130px;
   border-radius: 16px;
 `;
 
-export const CommunityPostImageIconWrapper = styled.View`
+export const PhotoCardIconWrapper = styled.View`
   position: absolute;
   top: 0;
   right: 0;
