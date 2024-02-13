@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps, ViewProps } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
@@ -10,7 +10,7 @@ import { Text } from '../Text';
 
 import * as S from './styled';
 
-export interface ButtonProps {
+export interface ButtonCustomProps {
   children: React.ReactNode;
   backgroundColor?: string;
   isWhite?: boolean;
@@ -20,6 +20,8 @@ export interface ButtonProps {
   onPress?: () => void;
 }
 
+export type ButtonProps = ButtonCustomProps & TouchableOpacityProps;
+
 export const ButtonElement: React.FC<ButtonProps> = ({
   children,
   onPress,
@@ -28,6 +30,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   isLoading,
   backgroundColor,
   isWhite,
+  ...props
 }) => {
   const theme = useTheme();
   const { handlePressIn, handlePressOut, scaleAnimatedStyle } = usePressingAnimation();
@@ -62,6 +65,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
         alignItems: 'center',
         columnGap: 6,
       }}
+      {...props}
       activeOpacity={isLoading || isDisabled ? 0.4 : 0.8}
     >
       {isLoading && <Spinner color={theme.white} size={20} />}
@@ -76,8 +80,10 @@ export interface ButtonContainerProps {
   children: React.ReactNode;
 }
 
-export const ButtonContainer: React.FC<ButtonContainerProps> = ({ children }) => {
-  return <S.ButtonContainer>{children}</S.ButtonContainer>;
+export type ButtonContainerCustomProps = ButtonContainerProps & ViewProps;
+
+export const ButtonContainer: React.FC<ButtonContainerCustomProps> = ({ children, ...props }) => {
+  return <S.ButtonContainer {...props}>{children}</S.ButtonContainer>;
 };
 
 export const Button = Object.assign(ButtonElement, {

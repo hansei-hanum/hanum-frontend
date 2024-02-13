@@ -7,13 +7,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ThemeProvider } from '@emotion/react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import * as SC from './screens';
 import { useCodePush, useFetchUser } from './hooks';
-import { fetchUser } from './api';
 import { darkTheme, lightTheme } from './styles';
-import { themeAtom } from './atoms';
+import { authAtom, themeAtom } from './atoms';
 import { isAndroid } from './utils';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -25,7 +24,7 @@ export type RootStackParamList = {
   VerifyCode: undefined;
   Verify: undefined;
   Main: undefined;
-  Calendar: undefined;
+  Schedule: undefined;
   UserInfo: undefined;
   WebView: undefined;
   HanumPayMain: undefined;
@@ -37,16 +36,23 @@ export type RootStackParamList = {
   EoullimTimeTable: undefined;
   EoullimRaffle: undefined;
   EoullimStatus: undefined;
-  CommunityChat: { id: number };
-  CommunityPost: undefined;
+  CommunityMain: undefined;
+  CommunityPostDetail: { id: number };
+  CommunityCreatePost: undefined;
   CommunityVisibleType: undefined;
   CommunityAnonymitySettings: undefined;
+  NoInternet: undefined;
 };
 
+export const ERROR_MESSAGE = 'UNAUTHORIZED';
+
 export const Router: React.FC = () => {
-  useFetchUser();
+  const auth = useRecoilValue(authAtom);
+
+  const { data } = useFetchUser();
+
   const [isReady, setIsReady] = useState(false);
-  const [data, setData] = useState<null | string>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   const [themeValue, setThemeValue] = useRecoilState(themeAtom);
 
@@ -54,15 +60,11 @@ export const Router: React.FC = () => {
 
   const isDark = themeValue === 'dark';
 
-  const fetch = useCallback(async () => {
-    try {
-      const { data } = await fetchUser();
-      setData(data);
-    } catch (e) {
-      await AsyncStorage.removeItem('token');
-      console.log(e, 'error');
-    }
-  }, []);
+  const getToken = async () => {
+    const token = await AsyncStorage.getItem('token');
+    setToken(token);
+    return token;
+  };
 
   const getTheme = useCallback(async () => {
     const StorageTheme = await AsyncStorage.getItem('theme');
@@ -75,7 +77,7 @@ export const Router: React.FC = () => {
 
   useEffect(() => {
     async function prepare() {
-      await fetch();
+      await getToken();
       await getTheme();
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -99,6 +101,13 @@ export const Router: React.FC = () => {
     return null;
   }
 
+  const getInitialRoute = () => {
+    if (!token) return 'AuthMain';
+    if (data && data?.data) return 'Main';
+    if (auth.errorMessage === ERROR_MESSAGE) return 'AuthMain';
+    return 'NoInternet';
+  };
+
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
@@ -117,7 +126,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'Main'}
+          initialRouteName={getInitialRoute()}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -128,9 +137,10 @@ export const Router: React.FC = () => {
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="Main" component={SC.MainScreen} />
-            <Stack.Screen name="Calendar" component={SC.CalendarScreen} />
+            <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
             <Stack.Screen name="UserInfo" component={SC.UserInfoScreen} />
             <Stack.Screen name="WebView" component={SC.WebViewScreen} />
+            <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanumPayMain" component={SC.HanumPayMainScreen} />
@@ -146,8 +156,8 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
           </Stack.Group>
           <Stack.Group>
-            <Stack.Screen name="CommunityChat" component={SC.CommunityChatScreen} />
-            <Stack.Screen name="CommunityPost" component={SC.CommunityPostScreen} />
+            <Stack.Screen name="CommunityPostDetail" component={SC.CommunityPostDetailScreen} />
+            <Stack.Screen name="CommunityCreatePost" component={SC.CommunityCreatePostScreen} />
             <Stack.Screen name="CommunityVisibleType" component={SC.VisibleTypeScreen} />
             <Stack.Screen
               name="CommunityAnonymitySettings"

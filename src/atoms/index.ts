@@ -5,4 +5,5 @@ export * from './booth';
 export * from './luckyNumber';
 export * from './disable';
 export * from './theme';
-export * from './visibleType';
+export * from './postOptions';
+export * from './modal';

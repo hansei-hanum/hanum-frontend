@@ -13,6 +13,7 @@ import { useSetRecoilState } from 'recoil';
 import { Text } from 'src/components/common';
 import { checkNumber } from 'src/utils';
 import { isDisableAtom } from 'src/atoms';
+import { VERIFICATION_CODE_REGEX } from 'src/constants';
 
 import * as S from './styled';
 
@@ -37,8 +38,7 @@ export const CodeInput: React.FC<CodeInputProps> = ({ isNumber, value, setValue 
   const onChangeText = (text: string) => {
     if (isNumber) {
       const newText = checkNumber(text);
-      const codeValidationRegex = /^\d{6}$/;
-      setIsDisabled(!codeValidationRegex.test(newText));
+      setIsDisabled(!VERIFICATION_CODE_REGEX.test(newText));
       setValue(newText);
     } else {
       text.length === 6 ? setIsDisabled(false) : setIsDisabled(true);

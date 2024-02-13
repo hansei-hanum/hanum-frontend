@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { useTheme } from '@emotion/react';
 
-import { HomeScreen, ShowMoreScreen, ScheduleScreen, LunchTableScreen } from 'src/screens';
+import { HomeScreen, ShowMoreScreen, TimeTableScreen, MealTableScreen } from 'src/screens';
 import { isIos } from 'src/utils';
 
 import { CommunityMainScreen } from '../community';
@@ -49,7 +49,7 @@ export const MainScreen: React.FC = () => {
           color: theme.default,
         },
       }}
-      initialRouteName="대나무숲"
+      initialRouteName="홈"
     >
       <BottomTab.Screen
         name="Home"
@@ -61,7 +61,7 @@ export const MainScreen: React.FC = () => {
       />
       <BottomTab.Screen
         name="TimeTable"
-        component={ScheduleScreen}
+        component={TimeTableScreen}
         options={{
           title: '시간표',
           tabBarIcon: ({ color }) => <Icons name="access-time" size={size} color={color} />,
@@ -69,16 +69,17 @@ export const MainScreen: React.FC = () => {
       />
       <BottomTab.Screen
         name="Meal"
-        component={LunchTableScreen}
+        component={MealTableScreen}
         options={{
           title: '급식표',
           tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="대나무숲"
+        name="Community"
         component={CommunityMainScreen}
         options={{
+          title: '대나무숲',
           tabBarIcon: ({ color }) => <Icons name="article" size={size + 4} color={color} />,
         }}
       />

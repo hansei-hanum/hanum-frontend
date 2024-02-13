@@ -9,3 +9,9 @@ export const HeaderContainer = styled.View`
   background-color: transparent;
   z-index: 10;
 `;
+
+export const HeaderIconContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  column-gap: 6px;
+`;

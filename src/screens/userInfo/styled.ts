@@ -39,3 +39,11 @@ export const UserInfoButtonContainer = styled.View`
   justify-content: center;
   row-gap: 14px;
 `;
+
+export const InfoBoxContainer = styled.View`
+  flex-direction: column;
+  row-gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: ${iosCheckHeight ? '30px' : '15px'};
+`;

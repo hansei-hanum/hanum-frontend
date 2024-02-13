@@ -3,27 +3,27 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 
 import { Spinner, Text } from 'src/components';
-import { useGetMealData } from 'src/hooks';
+import { useGetMealTable, useNavigate } from 'src/hooks';
 
 import { Content } from '../Content';
 
 import * as S from './styled';
 
-export interface LunchTableProps {
-  onPress: () => void;
-}
+export const LunchTable: React.FC = () => {
+  const navigate = useNavigate();
 
-export const LunchTable: React.FC<LunchTableProps> = ({ onPress }) => {
-  const { meal, isLoading } = useGetMealData();
+  const date = new Date();
+
+  const { data, isLoading } = useGetMealTable({ month: `${date.getMonth() + 1}` });
 
   const today = new Date();
 
-  const filterMeal = meal?.filter((meal) => new Date(meal.date).getDate() === today.getDate());
+  const filterMeal = data?.data.filter((meal) => new Date(meal.date).getDate() === today.getDate());
 
   const theme = useTheme();
 
   return (
-    <Content icon="🍴" name="급식표" onPress={onPress}>
+    <Content icon="🍴" name="급식표" onPress={() => navigate('Meal')}>
       <S.LunchTableTextContainer>
         <Text size={15} fontFamily="medium" color={theme.placeholder}>
           오늘의 급식

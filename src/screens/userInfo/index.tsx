@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 
 import { useTheme } from '@emotion/react';
 
-import { Button, GoBackIcon, Header, InfoBox, Modal, Text } from 'src/components';
+import { Button, Header, InfoBox, Modal, Text } from 'src/components';
 import { useGetUser, useInitNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets/';
 import { deleteUser, disconnectNotification } from 'src/api';
+import { USER_INFO_LIST } from 'src/constants';
 
 import * as S from './styled';
 
-const modalContent = `회원 탈퇴를 진행하면 즉시 모든 한움 서비스의 제공이 중단되고, 모든 개인정보는 즉시 파기됩니다.
+const LEAVE_USER_MODAL_CONTENT = `회원 탈퇴를 진행하면 즉시 모든 한움 서비스의 제공이 중단되고, 모든 개인정보는 즉시 파기됩니다.
   이에 따라 그동안 이용하셨던 한움 서비스는 다음과 같이 처리됩니다.
 
   - 사용한 재학생 인증 코드는 복구되지 않으며, 추후 동일 코드로 재가입하실 수 없습니다.
@@ -30,10 +31,6 @@ export const UserInfoScreen: React.FC = () => {
     return date && date.split('T')[0];
   };
 
-  const formattedPhone = (phone: string) => {
-    return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-  };
-
   const onLogout = () => {
     disconnectNotification();
     initNavigate('AuthMain');
@@ -48,9 +45,7 @@ export const UserInfoScreen: React.FC = () => {
   return (
     <>
       <S.UserInfoWrapper>
-        <Header>
-          <GoBackIcon />
-        </Header>
+        <Header hasGoBackIcon />
         {userData && (
           <S.UserInfoContainer>
             <S.UserInfoProfileContainer>
@@ -74,11 +69,15 @@ export const UserInfoScreen: React.FC = () => {
                   {verifyUser ? `${formatUser()}` : '정회원 인증 안 됨'}
                 </Text>
               </S.UserInfoProfile>
-              <InfoBox
-                number={formattedPhone(userData.phone)}
-                isVerify={verifyUser ? userType() : ''}
-                endDate={verifyUser ? formattedDate(verifyUser.valid_until) : '없음'}
-              />
+              <S.InfoBoxContainer>
+                {USER_INFO_LIST({
+                  phone: userData.phone,
+                  endDate: verifyUser ? formattedDate(verifyUser.valid_until) : '없음',
+                  verifyType: userType(),
+                }).map((props) => (
+                  <InfoBox {...props} />
+                ))}
+              </S.InfoBoxContainer>
             </S.UserInfoProfileContainer>
             <S.UserInfoButtonContainer>
               <Button isWhite onPress={onLogout}>
@@ -94,7 +93,7 @@ export const UserInfoScreen: React.FC = () => {
       {isSecessionClick && (
         <Modal
           title="탈퇴 절차 안내"
-          text={modalContent}
+          text={LEAVE_USER_MODAL_CONTENT}
           modalVisible={isSecessionClick}
           button={
             <Button.Container>

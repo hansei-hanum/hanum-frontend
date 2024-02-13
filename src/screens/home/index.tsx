@@ -3,7 +3,7 @@ import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
-import { Linking, PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
+import { PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
@@ -11,8 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Calendar, Header, LunchTable } from 'src/components';
-import { isAndroid, isIos } from 'src/utils';
+import { Timer, Schedule, Header, LunchTable } from 'src/components';
+import { isAndroid, isIos, openContactChannel } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
 
@@ -20,7 +20,7 @@ import { Logo, WhiteLogo } from '../../../assets/images';
 
 import * as S from './styled';
 
-export const HomeScreen: React.FC = ({ navigation }: any) => {
+export const HomeScreen: React.FC = () => {
   const theme = useTheme();
 
   const themeValue = useRecoilValue(themeAtom);
@@ -60,10 +60,6 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
         hideOnPress: false,
       });
     });
-  };
-
-  const onPress = () => {
-    navigation.navigate('Meal');
   };
 
   useEffect(() => {
@@ -136,14 +132,7 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
           style={{ width: 98, height: 30, resizeMode: 'contain' }}
         />
         <S.HomeScreenHeaderIconContainer>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => {
-              Linking.openURL('kakaoplus://plusfriend/talk/chat/405758775').catch(() =>
-                Linking.openURL('https://pf.kakao.com/_xkMcxdG'),
-              );
-            }}
-          >
+          <TouchableOpacity activeOpacity={0.5} onPress={openContactChannel}>
             <AntDesign name="customerservice" size={28} color={theme.placeholder} />
           </TouchableOpacity>
         </S.HomeScreenHeaderIconContainer>
@@ -167,8 +156,8 @@ export const HomeScreen: React.FC = ({ navigation }: any) => {
           mainText="실시간으로 보기"
         /> */}
         <Timer />
-        <LunchTable onPress={onPress} />
-        <Calendar />
+        <LunchTable />
+        <Schedule />
       </S.HomeScreenContainer>
     </S.HomeScreenWrapper>
   );

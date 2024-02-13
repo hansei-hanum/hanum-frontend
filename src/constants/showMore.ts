@@ -1,22 +1,32 @@
-export interface Section {
+export interface ShowMoreSectionItem {
   name: string;
   icon: string;
   navigateUrl: string;
 }
 
-export interface ShowMoreSectionItem {
+export interface ShowMoreItem {
   name: string;
-  section: Section[];
+  section: ShowMoreSectionItem[];
 }
 
-export const SHOW_MORE_SECTION_LIST: ShowMoreSectionItem[] = [
+export const SHOW_MORE_LIST: ShowMoreItem[] = [
   {
     name: '학교 생활정보',
     section: [
       {
         name: '학사일정',
         icon: '📆',
-        navigateUrl: 'Calendar',
+        navigateUrl: 'Schedule',
+      },
+      {
+        name: '급식표',
+        icon: '🍴',
+        navigateUrl: 'Meal',
+      },
+      {
+        name: '시간표',
+        icon: '⏰',
+        navigateUrl: 'TimeTable',
       },
     ],
   },

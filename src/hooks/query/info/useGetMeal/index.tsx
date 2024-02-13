@@ -1,29 +1,21 @@
 import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
-import moment from 'moment-timezone';
 
-import { APIErrorResponse, APIResponse, GetMealResponse } from 'src/api';
-import { GetMealValue, getMeal } from 'src/api';
+import { APIErrorResponse, APIResponse, GetLunchMenusResponse } from 'src/api';
+import { GetLunchMenusValue, getMealTable } from 'src/api';
 
-export const useGetMeal = ({
+export const useGetMealTable = ({
   month,
-}: GetMealValue): UseQueryResult<APIResponse<GetMealResponse[]>, AxiosError<APIErrorResponse>> => {
-  return useQuery('useGetMeal', () => getMeal({ month }), {
+}: GetLunchMenusValue): UseQueryResult<
+  APIResponse<GetLunchMenusResponse[]>,
+  AxiosError<APIErrorResponse>
+> => {
+  return useQuery('useGetMealTable', () => getMealTable({ month }), {
     onError: (error) => {
       console.log(error, 'error');
     },
     retry: 0,
     staleTime: 1000 * 60 * 60 * 24,
   });
-};
-
-export const useGetMealData = () => {
-  const krDate = moment().tz('Asia/Seoul');
-  const { data, isLoading } = useGetMeal({ month: `${krDate.month() + 1}` });
-
-  return {
-    isLoading,
-    meal: data?.data,
-  };
 };
