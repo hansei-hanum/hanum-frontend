@@ -68,7 +68,6 @@ export const Router: React.FC = () => {
 
   const getTheme = useCallback(async () => {
     const StorageTheme = await AsyncStorage.getItem('theme');
-    console.log(StorageTheme, 'StorageTheme');
     if (theme && (!StorageTheme || theme === StorageTheme)) {
       setThemeValue(theme);
     } else {

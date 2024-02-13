@@ -103,7 +103,6 @@ export const ImageListBottomSheet = React.forwardRef<
     })
     .onEnd(() => {
       if (hasPermission) {
-        console.log('hasPermission', hasPermission);
         if (translateY.value > scrollHeight) {
           scrollTo(0);
           runOnJS(setSelectedPhotos)([]);
