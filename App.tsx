@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { LogBox } from 'react-native';
-import Toast from 'react-native-toast-message';
 import { NotifierWrapper } from 'react-native-notifier';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import CodePush from 'react-native-code-push';
@@ -24,7 +23,6 @@ function App() {
             <QueryClientProvider client={client}>
               <NotifierWrapper>
                 <Router />
-                <Toast />
               </NotifierWrapper>
             </QueryClientProvider>
           </PortalProvider>

@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -25,6 +26,7 @@ import { CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT, COMMUNITY_POST } from 'src/cons
 import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { RootStackParamList } from 'src/Router';
+import { isAndroid } from 'src/utils';
 
 import * as S from './styled';
 
@@ -106,6 +108,21 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const toggleAnonymous = () => {
     setIsAnonymous(!isAnonymous);
+    if (!isAnonymous) {
+      Toast.show({
+        position: 'top',
+        topOffset: isAndroid ? 10 : 0,
+        type: 'success',
+        text1: '익명으로 전환되었어요',
+      });
+    } else {
+      Toast.show({
+        position: 'top',
+        topOffset: isAndroid ? 10 : 0,
+        type: 'success',
+        text1: '실명으로 전환되었어요',
+      });
+    }
   };
 
   return (

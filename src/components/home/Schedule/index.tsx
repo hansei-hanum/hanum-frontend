@@ -29,7 +29,7 @@ export const Schedule: React.FC = () => {
   };
 
   return (
-    <Content icon="📆" name="학사일정" navigateUrl="Calendar">
+    <Content icon="📆" name="학사일정" navigateUrl="Schedule">
       <S.ScheduleContainer>
         {isLoading ? (
           <Spinner />

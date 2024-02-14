@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
