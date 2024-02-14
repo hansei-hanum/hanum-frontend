@@ -26,6 +26,7 @@ import { CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT, COMMUNITY_POST } from 'src/cons
 import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { RootStackParamList } from 'src/Router';
+import { isAndroid } from 'src/utils';
 
 import * as S from './styled';
 
@@ -110,12 +111,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     if (!isAnonymous) {
       Toast.show({
         position: 'top',
+        topOffset: isAndroid ? 10 : 0,
         type: 'success',
         text1: '익명으로 전환되었어요',
       });
     } else {
       Toast.show({
         position: 'top',
+        topOffset: isAndroid ? 10 : 0,
         type: 'success',
         text1: '실명으로 전환되었어요',
       });
