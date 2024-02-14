@@ -10,6 +10,7 @@ export const ToastLayoutWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   padding: 0 14px;
+  position: relative;
 `;
 
 export const ToastLayoutBlurContainer = styled(BlurView)<{ systemTheme: ColorSchemeName }>`
@@ -23,6 +24,20 @@ export const ToastLayoutBlurContainer = styled(BlurView)<{ systemTheme: ColorSch
   column-gap: 10px;
   border-color: #efefef;
   border-width: ${({ systemTheme }) => (systemTheme === 'light' ? 1 : 0)};
+`;
+
+export const ToastLayoutAndroidContainer = styled.View<{ systemTheme: ColorSchemeName }>`
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  justify-content: flex-start;
+  border-radius: 14px;
+  align-items: center;
+  padding: 0 14px;
+  column-gap: 10px;
+  border-color: #efefef;
+  border-width: ${({ systemTheme }) => (systemTheme === 'light' ? 1 : 0)};
+  background-color: ${({ systemTheme }) => (systemTheme === 'light' ? '#EDEDED' : '#4D4F53')};
 `;
 
 export const ToastLayoutIconWrapper = styled.View`

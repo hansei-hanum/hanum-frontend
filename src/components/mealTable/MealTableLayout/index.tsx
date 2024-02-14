@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,19 +27,20 @@ export const MealTableLayout: React.FC<MealTableLayoutProps> = ({ children }) =>
     if (!notifyClick) {
       AsyncStorage.setItem('mealNotificationEnabled', 'true');
       messaging().subscribeToTopic('meal');
+      Toast.show({
+        type: 'success',
+        text1: '매일 8시에 알림을 보내드릴게요',
+      });
     } else {
       AsyncStorage.setItem('mealNotificationEnabled', 'false');
       messaging().unsubscribeFromTopic('meal');
+      Toast.hide();
     }
   };
 
   useEffect(() => {
     AsyncStorage.getItem('mealNotificationEnabled').then((value) => {
-      if (value === 'true') {
-        setNotifyClick(true);
-      } else {
-        setNotifyClick(false);
-      }
+      setNotifyClick(Boolean(value));
     });
   }, []);
 

@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -106,6 +107,19 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const toggleAnonymous = () => {
     setIsAnonymous(!isAnonymous);
+    if (!isAnonymous) {
+      Toast.show({
+        position: 'top',
+        type: 'success',
+        text1: '익명으로 전환되었어요',
+      });
+    } else {
+      Toast.show({
+        position: 'top',
+        type: 'success',
+        text1: '실명으로 전환되었어요',
+      });
+    }
   };
 
   return (
