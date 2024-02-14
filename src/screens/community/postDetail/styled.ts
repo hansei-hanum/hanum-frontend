@@ -1,13 +1,17 @@
-import { TextInput } from 'react-native';
+import { KeyboardAvoidingView, TextInput, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import styled from '@emotion/native';
 
-import { isIos } from 'src/utils';
+import { isAndroid, isIos } from 'src/utils';
 
 export const PostDetailContainer = styled(GestureHandlerRootView)`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
+`;
+
+export const PostDetailInnerContainer = styled(isIos ? KeyboardAvoidingView : View)`
+  flex: 1;
 `;
 
 export const PostDetailBottomSection = styled.View`
@@ -16,6 +20,7 @@ export const PostDetailBottomSection = styled.View`
   align-items: center;
   justify-content: center;
   padding: 0 10px;
+  padding-bottom: ${isAndroid ? `12px` : `0px`};
   border-top-width: 1px;
   border-top-color: ${({ theme }) => theme.lightGray};
 `;

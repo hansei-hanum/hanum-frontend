@@ -17,6 +17,7 @@ import { darkTheme, lightTheme } from './styles';
 import { authAtom, themeAtom } from './atoms';
 import { isAndroid } from './utils';
 import { useToastConfig } from './constants';
+import { CheckVersion } from './components';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -119,6 +120,7 @@ export const Router: React.FC = () => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <CheckVersion />
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
