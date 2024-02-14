@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme, Appearance } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ThemeProvider } from '@emotion/react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import * as SC from './screens';
 import { useCodePush, useFetchUser } from './hooks';
@@ -47,18 +47,27 @@ export type RootStackParamList = {
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
 
 export const Router: React.FC = () => {
+  const setAppTheme = useSetRecoilState(themeAtom);
   const auth = useRecoilValue(authAtom);
 
-  const { data } = useFetchUser();
+  const { data, isLoading } = useFetchUser();
 
   const [isReady, setIsReady] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [theme, setTheme] = useState(Appearance.getColorScheme());
 
-  const [themeValue, setThemeValue] = useRecoilState(themeAtom);
+  Appearance.addChangeListener(({ colorScheme }) => {
+    setTheme(colorScheme);
+    colorScheme && setAppTheme(colorScheme);
+  });
 
-  const theme = useColorScheme();
+  const isDarkTheme = theme === 'dark';
 
-  const isDark = themeValue === 'dark';
+  const systemTheme = useColorScheme();
+
+  const getTheme = () => {
+    systemTheme && setAppTheme(systemTheme);
+  };
 
   const getToken = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -66,19 +75,10 @@ export const Router: React.FC = () => {
     return token;
   };
 
-  const getTheme = useCallback(async () => {
-    const StorageTheme = await AsyncStorage.getItem('theme');
-    if (theme && (!StorageTheme || theme === StorageTheme)) {
-      setThemeValue(theme);
-    } else {
-      setThemeValue(StorageTheme);
-    }
-  }, []);
-
   useEffect(() => {
     async function prepare() {
+      getTheme();
       await getToken();
-      await getTheme();
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
@@ -102,23 +102,25 @@ export const Router: React.FC = () => {
   }
 
   const getInitialRoute = () => {
-    if (!token) return 'AuthMain';
-    if (data && data?.data) return 'Main';
-    if (auth.errorMessage === ERROR_MESSAGE) return 'AuthMain';
-    return 'NoInternet';
+    if (!isLoading) {
+      if (!token) return 'AuthMain';
+      if (data && data?.data) return 'Main';
+      if (auth.errorMessage === ERROR_MESSAGE) return 'AuthMain';
+      return 'NoInternet';
+    }
   };
 
   return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
             cardStyle: {
-              backgroundColor: isDark ? '#2A2B2E' : '#FEFEFE',
+              backgroundColor: isDarkTheme ? '#2A2B2E' : '#FEFEFE',
             },
             ...(isAndroid &&
-              isDark && {
+              isDarkTheme && {
                 cardStyleInterpolator: ({ current }) => ({
                   cardStyle: {
                     opacity: current.progress,
@@ -165,7 +167,7 @@ export const Router: React.FC = () => {
             />
           </Stack.Group>
         </Stack.Navigator>
-        <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+        <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
       </NavigationContainer>
     </ThemeProvider>
   );

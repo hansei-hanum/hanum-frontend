@@ -108,7 +108,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           keyExtractor={(_, index) => index.toString()}
           contentContainerStyle={{
             paddingTop: isIos ? inset.top + 24 : 68,
-            paddingBottom: 40,
+            paddingBottom: 60,
             rowGap: 16,
           }}
           ListHeaderComponent={

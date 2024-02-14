@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
 import { PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Schedule, Header, LunchTable } from 'src/components';
+import { Timer, Schedule, Header, LunchTable, ScaleOpacity } from 'src/components';
 import { isAndroid, isIos, openContactChannel } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
@@ -124,6 +124,15 @@ export const HomeScreen: React.FC = () => {
       });
   }, []);
 
+  const showToast = () => {
+    console.log('showToast');
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is some something 👋',
+    });
+  };
+
   return (
     <S.HomeScreenWrapper>
       <Header isRow>
@@ -155,7 +164,9 @@ export const HomeScreen: React.FC = () => {
           subText="오늘의 급식!"
           mainText="실시간으로 보기"
         /> */}
-        <Timer />
+        <ScaleOpacity onPress={showToast}>
+          <Timer />
+        </ScaleOpacity>
         <LunchTable />
         <Schedule />
       </S.HomeScreenContainer>

@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { LogBox } from 'react-native';
-import Toast from 'react-native-toast-message';
 import { NotifierWrapper } from 'react-native-notifier';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import CodePush from 'react-native-code-push';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import { RecoilRoot } from 'recoil';
 import { PortalProvider } from '@gorhom/portal';
@@ -24,7 +24,7 @@ function App() {
             <QueryClientProvider client={client}>
               <NotifierWrapper>
                 <Router />
-                <Toast />
+                <Toast position="bottom" bottomOffset={20} />
               </NotifierWrapper>
             </QueryClientProvider>
           </PortalProvider>
