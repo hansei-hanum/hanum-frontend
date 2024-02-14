@@ -44,7 +44,6 @@ export const HomeScreen: React.FC = () => {
 
     if (isGranted) {
       const token = await messaging().getToken();
-      console.log('Token:', token);
       mutate({ token: token, platform: isIos ? 'IOS' : 'ANDROID' });
     }
   };

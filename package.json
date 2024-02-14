@@ -77,6 +77,7 @@
     "react-native-toast-message": "^2.2.0",
     "react-native-toggle-element": "^2.0.1",
     "react-native-vector-icons": "^10.0.0",
+    "react-native-version-check": "^3.4.7",
     "react-native-webview": "^13.5.1",
     "react-query": "^3.39.3",
     "recoil": "^0.7.7"
@@ -89,6 +90,7 @@
     "@react-native/metro-config": "^0.72.11",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native-version-check": "^3.4.8",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",

@@ -46,7 +46,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         modalVisible={isCurrentStudentModal}
         button={
           <Button.Container>
-            <Button onPress={onAgree} isWhite isModalBtn>
+            <Button onPress={() => onAgree()} isWhite isModalBtn>
               아니오
             </Button>
             <Button onPress={() => onAgree(true)} isModalBtn>
