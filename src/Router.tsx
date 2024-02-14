@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar, useColorScheme, Appearance } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import Toast from 'react-native-toast-message';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,6 +16,7 @@ import { useCodePush, useFetchUser } from './hooks';
 import { darkTheme, lightTheme } from './styles';
 import { authAtom, themeAtom } from './atoms';
 import { isAndroid } from './utils';
+import { useToastConfig } from './constants';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -47,6 +50,10 @@ export type RootStackParamList = {
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
 
 export const Router: React.FC = () => {
+  const inset = useSafeAreaInsets();
+
+  const { toastConfig } = useToastConfig();
+
   const setAppTheme = useSetRecoilState(themeAtom);
   const auth = useRecoilValue(authAtom);
 
@@ -169,6 +176,7 @@ export const Router: React.FC = () => {
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
       </NavigationContainer>
+      <Toast position="bottom" bottomOffset={inset.bottom - 10} config={toastConfig} />
     </ThemeProvider>
   );
 };

@@ -128,8 +128,7 @@ export const HomeScreen: React.FC = () => {
     console.log('showToast');
     Toast.show({
       type: 'success',
-      text1: 'Hello',
-      text2: 'This is some something 👋',
+      text1: '앙 기모링~',
     });
   };
 
