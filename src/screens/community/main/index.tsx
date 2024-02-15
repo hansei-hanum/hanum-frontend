@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { StackScreenProps } from '@react-navigation/stack';
 
 import { useTheme } from '@emotion/react';
 
@@ -18,16 +15,14 @@ import {
   CommunityMainAnimatedHeader,
   PostOptionBottomSheet,
 } from 'src/components';
-import { useBottomSheet, useGetImagesHeight, useGetUser } from 'src/hooks';
+import { useBottomSheet, useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
-import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
-export type CommunityMainScreenProps = StackScreenProps<RootStackParamList, 'CommunityMain'>;
-
-export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ navigation }: any) => {
+export const CommunityMainScreen: React.FC = () => {
+  const navigate = useNavigate();
   const inset = useSafeAreaInsets();
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
@@ -58,7 +53,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
   }, [COMMUNITY_LIST, getHeightsForImage]);
 
   const onChatScreenNavigate = (index: number) => {
-    navigation.navigate('CommunityPostDetail', { id: index });
+    navigate('CommunityPostDetail', { id: index });
   };
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
@@ -113,7 +108,7 @@ export const CommunityMainScreen: React.FC<CommunityMainScreenProps> = ({ naviga
           }}
           ListHeaderComponent={
             <S.CommunityUserWrapper>
-              <ScaleOpacity onPress={() => navigation.navigate('CommunityCreatePost')}>
+              <ScaleOpacity onPress={() => navigate('CommunityCreatePost')}>
                 <S.CommunityUserContainer>
                   <CommunityUserImage userImage={userProfile} />
                   <S.CommunityUserThinkBox>

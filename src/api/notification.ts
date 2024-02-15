@@ -18,4 +18,5 @@ export const connectNotification = async ({ token, platform }: ConnectNotificati
 export const disconnectNotification = async () => {
   await authInstance.delete(API_SUFFIX.NOTIFICATION);
   await AsyncStorage.removeItem('token');
+  console.log('토큰 삭제');
 };

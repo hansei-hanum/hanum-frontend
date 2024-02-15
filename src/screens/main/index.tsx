@@ -9,6 +9,7 @@ import { useTheme } from '@emotion/react';
 
 import { HomeScreen, ShowMoreScreen, TimeTableScreen, MealTableScreen } from 'src/screens';
 import { isIos } from 'src/utils';
+import { TabBarStyle } from 'src/styles';
 
 import { CommunityMainScreen } from '../community';
 
@@ -17,32 +18,18 @@ const BottomTab = createBottomTabNavigator();
 export const MainScreen: React.FC = () => {
   const inset = useSafeAreaInsets();
   const theme = useTheme();
+  const style = TabBarStyle(theme, inset);
 
   const size = 25;
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          zIndex: 10,
-          borderTopRightRadius: 24,
-          borderTopLeftRadius: 24,
-          borderTopColor: theme.secondary,
-          borderTopWidth: 1,
-          borderLeftColor: theme.secondary,
-          borderLeftWidth: 1,
-          borderRightColor: theme.secondary,
-          borderRightWidth: 1,
-          backgroundColor: theme.tabBarBg,
-          height: isIos ? 78 : 64,
-          paddingBottom: isIos ? inset.bottom - 10 : 10,
-          position: 'absolute',
-        },
         tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
           fontSize: 12,
         },
-
+        tabBarStyle: inset && theme ? style : {},
         tabBarIconStyle: {
           paddingBottom: 0,
           marginBottom: isIos ? -8 : -10,

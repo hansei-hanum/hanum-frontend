@@ -59,6 +59,7 @@ export const Router: React.FC = () => {
   const auth = useRecoilValue(authAtom);
 
   const { data, isLoading } = useFetchUser();
+  console.log(data, isLoading, 'data');
 
   const [isReady, setIsReady] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -103,7 +104,7 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
-  if (isReady && !isUpdating) {
+  if (isReady && !isUpdating && !isLoading) {
     SplashScreen.hide();
   } else if (!isReady) {
     return null;
