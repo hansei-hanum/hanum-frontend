@@ -74,6 +74,7 @@ export const login = async ({ phone, code }: LoginValues) => {
 
 export const fetchUser = async () => {
   const token = await AsyncStorage.getItem('token');
+  console.log('token', token);
   setAccessToken(token);
   const { data } = await authInstance.get(`${API_SUFFIX.USERS}@me/`);
   return data;
@@ -97,4 +98,5 @@ export const userVerify = async ({ code, isCheck }: UserVerifyValue) => {
 export const deleteUser = async () => {
   await authInstance.delete(`${API_SUFFIX.USERS}@me/`);
   await AsyncStorage.removeItem('token');
+  console.log('토큰 삭제');
 };

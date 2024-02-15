@@ -1,7 +1,7 @@
 import React from 'react';
 import Icons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -9,6 +9,7 @@ import { useTheme } from '@emotion/react';
 
 import { HomeScreen, ShowMoreScreen, TimeTableScreen, MealTableScreen } from 'src/screens';
 import { isIos } from 'src/utils';
+import { TabBarStyle } from 'src/styles';
 
 import { CommunityMainScreen } from '../community';
 
@@ -17,32 +18,26 @@ const BottomTab = createBottomTabNavigator();
 export const MainScreen: React.FC = () => {
   const inset = useSafeAreaInsets();
   const theme = useTheme();
+  const style = TabBarStyle(theme, inset);
 
-  const size = 25;
+  const getScreenOptions = (title: string, iconName: string) => ({
+    title,
+    tabBarIcon: ({ color }: { color: string }) => <Icons name={iconName} size={25} color={color} />,
+  });
+
+  const triggerTabPress = () => {
+    trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
+  };
+
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          zIndex: 10,
-          borderTopRightRadius: 24,
-          borderTopLeftRadius: 24,
-          borderTopColor: theme.secondary,
-          borderTopWidth: 1,
-          borderLeftColor: theme.secondary,
-          borderLeftWidth: 1,
-          borderRightColor: theme.secondary,
-          borderRightWidth: 1,
-          backgroundColor: theme.tabBarBg,
-          height: isIos ? 78 : 64,
-          paddingBottom: isIos ? inset.bottom - 10 : 10,
-          position: 'absolute',
-        },
         tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
           fontSize: 12,
         },
-
+        tabBarStyle: inset && theme ? style : {},
         tabBarIconStyle: {
           paddingBottom: 0,
           marginBottom: isIos ? -8 : -10,
@@ -54,41 +49,41 @@ export const MainScreen: React.FC = () => {
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
-        options={{
-          title: '홈',
-          tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
+        options={getScreenOptions('홈', 'home')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="TimeTable"
         component={TimeTableScreen}
-        options={{
-          title: '시간표',
-          tabBarIcon: ({ color }) => <Icons name="access-time" size={size} color={color} />,
+        options={getScreenOptions('시간표', 'access-time')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="Meal"
         component={MealTableScreen}
-        options={{
-          title: '급식표',
-          tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,
+        options={getScreenOptions('급식', 'restaurant')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="Community"
         component={CommunityMainScreen}
-        options={{
-          title: '대나무숲',
-          tabBarIcon: ({ color }) => <Icons name="article" size={size + 4} color={color} />,
+        options={getScreenOptions('대나무숲', 'article')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="More"
         component={ShowMoreScreen}
-        options={{
-          title: '더보기',
-          tabBarIcon: ({ color }) => <Icons name="menu" size={size} color={color} />,
+        options={getScreenOptions('더보기', 'menu')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
     </BottomTab.Navigator>
