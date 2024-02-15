@@ -1,7 +1,7 @@
 import React from 'react';
 import Icons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -20,7 +20,15 @@ export const MainScreen: React.FC = () => {
   const theme = useTheme();
   const style = TabBarStyle(theme, inset);
 
-  const size = 25;
+  const getScreenOptions = (title: string, iconName: string) => ({
+    title,
+    tabBarIcon: ({ color }: { color: string }) => <Icons name={iconName} size={25} color={color} />,
+  });
+
+  const triggerTabPress = () => {
+    trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
+  };
+
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -41,41 +49,41 @@ export const MainScreen: React.FC = () => {
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
-        options={{
-          title: '홈',
-          tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
+        options={getScreenOptions('홈', 'home')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="TimeTable"
         component={TimeTableScreen}
-        options={{
-          title: '시간표',
-          tabBarIcon: ({ color }) => <Icons name="access-time" size={size} color={color} />,
+        options={getScreenOptions('시간표', 'access-time')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="Meal"
         component={MealTableScreen}
-        options={{
-          title: '급식표',
-          tabBarIcon: ({ color }) => <Icons name="restaurant" size={size} color={color} />,
+        options={getScreenOptions('급식', 'restaurant')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="Community"
         component={CommunityMainScreen}
-        options={{
-          title: '대나무숲',
-          tabBarIcon: ({ color }) => <Icons name="article" size={size + 4} color={color} />,
+        options={getScreenOptions('대나무숲', 'article')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
       <BottomTab.Screen
         name="More"
         component={ShowMoreScreen}
-        options={{
-          title: '더보기',
-          tabBarIcon: ({ color }) => <Icons name="menu" size={size} color={color} />,
+        options={getScreenOptions('더보기', 'menu')}
+        listeners={{
+          tabPress: triggerTabPress,
         }}
       />
     </BottomTab.Navigator>

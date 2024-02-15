@@ -3,6 +3,7 @@ import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'rea
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
 
 import { useTheme } from '@emotion/react';
 
@@ -37,6 +38,7 @@ export const CommunityMainScreen: React.FC = () => {
   const [likes, setLikes] = useState<Array<boolean>>([]);
 
   const onLikeClick = (index: number) => {
+    trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
     setLikes((prev) => {
       const newLikes = [...prev];
       newLikes[index] = !newLikes[index];
