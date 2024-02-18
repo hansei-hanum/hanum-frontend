@@ -42,17 +42,18 @@ export const CheckVersion: React.FC = () => {
 
   if (!isLoading && !isVersionCorrect) {
     return (
-      <Modal
-        title="업데이트 안내"
-        linkText={
-          <Text size={16} isCenter>
-            {isAndroid ? 'Google Play' : 'App Store'}에 필수 업데이트가 있어요{'\n'}
-            앱을 사용하려면 업데이트를 진행해 주세요
-          </Text>
-        }
-        modalVisible={true}
-        button={<Button onPress={onButtonPress}>업데이트 하기</Button>}
-      />
+      // <Modal
+      //   title="업데이트 안내"
+      //   linkText={
+      //     <Text size={16} isCenter>
+      //       {isAndroid ? 'Google Play' : 'App Store'}에 필수 업데이트가 있어요{'\n'}
+      //       앱을 사용하려면 업데이트를 진행해 주세요
+      //     </Text>
+      //   }
+      //   modalVisible={true}
+      //   button={<Button onPress={onButtonPress}>업데이트 하기</Button>}
+      // />
+      null
     );
   } else {
     return null;
