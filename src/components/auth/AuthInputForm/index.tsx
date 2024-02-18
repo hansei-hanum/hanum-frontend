@@ -22,7 +22,6 @@ export type AuthInputFormProps = AuthInputFormCustomProps & TextInputProps;
 
 export const AuthInputForm = forwardRef<TextInput, AuthInputFormProps>(
   ({ label, value, onFocus: onElementFocus, onBlur: onElementBlur, ...props }, ref) => {
-    console.log(value.length);
     const theme = useTheme();
 
     const auth = useRecoilValue(authAtom);

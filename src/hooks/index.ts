@@ -12,3 +12,4 @@ export * from './useBottomSheet';
 export * from './useModal';
 export * from './useOpacityAnimation';
 export * from './useCheckPermission';
+export * from './useAuthInput';
