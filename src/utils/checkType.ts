@@ -13,9 +13,11 @@ export const checkNumber = (text: string) => {
 
 export const checkString = (text: string) => {
   let newText = '';
-  const numbers = '0123456789';
+  const notKorean =
+    '0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/`~|₩~`"\'' +
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (let i = 0; i < text.length; i++) {
-    if (numbers.indexOf(text[i]) < 0) {
+    if (notKorean.indexOf(text[i]) < 0) {
       newText = newText + text[i];
     } else {
       newText = newText.replace(text[i], '');

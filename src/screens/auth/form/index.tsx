@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { TextInput } from 'react-native';
 
 import { useIsFocused, useRoute } from '@react-navigation/native';
 
@@ -8,7 +9,9 @@ import { AnimatedHoc, AuthInputForm, AuthLayout } from 'src/components';
 import { NAME_REGEX, PHONE_REGEX } from 'src/constants';
 import { useBlockGesture, usePhone } from 'src/hooks';
 import { authAtom, isDisableAtom } from 'src/atoms';
-import { checkType } from 'src/utils';
+import { checkNumber, checkString } from 'src/utils';
+
+import * as S from './styled';
 
 export const FormScreen: React.FC = () => {
   const route = useRoute();
@@ -17,11 +20,12 @@ export const FormScreen: React.FC = () => {
   const [auth, setAuth] = useRecoilState(authAtom);
   const setIsDisabled = useSetRecoilState(isDisableAtom);
 
-  const [isPhoneInput, setIsPhoneInput] = useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
-  const [nameInputFocused, setNameInputFocused] = useState<boolean>(false);
+  const phoneInputRef = useRef<TextInput>(null);
 
-  const checkValidType = checkType(isPhoneInput ? 'number' : 'string');
+  const [isPhoneInput, setIsPhoneInput] = useState<boolean>(false);
+  const [phone, setPhone] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [nameInputFocused, setNameInputFocused] = useState<boolean>(false);
 
   const { mutate: phoneMutate, isLoading: isPhoneLoading } = usePhone();
 
@@ -29,25 +33,35 @@ export const FormScreen: React.FC = () => {
 
   const onPhoneSubmit = () => {
     setIsDisabled(true);
-    phoneMutate({ phone: value });
+    phoneMutate({ phone: phone });
   };
 
   const onNameSubmit = () => {
-    setAuth({ ...auth, name: value, phone: '' });
+    setAuth({ ...auth, name: name, phone: '' });
     setIsPhoneInput(true);
     setIsDisabled(true);
+    phoneInputRef.current?.focus();
   };
 
-  const onChangeText = (input: string) => {
-    const validInput = checkValidType(input);
-    const regex = isPhoneInput && !nameInputFocused ? PHONE_REGEX : NAME_REGEX;
+  const onPhoneChange = (input: string) => {
+    const validInput = checkNumber(input);
+    const regex = PHONE_REGEX;
 
     setIsDisabled(!regex.test(validInput));
-    setValue(validInput);
+    setPhone(validInput);
+  };
+
+  const onNameChange = (input: string) => {
+    const validInput = checkString(input);
+    const regex = NAME_REGEX;
+
+    setIsDisabled(!regex.test(validInput));
+    setName(validInput);
   };
 
   const nameInputFocus = () => {
     setNameInputFocused(true);
+    setIsDisabled(name.length < 2);
   };
 
   const nameInputBlur = () => {
@@ -60,7 +74,7 @@ export const FormScreen: React.FC = () => {
     setAuth({ ...auth, errorMessage: '' });
     if (
       isFocused &&
-      ((isPhoneInput && value.length === 11) || (!isPhoneInput && value.length >= 2))
+      ((isPhoneInput && phone.length === 11) || (!isPhoneInput && name.length >= 2))
     ) {
       setIsDisabled(false);
     }
@@ -72,28 +86,31 @@ export const FormScreen: React.FC = () => {
       isLoading={isPhoneLoading}
       headerText={`${isPhoneInput && !nameInputFocused ? '전화번호를' : '이름을'} 알려주세요`}
       bottomText="다음"
-      onPress={isPhoneInput ? onPhoneSubmit : onNameSubmit}
+      onPress={isPhoneInput && !nameInputFocused ? onPhoneSubmit : onNameSubmit}
     >
-      <AnimatedHoc isOpen={isPhoneInput}>
-        <AuthInputForm
-          placeHolder="전화번호"
-          keyboardType="numeric"
-          maxLength={11}
-          onChangeText={onChangeText}
-        />
-      </AnimatedHoc>
-      {isRegister && (
-        <AuthInputForm
-          placeHolder="이름"
-          keyboardType="default"
-          maxLength={4}
-          onChangeText={onChangeText}
-          label={nameInputFocused ? '이름' : ''}
-          placeholder={nameInputFocused ? '' : '이름'}
-          onFocus={nameInputFocus}
-          onBlur={nameInputBlur}
-        />
-      )}
+      <S.FormScreenContainer>
+        <AnimatedHoc isOpen={isPhoneInput}>
+          <AuthInputForm
+            ref={phoneInputRef}
+            label="전화번호"
+            keyboardType="numeric"
+            maxLength={11}
+            value={phone}
+            onChangeText={onPhoneChange}
+          />
+        </AnimatedHoc>
+        {isRegister && (
+          <AuthInputForm
+            onFocus={nameInputFocus}
+            onBlur={nameInputBlur}
+            label="이름"
+            keyboardType="default"
+            maxLength={4}
+            value={name}
+            onChangeText={onNameChange}
+          />
+        )}
+      </S.FormScreenContainer>
     </AuthLayout>
   );
 };
