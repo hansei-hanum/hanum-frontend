@@ -19,7 +19,7 @@ export const AuthPageFormInput = styled(TextInput)<{ isFocused: boolean; hasValu
   border-bottom-color: ${({ theme, isFocused }) => (isFocused ? theme.primary : theme.placeholder)};
   font-size: 20px;
   color: ${({ theme }) => theme.default};
-  padding: ${({ isFocused, hasValue }) => (isFocused || hasValue ? '10px 0' : '6px 0')};
+  padding: 10px 0;
   width: 100%;
 `;
 

@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import { TextInput } from 'react-native';
+import { Animated, LayoutChangeEvent, TextInput } from 'react-native';
 
 import { useIsFocused, useRoute } from '@react-navigation/native';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import { AnimatedHoc, AuthInputForm, AuthLayout } from 'src/components';
+import { AuthInputForm, AuthLayout } from 'src/components';
 import { NAME_REGEX, PHONE_REGEX } from 'src/constants';
-import { useBlockGesture, usePhone } from 'src/hooks';
+import { useBlockGesture, usePhone, useSetAnimation } from 'src/hooks';
 import { authAtom, isDisableAtom } from 'src/atoms';
 import { checkNumber, checkString } from 'src/utils';
 
 import * as S from './styled';
 
 export const FormScreen: React.FC = () => {
+  const { animation } = useSetAnimation();
+
   const route = useRoute();
   const isRegister = route.name === 'Register';
 
@@ -21,11 +23,13 @@ export const FormScreen: React.FC = () => {
   const setIsDisabled = useSetRecoilState(isDisableAtom);
 
   const phoneInputRef = useRef<TextInput>(null);
+  const animatedController = useRef(new Animated.Value(0)).current;
 
   const [isPhoneInput, setIsPhoneInput] = useState<boolean>(false);
   const [phone, setPhone] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [nameInputFocused, setNameInputFocused] = useState<boolean>(false);
+  const [height, setHeight] = useState<number>(0);
 
   const { mutate: phoneMutate, isLoading: isPhoneLoading } = usePhone();
 
@@ -41,6 +45,7 @@ export const FormScreen: React.FC = () => {
     setIsPhoneInput(true);
     setIsDisabled(true);
     phoneInputRef.current?.focus();
+    animation({ animation: animatedController, value: 1, useNativeDriver: false });
   };
 
   const onPhoneChange = (input: string) => {
@@ -59,6 +64,11 @@ export const FormScreen: React.FC = () => {
     setName(validInput);
   };
 
+  const onLayout = (e: LayoutChangeEvent) => {
+    const { height } = e.nativeEvent.layout;
+    setHeight(height);
+  };
+
   const nameInputFocus = () => {
     setNameInputFocused(true);
     setIsDisabled(name.length < 2);
@@ -67,6 +77,11 @@ export const FormScreen: React.FC = () => {
   const nameInputBlur = () => {
     setNameInputFocused(false);
   };
+
+  const bodyHeight = animatedController.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, height + 30],
+  });
 
   const isFocused = useIsFocused();
 
@@ -89,7 +104,30 @@ export const FormScreen: React.FC = () => {
       onPress={isPhoneInput && !nameInputFocused ? onPhoneSubmit : onNameSubmit}
     >
       <S.FormScreenContainer>
-        <AnimatedHoc isOpen={isPhoneInput}>
+        {isRegister ? (
+          <>
+            <Animated.View style={{ height: bodyHeight, overflow: 'hidden' }}>
+              <AuthInputForm
+                ref={phoneInputRef}
+                label="전화번호"
+                keyboardType="numeric"
+                maxLength={11}
+                value={phone}
+                onChangeText={onPhoneChange}
+              />
+            </Animated.View>
+            <AuthInputForm
+              onLayout={onLayout}
+              onFocus={nameInputFocus}
+              onBlur={nameInputBlur}
+              label="이름"
+              keyboardType="default"
+              maxLength={4}
+              value={name}
+              onChangeText={onNameChange}
+            />
+          </>
+        ) : (
           <AuthInputForm
             ref={phoneInputRef}
             label="전화번호"
@@ -97,17 +135,6 @@ export const FormScreen: React.FC = () => {
             maxLength={11}
             value={phone}
             onChangeText={onPhoneChange}
-          />
-        </AnimatedHoc>
-        {isRegister && (
-          <AuthInputForm
-            onFocus={nameInputFocus}
-            onBlur={nameInputBlur}
-            label="이름"
-            keyboardType="default"
-            maxLength={4}
-            value={name}
-            onChangeText={onNameChange}
           />
         )}
       </S.FormScreenContainer>
