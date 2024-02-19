@@ -23,8 +23,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export type RootStackParamList = {
   AuthMain: undefined;
-  Phone: undefined;
-  Name: undefined;
+  Login: undefined;
+  Register: undefined;
   VerifyCode: undefined;
   Verify: undefined;
   Main: undefined;
@@ -59,7 +59,6 @@ export const Router: React.FC = () => {
   const auth = useRecoilValue(authAtom);
 
   const { data, isLoading } = useFetchUser();
-  console.log(data, isLoading, 'data');
 
   const [isReady, setIsReady] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -142,8 +141,8 @@ export const Router: React.FC = () => {
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
-            <Stack.Screen name="Phone" component={SC.PhoneScreen} />
-            <Stack.Screen name="Name" component={SC.NameScreen} />
+            <Stack.Screen name="Login" component={SC.FormScreen} />
+            <Stack.Screen name="Register" component={SC.FormScreen} />
             <Stack.Screen name="VerifyCode" component={SC.VerifyCodeScreen} />
             <Stack.Screen name="Verify" component={SC.VerifyScreen} />
           </Stack.Group>

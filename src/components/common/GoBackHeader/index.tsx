@@ -10,9 +10,15 @@ export interface GoBackIconProps {
   isLoading?: boolean;
   size?: number;
   isWhite?: boolean;
+  onPress?: () => void;
 }
 
-export const GoBackIcon: React.FC<GoBackIconProps> = ({ isLoading, size = 25, isWhite }) => {
+export const GoBackIcon: React.FC<GoBackIconProps> = ({
+  isLoading,
+  size = 25,
+  isWhite,
+  onPress,
+}) => {
   const theme = useTheme();
 
   const navigation = useNavigation();
@@ -22,6 +28,7 @@ export const GoBackIcon: React.FC<GoBackIconProps> = ({ isLoading, size = 25, is
       activeOpacity={isLoading ? 1 : 0.5}
       onPress={() => {
         if (isLoading) return;
+        onPress && onPress();
         navigation.goBack();
       }}
     >

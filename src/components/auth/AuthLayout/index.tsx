@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { Button, GoBackIcon, Text } from 'src/components';
-import { isDisableAtom } from 'src/atoms';
+import { authAtom, isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -25,13 +25,18 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   bottomText,
   isLoading,
 }) => {
+  const setAuth = useSetRecoilState(authAtom);
   const isDisabled = useRecoilValue(isDisableAtom);
+
+  const resetErrorMessage = () => {
+    setAuth((prev) => ({ ...prev, errorMessage: '' }));
+  };
 
   return (
     <S.AuthLayoutWrapper>
       <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
         <S.AuthLayoutTopSection>
-          <GoBackIcon isLoading={isLoading} />
+          <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
           <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (
