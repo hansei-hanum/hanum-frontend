@@ -90,16 +90,6 @@ export const FormScreen: React.FC = () => {
       <S.FormScreenContainer>
         {isRegister ? (
           <>
-            <Animated.View style={{ height: bodyHeight, overflow: 'hidden' }}>
-              <AuthInputForm
-                ref={phoneInputRef}
-                label="전화번호"
-                keyboardType="numeric"
-                maxLength={11}
-                value={phone}
-                onChangeText={onPhoneChange}
-              />
-            </Animated.View>
             <AuthInputForm
               onLayout={onLayout}
               onFocus={nameInputFocus}
@@ -110,6 +100,16 @@ export const FormScreen: React.FC = () => {
               value={name}
               onChangeText={onNameChange}
             />
+            <Animated.View style={{ height: bodyHeight, overflow: 'hidden' }}>
+              <AuthInputForm
+                ref={phoneInputRef}
+                label="전화번호"
+                keyboardType="numeric"
+                maxLength={11}
+                value={phone}
+                onChangeText={onPhoneChange}
+              />
+            </Animated.View>
           </>
         ) : (
           <AuthInputForm
