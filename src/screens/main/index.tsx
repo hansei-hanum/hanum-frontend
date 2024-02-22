@@ -15,10 +15,16 @@ import { CommunityMainScreen } from '../community';
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
-  const inset = useSafeAreaInsets();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
 
   const size = 25;
+  let paddingBottom = insets.bottom - 15;
+
+  if (isIos && !insets.bottom) {
+    paddingBottom = 15;
+  }
+
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -35,14 +41,13 @@ export const MainScreen: React.FC = () => {
           borderRightWidth: 1,
           backgroundColor: theme.tabBarBg,
           height: isIos ? 78 : 64,
-          paddingBottom: isIos ? inset.bottom - 10 : 10,
-          position: 'absolute',
+          paddingBottom: paddingBottom,
+          position: 'relative',
         },
         tabBarActiveTintColor: theme.default,
         tabBarLabelStyle: {
           fontSize: 12,
         },
-
         tabBarIconStyle: {
           paddingBottom: 0,
           marginBottom: isIos ? -8 : -10,
