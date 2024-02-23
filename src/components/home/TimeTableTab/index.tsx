@@ -5,17 +5,16 @@ import { Content } from '../Content';
 import * as S from './styled';
 
 import { Text } from 'src/components';
-import { useGetTimeTable } from 'src/hooks';
 
 import { useTheme } from '@emotion/react';
 
-export interface TimeTableTapProps {
+export interface TimeTableProps {
   mainText?: string;
   subText: string;
   fontSize: number;
 }
 
-const TimeTableTabText: React.FC<TimeTableTapProps> = ({ mainText, subText, fontSize }) => {
+const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }) => {
   const theme = useTheme();
 
   const getShrinkedMainText = (maxLength: number) => {
@@ -26,18 +25,18 @@ const TimeTableTabText: React.FC<TimeTableTapProps> = ({ mainText, subText, font
   };
 
   return (
-    <S.TimeTableTabTextContainer>
+    <S.TimeTableTextContainer>
       <Text size={14} fontFamily="medium" color={theme.placeholder}>
         {subText}
       </Text>
       <Text size={fontSize} fontFamily="bold">
         {getShrinkedMainText(fontSize === 20 ? 13 : 10)}
       </Text>
-    </S.TimeTableTabTextContainer>
+    </S.TimeTableTextContainer>
   );
 };
 
-export const TimeTableTab: React.FC = () => {
+export const TimeTable: React.FC = () => {
   const example = {
     message: 'SUCCESS',
     data: [
@@ -149,14 +148,14 @@ export const TimeTableTab: React.FC = () => {
 
   return (
     <Content icon="⌚︎" name="시간표" navigateUrl="TimeTable">
-      <S.TimeTableTapTextWrapper>
-        <TimeTableTabText fontSize={20} subText="이번수업" mainText={currentLesson} />
+      <S.TimeTableTextWrapper>
+        <TimeTableText fontSize={20} subText="이번수업" mainText={currentLesson} />
         <S.SecondText>
-          <TimeTableTabText fontSize={15} subText="이전수업" mainText={previousLesson} />
-          <S.ScreenTimeTableTapLine />
-          <TimeTableTabText fontSize={15} subText="다음수업" mainText={nextLesson} />
+          <TimeTableText fontSize={15} subText="이전수업" mainText={previousLesson} />
+          <S.ScreenTimeleLine />
+          <TimeTableText fontSize={15} subText="다음수업" mainText={nextLesson} />
         </S.SecondText>
-      </S.TimeTableTapTextWrapper>
+      </S.TimeTableTextWrapper>
     </Content>
   );
 };

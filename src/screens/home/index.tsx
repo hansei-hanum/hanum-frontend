@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Schedule, Header, LunchTable, TimeTableTab } from 'src/components';
+import { Timer, Schedule, Header, LunchTable, TimeTable } from 'src/components';
 import { isAndroid, isIos, openContactChannel } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
@@ -155,7 +155,7 @@ export const HomeScreen: React.FC = () => {
           subText="오늘의 급식!"
           mainText="실시간으로 보기"
         /> */}
-        <TimeTableTab />
+        <TimeTable />
         <Timer />
         <LunchTable />
         <Schedule />

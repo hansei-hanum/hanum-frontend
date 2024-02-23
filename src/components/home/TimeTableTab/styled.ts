@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 
-export const TimeTableTapTextWrapper = styled.View`
+export const TimeTableTextWrapper = styled.View`
   width: 100%;  
   justify-content: center;
   align-items: center;  
@@ -11,21 +11,20 @@ export const TimeTableTapTextWrapper = styled.View`
 
 export const SecondText = styled.View`
   flex-direction: row;
-  align-items: flex-start
+  align-items: flex-start;
   flex: 1;
 `;   
 
-export const ScreenTimeTableTapLine = styled.View`
+export const ScreenTimeleLine = styled.View`
   width: 1px;
   height: 100%;
   background-color: ${({ theme }) => theme.secondary};
 `;
 
-export const TimeTableTabTextContainer = styled.View`
+export const TimeTableTextContainer = styled.View`
   justify-content: center;
   align-items: center;
   flex-grow: 1;
   padding: 10px 0;
   flex: 1;
-`;
-
+`
