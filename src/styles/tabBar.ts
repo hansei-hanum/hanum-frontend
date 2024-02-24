@@ -15,5 +15,6 @@ export const TabBarStyle = (theme: Theme, inset: EdgeInsets) => ({
   borderRightColor: theme.secondary,
   borderRightWidth: 1,
   backgroundColor: theme.tabBarBg,
-  paddingBottom: isIos ? inset.bottom - 10 : 0,
+  height: isIos ? 78 : 64,
+  paddingBottom: isIos ? inset.bottom - 10 : 10,
 });

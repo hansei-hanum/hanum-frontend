@@ -5,7 +5,7 @@ import { useTheme } from '@emotion/react';
 
 import { isIos } from 'src/utils';
 
-import { Text } from '../../common/Text';
+import { Text } from '../Text';
 
 import * as S from './styled';
 

@@ -6,9 +6,11 @@ import { useIsFocused } from '@react-navigation/native';
 import { AxiosError } from 'axios';
 import { useTheme } from '@emotion/react';
 
-import { GoBackIcon, Text, SelectBox } from 'src/components/common';
+import { GoBackIcon, Text } from 'src/components/common';
 import { APIErrorResponse, APIResponse, EoullimVoteResponse } from 'src/api';
 import { useVote } from 'src/hooks';
+
+import { EoullimVoteBox } from '../voteBox';
 
 import * as S from './styled';
 
@@ -126,7 +128,7 @@ export const EoullimVote: React.FC<EoullimVoteProps> = ({ getVoteData, getVote }
               >
                 {getVoteData.fields.map(({ id, value }, i) => {
                   return (
-                    <SelectBox
+                    <EoullimVoteBox
                       key={id}
                       name={value}
                       isSelect={cursor === i ? true : false}
