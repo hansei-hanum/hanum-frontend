@@ -68,7 +68,6 @@ export const CreatePostTextInput = styled.TextInput`
   font-size: 16px;
   color: ${({ theme }) => theme.default};
   font-family: ${fonts.medium};
-  text-align-vertical: top;
   flex: 1;
 `;
 

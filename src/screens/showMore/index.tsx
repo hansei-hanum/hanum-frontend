@@ -1,7 +1,12 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
 
-import { ShowMoreSection, Spinner, ShowMoreHeader, UserSection } from 'src/components';
+import {
+  ShowMoreSection,
+  Spinner,
+  ShowMoreHeader,
+  UserSection,
+  NoScrollbarScrollView,
+} from 'src/components';
 import { useGetUser } from 'src/hooks';
 import { SHOW_MORE_LIST } from 'src/constants/showMore';
 
@@ -12,9 +17,7 @@ export const ShowMoreScreen: React.FC = () => {
 
   return (
     <S.ShowMoreScreenWrapper>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
+      <NoScrollbarScrollView
         contentContainerStyle={{
           paddingBottom: 40,
         }}
@@ -28,7 +31,7 @@ export const ShowMoreScreen: React.FC = () => {
             ))}
           </S.SectionContainer>
         </S.ShowMoreScreenContainer>
-      </ScrollView>
+      </NoScrollbarScrollView>
     </S.ShowMoreScreenWrapper>
   );
 };

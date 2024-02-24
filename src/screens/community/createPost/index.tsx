@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native';
@@ -11,7 +11,15 @@ import { Animated } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { CommunityHeader, Icon, PhotoCard, OptionCard, ScaleOpacity, Text } from 'src/components';
+import {
+  CommunityHeader,
+  Icon,
+  PhotoCard,
+  OptionCard,
+  ScaleOpacity,
+  Text,
+  NoScrollbarScrollView,
+} from 'src/components';
 import { useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import {
@@ -186,9 +194,8 @@ export const CommunityCreatePostScreen: React.FC = () => {
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
           <S.CreatePostImageSection>
             {exitSelectedImage && (
-              <ScrollView
+              <NoScrollbarScrollView
                 horizontal={true}
-                showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{
                   flexDirection: 'row',
                   columnGap: 4,
@@ -205,7 +212,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
                     selectedImage={selectedImage}
                   />
                 ))}
-              </ScrollView>
+              </NoScrollbarScrollView>
             )}
           </S.CreatePostImageSection>
           <S.CreatePostMainSection>
