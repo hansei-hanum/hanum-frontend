@@ -46,10 +46,6 @@ export type RootStackParamList = {
   CommunityVisibleType: undefined;
   CommunityAnonymitySettings: undefined;
   NoInternet: undefined;
-  SelectTeam: undefined;
-  ApplyDetails: undefined;
-  FinalConfirm: undefined;
-  Confirm: undefined;
 };
 
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
@@ -118,13 +114,13 @@ export const Router: React.FC = () => {
       if (!token) return 'AuthMain';
       if (data && data?.data) return 'Main';
       if (auth.errorMessage === ERROR_MESSAGE) return 'AuthMain';
-      return 'Main';
+      return 'NoInternet';
     }
   };
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      {/* <CheckVersion /> */}
+      <CheckVersion />
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
@@ -141,7 +137,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'Confirm'}
+          initialRouteName={getInitialRoute()}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -178,12 +174,6 @@ export const Router: React.FC = () => {
               name="CommunityAnonymitySettings"
               component={SC.AnonymitySettingsScreen}
             />
-          </Stack.Group>
-          <Stack.Group>
-            <Stack.Screen name="SelectTeam" component={SC.SelectTeamScreen} />
-            <Stack.Screen name="ApplyDetails" component={SC.ApplyContentsScreen} />
-            <Stack.Screen name="FinalConfirm" component={SC.FinalConfirmScreen} />
-            <Stack.Screen name="Confirm" component={SC.ConfirmScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />

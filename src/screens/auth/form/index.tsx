@@ -5,10 +5,10 @@ import { useIsFocused, useRoute } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
 
-import { AuthInputForm, AppLayout } from 'src/components';
+import { AuthInputForm, AuthLayout } from 'src/components';
 import { NAME_REGEX, PHONE_REGEX } from 'src/constants';
 import { useAuthInput, useBlockGesture, usePhone, useSetAnimation } from 'src/hooks';
-import { authAtom } from 'src/atoms';
+import { authAtom, isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -19,7 +19,7 @@ export const FormScreen: React.FC = () => {
   const isRegister = route.name === 'Register';
 
   const setAuth = useSetRecoilState(authAtom);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const setIsDisabled = useSetRecoilState(isDisableAtom);
 
   const phoneInputRef = useRef<TextInput>(null);
   const animatedController = useRef(new Animated.Value(0)).current;
@@ -81,12 +81,11 @@ export const FormScreen: React.FC = () => {
   }, [isFocused]);
 
   return (
-    <AppLayout
+    <AuthLayout
       isLoading={isPhoneLoading}
       headerText={`${isPhoneInput && !nameInputFocused ? '전화번호를' : '이름을'} 알려주세요`}
       bottomText="다음"
       onPress={isPhoneInput && !nameInputFocused ? onPhoneSubmit : onNameSubmit}
-      isDisabled={isDisabled}
     >
       <S.FormScreenContainer>
         {isRegister ? (
@@ -123,6 +122,6 @@ export const FormScreen: React.FC = () => {
           />
         )}
       </S.FormScreenContainer>
-    </AppLayout>
+    </AuthLayout>
   );
 };

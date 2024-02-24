@@ -1,4 +1,4 @@
 export * from './box';
-export * from '../common/SelectBox';
+export * from './voteBox';
 export * from './vote';
 export * from './voteModal';

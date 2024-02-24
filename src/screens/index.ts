@@ -11,4 +11,3 @@ export * from './eoullim';
 export * from './mealTable';
 export * from './community';
 export * from './noInternet';
-export * from './hanowlApply';

@@ -7,7 +7,6 @@ import { useTheme } from '@emotion/react';
 import { ContentBox, Text, Icon } from 'src/components';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
 import { isIos } from 'src/utils';
-import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
@@ -15,7 +14,7 @@ export interface ContentProps {
   icon: string;
   name: string;
   children?: React.ReactNode;
-  navigateUrl?: keyof RootStackParamList;
+  navigateUrl?: string;
   onPress?: () => void;
 }
 
