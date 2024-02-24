@@ -1,6 +1,6 @@
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,11 +13,14 @@ export interface GoBackCustomIconProps {
   onPress?: () => void;
 }
 
-export const GoBackIcon: React.FC<GoBackCustomIconProps> = ({
+export type GoBackIconProps = GoBackCustomIconProps & TouchableOpacityProps;
+
+export const GoBackIcon: React.FC<GoBackIconProps> = ({
   isLoading,
   size = 25,
   isWhite,
   onPress,
+  ...props
 }) => {
   const theme = useTheme();
 
@@ -31,6 +34,7 @@ export const GoBackIcon: React.FC<GoBackCustomIconProps> = ({
         onPress && onPress();
         navigation.goBack();
       }}
+      {...props}
     >
       <Entypo name="chevron-thin-left" size={size} color={isWhite ? theme.white : theme.default} />
     </TouchableOpacity>

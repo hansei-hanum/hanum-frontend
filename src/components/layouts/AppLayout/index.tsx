@@ -3,41 +3,17 @@ import { ScrollView, ViewProps } from 'react-native';
 
 import { useSetRecoilState } from 'recoil';
 
-import { Button, GoBackIcon, Text } from 'src/components';
+import { Button, GoBackIcon } from 'src/components';
 import { authAtom } from 'src/atoms';
+
+import {
+  AppLayoutWithoutButton,
+  AppLayoutWithoutButtonCustomProps,
+} from '../AppLayoutWithoutButton';
 
 import * as S from './styled';
 
-export interface MainSectionProps {
-  headerText: string;
-  subHeaderText?: React.ReactNode;
-  children: React.ReactNode;
-}
-
-export const MainSection: React.FC<MainSectionProps> = ({
-  headerText,
-  subHeaderText,
-  children,
-}) => {
-  return (
-    <S.AuthLayoutMainSection>
-      <S.AuthTextContainer>
-        <Text size={26} fontFamily="bold">
-          {headerText.split('\n').map((line, index) => (
-            <Text size={26} fontFamily="bold" key={line}>
-              {line}
-              {index !== headerText.split('\n').length - 1 && '\n'}
-            </Text>
-          ))}
-        </Text>
-        {subHeaderText}
-      </S.AuthTextContainer>
-      {children}
-    </S.AuthLayoutMainSection>
-  );
-};
-
-export interface AppLayoutCustomProps extends MainSectionProps {
+export interface AppLayoutCustomProps extends AppLayoutWithoutButtonCustomProps {
   isLoading?: boolean;
   onPress: () => void;
   bottomText: string;
@@ -67,26 +43,30 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   };
 
   return (
-    <S.AuthLayoutWrapper {...props}>
-      <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
+    <S.AppLayoutWrapper {...props}>
+      <S.AppLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
         <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
         {withScrollView ? (
           <ScrollView ref={scrollViewRef} contentContainerStyle={{ paddingBottom: 10 }}>
-            <MainSection
+            <AppLayoutWithoutButton
               headerText={headerText}
               subHeaderText={subHeaderText}
               children={children}
             />
           </ScrollView>
         ) : (
-          <MainSection headerText={headerText} subHeaderText={subHeaderText} children={children} />
+          <AppLayoutWithoutButton
+            headerText={headerText}
+            subHeaderText={subHeaderText}
+            children={children}
+          />
         )}
-        <S.AuthLayoutButtonWrapper>
+        <S.AppLayoutButtonWrapper>
           <Button onPress={onUserPress} isDisabled={isDisabled} isLoading={isLoading}>
             {bottomText}
           </Button>
-        </S.AuthLayoutButtonWrapper>
-      </S.AuthLayoutContainer>
-    </S.AuthLayoutWrapper>
+        </S.AppLayoutButtonWrapper>
+      </S.AppLayoutContainer>
+    </S.AppLayoutWrapper>
   );
 };

@@ -13,8 +13,8 @@ declare module '@emotion/react' {
     background: string;
     green: string;
     brown: string;
+    selectBox: string;
     vote: {
-      background: string;
       notSelect: string;
     };
     modalBg: string;

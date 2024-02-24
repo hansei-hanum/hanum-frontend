@@ -3,7 +3,7 @@ import styled from '@emotion/native';
 export const SelectBox = styled.View`
   padding: 16px 10px;
   border-radius: 14px;
-  background-color: ${({ theme }) => theme.background};
+  background-color: ${({ theme }) => theme.selectBox};
   border-width: 3px;
   flex-direction: row;
   justify-content: space-between;

@@ -1,5 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { LayoutChangeEvent, ScrollView, View } from 'react-native';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
@@ -53,6 +55,15 @@ export const ApplyContentsScreen: React.FC = () => {
     }));
     navigate('FinalConfirm');
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused && hanowlApply.aspiration && hanowlApply.introduce && hanowlApply.motive) {
+      setValue([hanowlApply.introduce, hanowlApply.motive, hanowlApply.aspiration]);
+      setIsDisabled(false);
+    }
+  }, [isFocused]);
 
   return (
     <AppLayout

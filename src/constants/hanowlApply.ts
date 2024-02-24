@@ -1,5 +1,5 @@
 import { TeamType } from 'src/atoms';
-import { ApplyInputCustomProps } from 'src/components';
+import { ApplyInputCustomProps, ConfirmBoxProps } from 'src/components';
 
 export const HANOWL_APPLY = {
   CONTENT_SUBTEXTS: [
@@ -39,4 +39,28 @@ export const HANOWL_APPLY = {
     '또한, 여러 부서에 중복 지원도 불가해요.',
     '작성하신 내용이 맞는지 다시 확인해 주세요.',
   ] as string[],
+
+  CONFIRM_DUMMY_LIST: [
+    {
+      team: '기능부',
+      date: '2021.09.01',
+      introduce: '앙기모링 최근원 입니다~~~~~~~',
+      motive: '앙기모링 최근원 입니다~~~~~~~',
+      aspiration: '앙기모링 최근원 입니다~~~~~~~',
+    },
+    {
+      team: '도서부',
+      date: '2021.09.01',
+      introduce: '앙기모링 최근원 입니다~~~~~~~',
+      motive: '앙기모링 최근원 입니다~~~~~~~',
+      aspiration: '앙기모링 최근원 입니다~~~~~~~',
+    },
+    {
+      team: '학예 체육부',
+      date: '2021.09.01',
+      introduce: '앙기모링 최근원 입니다~~~~~~~',
+      motive: '앙기모링 최근원 입니다~~~~~~~',
+      aspiration: '앙기모링 최근원 입니다~~~~~~~',
+    },
+  ] as ConfirmBoxProps[],
 };

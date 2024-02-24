@@ -49,6 +49,7 @@ export type RootStackParamList = {
   SelectTeam: undefined;
   ApplyDetails: undefined;
   FinalConfirm: undefined;
+  Confirm: undefined;
 };
 
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
@@ -140,7 +141,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'SelectTeam'}
+          initialRouteName={'Confirm'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -182,6 +183,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="SelectTeam" component={SC.SelectTeamScreen} />
             <Stack.Screen name="ApplyDetails" component={SC.ApplyContentsScreen} />
             <Stack.Screen name="FinalConfirm" component={SC.FinalConfirmScreen} />
+            <Stack.Screen name="Confirm" component={SC.ConfirmScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
