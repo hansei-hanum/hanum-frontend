@@ -60,7 +60,7 @@ export const ApplyContentsScreen: React.FC = () => {
       bottomText="다음"
       isLoading={false}
       onPress={onPressButton}
-      scrollEnabled
+      withScrollView
       isDisabled={isDisabled}
       scrollViewRef={scrollViewRef}
       subHeaderText={

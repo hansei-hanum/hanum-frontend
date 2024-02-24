@@ -17,9 +17,10 @@ export const AuthLayoutContainer = styled(isIos ? KeyboardAvoidingView : View)`
   margin-bottom: ${iosCheckHeight ? '5px' : isAndroid ? '15px' : '14px'};
   margin-top: ${iosCheckHeight ? '10px' : isAndroid ? '25px' : '20px'};
   justify-content: space-between;
+  row-gap: 20px;
 `;
 
-export const AuthLayoutTopSection = styled.View`
+export const AuthLayoutMainSection = styled.View`
   flex: 1;
   justify-content: flex-start;
   align-items: flex-start;
@@ -36,5 +37,5 @@ export const AuthLayoutButtonWrapper = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
-  padding-top: 10px;
+  padding-top: ${isIos ? '10px' : '0'};
 `;

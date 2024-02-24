@@ -60,7 +60,7 @@ export const FinalConfirmScreen: React.FC = () => {
       }
       isDisabled={timer !== 0}
       bottomText={`최종 제출하기 ${timer === 0 ? '' : `(${timer})`}`}
-      scrollEnabled
+      withScrollView
       onPress={() => {}}
     >
       <FinalConfirmTextContainer subject="부서" text={hanowlApply.team} />

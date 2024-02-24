@@ -26,7 +26,6 @@ export const SelectTeamScreen: React.FC = () => {
     <AppLayout
       headerText={`지원할 부서를\n선택해 주세요`}
       bottomText="다음"
-      isLoading={false}
       onPress={() => navigate('ApplyDetails')}
     >
       <SelectLayout>

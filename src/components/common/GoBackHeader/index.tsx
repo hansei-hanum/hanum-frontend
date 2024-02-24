@@ -6,14 +6,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 
-export interface GoBackIconProps {
+export interface GoBackCustomIconProps {
   isLoading?: boolean;
   size?: number;
   isWhite?: boolean;
   onPress?: () => void;
 }
 
-export const GoBackIcon: React.FC<GoBackIconProps> = ({
+export const GoBackIcon: React.FC<GoBackCustomIconProps> = ({
   isLoading,
   size = 25,
   isWhite,

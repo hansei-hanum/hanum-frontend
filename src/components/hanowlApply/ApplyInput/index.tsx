@@ -21,7 +21,7 @@ export const ApplyInput = forwardRef<TextInput, ApplyInputProps>(
         ref={ref}
         height={height}
         multiline={true}
-        style={{ borderColor: theme.lightGray }}
+        style={{ borderColor: theme.lightGray, textAlignVertical: 'top' }}
         placeholder={placeholder}
         placeholderTextColor={theme.placeholder}
         {...props}

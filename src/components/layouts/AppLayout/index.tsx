@@ -8,15 +8,41 @@ import { authAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export interface AppLayoutCustomProps {
-  isLoading?: boolean;
+export interface MainSectionProps {
   headerText: string;
   subHeaderText?: React.ReactNode;
   children: React.ReactNode;
+}
+
+export const MainSection: React.FC<MainSectionProps> = ({
+  headerText,
+  subHeaderText,
+  children,
+}) => {
+  return (
+    <S.AuthLayoutMainSection>
+      <S.AuthTextContainer>
+        <Text size={26} fontFamily="bold">
+          {headerText.split('\n').map((line, index) => (
+            <Text size={26} fontFamily="bold" key={line}>
+              {line}
+              {index !== headerText.split('\n').length - 1 && '\n'}
+            </Text>
+          ))}
+        </Text>
+        {subHeaderText}
+      </S.AuthTextContainer>
+      {children}
+    </S.AuthLayoutMainSection>
+  );
+};
+
+export interface AppLayoutCustomProps extends MainSectionProps {
+  isLoading?: boolean;
   onPress: () => void;
   bottomText: string;
   isDisabled?: boolean;
-  scrollEnabled?: boolean;
+  withScrollView?: boolean;
   scrollViewRef?: RefObject<ScrollView>;
 }
 
@@ -30,7 +56,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   isLoading,
   onPress: onUserPress,
   isDisabled = false,
-  scrollEnabled = false,
+  withScrollView = false,
   scrollViewRef,
   ...props
 }) => {
@@ -43,27 +69,18 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   return (
     <S.AuthLayoutWrapper {...props}>
       <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
-        <ScrollView
-          ref={scrollViewRef}
-          contentContainerStyle={{ paddingBottom: 10 }}
-          scrollEnabled={scrollEnabled}
-        >
-          <S.AuthLayoutTopSection>
-            <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
-            <S.AuthTextContainer>
-              <Text size={26} fontFamily="bold">
-                {headerText.split('\n').map((line, index) => (
-                  <Text size={26} fontFamily="bold" key={line}>
-                    {line}
-                    {index !== headerText.split('\n').length - 1 && '\n'}
-                  </Text>
-                ))}
-              </Text>
-              {subHeaderText}
-            </S.AuthTextContainer>
-            {children}
-          </S.AuthLayoutTopSection>
-        </ScrollView>
+        <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
+        {withScrollView ? (
+          <ScrollView ref={scrollViewRef} contentContainerStyle={{ paddingBottom: 10 }}>
+            <MainSection
+              headerText={headerText}
+              subHeaderText={subHeaderText}
+              children={children}
+            />
+          </ScrollView>
+        ) : (
+          <MainSection headerText={headerText} subHeaderText={subHeaderText} children={children} />
+        )}
         <S.AuthLayoutButtonWrapper>
           <Button onPress={onUserPress} isDisabled={isDisabled} isLoading={isLoading}>
             {bottomText}
