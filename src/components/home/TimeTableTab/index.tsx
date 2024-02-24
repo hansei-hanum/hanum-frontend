@@ -8,6 +8,8 @@ import { Text } from 'src/components';
 
 import { useTheme } from '@emotion/react';
 
+import { TimeTableData } from 'src/constants/timTableData';
+
 export interface TimeTableProps {
   mainText?: string;
   subText: string;
@@ -37,69 +39,12 @@ const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }
 };
 
 export const TimeTable: React.FC = () => {
-  const example = {
-    message: 'SUCCESS',
-    data: [
-      {
-        date: '2024-2-20T00:00:00',
-        data: [
-          '클라우드 시스템 요구사항 분석',
-          '클라우드 시스템 요구사항 분석',
-          '클라우드 시스템 요구사항 분석',
-          '프로그래밍(JAVA)',
-          '프로그래밍(JAVA)',
-          '프로그래밍(JAVA)',
-          '프로그래밍(JAVA)',
-        ],
-      },
-      {
-        date: '2024-2-21T00:00:00',
-        data: [
-          '수학Ⅱ',
-          '일본어Ⅰ',
-          '인공지능과 미래사회',
-          '인공지능과 미래사회',
-          '자율활동',
-          '자율활동',
-        ],
-      },
-      {
-        date: '2024-2-22T00:00:00',
-        data: ['일본어Ⅰ', '일본어Ⅰ', '수학Ⅱ', '진로활동'],
-      },
-      {
-        date: '2024-2-23T00:00:00',
-        data: [
-          '대학수학능력시험일(1,2학년휴업일)',
-          '대학수학능력시험일(1,2학년휴업일)',
-          '대학수학능력시험일(1,2학년휴업일)',
-          '대학수학능력시험일(1,2학년휴업일)',
-          '대학수학능력시험일(1,2학년휴업일)',
-          '대학수학능력시험일(1,2학년휴업일)',
-          '대학수학능력시험일(1,2학년휴업일)',
-        ],
-      },
-      {
-        date: '2024-2-24T00:00:00',
-        data: [
-          '재량휴업일',
-          '재량휴업일',
-          '재량휴업일',
-          '재량휴업일',
-          '재량휴업일',
-          '재량휴업일',
-          '재량휴업일',
-        ],
-      },
-    ],
-  };
-
   const [lessonIndex, setLessonIndex] = useState<number | undefined>(undefined);
   const lessonDuration = 50;
   const today = new Date();
 
   const todayTimeTable = useMemo(() => {
-    const todayIndex = example.data.findIndex((item) => {
+    const todayIndex = TimeTableData.data.findIndex((item) => {
       const itemDate = new Date(item.date);
       return (
         itemDate.getFullYear() === today.getFullYear() &&
@@ -108,8 +53,8 @@ export const TimeTable: React.FC = () => {
       );
     });
 
-    return todayIndex !== -1 ? example.data[todayIndex].data : [];
-  }, [example.data, today]);
+    return todayIndex !== -1 ? TimeTableData.data[todayIndex].data : [];
+  }, [TimeTableData.data, today]);
 
   useEffect(() => {
     let animationFrameId: number;
