@@ -1,23 +1,23 @@
 import styled from '@emotion/native';
 
-export const EoullimVote = styled.View`
-  padding: 14px 10px;
+export const SelectBox = styled.View`
+  padding: 16px 10px;
   border-radius: 14px;
-  background-color: ${({ theme }) => theme.vote.background};
-  border-width: 4px;
+  background-color: ${({ theme }) => theme.background};
+  border-width: 3px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   position: relative;
 `;
 
-export const EoullimVoteTextWrapper = styled.View`
+export const SelectBoxTextWrapper = styled.View`
   flex: 0.8;
   flex-wrap: wrap;
   flex-direction: row;
 `;
 
-export const EoullimVoteButtonWrapper = styled.View`
+export const SelectBoxIconWrapper = styled.View`
   position: absolute;
   right: 0;
   flex: 0.2;

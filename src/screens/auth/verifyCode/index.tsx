@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { AuthLayout, CodeInput, Text } from 'src/components';
+import { AppLayout, CodeInput, Text } from 'src/components';
 import { authAtom } from 'src/atoms';
 import { useAuth } from 'src/hooks';
 
@@ -20,7 +20,7 @@ export const VerifyCodeScreen: React.FC = () => {
   };
 
   return (
-    <AuthLayout
+    <AppLayout
       isLoading={isLoading}
       headerText={`인증번호를 보냈어요!\n받은 인증번호를 입력해 주세요`}
       bottomText="인증하기"
@@ -34,6 +34,6 @@ export const VerifyCodeScreen: React.FC = () => {
           </Text>
         )}
       </View>
-    </AuthLayout>
+    </AppLayout>
   );
 };

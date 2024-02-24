@@ -36,7 +36,7 @@ export const darkTheme: Theme = {
   brown: '#FFA800',
   vote: {
     background: '#FBFBFB',
-    notSelect: '#E8E8E8',
+    notSelect: '#6F6F6F',
   },
   modalBg: '#333539',
   tabBarBg: '#373A40',

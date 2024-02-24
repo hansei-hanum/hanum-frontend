@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { AuthLayout } from 'src/components';
+import { AppLayout } from 'src/components';
 import { checkNumber, isAndroid } from 'src/utils';
 import { usePayment } from 'src/hooks';
 import { boothAtom, isDisableAtom } from 'src/atoms';
@@ -40,7 +40,7 @@ export const HanumPayScreen: React.FC = () => {
   }, [isFocused]);
 
   return (
-    <AuthLayout
+    <AppLayout
       isLoading={isLoading}
       onPress={onSubmit}
       headerText={`${boothInfo.name}에` + '\n얼마를 결제할까요?'}
@@ -57,6 +57,6 @@ export const HanumPayScreen: React.FC = () => {
         inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
         inputStyle={{ fontSize: 20 }}
       />
-    </AuthLayout>
+    </AppLayout>
   );
 };

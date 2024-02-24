@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
+import { ViewProps } from 'react-native';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -8,22 +8,27 @@ import { authAtom, isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export interface AuthLayoutProps {
-  isLoading: boolean;
+export interface AppLayoutCustomProps {
+  isLoading?: boolean;
   headerText: string;
   subHeaderText?: React.ReactNode;
   children: React.ReactNode;
   onPress: () => void;
   bottomText: string;
+  isNotAuth?: boolean;
 }
 
-export const AuthLayout: React.FC<AuthLayoutProps> = ({
+export type AppLayoutProps = AppLayoutCustomProps & ViewProps;
+
+export const AppLayout: React.FC<AppLayoutProps> = ({
   children,
   headerText,
   subHeaderText,
-  onPress,
   bottomText,
   isLoading,
+  onPress: onUserPress,
+  isNotAuth,
+  ...props
 }) => {
   const setAuth = useSetRecoilState(authAtom);
   const isDisabled = useRecoilValue(isDisableAtom);
@@ -33,29 +38,29 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   };
 
   return (
-    <S.AuthLayoutWrapper>
-      <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
-        <S.AuthLayoutTopSection>
+    <S.AppLayoutWrapper {...props}>
+      <S.AppLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
+        <S.AppLayoutMainSection>
           <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
-          <S.AuthTextContainer>
+          <S.AppLayoutTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (
                 <Text size={26} fontFamily="bold" key={line}>
                   {line}
-                  {index !== headerText.split('\n').length - 1 && <>{'\n'}</>}
+                  {index !== headerText.split('\n').length - 1 && '\n'}
                 </Text>
               ))}
             </Text>
             {subHeaderText}
-          </S.AuthTextContainer>
+          </S.AppLayoutTextContainer>
           {children}
-        </S.AuthLayoutTopSection>
-        <S.AuthLayoutButtonWrapper>
-          <Button onPress={onPress} isDisabled={isDisabled} isLoading={isLoading}>
+        </S.AppLayoutMainSection>
+        <S.AppLayoutButtonWrapper>
+          <Button onPress={onUserPress} isDisabled={!isNotAuth && isDisabled} isLoading={isLoading}>
             {bottomText}
           </Button>
-        </S.AuthLayoutButtonWrapper>
-      </S.AuthLayoutContainer>
-    </S.AuthLayoutWrapper>
+        </S.AppLayoutButtonWrapper>
+      </S.AppLayoutContainer>
+    </S.AppLayoutWrapper>
   );
 };

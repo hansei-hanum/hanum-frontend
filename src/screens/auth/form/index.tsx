@@ -5,7 +5,7 @@ import { useIsFocused, useRoute } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
 
-import { AuthInputForm, AuthLayout } from 'src/components';
+import { AuthInputForm, AppLayout } from 'src/components';
 import { NAME_REGEX, PHONE_REGEX } from 'src/constants';
 import { useAuthInput, useBlockGesture, usePhone, useSetAnimation } from 'src/hooks';
 import { authAtom, isDisableAtom } from 'src/atoms';
@@ -81,7 +81,7 @@ export const FormScreen: React.FC = () => {
   }, [isFocused]);
 
   return (
-    <AuthLayout
+    <AppLayout
       isLoading={isPhoneLoading}
       headerText={`${isPhoneInput && !nameInputFocused ? '전화번호를' : '이름을'} 알려주세요`}
       bottomText="다음"
@@ -122,6 +122,6 @@ export const FormScreen: React.FC = () => {
           />
         )}
       </S.FormScreenContainer>
-    </AuthLayout>
+    </AppLayout>
   );
 };

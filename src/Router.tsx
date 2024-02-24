@@ -46,6 +46,7 @@ export type RootStackParamList = {
   CommunityVisibleType: undefined;
   CommunityAnonymitySettings: undefined;
   NoInternet: undefined;
+  SelectTeam: undefined;
 };
 
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
@@ -114,13 +115,13 @@ export const Router: React.FC = () => {
       if (!token) return 'AuthMain';
       if (data && data?.data) return 'Main';
       if (auth.errorMessage === ERROR_MESSAGE) return 'AuthMain';
-      return 'NoInternet';
+      return 'Main';
     }
   };
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      <CheckVersion />
+      {/* <CheckVersion /> */}
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
@@ -137,7 +138,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={getInitialRoute()}
+          initialRouteName={'SelectTeam'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -174,6 +175,9 @@ export const Router: React.FC = () => {
               name="CommunityAnonymitySettings"
               component={SC.AnonymitySettingsScreen}
             />
+          </Stack.Group>
+          <Stack.Group>
+            <Stack.Screen name="SelectTeam" component={SC.SelectTeamScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
