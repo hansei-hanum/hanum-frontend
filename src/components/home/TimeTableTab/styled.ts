@@ -1,19 +1,19 @@
 import styled from '@emotion/native';
 
 export const TimeTableTextWrapper = styled.View`
-  width: 100%;  
+  width: 100%;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   flex-direction: column;
   gap: 10px;
   padding: 0 4px;
-`
+`;
 
 export const SecondText = styled.View`
   flex-direction: row;
   align-items: flex-start;
   flex: 1;
-`;   
+`;
 
 export const ScreenTimeleLine = styled.View`
   width: 1px;
@@ -27,4 +27,4 @@ export const TimeTableTextContainer = styled.View`
   flex-grow: 1;
   padding: 10px 0;
   flex: 1;
-`
+`;

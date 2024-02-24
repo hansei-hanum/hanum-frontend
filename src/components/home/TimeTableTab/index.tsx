@@ -1,13 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-
 import { Content } from '../Content';
-
 import * as S from './styled';
-
-import { Text } from 'src/components';
-
+import { Text, formatName } from 'src/components';
 import { useTheme } from '@emotion/react';
-
 import { TimeTableData } from 'src/constants/timTableData';
 
 export interface TimeTableProps {
@@ -19,20 +14,13 @@ export interface TimeTableProps {
 const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }) => {
   const theme = useTheme();
 
-  const getShrinkedMainText = (maxLength: number) => {
-    if (mainText && mainText.length > maxLength) {
-      return `${mainText.slice(0, maxLength - 3)}...`;
-    }
-    return mainText ?? '-';
-  };
-
   return (
     <S.TimeTableTextContainer>
       <Text size={14} fontFamily="medium" color={theme.placeholder}>
         {subText}
       </Text>
       <Text size={fontSize} fontFamily="bold">
-        {getShrinkedMainText(fontSize === 20 ? 13 : 10)}
+        {mainText !== undefined ? mainText : '-'}
       </Text>
     </S.TimeTableTextContainer>
   );
@@ -40,7 +28,7 @@ const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }
 
 export const TimeTable: React.FC = () => {
   const [lessonIndex, setLessonIndex] = useState<number | undefined>(undefined);
-  const lessonDuration = 50;
+  const lessonDuration = 1;
   const today = new Date();
 
   const todayTimeTable = useMemo(() => {
@@ -62,7 +50,7 @@ export const TimeTable: React.FC = () => {
     const updateLessonIndex = () => {
       const currentDate = new Date();
       const totalMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
-      const startingPoint = 8 * 60 + 40;
+      const startingPoint = 7 * 60 + 2;
       let lessonCount = Math.floor((totalMinutes - startingPoint) / lessonDuration);
       lessonCount = Math.max(0, lessonCount);
       setLessonIndex(lessonCount);
@@ -74,31 +62,26 @@ export const TimeTable: React.FC = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
-  const currentLesson =
-    lessonIndex !== undefined && todayTimeTable[lessonIndex]
-      ? todayTimeTable[lessonIndex].replace(/\s/g, '')
-      : undefined;
+  const getLesson = (index: number | undefined) => {
+    if (index !== undefined && todayTimeTable[index]) {
+      return todayTimeTable[index];
+    } else {
+      return '-';
+    }
+  };
 
-  const previousLesson =
-    lessonIndex !== undefined && lessonIndex > 0 && todayTimeTable[lessonIndex - 1]
-      ? todayTimeTable[lessonIndex - 1].replace(/\s/g, '')
-      : undefined;
-
-  const nextLesson =
-    lessonIndex !== undefined &&
-    lessonIndex < todayTimeTable.length - 1 &&
-    todayTimeTable[lessonIndex + 1]
-      ? todayTimeTable[lessonIndex + 1].replace(/\s/g, '')
-      : undefined;
+  const currentLesson = getLesson(lessonIndex);
+  const previousLesson = getLesson(lessonIndex !== undefined ? lessonIndex - 1 : undefined);
+  const nextLesson = getLesson(lessonIndex !== undefined ? lessonIndex + 1 : undefined);
 
   return (
     <Content icon="⌚︎" name="시간표" navigateUrl="TimeTable">
       <S.TimeTableTextWrapper>
-        <TimeTableText fontSize={20} subText="이번수업" mainText={currentLesson} />
+        <TimeTableText fontSize={20} subText="이번수업" mainText={formatName(currentLesson)} />
         <S.SecondText>
-          <TimeTableText fontSize={15} subText="이전수업" mainText={previousLesson} />
+          <TimeTableText fontSize={15} subText="이전수업" mainText={formatName(previousLesson)} />
           <S.ScreenTimeleLine />
-          <TimeTableText fontSize={15} subText="다음수업" mainText={nextLesson} />
+          <TimeTableText fontSize={15} subText="다음수업" mainText={formatName(nextLesson)} />
         </S.SecondText>
       </S.TimeTableTextWrapper>
     </Content>
