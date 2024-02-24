@@ -3,7 +3,7 @@ import { ScrollView, ViewProps } from 'react-native';
 
 import { useSetRecoilState } from 'recoil';
 
-import { Button, GoBackIcon } from 'src/components';
+import { Button, GoBackIcon, NoScrollbarScrollView } from 'src/components';
 import { authAtom } from 'src/atoms';
 
 import {
@@ -47,13 +47,13 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       <S.AppLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
         <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
         {withScrollView ? (
-          <ScrollView ref={scrollViewRef} contentContainerStyle={{ paddingBottom: 10 }}>
+          <NoScrollbarScrollView contentContainerStyle={{ paddingBottom: 10 }} ref={scrollViewRef}>
             <AppLayoutWithoutButton
               headerText={headerText}
               subHeaderText={subHeaderText}
               children={children}
             />
-          </ScrollView>
+          </NoScrollbarScrollView>
         ) : (
           <AppLayoutWithoutButton
             headerText={headerText}

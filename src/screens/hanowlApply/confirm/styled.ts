@@ -11,7 +11,3 @@ export const ConfirmContainer = styled.View`
   margin-top: ${iosCheckHeight ? '10px' : isAndroid ? '25px' : '20px'};
   margin-bottom: ${iosCheckHeight ? '5px' : isAndroid ? '15px' : '14px'};
 `;
-
-export const ConfirmList = styled.ScrollView`
-  width: 100%;
-`;

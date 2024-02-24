@@ -4,7 +4,13 @@ import { SafeAreaView } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
 
-import { AppLayoutWithoutButton, ConfirmBox, GoBackIcon, Text } from 'src/components';
+import {
+  AppLayoutWithoutButton,
+  ConfirmBox,
+  GoBackIcon,
+  NoScrollbarScrollView,
+  Text,
+} from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
 import { hanowlApplyAtom } from 'src/atoms';
@@ -47,11 +53,11 @@ export const ConfirmScreen: React.FC = () => {
             </Text>
           }
         >
-          <S.ConfirmList contentContainerStyle={{ rowGap: 20, marginTop: 30 }}>
+          <NoScrollbarScrollView contentContainerStyle={{ rowGap: 20, marginTop: 30 }}>
             {HANOWL_APPLY.CONFIRM_DUMMY_LIST.map((props) => (
               <ConfirmBox {...props} />
             ))}
-          </S.ConfirmList>
+          </NoScrollbarScrollView>
         </AppLayoutWithoutButton>
       </S.ConfirmContainer>
     </SafeAreaView>
