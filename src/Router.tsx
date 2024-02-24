@@ -139,7 +139,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'ApplyDetails'}
+          initialRouteName={'SelectTeam'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -179,7 +179,7 @@ export const Router: React.FC = () => {
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="SelectTeam" component={SC.SelectTeamScreen} />
-            <Stack.Screen name="ApplyDetails" component={SC.ApplyDetailsScreen} />
+            <Stack.Screen name="ApplyDetails" component={SC.ApplyContentsScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />

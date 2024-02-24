@@ -1,5 +1,5 @@
 import { TeamType } from 'src/atoms';
-import { ApplyDetailInputProps } from 'src/screens';
+import { ApplyInputCustomProps } from 'src/components';
 
 export const HANOWL_APPLY = {
   APPLY_DETAIL_SUBTEXTS: [
@@ -32,5 +32,5 @@ export const HANOWL_APPLY = {
       placeholder: '포부를 입력해주세요',
       height: 125,
     },
-  ] as ApplyDetailInputProps[],
+  ] as ApplyInputCustomProps[],
 };

@@ -1,10 +1,10 @@
 import React from 'react';
-import { ViewProps } from 'react-native';
+import { ScrollView, ViewProps } from 'react-native';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import { Button, GoBackIcon, Text } from 'src/components';
-import { authAtom, isDisableAtom } from 'src/atoms';
+import { authAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -15,7 +15,8 @@ export interface AppLayoutCustomProps {
   children: React.ReactNode;
   onPress: () => void;
   bottomText: string;
-  isNotAuth?: boolean;
+  isDisabled?: boolean;
+  scrollEnabled?: boolean;
 }
 
 export type AppLayoutProps = AppLayoutCustomProps & ViewProps;
@@ -27,11 +28,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   bottomText,
   isLoading,
   onPress: onUserPress,
-  isNotAuth,
+  isDisabled = false,
+  scrollEnabled = false,
   ...props
 }) => {
   const setAuth = useSetRecoilState(authAtom);
-  const isDisabled = useRecoilValue(isDisableAtom);
 
   const resetErrorMessage = () => {
     setAuth((prev) => ({ ...prev, errorMessage: '' }));
@@ -40,23 +41,25 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   return (
     <S.AuthLayoutWrapper {...props}>
       <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
-        <S.AuthLayoutTopSection>
-          <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
-          <S.AuthTextContainer>
-            <Text size={26} fontFamily="bold">
-              {headerText.split('\n').map((line, index) => (
-                <Text size={26} fontFamily="bold" key={line}>
-                  {line}
-                  {index !== headerText.split('\n').length - 1 && '\n'}
-                </Text>
-              ))}
-            </Text>
-            {subHeaderText}
-          </S.AuthTextContainer>
-          {children}
-        </S.AuthLayoutTopSection>
+        <ScrollView contentContainerStyle={{ paddingBottom: 10 }} scrollEnabled={scrollEnabled}>
+          <S.AuthLayoutTopSection>
+            <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
+            <S.AuthTextContainer>
+              <Text size={26} fontFamily="bold">
+                {headerText.split('\n').map((line, index) => (
+                  <Text size={26} fontFamily="bold" key={line}>
+                    {line}
+                    {index !== headerText.split('\n').length - 1 && '\n'}
+                  </Text>
+                ))}
+              </Text>
+              {subHeaderText}
+            </S.AuthTextContainer>
+            {children}
+          </S.AuthLayoutTopSection>
+        </ScrollView>
         <S.AuthLayoutButtonWrapper>
-          <Button onPress={onUserPress} isDisabled={!isNotAuth && isDisabled} isLoading={isLoading}>
+          <Button onPress={onUserPress} isDisabled={isDisabled} isLoading={isLoading}>
             {bottomText}
           </Button>
         </S.AuthLayoutButtonWrapper>

@@ -28,7 +28,6 @@ export const SelectTeamScreen: React.FC = () => {
       bottomText="다음"
       isLoading={false}
       onPress={() => navigate('ApplyDetails')}
-      isNotAuth
     >
       <SelectLayout>
         {teams.map((item, index) => (

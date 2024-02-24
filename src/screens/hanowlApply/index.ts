@@ -1,2 +1,2 @@
 export * from './selectTeam';
-export * from './applyDetails';
+export * from './applyContents';
