@@ -48,6 +48,7 @@ export type RootStackParamList = {
   NoInternet: undefined;
   SelectTeam: undefined;
   ApplyDetails: undefined;
+  FinalConfirm: undefined;
 };
 
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
@@ -180,6 +181,7 @@ export const Router: React.FC = () => {
           <Stack.Group>
             <Stack.Screen name="SelectTeam" component={SC.SelectTeamScreen} />
             <Stack.Screen name="ApplyDetails" component={SC.ApplyContentsScreen} />
+            <Stack.Screen name="FinalConfirm" component={SC.FinalConfirmScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />

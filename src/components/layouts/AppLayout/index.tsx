@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import { ScrollView, ViewProps } from 'react-native';
 
 import { useSetRecoilState } from 'recoil';
@@ -17,6 +17,7 @@ export interface AppLayoutCustomProps {
   bottomText: string;
   isDisabled?: boolean;
   scrollEnabled?: boolean;
+  scrollViewRef?: RefObject<ScrollView>;
 }
 
 export type AppLayoutProps = AppLayoutCustomProps & ViewProps;
@@ -30,6 +31,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   onPress: onUserPress,
   isDisabled = false,
   scrollEnabled = false,
+  scrollViewRef,
   ...props
 }) => {
   const setAuth = useSetRecoilState(authAtom);
@@ -41,7 +43,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   return (
     <S.AuthLayoutWrapper {...props}>
       <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
-        <ScrollView contentContainerStyle={{ paddingBottom: 10 }} scrollEnabled={scrollEnabled}>
+        <ScrollView
+          ref={scrollViewRef}
+          contentContainerStyle={{ paddingBottom: 10 }}
+          scrollEnabled={scrollEnabled}
+        >
           <S.AuthLayoutTopSection>
             <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
             <S.AuthTextContainer>
