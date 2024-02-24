@@ -37,11 +37,9 @@ export const MainScreen: React.FC = () => {
         tabBarLabelStyle: {
           fontSize: 12,
         },
-        tabBarStyle: inset && theme ? style : {},
-        tabBarIconStyle: {
-          paddingBottom: 0,
-          marginBottom: isIos ? -8 : -10,
-          color: theme.default,
+        tabBarStyle: { ...style, position: 'absolute' },
+        tabBarItemStyle: {
+          paddingVertical: 4,
         },
       }}
       initialRouteName="홈"

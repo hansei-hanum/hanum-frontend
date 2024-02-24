@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 
-import { Text, AuthLayout, CodeInput } from 'src/components';
+import { Text, AppLayout, CodeInput } from 'src/components';
 import { useInitNavigate, useModal, useUserVerify } from 'src/hooks';
 import { ConfirmModal } from 'src/components/auth/ConfirmModal';
+import { isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const VerifyScreen: React.FC = () => {
+  const isDisabled = useRecoilValue(isDisableAtom);
+
   const { open, close } = useModal();
   const theme = useTheme();
 
@@ -31,7 +35,8 @@ export const VerifyScreen: React.FC = () => {
 
   return (
     <>
-      <AuthLayout
+      <AppLayout
+        isDisabled={isDisabled}
         isLoading={isLoading}
         headerText={`정회원 인증 코드를\n` + `입력해주세요`}
         subHeaderText={
@@ -56,7 +61,7 @@ export const VerifyScreen: React.FC = () => {
         onPress={onCheckSubmit}
       >
         <CodeInput value={value} setValue={setValue} isNumber={false} />
-      </AuthLayout>
+      </AppLayout>
       <ConfirmModal isLoading={isLoading} onSubmit={onSubmit} />
     </>
   );

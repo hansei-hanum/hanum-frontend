@@ -12,8 +12,8 @@ export const lightTheme: Theme = {
   background: '#FEFEFE',
   green: '#0CEE52',
   brown: '#FFA800',
+  selectBox: '#FBFBFB',
   vote: {
-    background: '#FBFBFB',
     notSelect: '#E8E8E8',
   },
   modalBg: '#FEFEFE',
@@ -34,9 +34,9 @@ export const darkTheme: Theme = {
   background: '#2A2B2E',
   green: '#0CEE52',
   brown: '#FFA800',
+  selectBox: '#333539',
   vote: {
-    background: '#FBFBFB',
-    notSelect: '#E8E8E8',
+    notSelect: '#6F6F6F',
   },
   modalBg: '#333539',
   tabBarBg: '#373A40',
