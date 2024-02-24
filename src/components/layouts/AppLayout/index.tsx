@@ -38,11 +38,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   };
 
   return (
-    <S.AppLayoutWrapper {...props}>
-      <S.AppLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
-        <S.AppLayoutMainSection>
+    <S.AuthLayoutWrapper {...props}>
+      <S.AuthLayoutContainer behavior="padding" keyboardVerticalOffset={15}>
+        <S.AuthLayoutTopSection>
           <GoBackIcon isLoading={isLoading} onPress={resetErrorMessage} />
-          <S.AppLayoutTextContainer>
+          <S.AuthTextContainer>
             <Text size={26} fontFamily="bold">
               {headerText.split('\n').map((line, index) => (
                 <Text size={26} fontFamily="bold" key={line}>
@@ -52,15 +52,15 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
               ))}
             </Text>
             {subHeaderText}
-          </S.AppLayoutTextContainer>
+          </S.AuthTextContainer>
           {children}
-        </S.AppLayoutMainSection>
-        <S.AppLayoutButtonWrapper>
+        </S.AuthLayoutTopSection>
+        <S.AuthLayoutButtonWrapper>
           <Button onPress={onUserPress} isDisabled={!isNotAuth && isDisabled} isLoading={isLoading}>
             {bottomText}
           </Button>
-        </S.AppLayoutButtonWrapper>
-      </S.AppLayoutContainer>
-    </S.AppLayoutWrapper>
+        </S.AuthLayoutButtonWrapper>
+      </S.AuthLayoutContainer>
+    </S.AuthLayoutWrapper>
   );
 };

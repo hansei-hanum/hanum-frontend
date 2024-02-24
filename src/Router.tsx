@@ -47,6 +47,7 @@ export type RootStackParamList = {
   CommunityAnonymitySettings: undefined;
   NoInternet: undefined;
   SelectTeam: undefined;
+  ApplyDetails: undefined;
 };
 
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
@@ -138,7 +139,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'SelectTeam'}
+          initialRouteName={'ApplyDetails'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -178,6 +179,7 @@ export const Router: React.FC = () => {
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="SelectTeam" component={SC.SelectTeamScreen} />
+            <Stack.Screen name="ApplyDetails" component={SC.ApplyDetailsScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />

@@ -4,5 +4,5 @@ export * from './community';
 export * from './setKoreanLocale';
 export * from './userInfoList';
 export * from './toast';
-export * from './teams';
+export * from './hanowlApply';
 export * from './common';
