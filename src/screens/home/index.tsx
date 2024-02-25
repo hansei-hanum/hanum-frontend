@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
@@ -45,7 +44,6 @@ export const HomeScreen: React.FC = () => {
 
     if (isGranted) {
       const token = await messaging().getToken();
-      console.log('Token:', token);
       mutate({ token: token, platform: isIos ? 'IOS' : 'ANDROID' });
     }
   };

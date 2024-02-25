@@ -7,31 +7,31 @@ import { ScaleOpacity, Text } from 'src/components';
 
 import * as S from './styled';
 
-export interface EoullimVoteBoxProps {
+export interface SelectBoxProps {
   onPress: () => void;
   isSelect?: boolean | null;
   name: string;
 }
 
-export const EoullimVoteBox: React.FC<EoullimVoteBoxProps> = ({ name, isSelect, onPress }) => {
+export const SelectBox: React.FC<SelectBoxProps> = ({ name, isSelect, onPress }) => {
   const theme = useTheme();
 
   return (
     <ScaleOpacity onPress={onPress} style={{ width: '100%' }}>
-      <S.EoullimVote style={{ borderColor: isSelect ? theme.primary : theme.lightGray }}>
-        <S.EoullimVoteTextWrapper>
+      <S.SelectBox style={{ borderColor: isSelect ? theme.primary : theme.lightGray }}>
+        <S.SelectBoxTextWrapper>
           <Text size={15} fontFamily="bold" color={isSelect ? theme.primary : theme.placeholder}>
             {name}
           </Text>
-        </S.EoullimVoteTextWrapper>
-        <S.EoullimVoteButtonWrapper>
+        </S.SelectBoxTextWrapper>
+        <S.SelectBoxIconWrapper>
           <Ionicons
             name="checkmark-circle"
             size={34}
             color={isSelect ? theme.primary : theme.vote.notSelect}
           />
-        </S.EoullimVoteButtonWrapper>
-      </S.EoullimVote>
+        </S.SelectBoxIconWrapper>
+      </S.SelectBox>
     </ScaleOpacity>
   );
 };

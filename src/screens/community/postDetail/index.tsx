@@ -1,8 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { KeyboardAvoidingView, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -25,6 +26,7 @@ import { CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT, COMMUNITY_POST } from 'src/cons
 import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { RootStackParamList } from 'src/Router';
+import { isAndroid } from 'src/utils';
 
 import * as S from './styled';
 
@@ -106,6 +108,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const toggleAnonymous = () => {
     setIsAnonymous(!isAnonymous);
+    Toast.show({
+      position: 'top',
+      type: 'success',
+      text1: `${!isAnonymous ? '익명' : '실명'}으로 전환되었어요`,
+      topOffset: isAndroid ? inset.top + 10 : inset.top,
+    });
   };
 
   return (
@@ -121,7 +129,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           openBottomSheet={openPostBottomSheet}
         />
       </Header>
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10} style={{ flex: 1 }}>
+      <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           <PostDetailLayout onMention={onMention} />
         ) : (
@@ -169,7 +177,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           scrollHeight={permissionHeight}
           permission={permission}
         />
-      </KeyboardAvoidingView>
+      </S.PostDetailInnerContainer>
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.PostDetailContainer>
   );

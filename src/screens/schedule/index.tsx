@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
-import { ScrollView } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
 import { format } from 'date-fns';
 import { Theme, useTheme } from '@emotion/react';
 
-import { ContentBox, Text, Spinner, Header } from 'src/components';
+import { ContentBox, Text, Spinner, Header, NoScrollbarScrollView } from 'src/components';
 import { useGetMonthSchedule } from 'src/hooks';
 import { setKoreanLocale } from 'src/constants';
 import { CalendarIcon } from 'src/assets';
@@ -117,9 +116,7 @@ export const ScheduleScreen: React.FC = () => {
               setSelectedDate(day.dateString);
             }}
           />
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
+          <NoScrollbarScrollView
             bounces={false}
             contentContainerStyle={{
               padding: 20,
@@ -139,7 +136,7 @@ export const ScheduleScreen: React.FC = () => {
                 일정이 없습니다.
               </Text>
             )}
-          </ScrollView>
+          </NoScrollbarScrollView>
         </>
       )}
     </S.ScheduleContainer>

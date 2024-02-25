@@ -50,7 +50,7 @@ export const AuthMainScreen: React.FC = () => {
             </Text>
           </S.AuthMainScreenLogoContainer>
           <S.AuthMainScreenMainSection>
-            <Button onPress={() => navigate('Phone')}>로그인</Button>
+            <Button onPress={() => navigate('Login')}>로그인</Button>
             <Button
               isWhite
               onPress={() => setModalVisible({ isAgreeModal: true, isCurrentStudentModal: false })}

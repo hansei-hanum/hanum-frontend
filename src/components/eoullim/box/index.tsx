@@ -2,13 +2,14 @@ import React from 'react';
 
 import { useNavigate } from 'src/hooks';
 import { Icon, ScaleOpacity } from 'src/components';
+import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
 export interface EoullimBoxProps {
   title: string;
   icon: string;
-  navigateUrl: string;
+  navigateUrl: keyof RootStackParamList;
   isBig?: boolean;
 }
 

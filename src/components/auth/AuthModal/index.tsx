@@ -29,9 +29,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const onAgree = (isCurrentStudent?: boolean) => {
     isCurrentStudent && setAuth({ ...auth, isCurrentStudent: true });
-    navigate('Name');
+    navigate('Register');
     setModalVisible({ isAgreeModal: false, isCurrentStudentModal: false });
   };
+
+  // useEffect(() => {
+  //   setAuth({ ...auth, errorMessage: '' });
+  //   if (isFocused && isPhoneScreen && value.length === 11) {
+  //     setIsDisabled(false);
+  //   }
+  // }, [isFocused]);
 
   if (isCurrentStudentModal) {
     return (
@@ -46,7 +53,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         modalVisible={isCurrentStudentModal}
         button={
           <Button.Container>
-            <Button onPress={onAgree} isWhite isModalBtn>
+            <Button onPress={() => onAgree()} isWhite isModalBtn>
               아니오
             </Button>
             <Button onPress={() => onAgree(true)} isModalBtn>

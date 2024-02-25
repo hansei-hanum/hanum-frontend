@@ -1,7 +1,13 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
 
-import { TimeTableList, WeekDay, AuthFailedModal, Spinner, TimeTableLayout } from 'src/components';
+import {
+  TimeTableList,
+  WeekDay,
+  AuthFailedModal,
+  Spinner,
+  TimeTableLayout,
+  NoScrollbarScrollView,
+} from 'src/components';
 import { NUMBER_LIST } from 'src/constants';
 import { useCheckUserType, useGetTimeTable } from 'src/hooks';
 
@@ -27,9 +33,7 @@ export const TimeTableScreen: React.FC = () => {
     return (
       <TimeTableLayout isStudent>
         <WeekDay />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
+        <NoScrollbarScrollView
           contentContainerStyle={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -40,7 +44,7 @@ export const TimeTableScreen: React.FC = () => {
           {data?.data.map((item) => (
             <TimeTableList key={item.date} list={item.data} isToday={checkToday(item.date)} />
           ))}
-        </ScrollView>
+        </NoScrollbarScrollView>
       </TimeTableLayout>
     );
   } else {
