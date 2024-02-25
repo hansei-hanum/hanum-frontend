@@ -28,7 +28,7 @@ const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }
 
 export const TimeTable: React.FC = () => {
   const [lessonIndex, setLessonIndex] = useState<number | undefined>(undefined);
-  const lessonDuration = 1;
+  const lessonDuration = 50;
   const today = new Date();
 
   const todayTimeTable = useMemo(() => {
@@ -50,7 +50,7 @@ export const TimeTable: React.FC = () => {
     const updateLessonIndex = () => {
       const currentDate = new Date();
       const totalMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
-      const startingPoint = 7 * 60 + 2;
+      const startingPoint = 8 * 60 + 40;
       let lessonCount = Math.floor((totalMinutes - startingPoint) / lessonDuration);
       lessonCount = Math.max(0, lessonCount);
       setLessonIndex(lessonCount);
