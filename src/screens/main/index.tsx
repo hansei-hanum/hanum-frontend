@@ -16,7 +16,6 @@ import { CommunityMainScreen } from '../community';
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
-  const inset = useSafeAreaInsets();
   const theme = useTheme();
   const style = TabBarStyle(theme, inset);
 
