@@ -4,19 +4,22 @@ import * as S from './styled';
 import { Text, formatName } from 'src/components';
 import { useTheme } from '@emotion/react';
 import { TimeTableData } from 'src/constants/timTableData';
+import { ViewProps } from 'react-native';
 
-export interface TimeTableProps {
+export interface TimeTableCustomProps {
   mainText?: string;
   subText: string;
   fontSize: number;
   padding?: string;
 }
 
-const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize, padding }) => {
+export type TimeTableProps = TimeTableCustomProps & ViewProps;
+
+const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize, ...props }) => {
   const theme = useTheme();
 
   return (
-    <S.TimeTableTextContainer padding={padding}>
+    <S.TimeTableTextContainer {...props}>
       <Text size={14} fontFamily="medium" color={theme.placeholder}>
         {subText}
       </Text>
@@ -91,14 +94,14 @@ export const TimeTable: React.FC = () => {
         <TimeTableText fontSize={27} subText="이번 수업" mainText={formatName(currentLesson)} />
         <S.SecondText>
           <TimeTableText
-            padding="20px 0"
+            style={{ paddingVertical: 20 }}
             fontSize={20}
             subText="이전 수업"
             mainText={formatName(previousLesson)}
           />
           <S.ScreenTimeleLine />
           <TimeTableText
-            padding="20px 0"
+            style={{ paddingVertical: 20 }}
             fontSize={20}
             subText="다음 수업"
             mainText={formatName(nextLesson)}
