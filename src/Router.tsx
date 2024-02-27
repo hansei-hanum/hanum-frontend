@@ -29,6 +29,8 @@ export type RootStackParamList = {
   Verify: undefined;
   Main: undefined;
   Schedule: undefined;
+  TimeTable: undefined;
+  Home: undefined;
   UserInfo: undefined;
   WebView: undefined;
   HanumPayMain: undefined;
@@ -141,7 +143,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'Confirm'}
+          initialRouteName={'Home'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -151,7 +153,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="Verify" component={SC.VerifyScreen} />
           </Stack.Group>
           <Stack.Group>
-            <Stack.Screen name="Main" component={SC.MainScreen} />
+            <Stack.Screen name="Home" component={SC.HomeScreen} />
             <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
             <Stack.Screen name="UserInfo" component={SC.UserInfoScreen} />
             <Stack.Screen name="WebView" component={SC.WebViewScreen} />

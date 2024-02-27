@@ -1,5 +1,7 @@
 import styled from '@emotion/native';
 
+
+
 export const TimeTableTextWrapper = styled.View`
   width: 100%;
   justify-content: center;
@@ -25,6 +27,6 @@ export const TimeTableTextContainer = styled.View`
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  padding: 10px 0;
+  gap: 2px;
   flex: 1;
 `;
