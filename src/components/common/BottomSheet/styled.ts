@@ -11,6 +11,7 @@ export const ScrollBottomSheetContainer = styled(ReAnimated.View)`
   top: ${`${SCREEN_HEIGHT}px`};
   border-radius: 25px;
   z-index: 9999;
+  background-color: ${({ theme }) => theme.background};
 `;
 
 export const ScrollBottomSheetLine = styled.View`
