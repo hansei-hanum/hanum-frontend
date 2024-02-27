@@ -9,13 +9,14 @@ export interface TimeTableProps {
   mainText?: string;
   subText: string;
   fontSize: number;
+  padding?: string;
 }
 
-const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }) => {
+const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize, padding }) => {
   const theme = useTheme();
 
   return (
-    <S.TimeTableTextContainer>
+    <S.TimeTableTextContainer padding={padding}>
       <Text size={14} fontFamily="medium" color={theme.placeholder}>
         {subText}
       </Text>
@@ -28,7 +29,7 @@ const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }
 
 export const TimeTable: React.FC = () => {
   const [lessonIndex, setLessonIndex] = useState<number | undefined>(undefined);
-  const lessonDuration = 50;
+  const partDurationList = [60, 60, 60, 100, 60, 60, 60];
   const today = new Date();
 
   const todayTimeTable = useMemo(() => {
@@ -51,8 +52,18 @@ export const TimeTable: React.FC = () => {
       const currentDate = new Date();
       const totalMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
       const startingPoint = 8 * 60 + 40;
-      let lessonCount = Math.floor((totalMinutes - startingPoint) / lessonDuration);
-      lessonCount = Math.max(0, lessonCount);
+      let accrueDuration = 0;
+      let lessonCount = 0;
+
+      for (let i = 0; i < partDurationList.length; i++) {
+        accrueDuration += partDurationList[i];
+        if (totalMinutes >= startingPoint + accrueDuration) {
+          lessonCount++;
+        } else {
+          break;
+        }
+      }
+
       setLessonIndex(lessonCount);
       animationFrameId = requestAnimationFrame(updateLessonIndex);
     };
@@ -77,11 +88,21 @@ export const TimeTable: React.FC = () => {
   return (
     <Content icon="⌚︎" name="시간표" navigateUrl="TimeTable">
       <S.TimeTableTextWrapper>
-        <TimeTableText fontSize={20} subText="이번수업" mainText={formatName(currentLesson)} />
+        <TimeTableText fontSize={27} subText="이번 수업" mainText={formatName(currentLesson)} />
         <S.SecondText>
-          <TimeTableText fontSize={15} subText="이전수업" mainText={formatName(previousLesson)} />
+          <TimeTableText
+            padding="20px 0"
+            fontSize={20}
+            subText="이전 수업"
+            mainText={formatName(previousLesson)}
+          />
           <S.ScreenTimeleLine />
-          <TimeTableText fontSize={15} subText="다음수업" mainText={formatName(nextLesson)} />
+          <TimeTableText
+            padding="20px 0"
+            fontSize={20}
+            subText="다음 수업"
+            mainText={formatName(nextLesson)}
+          />
         </S.SecondText>
       </S.TimeTableTextWrapper>
     </Content>

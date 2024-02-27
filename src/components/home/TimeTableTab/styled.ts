@@ -1,5 +1,9 @@
 import styled from '@emotion/native';
 
+interface TimeTableTextContainerProps {
+  padding?: string
+}
+
 export const TimeTableTextWrapper = styled.View`
   width: 100%;
   justify-content: center;
@@ -21,10 +25,11 @@ export const ScreenTimeleLine = styled.View`
   background-color: ${({ theme }) => theme.secondary};
 `;
 
-export const TimeTableTextContainer = styled.View`
+export const TimeTableTextContainer = styled.View<TimeTableTextContainerProps>`
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  padding: 10px 0;
+  padding: ${(props)=>props.padding};
+  gap: 2px;
   flex: 1;
 `;
