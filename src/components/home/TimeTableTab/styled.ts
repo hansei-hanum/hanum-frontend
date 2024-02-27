@@ -1,5 +1,7 @@
 import styled from '@emotion/native';
 
+import { TimeTableProps } from '.';
+
 export const TimeTableTextWrapper = styled.View`
   width: 100%;
   justify-content: center;
@@ -21,7 +23,7 @@ export const ScreenTimeleLine = styled.View`
   background-color: ${({ theme }) => theme.secondary};
 `;
 
-export const TimeTableTextContainer = styled.View`
+export const TimeTableTextContainer = styled.View<Required<Pick<TimeTableProps, 'mainText'>>>`
   justify-content: center;
   align-items: center;
   flex-grow: 1;

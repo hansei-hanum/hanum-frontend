@@ -2,7 +2,7 @@ import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
-import { PermissionsAndroid, TouchableOpacity, Image } from 'react-native';
+import { PermissionsAndroid, TouchableOpacity, Image, View } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Schedule, Header, LunchTable, TimeTable } from 'src/components';
+import { Timer, Schedule, Header, LunchTable, TimeTable, AlertBox } from 'src/components';
 import { isAndroid, isIos, openContactChannel } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
@@ -125,34 +125,43 @@ export const HomeScreen: React.FC = () => {
   return (
     <S.HomeScreenWrapper>
       <Header isRow>
-        <Image
-          source={themeValue === 'light' ? Logo : WhiteLogo}
-          style={{ width: 98, height: 30, resizeMode: 'contain' }}
-        />
-        <S.HomeScreenHeaderIconContainer>
-          <TouchableOpacity activeOpacity={0.5} onPress={openContactChannel}>
-            <AntDesign name="customerservice" size={28} color={theme.placeholder} />
-          </TouchableOpacity>
-        </S.HomeScreenHeaderIconContainer>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 10,
+          }}
+        >
+          <Image
+            source={themeValue === 'light' ? Logo : WhiteLogo}
+            style={{ width: 98, height: 30, resizeMode: 'contain' }}
+          />
+          <S.HomeScreenHeaderIconContainer>
+            <TouchableOpacity activeOpacity={0.5} onPress={openContactChannel}>
+              <AntDesign name="customerservice" size={28} color={theme.placeholder} />
+            </TouchableOpacity>
+          </S.HomeScreenHeaderIconContainer>
+        </View>
       </Header>
       <S.HomeScreenContainer
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingTop: 20,
-          paddingBottom: 40,
+          paddingBottom: 60,
           paddingLeft: 20,
           paddingRight: 20,
           rowGap: 20,
         }}
       >
-        {/* <AlertBox
-          navigation={navigation}
-          navigateUrl="급식표"
-          icon="🍽"
-          subText="오늘의 급식!"
-          mainText="실시간으로 보기"
-        /> */}
+        <AlertBox
+          navigateUrl="hanowlApplyMain"
+          icon="📢"
+          subText="학생회 모집 기간이에요"
+          mainText="동아리 모집 공고 보기"
+        />
         <TimeTable />
         <Timer />
         <LunchTable />

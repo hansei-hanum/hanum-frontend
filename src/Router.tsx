@@ -50,6 +50,7 @@ export type RootStackParamList = {
   ApplyDetails: undefined;
   FinalConfirm: undefined;
   Confirm: undefined;
+  hanowlApplyMain: undefined;
 };
 
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
@@ -107,7 +108,7 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
-  if (isReady && !isUpdating && !isLoading) {
+  if (isReady && !isUpdating) {
     SplashScreen.hide();
   } else if (!isReady) {
     return null;
@@ -141,7 +142,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'Confirm'}
+          initialRouteName={'Main'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
@@ -180,6 +181,7 @@ export const Router: React.FC = () => {
             />
           </Stack.Group>
           <Stack.Group>
+            <Stack.Screen name="hanowlApplyMain" component={SC.HanowlApplyMainScreen} />
             <Stack.Screen name="SelectTeam" component={SC.SelectTeamScreen} />
             <Stack.Screen name="ApplyDetails" component={SC.ApplyContentsScreen} />
             <Stack.Screen name="FinalConfirm" component={SC.FinalConfirmScreen} />

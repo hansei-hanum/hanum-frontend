@@ -1,15 +1,22 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Content } from '../Content';
-import * as S from './styled';
-import { Text, formatName } from 'src/components';
+import { ViewProps } from 'react-native';
+
 import { useTheme } from '@emotion/react';
+
+import { Text, formatName } from 'src/components';
 import { TimeTableData } from 'src/constants/timTableData';
+
+import { Content } from '../Content';
+
+import * as S from './styled';
 
 export interface TimeTableProps {
   mainText?: string;
   subText: string;
   fontSize: number;
 }
+
+export type TimeTableCustomProps = TimeTableProps & ViewProps;
 
 const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize }) => {
   const theme = useTheme();
@@ -75,7 +82,7 @@ export const TimeTable: React.FC = () => {
   const nextLesson = getLesson(lessonIndex !== undefined ? lessonIndex + 1 : undefined);
 
   return (
-    <Content icon="⌚︎" name="시간표" navigateUrl="TimeTable">
+    <Content icon="⏰" name="시간표" navigateUrl="TimeTable">
       <S.TimeTableTextWrapper>
         <TimeTableText fontSize={20} subText="이번수업" mainText={formatName(currentLesson)} />
         <S.SecondText>
