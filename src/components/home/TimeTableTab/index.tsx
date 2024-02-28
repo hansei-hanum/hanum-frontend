@@ -5,7 +5,6 @@ import { useTheme } from '@emotion/react';
 
 import { Text, formatName } from 'src/components';
 import { TimeTableData } from 'src/constants/timTableData';
-import { ViewProps } from 'react-native';
 
 import { Content } from '../Content';
 
