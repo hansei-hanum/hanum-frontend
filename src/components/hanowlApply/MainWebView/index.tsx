@@ -5,6 +5,7 @@ import { useTheme } from '@emotion/react';
 
 import { Button } from 'src/components/common';
 import { useNavigate } from 'src/hooks';
+import { HANOWL_APPLY } from 'src/constants';
 
 import * as S from './styled';
 
@@ -23,7 +24,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
     <>
       <S.HanowlApplyMainDummyContainer style={!mainLoading && { display: 'none' }} />
       <WebView
-        source={{ uri: 'http://172.30.1.18:3000/' }}
+        source={{ uri: HANOWL_APPLY.URL }}
         style={{
           flex: 1,
           backgroundColor: theme.black,

@@ -3,12 +3,10 @@ import WebView, { WebViewNavigation } from 'react-native-webview';
 import { Linking } from 'react-native';
 
 import { Theme } from '@emotion/react';
-import { useSetRecoilState } from 'recoil';
 
 import { isAndroid } from 'src/utils';
 import { Button, Text } from 'src/components/common';
-import { TeamType, hanowlApplyAtom } from 'src/atoms';
-import { useNavigate } from 'src/hooks';
+import { HANOWL_APPLY } from 'src/constants';
 
 import * as S from './styled';
 
@@ -48,8 +46,6 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
   theme,
   onPress,
 }) => {
-  const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
-
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     if (!navState.url.includes('https')) {
       return false;
@@ -57,7 +53,7 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
   };
 
   const onShouldStartLoadWithRequest = (event: WebViewNavigation) => {
-    if (!event.url.includes('http://172.30.1.18:3000/')) {
+    if (!event.url.includes(HANOWL_APPLY.URL)) {
       Linking.openURL(event.url);
       return false;
     }
@@ -67,7 +63,7 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
   return (
     <>
       <WebView
-        source={{ uri: `http://172.30.1.18:3000/teams/${message}` }}
+        source={{ uri: `${HANOWL_APPLY.URL}/teams/${message}` }}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onNavigationStateChange={onNavigationStateChange}
         style={{
