@@ -30,7 +30,7 @@ export const ConfirmScreen: React.FC = () => {
       motive: '',
       aspiration: '',
     });
-    navigate('SelectTeam');
+    navigate('HanowlSelectTeam');
   };
 
   return (

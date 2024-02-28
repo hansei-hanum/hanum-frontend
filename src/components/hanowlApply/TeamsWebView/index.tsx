@@ -3,9 +3,12 @@ import WebView, { WebViewNavigation } from 'react-native-webview';
 import { Linking } from 'react-native';
 
 import { Theme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
 import { isAndroid } from 'src/utils';
 import { Button, Text } from 'src/components/common';
+import { TeamType, hanowlApplyAtom } from 'src/atoms';
+import { useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -36,9 +39,17 @@ export interface TeamsWebViewProps {
   teamLoading: boolean;
   message: string | null;
   theme: Theme;
+  onPress: () => void;
 }
 
-export const TeamsWebView: React.FC<TeamsWebViewProps> = ({ message, teamLoading, theme }) => {
+export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
+  message,
+  teamLoading,
+  theme,
+  onPress,
+}) => {
+  const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
+
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     if (!navState.url.includes('https')) {
       return false;
@@ -70,11 +81,8 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({ message, teamLoading
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       />
-      <S.TeamApplyButtonWrapper style={teamLoading && { display: 'none' }}>
-        <Button
-          onPress={() => console.log('test')}
-          style={{ paddingVertical: 14, backgroundColor: theme.primary }}
-        >
+      <S.TeamApplyButtonWrapper>
+        <Button onPress={onPress} style={{ paddingVertical: 14, backgroundColor: theme.primary }}>
           <Text size={16} isCenter color={theme.white}>
             {TEAM_ID_TO_TEXT[message as TeamId]} 지원하기
           </Text>

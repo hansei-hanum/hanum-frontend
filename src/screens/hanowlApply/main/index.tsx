@@ -3,15 +3,29 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebViewMessageEvent } from 'react-native-webview';
 
 import { useTheme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
-import { BottomSheet, GoBackIcon, MainWebView, TeamsSkeleton, TeamsWebView } from 'src/components';
+import {
+  BottomSheet,
+  GoBackIcon,
+  MainWebView,
+  TEAM_ID_TO_TEXT,
+  TeamId,
+  TeamsSkeleton,
+  TeamsWebView,
+} from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
+import { TeamType, hanowlApplyAtom } from 'src/atoms';
+import { useNavigate } from 'src/hooks';
 
 export const HanowlApplyMainScreen: React.FC = () => {
+  const navigate = useNavigate();
+
   const theme = useTheme();
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
+  const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
 
   const openBottomSheet = () => {
     bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT + 100);
@@ -33,6 +47,12 @@ export const HanowlApplyMainScreen: React.FC = () => {
     }
   };
 
+  const onPress = () => {
+    bottomSheetRef.current?.scrollTo(0);
+    setHanowlApply((prev) => ({ ...prev, team: TEAM_ID_TO_TEXT[message as TeamId] as TeamType }));
+    navigate('HanowlApplyDetails');
+  };
+
   return (
     <>
       <GoBackIcon
@@ -52,7 +72,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
         style={{ backgroundColor: '#2A2B2E' }}
       >
         {teamLoading && <TeamsSkeleton theme={theme} />}
-        <TeamsWebView message={message} teamLoading={teamLoading} theme={theme} />
+        <TeamsWebView message={message} teamLoading={teamLoading} theme={theme} onPress={onPress} />
       </BottomSheet>
     </>
   );

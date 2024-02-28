@@ -53,7 +53,7 @@ export const ApplyContentsScreen: React.FC = () => {
       motive,
       aspiration,
     }));
-    navigate('FinalConfirm');
+    navigate('HanowlFinalConfirm');
   };
 
   const isFocused = useIsFocused();

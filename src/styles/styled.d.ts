@@ -21,5 +21,6 @@ declare module '@emotion/react' {
     tabBarBg: string;
     backDrop: string;
     primaryLinear: string[];
+    blackSkeleton: string;
   }
 }

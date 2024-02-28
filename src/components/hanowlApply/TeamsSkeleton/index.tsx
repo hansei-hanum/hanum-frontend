@@ -8,10 +8,10 @@ export interface TeamsSkeletonProps {
 }
 
 const SkeletonItem: React.FC<{ paddingLeft?: number; theme: Theme }> = ({ paddingLeft, theme }) => (
-  <SkeletonPlaceholder backgroundColor={theme.placeholder}>
+  <SkeletonPlaceholder backgroundColor={theme.blackSkeleton} highlightColor={theme.lightGray}>
     <View style={{ alignItems: 'flex-start', rowGap: 20 }}>
-      <View style={{ width: '24%', height: 24 }} />
-      <View style={{ width: '100%', rowGap: 6, paddingLeft: paddingLeft || 0 }}>
+      <View style={{ width: '24%', height: 24, borderRadius: 4 }} />
+      <View style={{ width: '100%', rowGap: 6, paddingLeft: paddingLeft || 0, borderRadius: 4 }}>
         {Array.from({ length: 3 }).map((_, index) => (
           <View
             key={index}

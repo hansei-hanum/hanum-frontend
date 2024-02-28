@@ -32,17 +32,15 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
         injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
         onLoadEnd={() => setTimeout(() => setMainLoading(false), 200)}
       />
-      {!mainLoading && (
-        <S.HanowlApplyButtonWrapper
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)']}
-        >
-          <Button onPress={() => navigate('HanowlSelectTeam')} activeOpacity={1}>
-            학생회 지원하기
-          </Button>
-        </S.HanowlApplyButtonWrapper>
-      )}
+      <S.HanowlApplyButtonWrapper
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)']}
+      >
+        <Button onPress={() => navigate('HanowlSelectTeam')} activeOpacity={1}>
+          학생회 지원하기
+        </Button>
+      </S.HanowlApplyButtonWrapper>
     </>
   );
 };
