@@ -9,6 +9,7 @@ import { Icon, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
+import { RootStackParamList } from 'src/Router';
 
 import * as S from './styled';
 
@@ -16,7 +17,7 @@ export interface AlertBoxProps {
   icon: string;
   subText: string;
   mainText: string;
-  navigateUrl: string;
+  navigateUrl: keyof RootStackParamList;
 }
 
 export const AlertBox: React.FC<AlertBoxProps> = ({ icon, subText, mainText, navigateUrl }) => {

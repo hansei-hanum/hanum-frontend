@@ -18,6 +18,7 @@ export interface ButtonCustomProps {
   isDisabled?: boolean;
   isModalBtn?: boolean;
   onPress?: () => void;
+  style?: TouchableOpacityProps['style'];
 }
 
 export type ButtonProps = ButtonCustomProps & TouchableOpacityProps;
@@ -30,6 +31,7 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   isLoading,
   backgroundColor,
   isWhite,
+  style,
   ...props
 }) => {
   const theme = useTheme();
@@ -46,33 +48,31 @@ export const ButtonElement: React.FC<ButtonProps> = ({
   };
 
   return (
-    <TouchableOpacity
+    <S.ButtonElement
       {...(!isDisabled &&
         !isLoading && {
           onPress: onPress,
           onPressIn: handlePressIn,
           onPressOut: handlePressOut,
         })}
-      style={{
-        ...scaleAnimatedStyle,
-        backgroundColor: buttonBgColor(),
-        width: isModalBtn ? '48%' : '100%',
-        borderRadius: isModalBtn ? 16 : 10,
-        opacity: isDisabled || isLoading ? 0.4 : 1,
-        paddingVertical: 14,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        columnGap: 6,
-      }}
-      {...props}
+      style={[
+        {
+          ...scaleAnimatedStyle,
+          backgroundColor: buttonBgColor(),
+          width: isModalBtn ? '48%' : '100%',
+          borderRadius: isModalBtn ? 16 : 10,
+          opacity: isDisabled || isLoading ? 0.4 : 1,
+        },
+        style,
+      ]}
       activeOpacity={isLoading || isDisabled ? 0.4 : 0.8}
+      {...props}
     >
       {isLoading && <Spinner color={theme.white} size={20} />}
       <Text size={16} isCenter color={isWhite ? theme.default : theme.white}>
         {children}
       </Text>
-    </TouchableOpacity>
+    </S.ButtonElement>
   );
 };
 

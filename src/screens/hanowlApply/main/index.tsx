@@ -1,50 +1,35 @@
 import React, { useRef, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import WebView, { WebViewMessageEvent, WebViewNavigation } from 'react-native-webview';
-import { Linking } from 'react-native';
+import { WebViewMessageEvent } from 'react-native-webview';
 
 import { useTheme } from '@emotion/react';
 
-import { BottomSheet, GoBackIcon } from 'src/components';
+import {
+  BottomSheet,
+  Button,
+  GoBackIcon,
+  MainWebView,
+  TEAM_ID_TO_TEXT,
+  TeamId,
+  TeamsWebView,
+  Text,
+} from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 
 import * as S from './styled';
 
-export type TeamId =
-  | 'common'
-  | 'tech'
-  | 'design'
-  | 'event'
-  | 'safety'
-  | 'account'
-  | 'broadcast'
-  | 'exercise'
-  | 'book';
-
-export const TEAM_TEXT_TO_ID: { [key: string]: TeamId } = {
-  공통: 'common',
-  기능부: 'tech',
-  홍보부: 'design',
-  행사기획부: 'event',
-  안전부: 'safety',
-  총무부: 'account',
-  학예체육부: 'exercise',
-  도서부: 'book',
-  방송부: 'broadcast',
-};
-
 export const HanowlApplyMainScreen: React.FC = () => {
   const theme = useTheme();
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const openBottomSheet = () => {
-    bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT + 180);
+    bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT + 100);
   };
   const [message, setMessage] = useState<string | null>(null);
-  const [mainLoading, setMainLoading] = useState(true);
   const [teamLoading, setTeamLoading] = useState(true);
+
   const insets = useSafeAreaInsets();
 
   const onMessage = (event: WebViewMessageEvent) => {
@@ -59,20 +44,6 @@ export const HanowlApplyMainScreen: React.FC = () => {
     }
   };
 
-  const onNavigationStateChange = (navState: WebViewNavigation) => {
-    if (!navState.url.includes('https')) {
-      return false;
-    }
-  };
-
-  const onShouldStartLoadWithRequest = (event: WebViewNavigation) => {
-    if (!event.url.includes('http://172.30.1.18:3000/')) {
-      Linking.openURL(event.url);
-      return false;
-    }
-    return true;
-  };
-
   return (
     <>
       <GoBackIcon
@@ -85,37 +56,23 @@ export const HanowlApplyMainScreen: React.FC = () => {
           marginTop: isAndroid ? 10 : 0,
         }}
       />
-      <S.HanowlApplyMainDummyContainer style={!mainLoading && { display: 'none' }} />
-      <WebView
-        source={{ uri: 'http://172.30.1.18:3000/' }}
-        style={{
-          flex: 1,
-          backgroundColor: theme.black,
-        }}
-        onMessage={onMessage}
-        injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
-        onLoadEnd={() => setTimeout(() => setMainLoading(false), 200)}
-      />
+      <MainWebView onMessage={onMessage} />
       <BottomSheet
         ref={bottomSheetRef}
-        scrollHeight={-SCREEN_HEIGHT + 180}
+        scrollHeight={-SCREEN_HEIGHT + 100}
         style={{ backgroundColor: '#2A2B2E' }}
       >
-        <WebView
-          source={{ uri: `http://172.30.1.18:3000/teams/${message}` }}
-          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
-          onNavigationStateChange={onNavigationStateChange}
-          style={{
-            backgroundColor: '#2A2B2E',
-          }}
-          containerStyle={{
-            flex: teamLoading ? 0 : 1,
-            paddingBottom: isAndroid ? 20 : 0,
-          }}
-          injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        />
+        <TeamsWebView message={message} teamLoading={teamLoading} />
+        <S.TeamApplyButtonWrapper style={teamLoading ? { display: 'none' } : {}}>
+          <Button
+            onPress={() => console.log('test')}
+            style={{ paddingVertical: 14, backgroundColor: theme.primary }}
+          >
+            <Text size={16} isCenter color={theme.white}>
+              {TEAM_ID_TO_TEXT[message as TeamId]} 지원하기
+            </Text>
+          </Button>
+        </S.TeamApplyButtonWrapper>
       </BottomSheet>
     </>
   );
