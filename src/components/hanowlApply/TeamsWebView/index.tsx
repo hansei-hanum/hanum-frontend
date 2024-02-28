@@ -2,7 +2,12 @@ import React from 'react';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { Linking } from 'react-native';
 
+import { Theme } from '@emotion/react';
+
 import { isAndroid } from 'src/utils';
+import { Button, Text } from 'src/components/common';
+
+import * as S from './styled';
 
 export type TeamId =
   | 'common'
@@ -30,9 +35,10 @@ export const TEAM_ID_TO_TEXT: { [key in TeamId]: string } = {
 export interface TeamsWebViewProps {
   teamLoading: boolean;
   message: string | null;
+  theme: Theme;
 }
 
-export const TeamsWebView: React.FC<TeamsWebViewProps> = ({ message, teamLoading }) => {
+export const TeamsWebView: React.FC<TeamsWebViewProps> = ({ message, teamLoading, theme }) => {
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     if (!navState.url.includes('https')) {
       return false;
@@ -48,20 +54,32 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({ message, teamLoading
   };
 
   return (
-    <WebView
-      source={{ uri: `http://172.30.1.18:3000/teams/${message}` }}
-      onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
-      onNavigationStateChange={onNavigationStateChange}
-      style={{
-        backgroundColor: '#2A2B2E',
-      }}
-      containerStyle={{
-        flex: teamLoading ? 0 : 0.8,
-        paddingBottom: isAndroid ? 20 : 0,
-      }}
-      injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
-    />
+    <>
+      <WebView
+        source={{ uri: `http://172.30.1.18:3000/teams/${message}` }}
+        onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
+        onNavigationStateChange={onNavigationStateChange}
+        style={{
+          backgroundColor: '#2A2B2E',
+        }}
+        containerStyle={{
+          flex: teamLoading ? 0 : 0.8,
+          paddingBottom: isAndroid ? 20 : 0,
+        }}
+        injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      />
+      <S.TeamApplyButtonWrapper style={teamLoading && { display: 'none' }}>
+        <Button
+          onPress={() => console.log('test')}
+          style={{ paddingVertical: 14, backgroundColor: theme.primary }}
+        >
+          <Text size={16} isCenter color={theme.white}>
+            {TEAM_ID_TO_TEXT[message as TeamId]} 지원하기
+          </Text>
+        </Button>
+      </S.TeamApplyButtonWrapper>
+    </>
   );
 };

@@ -4,21 +4,10 @@ import { WebViewMessageEvent } from 'react-native-webview';
 
 import { useTheme } from '@emotion/react';
 
-import {
-  BottomSheet,
-  Button,
-  GoBackIcon,
-  MainWebView,
-  TEAM_ID_TO_TEXT,
-  TeamId,
-  TeamsWebView,
-  Text,
-} from 'src/components';
+import { BottomSheet, GoBackIcon, MainWebView, TeamsSkeleton, TeamsWebView } from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
-
-import * as S from './styled';
 
 export const HanowlApplyMainScreen: React.FC = () => {
   const theme = useTheme();
@@ -40,7 +29,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
       openBottomSheet();
       setTimeout(() => {
         setTeamLoading(false);
-      }, 200);
+      }, 600);
     }
   };
 
@@ -62,17 +51,8 @@ export const HanowlApplyMainScreen: React.FC = () => {
         scrollHeight={-SCREEN_HEIGHT + 100}
         style={{ backgroundColor: '#2A2B2E' }}
       >
-        <TeamsWebView message={message} teamLoading={teamLoading} />
-        <S.TeamApplyButtonWrapper style={teamLoading ? { display: 'none' } : {}}>
-          <Button
-            onPress={() => console.log('test')}
-            style={{ paddingVertical: 14, backgroundColor: theme.primary }}
-          >
-            <Text size={16} isCenter color={theme.white}>
-              {TEAM_ID_TO_TEXT[message as TeamId]} 지원하기
-            </Text>
-          </Button>
-        </S.TeamApplyButtonWrapper>
+        {teamLoading && <TeamsSkeleton theme={theme} />}
+        <TeamsWebView message={message} teamLoading={teamLoading} theme={theme} />
       </BottomSheet>
     </>
   );
