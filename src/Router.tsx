@@ -29,6 +29,8 @@ export type RootStackParamList = {
   Verify: undefined;
   Main: undefined;
   Schedule: undefined;
+  TimeTable: undefined;
+  Home: undefined;
   UserInfo: undefined;
   WebView: undefined;
   HanumPayMain: undefined;

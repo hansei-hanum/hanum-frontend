@@ -1,5 +1,4 @@
 import styled from '@emotion/native';
-
 import { TimeTableProps } from '.';
 
 export const TimeTableTextWrapper = styled.View`
@@ -27,6 +26,6 @@ export const TimeTableTextContainer = styled.View<Required<Pick<TimeTableProps, 
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  padding: 10px 0;
+  gap: 2px;
   flex: 1;
 `;
