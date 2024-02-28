@@ -15,16 +15,16 @@ export interface CommunityListItems {
 }
 
 const CHAT =
-  'https://cdn.discordapp.com/attachments/976313946812350474/1177900739604008970/IMG_0961.jpg?ex=6574308c&is=6561bb8c&hm=6bbfc3690d36b90d5a4d1db8b65b7591f25ab67da49a1f5b0a92d846a3460891&';
+  'https://cdn.discordapp.com/attachments/1044512794055282770/1211604415463817226/Screenshot_2024-02-26_at_6.23.18_PM.png?ex=65eecd8b&is=65dc588b&hm=67164b66022c5dea3f75baf2bf5819e3fa3598c8429e270460fda580dc00bc07&';
 
 const POSTER =
-  'https://cdn.discordapp.com/attachments/1142361627501547552/1176511662447144990/comImg.png?ex=656f22de&is=655cadde&hm=c9ed37e1214d7ed4008e8599d40bcdb17c1d9ddc0e1bc59175baa087e3a461de&';
+  'https://cdn.discordapp.com/attachments/1044512794055282770/1211604415463817226/Screenshot_2024-02-26_at_6.23.18_PM.png?ex=65eecd8b&is=65dc588b&hm=67164b66022c5dea3f75baf2bf5819e3fa3598c8429e270460fda580dc00bc07&';
 
 const IMAGE =
-  'https://cdn.discordapp.com/attachments/1169142358210789446/1169912051506872340/IMG_1145.png?ex=65699580&is=65572080&hm=2d3b5173507e028f8aa5995563b4ee6d800e7960a815631630136cb8df61871e&';
+  'https://cdn.discordapp.com/attachments/1044512794055282770/1211604415463817226/Screenshot_2024-02-26_at_6.23.18_PM.png?ex=65eecd8b&is=65dc588b&hm=67164b66022c5dea3f75baf2bf5819e3fa3598c8429e270460fda580dc00bc07&';
 
 const PHONE =
-  'https://cdn.discordapp.com/attachments/1142361627501547552/1177126126804541511/Screenshot_2023-11-23_at_2.58.40_PM.png?ex=65715f22&is=655eea22&hm=8514b3421780cef3f7b7dfa7b29e42896849aec27bf2adc9116e16a7fea7df88&';
+  'https://cdn.discordapp.com/attachments/1044512794055282770/1211604415463817226/Screenshot_2024-02-26_at_6.23.18_PM.png?ex=65eecd8b&is=65dc588b&hm=67164b66022c5dea3f75baf2bf5819e3fa3598c8429e270460fda580dc00bc07&';
 
 export const COMMUNITY_LIST: CommunityListItems[] = [
   {

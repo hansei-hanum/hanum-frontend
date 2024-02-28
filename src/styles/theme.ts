@@ -20,6 +20,7 @@ export const lightTheme: Theme = {
   tabBarBg: '#FFFFFF',
   backDrop: 'rgba(0, 0, 0, 0.5)',
   primaryLinear: ['#4585FE', '#4785FA', '#6497FA'],
+  blackSkeleton: '#333333',
 };
 
 export const darkTheme: Theme = {
@@ -42,4 +43,5 @@ export const darkTheme: Theme = {
   tabBarBg: '#373A40',
   backDrop: 'rgba(0, 0, 0, 0.5)',
   primaryLinear: ['#4585FE', '#4785FA', '#6497FA'],
+  blackSkeleton: '#333333',
 };

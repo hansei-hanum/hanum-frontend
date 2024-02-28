@@ -10,6 +10,7 @@ import {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { ViewProps } from 'react-native';
 
 import { Portal } from '@gorhom/portal';
 import { useTheme } from '@emotion/react';
@@ -26,10 +27,14 @@ interface BottomSheetProps {
   scrollHeight: number;
   children?: React.ReactNode;
   modalBackDropVisible?: boolean;
+  style?: ViewProps['style'];
 }
 
 export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
-  ({ scrollHeight, children, modalBackDropVisible, maxScrollHeight }: BottomSheetProps, ref) => {
+  (
+    { scrollHeight, children, modalBackDropVisible, maxScrollHeight, style }: BottomSheetProps,
+    ref,
+  ) => {
     const MAX_TRANSLATE_Y = !maxScrollHeight ? -SCREEN_HEIGHT + 50 : maxScrollHeight - 50;
 
     const theme = useTheme();
@@ -113,7 +118,7 @@ export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProp
         <Portal>
           <GestureDetector gesture={gesture}>
             <S.ScrollBottomSheetContainer
-              style={[rBottomSheetStyle, { backgroundColor: theme.background }]}
+              style={[rBottomSheetStyle, { backgroundColor: theme.background }, style]}
             >
               <S.ScrollBottomSheetLine style={{ backgroundColor: theme.placeholder }} />
               {children}

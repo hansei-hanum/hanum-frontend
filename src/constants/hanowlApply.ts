@@ -106,4 +106,6 @@ export const HANOWL_APPLY = {
       aspiration: '앙기모링 최근원 입니다~~~~~~~',
     },
   ] as ConfirmBoxProps[],
+
+  URL: 'http://172.30.1.18:3000',
 };

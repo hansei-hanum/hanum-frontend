@@ -156,7 +156,7 @@ export const CommunityMainScreen: React.FC = () => {
                 </ScaleOpacity>
                 <ScaleOpacity onPress={() => onChatScreenNavigate(index)}>
                   <S.CommunityMainBottomIconContainer>
-                    <Icon name="chatbubble-outline" size={24} color={theme.placeholder} />
+                    <Icon name="chatbubble-outline" size={22} color={theme.placeholder} />
                     <Text size={14} color={theme.placeholder}>
                       댓글 {content.comments}
                     </Text>
