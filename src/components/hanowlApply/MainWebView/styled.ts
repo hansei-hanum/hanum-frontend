@@ -1,3 +1,5 @@
+import LinearGradient from 'react-native-linear-gradient';
+
 import styled from '@emotion/native';
 
 export const HanowlApplyMainDummyContainer = styled.View`
@@ -12,11 +14,12 @@ export const HanowlApplyMainDummyContainer = styled.View`
   background-color: ${({ theme }) => theme.black};
 `;
 
-export const HanowlApplyButtonWrapper = styled.View`
+export const HanowlApplyButtonWrapper = styled(LinearGradient)`
   position: absolute;
   bottom: 0;
-  margin-bottom: 30px;
-  padding: 0 20px;
+  padding: 20px;
+  padding-bottom: 30px;
+  padding-top: 60px;
   z-index: 999;
   width: 100%;
 `;

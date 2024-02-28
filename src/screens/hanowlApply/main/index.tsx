@@ -40,7 +40,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
       openBottomSheet();
       setTimeout(() => {
         setTeamLoading(false);
-      }, 1000);
+      }, 200);
     }
   };
 
