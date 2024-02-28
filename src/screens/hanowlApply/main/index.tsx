@@ -5,10 +5,12 @@ import { Linking } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
-import { BottomSheet, GoBackIcon, Spinner } from 'src/components';
+import { BottomSheet, GoBackIcon } from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
+
+import * as S from './styled';
 
 export type TeamId =
   | 'common'
@@ -38,21 +40,22 @@ export const HanowlApplyMainScreen: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
   const openBottomSheet = () => {
-    bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT + 100);
+    bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT + 180);
   };
   const [message, setMessage] = useState<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [mainLoading, setMainLoading] = useState(true);
+  const [teamLoading, setTeamLoading] = useState(true);
   const insets = useSafeAreaInsets();
 
   const onMessage = (event: WebViewMessageEvent) => {
     const data = event.nativeEvent.data;
     setMessage(data);
-    setIsLoaded(false);
+    setTeamLoading(true);
     if (data !== 'null' && data !== null && data !== '') {
       openBottomSheet();
       setTimeout(() => {
-        setIsLoaded(true);
-      }, 200);
+        setTeamLoading(false);
+      }, 1000);
     }
   };
 
@@ -82,29 +85,37 @@ export const HanowlApplyMainScreen: React.FC = () => {
           marginTop: isAndroid ? 10 : 0,
         }}
       />
+      <S.HanowlApplyMainDummyContainer style={!mainLoading && { display: 'none' }} />
       <WebView
         source={{ uri: 'http://172.30.1.18:3000/' }}
-        style={{ flex: 1, backgroundColor: 'black' }}
+        style={{
+          flex: 1,
+          backgroundColor: theme.black,
+        }}
         onMessage={onMessage}
         injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
+        onLoadEnd={() => setTimeout(() => setMainLoading(false), 200)}
       />
       <BottomSheet
         ref={bottomSheetRef}
-        scrollHeight={-SCREEN_HEIGHT + 100}
+        scrollHeight={-SCREEN_HEIGHT + 180}
         style={{ backgroundColor: '#2A2B2E' }}
       >
-        {!isLoaded && <Spinner color={theme.white} isCenter />}
-        {isLoaded && (
-          <WebView
-            source={{ uri: `http://172.30.1.18:3000/teams/${message}` }}
-            onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
-            onNavigationStateChange={onNavigationStateChange}
-            style={{ flex: 1, backgroundColor: '#2A2B2E', paddingBottom: isAndroid ? 20 : 0 }}
-            injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          />
-        )}
+        <WebView
+          source={{ uri: `http://172.30.1.18:3000/teams/${message}` }}
+          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
+          onNavigationStateChange={onNavigationStateChange}
+          style={{
+            backgroundColor: '#2A2B2E',
+          }}
+          containerStyle={{
+            flex: teamLoading ? 0 : 1,
+            paddingBottom: isAndroid ? 20 : 0,
+          }}
+          injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        />
       </BottomSheet>
     </>
   );
