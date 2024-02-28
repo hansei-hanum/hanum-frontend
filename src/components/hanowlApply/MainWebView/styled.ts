@@ -2,6 +2,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import styled from '@emotion/native';
 
+import { isAndroid } from 'src/utils';
+
 export const HanowlApplyMainDummyContainer = styled.View`
   position: absolute;
   top: 0;
@@ -18,7 +20,7 @@ export const HanowlApplyButtonWrapper = styled(LinearGradient)`
   position: absolute;
   bottom: 0;
   padding: 20px;
-  padding-bottom: 30px;
+  padding-bottom: ${isAndroid ? '10px' : '30px'};
   padding-top: 60px;
   z-index: 999;
   width: 100%;

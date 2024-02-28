@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebViewMessageEvent } from 'react-native-webview';
+import { ScrollView } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
@@ -59,7 +60,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
         isWhite
         style={{
           position: 'absolute',
-          top: insets.top,
+          top: insets.top + 10,
           left: 10,
           zIndex: 999,
           marginTop: isAndroid ? 10 : 0,
@@ -72,7 +73,29 @@ export const HanowlApplyMainScreen: React.FC = () => {
         style={{ backgroundColor: '#2A2B2E' }}
       >
         {teamLoading && <TeamsSkeleton theme={theme} />}
-        <TeamsWebView message={message} teamLoading={teamLoading} theme={theme} onPress={onPress} />
+        {isAndroid ? (
+          <ScrollView
+            contentContainerStyle={{
+              flex: 1,
+              paddingBottom: 50,
+              justifyContent: 'space-around',
+            }}
+          >
+            <TeamsWebView
+              message={message}
+              teamLoading={teamLoading}
+              theme={theme}
+              onPress={onPress}
+            />
+          </ScrollView>
+        ) : (
+          <TeamsWebView
+            message={message}
+            teamLoading={teamLoading}
+            theme={theme}
+            onPress={onPress}
+          />
+        )}
       </BottomSheet>
     </>
   );
