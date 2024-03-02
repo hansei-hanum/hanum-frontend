@@ -25,8 +25,8 @@ import {
 import { CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT, COMMUNITY_POST } from 'src/constants';
 import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
-import { RootStackParamList } from 'src/Router';
 import { isAndroid } from 'src/utils';
+import { RootStackParamList } from 'src/types/stackParams';
 
 import * as S from './styled';
 

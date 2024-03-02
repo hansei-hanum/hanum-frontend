@@ -60,7 +60,6 @@ export const CommunityMainScreen: React.FC = () => {
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
 
-  const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const [hidden, setHidden] = useState(false);
@@ -79,12 +78,6 @@ export const CommunityMainScreen: React.FC = () => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
 
-  useEffect(() => {
-    if (!isSearchScreen) {
-      flatListRef.current?.scrollToOffset({ offset: scrollValue, animated: false });
-    }
-  }, [isSearchScreen]);
-
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
@@ -95,82 +88,75 @@ export const CommunityMainScreen: React.FC = () => {
         isSearchScreen={isSearchScreen}
         setHidden={setHidden}
       />
-      {!isSearchScreen ? (
-        <FlatList
-          ref={flatListRef}
-          onScroll={onScroll}
-          onMomentumScrollEnd={onSetScrollY}
-          scrollEventThrottle={16}
-          data={COMMUNITY_LIST}
-          keyExtractor={(_, index) => index.toString()}
-          contentContainerStyle={{
-            paddingTop: isIos ? inset.top + 24 : 68,
-            paddingBottom: 60,
-            rowGap: 16,
-          }}
-          ListHeaderComponent={
-            <S.CommunityUserWrapper>
-              <ScaleOpacity onPress={() => navigate('CommunityCreatePost')}>
-                <S.CommunityUserContainer>
-                  <CommunityUserImage userImage={userProfile} />
-                  <S.CommunityUserThinkBox>
-                    <Text size={16} color={theme.placeholder}>
-                      어떤 생각을 하고 계신가요?
-                    </Text>
-                  </S.CommunityUserThinkBox>
-                </S.CommunityUserContainer>
+      <FlatList
+        onScroll={onScroll}
+        onMomentumScrollEnd={onSetScrollY}
+        scrollEventThrottle={16}
+        data={COMMUNITY_LIST}
+        keyExtractor={(_, index) => index.toString()}
+        contentContainerStyle={{
+          paddingTop: isIos ? inset.top + 24 : 68,
+          paddingBottom: 60,
+          rowGap: 16,
+        }}
+        ListHeaderComponent={
+          <S.CommunityUserWrapper>
+            <ScaleOpacity onPress={() => navigate('CommunityCreatePost')}>
+              <S.CommunityUserContainer>
+                <CommunityUserImage userImage={userProfile} />
+                <S.CommunityUserThinkBox>
+                  <Text size={16} color={theme.placeholder}>
+                    어떤 생각을 하고 계신가요?
+                  </Text>
+                </S.CommunityUserThinkBox>
+              </S.CommunityUserContainer>
+            </ScaleOpacity>
+          </S.CommunityUserWrapper>
+        }
+        renderItem={({ item: { author, type, time, content }, index }) => (
+          <S.CommunityMainBox>
+            <CommunityPostHeader
+              author={author}
+              type={type}
+              time={time}
+              style={{ width: '100%' }}
+              openBottomSheet={openBottomSheet}
+              onPress={() => onChatScreenNavigate(index)}
+            />
+            <CommunityPost
+              author={author}
+              content={content}
+              time={time}
+              type={type}
+              onPress={() => onChatScreenNavigate(index)}
+              index={index}
+              imageHeights={imageHeights}
+            />
+            <S.CommunityMainBottom>
+              <ScaleOpacity onPress={() => onLikeClick(index)}>
+                <S.CommunityMainBottomIconContainer>
+                  {likes[index] ? (
+                    <MCI name="cards-heart" size={24} color={theme.danger} />
+                  ) : (
+                    <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+                  )}
+                  <Text size={14} color={theme.placeholder}>
+                    좋아요 {likes[index] ? content.likes + 1 : content.likes}
+                  </Text>
+                </S.CommunityMainBottomIconContainer>
               </ScaleOpacity>
-            </S.CommunityUserWrapper>
-          }
-          renderItem={({ item: { author, type, time, content }, index }) => (
-            <S.CommunityMainBox>
-              <CommunityPostHeader
-                author={author}
-                type={type}
-                time={time}
-                style={{ width: '100%' }}
-                openBottomSheet={openBottomSheet}
-                onPress={() => onChatScreenNavigate(index)}
-              />
-              <CommunityPost
-                author={author}
-                content={content}
-                time={time}
-                type={type}
-                onPress={() => onChatScreenNavigate(index)}
-                index={index}
-                imageHeights={imageHeights}
-              />
-              <S.CommunityMainBottom>
-                <ScaleOpacity onPress={() => onLikeClick(index)}>
-                  <S.CommunityMainBottomIconContainer>
-                    {likes[index] ? (
-                      <MCI name="cards-heart" size={24} color={theme.danger} />
-                    ) : (
-                      <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                    )}
-                    <Text size={14} color={theme.placeholder}>
-                      좋아요 {likes[index] ? content.likes + 1 : content.likes}
-                    </Text>
-                  </S.CommunityMainBottomIconContainer>
-                </ScaleOpacity>
-                <ScaleOpacity onPress={() => onChatScreenNavigate(index)}>
-                  <S.CommunityMainBottomIconContainer>
-                    <Icon name="chatbubble-outline" size={22} color={theme.placeholder} />
-                    <Text size={14} color={theme.placeholder}>
-                      댓글 {content.comments}
-                    </Text>
-                  </S.CommunityMainBottomIconContainer>
-                </ScaleOpacity>
-              </S.CommunityMainBottom>
-            </S.CommunityMainBox>
-          )}
-        />
-      ) : (
-        <S.TextWrapper2 style={[{ paddingTop: inset.top + 24 }]}>
-          <Text size={15}>This Is Search 잉기</Text>
-        </S.TextWrapper2>
-      )}
+              <ScaleOpacity onPress={() => onChatScreenNavigate(index)}>
+                <S.CommunityMainBottomIconContainer>
+                  <Icon name="chatbubble-outline" size={22} color={theme.placeholder} />
+                  <Text size={14} color={theme.placeholder}>
+                    댓글 {content.comments}
+                  </Text>
+                </S.CommunityMainBottomIconContainer>
+              </ScaleOpacity>
+            </S.CommunityMainBottom>
+          </S.CommunityMainBox>
+        )}
+      />
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>
   );

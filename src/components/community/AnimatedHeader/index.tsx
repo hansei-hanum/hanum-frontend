@@ -65,10 +65,10 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
   };
 
   const closeSearchScreen = () => {
-    setHidden(false);
     setIsSearchScreen(false);
     searchRef.current?.blur();
     LayoutAnimation.configureNext(config);
+    setHidden(false);
   };
 
   const searchBarAnimation = {
