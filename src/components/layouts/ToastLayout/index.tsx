@@ -12,9 +12,10 @@ import * as S from './styled';
 export interface ToastLayoutProps {
   icon: React.ReactNode;
   text?: string;
+  iconBackgroundColor: string;
 }
 
-export const ToastLayout: React.FC<ToastLayoutProps> = ({ icon, text }) => {
+export const ToastLayout: React.FC<ToastLayoutProps> = ({ icon, text, iconBackgroundColor }) => {
   const theme = useTheme();
 
   const systemTheme = useColorScheme();
@@ -28,7 +29,9 @@ export const ToastLayout: React.FC<ToastLayoutProps> = ({ icon, text }) => {
           blurType={systemTheme ? systemTheme : 'light'}
           blurAmount={20}
         >
-          <S.ToastLayoutIconWrapper>{icon}</S.ToastLayoutIconWrapper>
+          <S.ToastLayoutIconWrapper style={{ backgroundColor: iconBackgroundColor }}>
+            {icon}
+          </S.ToastLayoutIconWrapper>
           <Text size={15} color={theme.default}>
             {text}
           </Text>
@@ -39,7 +42,9 @@ export const ToastLayout: React.FC<ToastLayoutProps> = ({ icon, text }) => {
     return (
       <S.ToastLayoutWrapper>
         <S.ToastLayoutAndroidContainer systemTheme={systemTheme}>
-          <S.ToastLayoutIconWrapper>{icon}</S.ToastLayoutIconWrapper>
+          <S.ToastLayoutIconWrapper style={{ backgroundColor: iconBackgroundColor }}>
+            {icon}
+          </S.ToastLayoutIconWrapper>
           <Text size={15} color={theme.default}>
             {text}
           </Text>
