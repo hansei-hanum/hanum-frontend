@@ -1,10 +1,9 @@
 import { atom } from 'recoil';
 
-import { PhotosInterface } from 'src/components';
-
 export interface communityEditAtomProps {
   text: string;
   image?: string[];
+  isEdit?: boolean;
 }
 
 export const communityEditAtom = atom<communityEditAtomProps>({
@@ -12,5 +11,6 @@ export const communityEditAtom = atom<communityEditAtomProps>({
   default: {
     text: '',
     image: [],
+    isEdit: false,
   },
 });

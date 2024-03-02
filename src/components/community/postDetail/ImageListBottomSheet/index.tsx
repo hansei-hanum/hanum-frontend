@@ -259,7 +259,7 @@ export const ImageListBottomSheet = React.forwardRef<
           useNativeDriver: true,
         }).start();
       }
-    }, [selectedPhotos, doneCheck, buttonTranslateY]);
+    }, [selectedPhotos, doneCheck]);
 
     return (
       <Portal>
@@ -358,18 +358,20 @@ export const ImageListBottomSheet = React.forwardRef<
             )}
           </S.ImageListBottomSheetContainer>
         </GestureDetector>
-        <S.ImageListBottomSheetButtonWrapper
-          ref={buttonTranslateY}
-          style={{
-            transform: [{ translateY: buttonTranslateY }],
-          }}
-        >
-          <Button backgroundColor={theme.primary} onPress={onButtonPress}>
-            <Text size={16} color={theme.white}>
-              사진 ({selectedPhotos.length}) 보내기
-            </Text>
-          </Button>
-        </S.ImageListBottomSheetButtonWrapper>
+        {!doneCheck && selectedPhotos.length > 0 && (
+          <S.ImageListBottomSheetButtonWrapper
+            ref={buttonTranslateY}
+            style={{
+              transform: [{ translateY: buttonTranslateY }],
+            }}
+          >
+            <Button backgroundColor={theme.primary} onPress={onButtonPress}>
+              <Text size={16} color={theme.white}>
+                사진 ({selectedPhotos.length}) 보내기
+              </Text>
+            </Button>
+          </S.ImageListBottomSheetButtonWrapper>
+        )}
       </Portal>
     );
   },

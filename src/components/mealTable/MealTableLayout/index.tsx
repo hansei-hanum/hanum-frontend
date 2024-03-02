@@ -26,7 +26,7 @@ export const MealTableLayout: React.FC<MealTableLayoutProps> = ({ children }) =>
     setNotifyClick(!notifyClick);
     if (!notifyClick) {
       AsyncStorage.setItem('mealNotificationEnabled', 'true');
-      messaging().subscribeToTopic('meal');
+      messaging().subscribeToTopic('community:post:peer');
       Toast.show({
         type: 'success',
         text1: '매일 8시에 알림을 보내드릴게요',
