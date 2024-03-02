@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react';
 import { ContentBox, Text, Icon } from 'src/components';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
 import { isIos } from 'src/utils';
-import { RootStackParamList } from 'src/Router';
+import { RootStackParamList } from 'src/types';
 
 import * as S from './styled';
 

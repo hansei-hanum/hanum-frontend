@@ -18,42 +18,9 @@ import { authAtom, themeAtom } from './atoms';
 import { isAndroid } from './utils';
 import { useToastConfig } from './constants';
 import { CheckVersion } from './components';
+import { RootStackParamList } from './types/stackParams';
 
 const Stack = createStackNavigator<RootStackParamList>();
-
-export type RootStackParamList = {
-  AuthMain: undefined;
-  Login: undefined;
-  Register: undefined;
-  VerifyCode: undefined;
-  Verify: undefined;
-  Main: undefined;
-  Schedule: undefined;
-  TimeTable: undefined;
-  Home: undefined;
-  UserInfo: undefined;
-  WebView: undefined;
-  HanumPayMain: undefined;
-  HanumPayQR: undefined;
-  HanumPayStatus: undefined;
-  HanumPay: undefined;
-  EoullimMain: undefined;
-  EoullimVote: undefined;
-  EoullimTimeTable: undefined;
-  EoullimRaffle: undefined;
-  EoullimStatus: undefined;
-  CommunityMain: undefined;
-  CommunityPostDetail: { id: number };
-  CommunityCreatePost: undefined;
-  CommunityVisibleType: undefined;
-  CommunityAnonymitySettings: undefined;
-  NoInternet: undefined;
-  HanowlSelectTeam: undefined;
-  HanowlApplyDetails: undefined;
-  HanowlFinalConfirm: undefined;
-  HanowlConfirm: undefined;
-  HanowlMain: undefined;
-};
 
 export const ERROR_MESSAGE = 'UNAUTHORIZED';
 

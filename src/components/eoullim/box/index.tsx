@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useNavigate } from 'src/hooks';
 import { Icon, ScaleOpacity } from 'src/components';
-import { RootStackParamList } from 'src/Router';
+import { RootStackParamList } from 'src/types';
 
 import * as S from './styled';
 

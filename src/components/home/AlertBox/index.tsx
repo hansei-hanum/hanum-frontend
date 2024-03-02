@@ -9,7 +9,7 @@ import { Icon, Text } from 'src/components';
 import { boxShadow } from 'src/constants';
 import { useNavigate, usePressingAnimation } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
-import { RootStackParamList } from 'src/Router';
+import { RootStackParamList } from 'src/types';
 
 import * as S from './styled';
 

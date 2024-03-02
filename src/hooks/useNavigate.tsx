@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 
-import { RootStackParamList } from 'src/Router';
+import { RootStackParamList } from 'src/types';
 
 export const useNavigate = () => {
   const navigate = useNavigation().navigate as unknown as (

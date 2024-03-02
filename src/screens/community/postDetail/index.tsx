@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '@emotion/react';
 
@@ -25,8 +26,8 @@ import {
 import { CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT, COMMUNITY_POST } from 'src/constants';
 import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
-import { RootStackParamList } from 'src/Router';
 import { isAndroid } from 'src/utils';
+import { RootStackParamList } from 'src/types/stackParams';
 
 import * as S from './styled';
 
@@ -61,7 +62,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const { userProfile } = useGetUser();
 
-  // TODO: 토스트로 익명/실명 전환 알림
   const [comment, setComment] = useState<string>('');
   const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
@@ -116,6 +116,21 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     });
   };
 
+  const onCommentInputFocus = async () => {
+    const checkTutorial = await AsyncStorage.getItem('checkTutorial');
+    if (checkTutorial === 'true') {
+      return;
+    } else {
+      Toast.show({
+        position: 'top',
+        type: 'info',
+        text1: '프로필을 누르면 익명으로 전환돼요!',
+        topOffset: isAndroid ? inset.top + 10 : inset.top,
+      });
+      await AsyncStorage.setItem('checkTutorial', 'true');
+    }
+  };
+
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -159,6 +174,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 value={comment}
                 onChangeText={onChangeText}
                 onBlur={onCommentInputBlur}
+                onFocus={onCommentInputFocus}
               />
               {comment.length > 0 ? (
                 <ScaleOpacity onPress={sendChat}>
@@ -172,12 +188,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             </S.PostDetailCommentIconContainer>
           </S.PostDetailCommentContainer>
         </S.PostDetailBottomSection>
-        <ImageListBottomSheet
-          ref={ImageListBottomSheetRef}
-          scrollHeight={permissionHeight}
-          permission={permission}
-        />
       </S.PostDetailInnerContainer>
+      <ImageListBottomSheet
+        ref={ImageListBottomSheetRef}
+        scrollHeight={permissionHeight}
+        permission={permission}
+      />
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.PostDetailContainer>
   );
