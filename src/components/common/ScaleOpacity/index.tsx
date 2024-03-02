@@ -5,7 +5,7 @@ import { usePressingAnimation } from 'src/hooks';
 
 export interface ScaleOpacity {
   children: React.ReactNode;
-  onPress: () => void;
+  onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -17,8 +17,8 @@ export const ScaleOpacity: React.FC<ScaleOpacity> = ({ children, onPress, style 
       activeOpacity={0.8}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={onPress}
       style={style}
+      onPress={onPress}
     >
       <Animated.View style={scaleAnimatedStyle}>{children}</Animated.View>
     </TouchableOpacity>

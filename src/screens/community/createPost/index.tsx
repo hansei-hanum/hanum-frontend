@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,6 +7,9 @@ import { TextInput } from 'react-native';
 import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Animated } from 'react-native';
+import Toast from 'react-native-toast-message';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -28,7 +31,7 @@ import {
   PostOptionEnum,
   VISIBLE_TYPE_LIST,
 } from 'src/constants';
-import { anonymityTypeAtom, visibleTypeAtom } from 'src/atoms';
+import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
 import { isIos } from 'src/utils';
 
 import * as S from './styled';
@@ -78,6 +81,7 @@ const UserSection: React.FC = () => {
 };
 
 export const CommunityCreatePostScreen: React.FC = () => {
+  const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
@@ -89,8 +93,9 @@ export const CommunityCreatePostScreen: React.FC = () => {
 
   const theme = useTheme();
 
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>(communityEdit.text);
   const [selectedImage, setSelectedImage] = useState<(string | undefined)[]>();
+
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
 
   const keyboardOptionTranslateY = useRef<any>(new Animated.Value(0)).current;
@@ -112,13 +117,32 @@ export const CommunityCreatePostScreen: React.FC = () => {
         onTextInputBlur();
         return openImagePicker();
       case PostOptionEnum.VISIBLE:
-        return navigate('CommunityVisibleType');
+        if (Boolean(communityEdit.text)) {
+          Toast.show({
+            type: 'error',
+            text1: '편집할때 공개범위를 설정할 수 없어요',
+          });
+          return;
+        } else {
+          return navigate('CommunityVisibleType');
+        }
       case PostOptionEnum.ANONYMOUS:
-        return navigate('CommunityAnonymitySettings');
+        if (Boolean(communityEdit.text)) {
+          Toast.show({
+            type: 'error',
+            text1: '편집할때 익명성을 설정할 수 없어요',
+          });
+          return;
+        } else {
+          return navigate('CommunityAnonymitySettings');
+        }
     }
   };
 
   const openImagePicker = () => {
+    setCommunityEdit({ ...communityEdit, text, image: [] });
+    setSelectedImage([]);
+
     const options = {
       mediaType: 'photo' as MediaType,
       includeBase64: true,
@@ -159,6 +183,17 @@ export const CommunityCreatePostScreen: React.FC = () => {
     setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
   };
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (communityEdit.image && Boolean(communityEdit.image?.length) && isFocused) {
+      const images: (string | undefined)[] = communityEdit.image.map((image) => image || undefined);
+      setSelectedImage(images);
+    } else {
+      setCommunityEdit({ text: '', image: [] });
+    }
+  }, [isFocused]);
+
   return (
     <S.CreatePostContainer>
       <CommunityHeader
@@ -166,7 +201,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
         rightContent={
           <ScaleOpacity onPress={onPost}>
             <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
-              공유
+              게시
             </Text>
           </ScaleOpacity>
         }
@@ -189,11 +224,12 @@ export const CommunityCreatePostScreen: React.FC = () => {
             onChangeText={onChangeText}
             onFocus={onKeyboardShow}
             onBlur={onKeyboardHide}
+            maxLength={5000}
           />
         </S.CreatePostMainSection>
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
           <S.CreatePostImageSection>
-            {exitSelectedImage && (
+            {(exitSelectedImage || Boolean(communityEdit.image?.length)) && (
               <NoScrollbarScrollView
                 horizontal={true}
                 contentContainerStyle={{

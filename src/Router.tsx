@@ -148,6 +148,7 @@ export const Router: React.FC = () => {
               name="CommunityAnonymitySettings"
               component={SC.AnonymitySettingsScreen}
             />
+            <Stack.Screen name="CommunityMine" component={SC.CommunityMineScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanowlMain" component={SC.HanowlApplyMainScreen} />
@@ -159,7 +160,7 @@ export const Router: React.FC = () => {
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
       </NavigationContainer>
-      <Toast position="bottom" bottomOffset={inset.bottom - 10} config={toastConfig} />
+      <Toast position="top" bottomOffset={inset.bottom - 10} config={toastConfig} />
     </ThemeProvider>
   );
 };

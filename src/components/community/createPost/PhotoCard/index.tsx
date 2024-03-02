@@ -2,8 +2,10 @@ import React from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilState } from 'recoil';
 
 import { ScaleOpacity } from 'src/components/common';
+import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -20,14 +22,23 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
   selectedImage,
   setSelectedImage,
 }) => {
+  const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
   const theme = useTheme();
 
+  const onPress = () => {
+    if (Boolean(communityEdit.image?.length)) {
+      setCommunityEdit({
+        ...communityEdit,
+        image: communityEdit.image?.filter((_, i) => i !== index),
+      });
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
+    } else {
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
+    }
+  };
+
   return (
-    <ScaleOpacity
-      onPress={() => {
-        setSelectedImage(selectedImage?.filter((_, i) => i !== index));
-      }}
-    >
+    <ScaleOpacity onPress={onPress}>
       <S.PhotoCardContainer>
         <S.PhotoCardImage source={{ uri: item }} />
         <S.PhotoCardIconWrapper>

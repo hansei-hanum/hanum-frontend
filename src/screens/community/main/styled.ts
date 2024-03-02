@@ -45,12 +45,6 @@ export const CommunityUserContainer = styled.View`
   padding: 14px;
 `;
 
-export const CommunityImage = styled.Image`
-  border-radius: 100px;
-  width: 40px;
-  height: 40px;
-`;
-
 export const CommunityUserThinkBox = styled.View`
   flex: 1;
   align-items: flex-start;
@@ -68,19 +62,6 @@ export const CommunityMainBox = styled.View`
   width: 100%;
   padding: 10px 0;
   position: relative;
-`;
-
-export const CommunityMainBottom = styled.View`
-  width: 74%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const CommunityMainBottomIconContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  column-gap: 10px;
 `;
 
 export const TextWrapper2 = styled(Animated.View)`

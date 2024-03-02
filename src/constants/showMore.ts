@@ -1,7 +1,9 @@
+import { RootStackParamList } from 'src/types';
+
 export interface ShowMoreSectionItem {
   name: string;
   icon: string;
-  navigateUrl: string;
+  navigateUrl: keyof RootStackParamList;
 }
 
 export interface ShowMoreItem {
@@ -10,6 +12,16 @@ export interface ShowMoreItem {
 }
 
 export const SHOW_MORE_LIST: ShowMoreItem[] = [
+  {
+    name: '대나무 숲',
+    section: [
+      {
+        name: '내 게시물',
+        icon: '📝',
+        navigateUrl: 'CommunityMine',
+      },
+    ],
+  },
   {
     name: '학교 생활정보',
     section: [

@@ -4,4 +4,5 @@ export type CommunityStackParamList = {
   CommunityCreatePost: undefined;
   CommunityVisibleType: undefined;
   CommunityAnonymitySettings: undefined;
+  CommunityMine: undefined;
 };

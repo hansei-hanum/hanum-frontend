@@ -5,4 +5,5 @@ export type MainStackParamList = {
   Home: undefined;
   UserInfo: undefined;
   WebView: undefined;
+  Meal: undefined;
 };
