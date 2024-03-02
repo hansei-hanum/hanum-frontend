@@ -15,6 +15,12 @@ export const PostCommentCardImage = styled.Image`
   height: 40px;
 `;
 
+export const PostCommentImage = styled.Image`
+  border-radius: 16px;
+  width: 140px;
+  height: 140px;
+`;
+
 export const PostCommentCardCommentContainer = styled.View`
   flex-direction: row;
   align-items: center;

@@ -1,5 +1,3 @@
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
 import styled from '@emotion/native';
 
 export const CommunityMineBottomSheetContainer = styled.View`
