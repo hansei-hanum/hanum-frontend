@@ -19,7 +19,7 @@ import {
   PostBottom,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
-import { COMMUNITY_LIST } from 'src/constants';
+import { COMMUNITY_BOTTOM_SHEET_HEIGHT, COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
 
 import * as S from './styled';
@@ -135,7 +135,7 @@ export const CommunityMainScreen: React.FC = () => {
               type={type}
               time={time}
               style={{ width: '100%' }}
-              openBottomSheet={openBottomSheet}
+              openBottomSheet={() => openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT })}
               onPress={() => onChatScreenNavigate(index)}
               userImagePress={onProfilePress}
             />

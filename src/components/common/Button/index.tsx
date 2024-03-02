@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, TouchableOpacityProps, ViewProps } from 'react-native';
+import { TouchableOpacityProps, ViewProps } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 

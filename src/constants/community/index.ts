@@ -5,3 +5,4 @@ export * from './posts';
 export * from './postOptions';
 export * from './anonymityOptions';
 export * from './visibleTypes';
+export * from './mineOptions';

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebViewMessageEvent } from 'react-native-webview';
 import { ScrollView } from 'react-native';
@@ -16,21 +16,17 @@ import {
   TeamsWebView,
 } from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
-import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { TeamType, hanowlApplyAtom } from 'src/atoms';
-import { useNavigate } from 'src/hooks';
+import { useBottomSheet, useNavigate } from 'src/hooks';
 
 export const HanowlApplyMainScreen: React.FC = () => {
   const navigate = useNavigate();
 
   const theme = useTheme();
-  const bottomSheetRef = useRef<BottomSheetRefProps>(null);
+  const { bottomSheetRef, openBottomSheet } = useBottomSheet();
   const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
 
-  const openBottomSheet = () => {
-    bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT + 100);
-  };
   const [message, setMessage] = useState<string | null>(null);
   const [teamLoading, setTeamLoading] = useState(true);
 
@@ -41,7 +37,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
     setMessage(data);
     setTeamLoading(true);
     if (data !== 'null' && data !== null && data !== '') {
-      openBottomSheet();
+      openBottomSheet({ scrollTo: -SCREEN_HEIGHT + 100 });
       setTimeout(() => {
         setTeamLoading(false);
       }, 600);

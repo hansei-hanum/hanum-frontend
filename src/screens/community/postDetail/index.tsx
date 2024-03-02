@@ -23,7 +23,11 @@ import {
   ImageListBottomSheet,
   PostOptionBottomSheet,
 } from 'src/components';
-import { CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT, COMMUNITY_POST } from 'src/constants';
+import {
+  CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
+  COMMUNITY_BOTTOM_SHEET_HEIGHT,
+  COMMUNITY_POST,
+} from 'src/constants';
 import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
@@ -103,7 +107,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const openPostBottomSheet = () => {
     commentInputRef.current?.blur();
-    openBottomSheet();
+    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
   };
 
   const toggleAnonymous = () => {
