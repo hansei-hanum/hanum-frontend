@@ -59,7 +59,6 @@
     "react-native-camera": "^4.2.1",
     "react-native-code-push": "^8.1.0",
     "react-native-confirmation-code-field": "^7.3.1",
-    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-haptic-feedback": "^2.2.0",
     "react-native-image-picker": "^7.1.0",

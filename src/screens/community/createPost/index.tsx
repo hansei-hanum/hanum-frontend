@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native';
-import { Asset, MediaType, launchImageLibrary } from 'react-native-image-picker';
+import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Animated } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -23,6 +23,7 @@ import {
   Text,
   NoScrollbarScrollView,
   PhotosInterface,
+  Spinner,
 } from 'src/components';
 import { useCreatePost, useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
@@ -33,7 +34,7 @@ import {
   VISIBLE_TYPE_LIST,
 } from 'src/constants';
 import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
-import { isAndroid, isIos } from 'src/utils';
+import { isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
@@ -45,7 +46,7 @@ const UserSection: React.FC = () => {
   const visibleType = useRecoilValue(visibleTypeAtom);
 
   const setVisibleTypeText = () => {
-    switch (visibleType.text) {
+    switch (visibleType) {
       case LimitedArticleScopeOfDisclosure.Public:
         return '전체';
       case LimitedArticleScopeOfDisclosure.Faculty:
@@ -66,13 +67,13 @@ const UserSection: React.FC = () => {
       <View style={{ rowGap: 2 }}>
         <Text size={16}>{userData?.name || '박찬영'}</Text>
         <S.VisibleTypeContainer>
-          {visibleType.text === LimitedArticleScopeOfDisclosure.Public && (
+          {visibleType === LimitedArticleScopeOfDisclosure.Public && (
             <MI name="public" size={16} color={theme.white} />
           )}
-          {visibleType.text === LimitedArticleScopeOfDisclosure.Student && (
+          {visibleType === LimitedArticleScopeOfDisclosure.Student && (
             <MI name="lock" size={16} color={theme.white} />
           )}
-          {visibleType.text === LimitedArticleScopeOfDisclosure.Peer && (
+          {visibleType === LimitedArticleScopeOfDisclosure.Peer && (
             <MCI name="account-group" size={16} color={theme.white} />
           )}
           <Text size={12} color={theme.white} fontFamily="bold">
@@ -89,7 +90,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
-  const { mutate } = useCreatePost();
+  const { mutate, isLoading } = useCreatePost();
 
   const { animation } = useSetAnimation();
 
@@ -100,7 +101,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const theme = useTheme();
 
   const [text, setText] = useState<string>(communityEdit.text);
-  const [selectedImage, setSelectedImage] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
 
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
 
@@ -164,7 +165,17 @@ export const CommunityCreatePostScreen: React.FC = () => {
           console.log('Image picker error: ', response.errorMessage);
         } else {
           const imageUri = response.assets?.map((item) => item.uri);
-          setSelectedImage(imageUri as string[]);
+          const imageName = response.assets?.map((item) => item.fileName);
+          const imageType = response.assets?.map((item) => item.type);
+          const images = imageUri?.map((uri, index) => ({
+            uri,
+            name: imageName?.[index] || '',
+            type: imageType?.[index] || '',
+          }));
+          setSelectedImage([
+            ...(selectedImage as PhotosInterface[]),
+            ...(images as PhotosInterface[]),
+          ]);
         }
       });
     }
@@ -182,37 +193,20 @@ export const CommunityCreatePostScreen: React.FC = () => {
     setKeyboardShow(false);
   };
 
-  const createFormData = (photo: Asset, body = {}) => {
-    const data = new FormData();
-
-    data.append('photo', {
-      name: photo.fileName,
-      type: photo.type,
-      uri: isIos ? photo.uri?.replace('file://', '') : photo.uri,
-    });
-
-    Object.keys(body).forEach((key) => {
-      data.append(key, body[key]);
-    });
-
-    console.log(data, 'data');
-    return data;
-  };
-
   const onPost = () => {
     mutate({
       isAnonymous: Boolean(anonymityType),
       author: null,
       content: text,
-      scopeOfDisclosure: visibleType.text,
-      attachments: selectedImage,
+      scopeOfDisclosure: visibleType,
+      attachments: selectedImage as PhotosInterface[],
     });
 
-    // setText('');
-    // console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
-    // setSelectedImage([]);
-    // setVisibleType({ text: VISIBLE_TYPE_LIST[0].text, limitType: '' });
-    // setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
+    setText('');
+    console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
+    setSelectedImage([]);
+    setVisibleType(VISIBLE_TYPE_LIST[0].text);
+    setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
   };
 
   const isFocused = useIsFocused();
@@ -252,11 +246,15 @@ export const CommunityCreatePostScreen: React.FC = () => {
       <CommunityHeader
         title="게시글 작성하기"
         rightContent={
-          <ScaleOpacity onPress={onPost}>
-            <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
-              게시
-            </Text>
-          </ScaleOpacity>
+          isLoading ? (
+            <Spinner size={24} color={theme.primary} />
+          ) : (
+            <ScaleOpacity onPress={onPost}>
+              <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
+                게시
+              </Text>
+            </ScaleOpacity>
+          )
         }
       />
       <S.CreatePostInnerContainer

@@ -5,23 +5,42 @@ import { useTheme } from '@emotion/react';
 
 import { Icon, ScaleOpacity, Text } from 'src/components/common';
 import { VisibleTypeItems } from 'src/constants';
-import { VisibleActiveOptionType } from 'src/screens';
+import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
 export interface VisibleTypeCardProps extends VisibleTypeItems {
   onOptionClick: (index: number) => void;
-  activeOption: VisibleActiveOptionType;
+  isActive: boolean;
   index: number;
 }
 
 export const VisibleTypeCard: React.FC<VisibleTypeCardProps> = ({
   onOptionClick,
-  activeOption,
+  isActive,
   text,
   icon,
   index,
 }) => {
+  const formatVisibleType = (type: VisibleTypeItems['text']) => {
+    switch (type) {
+      case LimitedArticleScopeOfDisclosure.Public:
+        return '전체 공개';
+      case LimitedArticleScopeOfDisclosure.Faculty:
+        return '교직원 공개';
+      case LimitedArticleScopeOfDisclosure.Alumni:
+        return '제한 공개';
+      case LimitedArticleScopeOfDisclosure.Student:
+        return '졸업생 공개';
+      case LimitedArticleScopeOfDisclosure.Peer:
+        return '학생 공개';
+      case LimitedArticleScopeOfDisclosure.Peer:
+        return '동급생 공개';
+      default:
+        return '';
+    }
+  };
+
   const theme = useTheme();
 
   return (
@@ -29,12 +48,12 @@ export const VisibleTypeCard: React.FC<VisibleTypeCardProps> = ({
       <S.VisibleTypeCardContainer>
         <S.VisibleTypeCardIconContainer>
           <Icon icon={icon} size={34} includeBackground={false} />
-          <Text size={18}>{text}</Text>
+          <Text size={18}>{formatVisibleType(text)}</Text>
         </S.VisibleTypeCardIconContainer>
         <MCI
-          name={activeOption[text] ? 'circle-slice-8' : 'circle-outline'}
+          name={isActive ? 'circle-slice-8' : 'circle-outline'}
           size={30}
-          color={activeOption[text] ? theme.primary : theme.placeholder}
+          color={isActive ? theme.primary : theme.placeholder}
         />
       </S.VisibleTypeCardContainer>
     </ScaleOpacity>

@@ -12,13 +12,14 @@ import * as S from './styled';
 export interface PhotosInterface {
   uri: string;
   name: string;
+  type: string;
 }
 
 export interface PhotoCardProps {
   item?: string;
   index: number;
-  setSelectedImage: React.Dispatch<React.SetStateAction<string[]>>;
-  selectedImage: string[];
+  setSelectedImage: React.Dispatch<React.SetStateAction<PhotosInterface[] | string[]>>;
+  selectedImage: PhotosInterface[] | string[];
 }
 
 export const PhotoCard: React.FC<PhotoCardProps> = ({
@@ -36,9 +37,9 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
         ...communityEdit,
         image: communityEdit.image?.filter((_, i) => i !== index),
       });
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as string[]);
     } else {
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as PhotosInterface[]);
     }
   };
 

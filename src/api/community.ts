@@ -1,6 +1,7 @@
-import RNFS from 'react-native-fs';
+// import RNFetchBlob from 'rn-fetch-blob';
 
 import { isIos } from 'src/utils';
+import { PhotosInterface } from 'src/components';
 
 import { COMMUNITY_API_SUFFIX, communityInstance } from './api';
 
@@ -33,7 +34,7 @@ export interface createPostValues {
   author: string | null;
   content: string;
   scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
-  attachments?: string[];
+  attachments?: PhotosInterface[];
 }
 
 export const createPost = async ({
@@ -51,22 +52,16 @@ export const createPost = async ({
   formData.append('content', content);
   formData.append('scopeOfDisclosure', String(scopeOfDisclosure));
 
-  if (attachments && attachments.length > 0) {
-    for (let i = 0; i < attachments.length; i++) {
-      const filePath = attachments[i];
-      const fileName = isIos ? filePath.replace('file://', '') : filePath.split('/').pop();
-      console.log('fileName', fileName);
-      const fileData = await RNFS.readFile(filePath, 'base64');
-      console.log('fileData', fileData);
-      formData.append(`attachments[${i}]`, {
-        name: fileName,
-        data: fileData,
-        type: 'image/*',
-      });
-    }
+  if (attachments && typeof attachments !== 'string') {
+    attachments.forEach((attachment) => {
+      const fileData = {
+        uri: attachment.uri,
+        name: attachment.name,
+        type: attachment.type,
+      };
+      formData.append(`attachments`, fileData);
+    });
   }
-
-  //   console.log('formData', formData, isAnonymous, author, content, scopeOfDisclosure);
 
   const data = await communityInstance.post(COMMUNITY_API_SUFFIX.CREATE, formData, {
     headers: {

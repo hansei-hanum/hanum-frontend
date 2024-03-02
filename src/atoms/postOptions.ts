@@ -8,17 +8,9 @@ import {
   VisibleTypeItems,
 } from 'src/constants';
 
-export interface VisibleTypeProps {
-  text: VisibleTypeItems['text'];
-  limitType: string;
-}
-
-export const visibleTypeAtom = atom<VisibleTypeProps>({
+export const visibleTypeAtom = atom<VisibleTypeItems['text']>({
   key: 'visibleTypeAtom',
-  default: {
-    text: VISIBLE_TYPE_LIST[0].text,
-    limitType: LIMITED_VISIBLE_TYPE_LIST[0],
-  },
+  default: VISIBLE_TYPE_LIST[0].text,
 });
 
 export const anonymityTypeAtom = atom<AnonymityOptionItems['title']>({
