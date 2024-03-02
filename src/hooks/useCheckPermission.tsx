@@ -9,7 +9,7 @@ import { BottomSheetRefProps } from 'src/types';
 import { isAndroid, isIos } from '../utils/checkOs';
 
 const HAS_PERMISSION_SCROLL_HEIGHT = -RPH(70);
-const NO_PERMISSION_SCROLL_HEIGHT = -RPH(38);
+const NO_PERMISSION_SCROLL_HEIGHT = -RPH(28);
 
 export const status = {
   isAllGranted: { granted: true, limited: true },

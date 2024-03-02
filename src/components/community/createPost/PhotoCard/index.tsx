@@ -9,11 +9,16 @@ import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
+export interface PhotosInterface {
+  uri: string;
+  name: string;
+}
+
 export interface PhotoCardProps {
   item?: string;
   index: number;
-  setSelectedImage: React.Dispatch<React.SetStateAction<(string | undefined)[] | undefined>>;
-  selectedImage: (string | undefined)[];
+  setSelectedImage: React.Dispatch<React.SetStateAction<PhotosInterface[] | string[]>>;
+  selectedImage: PhotosInterface[] | string[];
 }
 
 export const PhotoCard: React.FC<PhotoCardProps> = ({
@@ -31,9 +36,9 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
         ...communityEdit,
         image: communityEdit.image?.filter((_, i) => i !== index),
       });
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as string[]);
     } else {
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as PhotosInterface[]);
     }
   };
 

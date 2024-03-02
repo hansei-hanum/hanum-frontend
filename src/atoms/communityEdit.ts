@@ -1,5 +1,7 @@
 import { atom } from 'recoil';
 
+import { PhotosInterface } from 'src/components';
+
 export interface communityEditAtomProps {
   text: string;
   image?: string[];

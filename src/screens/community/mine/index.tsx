@@ -20,6 +20,7 @@ import {
   CommunityPostHeader,
   GoBackIcon,
   Modal,
+  PhotosInterface,
   PostBottom,
   ScaleOpacity,
   Text,

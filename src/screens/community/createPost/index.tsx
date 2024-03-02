@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Key, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,6 +22,7 @@ import {
   ScaleOpacity,
   Text,
   NoScrollbarScrollView,
+  PhotosInterface,
 } from 'src/components';
 import { useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
@@ -94,7 +95,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const theme = useTheme();
 
   const [text, setText] = useState<string>(communityEdit.text);
-  const [selectedImage, setSelectedImage] = useState<(string | undefined)[]>();
+  const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
 
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
 
@@ -120,7 +121,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
         if (Boolean(communityEdit.text)) {
           Toast.show({
             type: 'error',
-            text1: '편집할때 공개범위를 설정할 수 없어요',
+            text1: '편집할때 공개범위는 설정할 수 없어요',
           });
           return;
         } else {
@@ -130,7 +131,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
         if (Boolean(communityEdit.text)) {
           Toast.show({
             type: 'error',
-            text1: '편집할때 익명성을 설정할 수 없어요',
+            text1: '편집할때 익명성은 설정할 수 없어요',
           });
           return;
         } else {
@@ -140,27 +141,36 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const openImagePicker = () => {
-    setCommunityEdit({ ...communityEdit, text, image: [] });
-    setSelectedImage([]);
-
-    const options = {
-      mediaType: 'photo' as MediaType,
-      includeBase64: true,
-      maxHeight: 2000,
-      maxWidth: 2000,
-      selectionLimit: 10,
-    };
-
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.log('Image picker error: ', response.errorMessage);
-      } else {
-        const imageUri = response.assets?.map((item) => item.uri);
-        setSelectedImage(imageUri);
-      }
-    });
+    if (selectedImage.length >= 10) {
+      Toast.show({ type: 'error', text1: '이미지는 10장까지만 업로드 가능해요' });
+      return;
+    } else {
+      const options = {
+        mediaType: 'photo' as MediaType,
+        includeBase64: true,
+        maxHeight: 2000,
+        maxWidth: 2000,
+        selectionLimit: 10,
+      };
+      launchImageLibrary(options, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorMessage) {
+          console.log('Image picker error: ', response.errorMessage);
+        } else {
+          const imageUri = response.assets?.map((item) => item.uri);
+          const imageName = response.assets?.map((item) => item.fileName) || 'image.png';
+          const image = imageUri?.map((uri, index) => ({ uri, name: imageName[index] }));
+          setSelectedImage((prev: string[] | PhotosInterface[]) => {
+            if (typeof prev[0] === 'string') {
+              return prev as string[];
+            } else {
+              return prev as PhotosInterface[];
+            }
+          });
+        }
+      });
+    }
   };
 
   const onKeyboardShow = () => {
@@ -185,14 +195,35 @@ export const CommunityCreatePostScreen: React.FC = () => {
 
   const isFocused = useIsFocused();
 
+  console.log(selectedImage);
   useEffect(() => {
     if (communityEdit.image && Boolean(communityEdit.image?.length) && isFocused) {
-      const images: (string | undefined)[] = communityEdit.image.map((image) => image || undefined);
+      const images = communityEdit.image.map((image) => image);
       setSelectedImage(images);
     } else {
       setCommunityEdit({ text: '', image: [] });
     }
   }, [isFocused]);
+
+  const convertToKey = (value: string | PhotosInterface): Key | null | undefined => {
+    if (typeof value === 'string') {
+      return value;
+    } else if (value && 'uri' in value) {
+      return value.uri; // 'key'는 PhotosInterface의 속성이어야 합니다.
+    } else {
+      return undefined;
+    }
+  };
+
+  const convertToString = (value: string | PhotosInterface): string | undefined => {
+    if (typeof value === 'string') {
+      return value;
+    } else if (value && 'uri' in value) {
+      return value.uri; // 'uri'는 PhotosInterface의 속성이어야 합니다.
+    } else {
+      return undefined;
+    }
+  };
 
   return (
     <S.CreatePostContainer>
@@ -241,8 +272,8 @@ export const CommunityCreatePostScreen: React.FC = () => {
               >
                 {selectedImage?.map((item, index) => (
                   <PhotoCard
-                    key={item}
-                    item={item}
+                    key={`${convertToKey(item)}` + `${index}`}
+                    item={convertToString(item)}
                     index={index}
                     setSelectedImage={setSelectedImage}
                     selectedImage={selectedImage}

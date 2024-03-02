@@ -22,6 +22,9 @@ import {
   MentionUserList,
   ImageListBottomSheet,
   PostOptionBottomSheet,
+  PhotoCard,
+  NoScrollbarScrollView,
+  PhotosInterface,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
@@ -34,6 +37,11 @@ import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 
 import * as S from './styled';
+
+export interface selectedPhotosInterface {
+  uri: string;
+  name: string;
+}
 
 export interface PhotoPermissionProps {
   granted: boolean;
@@ -61,6 +69,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   });
 
   const handlePresentModalPress = useCallback(() => {
+    setDoneCheck(false);
     checkPhotoPermission();
   }, []);
 
@@ -71,6 +80,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [userId, setUserId] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
+  const [selectedPhotos, setSelectedPhotos] = useState<PhotosInterface[]>([]);
+  const [doneCheck, setDoneCheck] = useState<boolean>(false);
 
   const theme = useTheme();
 
@@ -166,6 +177,29 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           <AnimatedHoc isOpen={isReplyChat}>
             <ReplyBox closeReplyBox={closeReplyBox} userId={userId} />
           </AnimatedHoc>
+          {Boolean(selectedPhotos.length) && (
+            <NoScrollbarScrollView
+              style={{ width: 'auto' }}
+              horizontal={true}
+              keyboardShouldPersistTaps="always"
+              contentContainerStyle={{
+                flexDirection: 'row',
+                columnGap: 4,
+                paddingRight: 14,
+                marginVertical: 10,
+              }}
+            >
+              {selectedPhotos.map((item, index) => (
+                <PhotoCard
+                  key={item.uri}
+                  item={item.uri}
+                  index={index}
+                  setSelectedImage={setSelectedPhotos}
+                  selectedImage={selectedPhotos}
+                />
+              ))}
+            </NoScrollbarScrollView>
+          )}
           <S.PostDetailCommentContainer>
             <ScaleOpacity onPress={toggleAnonymous}>
               <CommunityUserImage userImage={userProfile} />
@@ -195,8 +229,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       </S.PostDetailInnerContainer>
       <ImageListBottomSheet
         ref={ImageListBottomSheetRef}
+        setSelectedPhotos={setSelectedPhotos}
+        setDoneCheck={setDoneCheck}
+        selectedPhotos={selectedPhotos}
         scrollHeight={permissionHeight}
         permission={permission}
+        doneCheck={doneCheck}
       />
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.PostDetailContainer>
