@@ -8,3 +8,4 @@ export * from './postDetail';
 export * from './reports';
 export * from './PostOptionBottomSheet';
 export * from './main';
+export * from './MineBottomSheet';

@@ -1,43 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, LayoutChangeEvent, SafeAreaView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Icons from 'react-native-vector-icons/Ionicons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FlatList, SafeAreaView } from 'react-native';
 
-import { useTheme } from '@emotion/react';
+import { useIsFocused } from '@react-navigation/native';
+
 import { useSetRecoilState } from 'recoil';
 
-import {
-  COMMUNITY_LIST,
-  COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST,
-  CommunityMineBottomSheetTextEnum,
-} from 'src/constants';
+import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
 import {
-  BottomSheet,
-  Button,
+  CommunityMineBottomSheet,
   CommunityPost,
   CommunityPostHeader,
   GoBackIcon,
-  Modal,
   PostBottom,
-  ScaleOpacity,
   Text,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useNavigate } from 'src/hooks';
-import { communityEditAtom, communityEditAtomProps } from 'src/atoms';
+import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const CommunityMineScreen: React.FC = () => {
-  const setCommunityEdit = useSetRecoilState(communityEditAtom);
-
-  const insets = useSafeAreaInsets();
-  const theme = useTheme();
-
   const [height, setHeight] = useState<number>(0);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [postContent, setPostContent] = useState<communityEditAtomProps>({ text: '', image: [] });
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
 
@@ -49,26 +34,9 @@ export const CommunityMineScreen: React.FC = () => {
     navigate('CommunityPostDetail', { id: index });
   };
 
-  const onPress = (option: CommunityMineBottomSheetTextEnum) => {
-    closeBottomSheet();
-    switch (option) {
-      case CommunityMineBottomSheetTextEnum.EDIT:
-        setCommunityEdit(postContent);
-        navigate('CommunityCreatePost');
-        return;
-      case CommunityMineBottomSheetTextEnum.DELETE:
-        return setModalOpen(true);
-    }
-  };
-
   const openBottomSheet = (text: string, image: string[]) => {
     bottomSheetRef.current?.scrollTo(-height);
-    setPostContent({ text, image });
-  };
-
-  const onLayout = (event: LayoutChangeEvent) => {
-    const { height } = event.nativeEvent.layout;
-    setHeight(height + insets.bottom + 30);
+    setCommunityEdit({ text, image });
   };
 
   useEffect(() => {
@@ -78,6 +46,14 @@ export const CommunityMineScreen: React.FC = () => {
       });
     });
   }, [COMMUNITY_LIST, getHeightsForImage]);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      setCommunityEdit((prev) => ({ ...prev, isEdit: true }));
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -124,38 +100,12 @@ export const CommunityMineScreen: React.FC = () => {
             </S.CommunityMinePostBox>
           )}
         />
-        <BottomSheet ref={bottomSheetRef} scrollHeight={-height}>
-          <S.CommunityMineBottomSheetContainer onLayout={onLayout}>
-            {COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST.map(({ text, icon, isDanger }) => (
-              <ScaleOpacity onPress={() => onPress(text)}>
-                <S.CommunityMineOptionContainer key={text}>
-                  <S.CommunityMainOptionIconContainer>
-                    <Icon name={icon} size={24} color={isDanger ? theme.danger : theme.default} />
-                    <Text size={15} color={theme.default}>
-                      {text}
-                    </Text>
-                  </S.CommunityMainOptionIconContainer>
-                  <Icons name="chevron-forward" size={26} color={theme.placeholder} />
-                </S.CommunityMineOptionContainer>
-              </ScaleOpacity>
-            ))}
-          </S.CommunityMineBottomSheetContainer>
-        </BottomSheet>
       </S.CommunityMineWrapper>
-      <Modal
-        modalVisible={modalOpen}
-        title="게시물 삭제"
-        text={`정말로 게시글을 삭제하시겠어요?\n삭제된 게시글은 복구할 수 없어요.`}
-        button={
-          <Button.Container>
-            <Button onPress={() => setModalOpen(false)} isModalBtn isWhite>
-              취소
-            </Button>
-            <Button onPress={() => setModalOpen(false)} isModalBtn backgroundColor={theme.danger}>
-              삭제
-            </Button>
-          </Button.Container>
-        }
+      <CommunityMineBottomSheet
+        ref={bottomSheetRef}
+        setHeight={setHeight}
+        height={height}
+        closeBottomSheet={closeBottomSheet}
       />
     </SafeAreaView>
   );

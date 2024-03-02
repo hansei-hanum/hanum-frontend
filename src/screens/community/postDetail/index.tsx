@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -7,8 +7,10 @@ import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilState } from 'recoil';
 
 import {
   AnimatedHoc,
@@ -22,6 +24,10 @@ import {
   MentionUserList,
   ImageListBottomSheet,
   PostOptionBottomSheet,
+  PhotoCard,
+  NoScrollbarScrollView,
+  PhotosInterface,
+  CommunityMineBottomSheet,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
@@ -32,8 +38,14 @@ import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
+import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
+
+export interface selectedPhotosInterface {
+  uri: string;
+  name: string;
+}
 
 export interface PhotoPermissionProps {
   granted: boolean;
@@ -48,6 +60,9 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { id } = route.params;
   console.log(id);
+
+  const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
+
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const inset = useSafeAreaInsets();
@@ -61,6 +76,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   });
 
   const handlePresentModalPress = useCallback(() => {
+    setDoneCheck(false);
     checkPhotoPermission();
   }, []);
 
@@ -71,6 +87,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [userId, setUserId] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
+  const [selectedPhotos, setSelectedPhotos] = useState<PhotosInterface[]>([]);
+  const [doneCheck, setDoneCheck] = useState<boolean>(false);
+  const [height, setHeight] = useState<number>(0);
 
   const theme = useTheme();
 
@@ -106,8 +125,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const openPostBottomSheet = () => {
-    commentInputRef.current?.blur();
-    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
+    if (communityEdit.isEdit) {
+      bottomSheetRef.current?.scrollTo(-height);
+    } else {
+      commentInputRef.current?.blur();
+      openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
+    }
   };
 
   const toggleAnonymous = () => {
@@ -134,6 +157,15 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       await AsyncStorage.setItem('checkTutorial', 'true');
     }
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log(communityEdit);
+      setCommunityEdit((prev) => ({ ...prev, isEdit: true }));
+    }
+  }, [isFocused]);
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
@@ -166,6 +198,29 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           <AnimatedHoc isOpen={isReplyChat}>
             <ReplyBox closeReplyBox={closeReplyBox} userId={userId} />
           </AnimatedHoc>
+          {Boolean(selectedPhotos.length) && (
+            <NoScrollbarScrollView
+              style={{ width: 'auto' }}
+              horizontal={true}
+              keyboardShouldPersistTaps="always"
+              contentContainerStyle={{
+                flexDirection: 'row',
+                columnGap: 4,
+                paddingRight: 14,
+                marginVertical: 10,
+              }}
+            >
+              {selectedPhotos.map((item, index) => (
+                <PhotoCard
+                  key={item.uri}
+                  item={item.uri}
+                  index={index}
+                  setSelectedImage={setSelectedPhotos}
+                  selectedImage={selectedPhotos}
+                />
+              ))}
+            </NoScrollbarScrollView>
+          )}
           <S.PostDetailCommentContainer>
             <ScaleOpacity onPress={toggleAnonymous}>
               <CommunityUserImage userImage={userProfile} />
@@ -195,10 +250,26 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       </S.PostDetailInnerContainer>
       <ImageListBottomSheet
         ref={ImageListBottomSheetRef}
+        setSelectedPhotos={setSelectedPhotos}
+        setDoneCheck={setDoneCheck}
+        selectedPhotos={selectedPhotos}
         scrollHeight={permissionHeight}
         permission={permission}
+        doneCheck={doneCheck}
       />
-      <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
+      {!communityEdit.isEdit ? (
+        <PostOptionBottomSheet
+          bottomSheetRef={bottomSheetRef}
+          closeBottomSheet={closeBottomSheet}
+        />
+      ) : (
+        <CommunityMineBottomSheet
+          ref={bottomSheetRef}
+          setHeight={setHeight}
+          height={height}
+          closeBottomSheet={closeBottomSheet}
+        />
+      )}
     </S.PostDetailContainer>
   );
 };

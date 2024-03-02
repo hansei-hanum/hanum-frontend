@@ -3,6 +3,7 @@ import { atom } from 'recoil';
 export interface communityEditAtomProps {
   text: string;
   image?: string[];
+  isEdit?: boolean;
 }
 
 export const communityEditAtom = atom<communityEditAtomProps>({
@@ -10,5 +11,6 @@ export const communityEditAtom = atom<communityEditAtomProps>({
   default: {
     text: '',
     image: [],
+    isEdit: false,
   },
 });
