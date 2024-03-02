@@ -25,7 +25,6 @@ import {
   ImageListBottomSheet,
   PostOptionBottomSheet,
   PhotoCard,
-  NoScrollbarScrollView,
   PhotosInterface,
   CommunityMineBottomSheet,
 } from 'src/components';
@@ -116,6 +115,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const sendChat = () => {
     setComment('');
+    setSelectedPhotos([]);
     commentInputRef.current?.blur();
   };
 
@@ -195,15 +195,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           </View>
         )}
         <S.PostDetailBottomSection>
-          <AnimatedHoc isOpen={isReplyChat}>
-            <ReplyBox closeReplyBox={closeReplyBox} userId={userId} />
-          </AnimatedHoc>
           {Boolean(selectedPhotos.length) && (
-            <NoScrollbarScrollView
-              style={{ width: 'auto' }}
-              horizontal={true}
-              keyboardShouldPersistTaps="always"
-              contentContainerStyle={{
+            <View
+              style={{
                 flexDirection: 'row',
                 columnGap: 4,
                 paddingRight: 14,
@@ -219,8 +213,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                   selectedImage={selectedPhotos}
                 />
               ))}
-            </NoScrollbarScrollView>
+            </View>
           )}
+          <AnimatedHoc isOpen={isReplyChat}>
+            <ReplyBox closeReplyBox={closeReplyBox} userId={userId} />
+          </AnimatedHoc>
           <S.PostDetailCommentContainer>
             <ScaleOpacity onPress={toggleAnonymous}>
               <CommunityUserImage userImage={userProfile} />
@@ -235,7 +232,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 onBlur={onCommentInputBlur}
                 onFocus={onCommentInputFocus}
               />
-              {comment.length > 0 ? (
+              {comment.length > 0 || Boolean(selectedPhotos.length) ? (
                 <ScaleOpacity onPress={sendChat}>
                   <MI name="send" size={28} color={theme.primary} />
                 </ScaleOpacity>

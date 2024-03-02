@@ -205,24 +205,14 @@ export const ImageListBottomSheet = React.forwardRef<
 
     const selectPhoto = useCallback(
       (props: selectedPhotosInterface) => {
-        if (selectedPhotos.length < 10) {
-          setSelectedPhotos((prev) => {
-            const temp = [...prev];
-            if (!selectedPhotos.find((photo) => photo.uri === props.uri)) {
-              temp.push(props);
-            } else {
-              temp.splice(temp.indexOf(props), 1);
-            }
-            return temp;
-          });
-        } else {
-          setSelectedPhotos((prev) => {
-            const temp = [...prev];
-            if (!selectedPhotos.find((photo) => photo.uri === props.uri)) {
-              temp.splice(temp.indexOf(props), 1);
-            }
-            return temp;
-          });
+        const isExist = selectedPhotos.find((photo) => photo.uri === props.uri);
+        console.log('selectedPhotos', selectedPhotos, isExist);
+        if (isExist) {
+          return setSelectedPhotos([]);
+        }
+        if (selectedPhotos.length <= 1) {
+          setSelectedPhotos([props]);
+          return;
         }
       },
       [selectedPhotos],
@@ -248,7 +238,7 @@ export const ImageListBottomSheet = React.forwardRef<
     };
 
     useEffect(() => {
-      if (selectedPhotos.length > 0 && !doneCheck) {
+      if (selectedPhotos.length === 1 && !doneCheck) {
         Animated.spring(buttonTranslateY, {
           toValue: isIos ? REPLY_BOX_IOS_OFFSET : REPLY_BOX_ANDROID_OFFSET,
           useNativeDriver: true,
@@ -358,7 +348,7 @@ export const ImageListBottomSheet = React.forwardRef<
             )}
           </S.ImageListBottomSheetContainer>
         </GestureDetector>
-        {!doneCheck && selectedPhotos.length > 0 && (
+        {!doneCheck && selectedPhotos.length === 1 && (
           <S.ImageListBottomSheetButtonWrapper
             ref={buttonTranslateY}
             style={{
@@ -367,7 +357,7 @@ export const ImageListBottomSheet = React.forwardRef<
           >
             <Button backgroundColor={theme.primary} onPress={onButtonPress}>
               <Text size={16} color={theme.white}>
-                사진 ({selectedPhotos.length}) 보내기
+                사진 보내기
               </Text>
             </Button>
           </S.ImageListBottomSheetButtonWrapper>

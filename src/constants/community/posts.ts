@@ -168,6 +168,7 @@ export interface CommunityChatListItems extends Omit<CommunityListItems, 'conten
   replies: ReplyItems[];
   message: string;
   likes: number;
+  image?: string;
 }
 
 export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
@@ -181,6 +182,7 @@ export const COMMUNITY_CHAT_LIST: CommunityChatListItems[] = [
     message: '잉기 디밍기?',
     likes: 5,
     replies: [],
+    image: CHAT,
   },
   {
     author: {

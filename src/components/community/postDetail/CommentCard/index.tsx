@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { NativeSyntheticEvent, TextLayoutEventData, View } from 'react-native';
+import { NativeSyntheticEvent, TextLayoutEventData, TouchableOpacity, View } from 'react-native';
+import ModalElement from 'react-native-modal';
 
 import { useTheme } from '@emotion/react';
 
@@ -16,6 +17,7 @@ export interface PostCommentCardProps extends Pick<CommunityPostProps, 'author' 
   message: string;
   isReply?: boolean;
   children?: React.ReactNode;
+  image?: string;
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
@@ -24,10 +26,12 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   time,
   message,
   isReply,
+  image,
   children,
 }) => {
   const [isShow, setIsShow] = useState<Array<boolean>>([]);
   const [isOverlay, setIsOverlay] = useState<Array<boolean>>([]);
+  const [imageClicked, setImageClicked] = useState<boolean>(false);
 
   const showMore = (index: number) => {
     setIsShow((prev) => {
@@ -97,6 +101,30 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             </ScaleOpacity>
           </S.PostCommentCardCommentContainer>
         )}
+        {image &&
+          (imageClicked ? (
+            <ModalElement isVisible={imageClicked} backdropOpacity={0.8}>
+              <TouchableOpacity
+                onPress={() => setImageClicked(false)}
+                activeOpacity={1}
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 999,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <S.PostCommentImage source={{ uri: image }} style={{ width: 300, height: 300 }} />
+              </TouchableOpacity>
+            </ModalElement>
+          ) : (
+            <ScaleOpacity onPress={() => setImageClicked(true)}>
+              <S.PostCommentImage source={{ uri: image }} />
+            </ScaleOpacity>
+          ))}
         {children}
       </View>
     </S.PostCommentCardContainer>

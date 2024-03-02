@@ -60,12 +60,13 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention })
             </Text>
           </>
         }
-        renderItem={({ item: { author, time, message, replies }, index }) => (
+        renderItem={({ item: { author, time, message, replies, image }, index }) => (
           <PostCommentCard
             author={author}
             time={time}
             message={message}
             index={index}
+            image={image}
             children={
               <>
                 <S.PostDetailLayoutReplyContainer>

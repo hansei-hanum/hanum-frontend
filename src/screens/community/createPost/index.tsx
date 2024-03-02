@@ -161,13 +161,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
           const imageUri = response.assets?.map((item) => item.uri);
           const imageName = response.assets?.map((item) => item.fileName) || 'image.png';
           const image = imageUri?.map((uri, index) => ({ uri, name: imageName[index] }));
-          setSelectedImage((prev: string[] | PhotosInterface[]) => {
-            if (typeof prev[0] === 'string') {
-              return prev as string[];
-            } else {
-              return prev as PhotosInterface[];
-            }
-          });
+          setSelectedImage((prev) => [...prev, ...image]);
         }
       });
     }
