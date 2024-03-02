@@ -5,6 +5,7 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
 import {
   COMMUNITY_LIST,
@@ -24,17 +25,22 @@ import {
   Text,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useNavigate } from 'src/hooks';
+import { communityEditAtom, communityEditAtomProps } from 'src/atoms';
 
 import * as S from './styled';
 
 export const CommunityMineScreen: React.FC = () => {
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
+
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
   const [height, setHeight] = useState<number>(0);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [postContent, setPostContent] = useState<communityEditAtomProps>({ text: '', image: [] });
 
-  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+  const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
+
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const navigate = useNavigate();
@@ -47,10 +53,17 @@ export const CommunityMineScreen: React.FC = () => {
     closeBottomSheet();
     switch (option) {
       case CommunityMineBottomSheetTextEnum.EDIT:
+        setCommunityEdit(postContent);
+        navigate('CommunityCreatePost');
         return;
       case CommunityMineBottomSheetTextEnum.DELETE:
         return setModalOpen(true);
     }
+  };
+
+  const openBottomSheet = (text: string, image: string[]) => {
+    bottomSheetRef.current?.scrollTo(-height);
+    setPostContent({ text, image });
   };
 
   const onLayout = (event: LayoutChangeEvent) => {
@@ -71,7 +84,7 @@ export const CommunityMineScreen: React.FC = () => {
       <S.CommunityMineHeader>
         <GoBackIcon style={{ position: 'absolute', left: 0, paddingLeft: 10 }} />
         <Text size={16} fontFamily="bold">
-          내 게시물{' '}
+          내 게시물
         </Text>
       </S.CommunityMineHeader>
       <S.CommunityMineWrapper>
@@ -91,7 +104,7 @@ export const CommunityMineScreen: React.FC = () => {
                 type={type}
                 time={time}
                 style={{ width: '100%' }}
-                openBottomSheet={() => openBottomSheet({ scrollTo: -height })}
+                openBottomSheet={() => openBottomSheet(content.message, content.image)}
                 onPress={() => onChatScreenNavigate(index)}
               />
               <CommunityPost
