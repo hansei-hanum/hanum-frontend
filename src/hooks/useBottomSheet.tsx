@@ -6,8 +6,8 @@ import { BottomSheetRefProps } from 'src/types';
 export const useBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-  const openBottomSheet = () => {
-    bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
+  const openBottomSheet = (scrollTo?: number) => {
+    bottomSheetRef.current?.scrollTo(scrollTo ? scrollTo : COMMUNITY_BOTTOM_SHEET_HEIGHT);
   };
 
   const closeBottomSheet = () => {

@@ -18,6 +18,7 @@ export interface CommunityPostHeaderProps
   style?: StyleProp<ViewStyle>;
   openBottomSheet: () => void;
   onPress?: () => void;
+  userImagePress?: () => void;
 }
 
 export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
@@ -27,16 +28,19 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
   style,
   openBottomSheet,
   onPress,
+  userImagePress,
 }) => {
   const theme = useTheme();
 
   return (
     <S.CommunityHeader style={style}>
       <S.CommunityHeaderTitle>
-        <S.CommunityHeaderUserImg
-          source={author.image && !author.isHidden ? { uri: author.image } : UserLogo}
-          style={{ resizeMode: 'contain' }}
-        />
+        <ScaleOpacity onPress={userImagePress}>
+          <S.CommunityHeaderUserImg
+            source={author.image && !author.isHidden ? { uri: author.image } : UserLogo}
+            style={{ resizeMode: 'contain' }}
+          />
+        </ScaleOpacity>
         <View>
           <Text size={16}>{author.isHidden ? '익명' : author.name}</Text>
           <S.CommunityHeaderUserSection>

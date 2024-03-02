@@ -7,4 +7,4 @@ export * from './createPost';
 export * from './postDetail';
 export * from './reports';
 export * from './PostOptionBottomSheet';
-export * from './AnimatedHeader';
+export * from './main';

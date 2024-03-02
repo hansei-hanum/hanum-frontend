@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';
 
@@ -15,6 +16,7 @@ import {
   Text,
   CommunityMainAnimatedHeader,
   PostOptionBottomSheet,
+  PostBottom,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
 import { COMMUNITY_LIST } from 'src/constants';
@@ -42,61 +44,6 @@ const CommunityMainHeader: React.FC = () => {
         </S.CommunityUserContainer>
       </ScaleOpacity>
     </S.CommunityUserWrapper>
-  );
-};
-
-export interface CommunityMainBottomProps {
-  index: number;
-  likesLength: number;
-  commentsLength: number;
-}
-
-const CommunityMainBottom: React.FC<CommunityMainBottomProps> = ({
-  index,
-  likesLength,
-  commentsLength,
-}) => {
-  const navigate = useNavigate();
-  const theme = useTheme();
-
-  const [likes, setLikes] = useState<Array<boolean>>([]);
-
-  const onChatScreenNavigate = (index: number) => {
-    navigate('CommunityPostDetail', { id: index });
-  };
-
-  const onLikeClick = (index: number) => {
-    trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
-    setLikes((prev) => {
-      const newLikes = [...prev];
-      newLikes[index] = !newLikes[index];
-      return newLikes;
-    });
-  };
-
-  return (
-    <S.CommunityMainBottom>
-      <ScaleOpacity onPress={() => onLikeClick(index)}>
-        <S.CommunityMainBottomIconContainer>
-          {likes[index] ? (
-            <MCI name="cards-heart" size={24} color={theme.danger} />
-          ) : (
-            <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-          )}
-          <Text size={14} color={theme.placeholder}>
-            좋아요 {likes[index] ? likesLength + 1 : likesLength}
-          </Text>
-        </S.CommunityMainBottomIconContainer>
-      </ScaleOpacity>
-      <ScaleOpacity onPress={() => onChatScreenNavigate(index)}>
-        <S.CommunityMainBottomIconContainer>
-          <Icon name="chatbubble-outline" size={22} color={theme.placeholder} />
-          <Text size={14} color={theme.placeholder}>
-            댓글 {commentsLength}
-          </Text>
-        </S.CommunityMainBottomIconContainer>
-      </ScaleOpacity>
-    </S.CommunityMainBottom>
   );
 };
 
@@ -141,6 +88,23 @@ export const CommunityMainScreen: React.FC = () => {
   const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
+  const { verifyUser } = useGetUser();
+
+  const onProfilePress = () => {
+    if (verifyUser) {
+      Toast.show({
+        type: 'info',
+        position: 'top',
+        text1: '인증된 사용자에요',
+      });
+    } else {
+      Toast.show({
+        type: 'info',
+        position: 'top',
+        text1: '익명 사용자에요',
+      });
+    }
+  };
 
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
@@ -173,6 +137,7 @@ export const CommunityMainScreen: React.FC = () => {
               style={{ width: '100%' }}
               openBottomSheet={openBottomSheet}
               onPress={() => onChatScreenNavigate(index)}
+              userImagePress={onProfilePress}
             />
             <CommunityPost
               author={author}
@@ -183,7 +148,7 @@ export const CommunityMainScreen: React.FC = () => {
               index={index}
               imageHeights={imageHeights}
             />
-            <CommunityMainBottom
+            <PostBottom
               index={index}
               likesLength={content.likes}
               commentsLength={content.comments}
