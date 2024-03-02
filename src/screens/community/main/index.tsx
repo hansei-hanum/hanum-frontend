@@ -22,20 +22,48 @@ import { isIos } from 'src/utils';
 
 import * as S from './styled';
 
-export const CommunityMainScreen: React.FC = () => {
-  const navigate = useNavigate();
-  const inset = useSafeAreaInsets();
-
-  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
-
-  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
-
+const CommunityMainHeader: React.FC = () => {
   const { userProfile } = useGetUser();
 
   const theme = useTheme();
 
-  const [isSearchScreen, setIsSearchScreen] = useState(false);
+  const navigate = useNavigate();
+
+  return (
+    <S.CommunityUserWrapper>
+      <ScaleOpacity onPress={() => navigate('CommunityCreatePost')}>
+        <S.CommunityUserContainer>
+          <CommunityUserImage userImage={userProfile} />
+          <S.CommunityUserThinkBox>
+            <Text size={16} color={theme.placeholder}>
+              어떤 생각을 하고 계신가요?
+            </Text>
+          </S.CommunityUserThinkBox>
+        </S.CommunityUserContainer>
+      </ScaleOpacity>
+    </S.CommunityUserWrapper>
+  );
+};
+
+export interface CommunityMainBottomProps {
+  index: number;
+  likesLength: number;
+  commentsLength: number;
+}
+
+const CommunityMainBottom: React.FC<CommunityMainBottomProps> = ({
+  index,
+  likesLength,
+  commentsLength,
+}) => {
+  const navigate = useNavigate();
+  const theme = useTheme();
+
   const [likes, setLikes] = useState<Array<boolean>>([]);
+
+  const onChatScreenNavigate = (index: number) => {
+    navigate('CommunityPostDetail', { id: index });
+  };
 
   const onLikeClick = (index: number) => {
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
@@ -45,6 +73,42 @@ export const CommunityMainScreen: React.FC = () => {
       return newLikes;
     });
   };
+
+  return (
+    <S.CommunityMainBottom>
+      <ScaleOpacity onPress={() => onLikeClick(index)}>
+        <S.CommunityMainBottomIconContainer>
+          {likes[index] ? (
+            <MCI name="cards-heart" size={24} color={theme.danger} />
+          ) : (
+            <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
+          )}
+          <Text size={14} color={theme.placeholder}>
+            좋아요 {likes[index] ? likesLength + 1 : likesLength}
+          </Text>
+        </S.CommunityMainBottomIconContainer>
+      </ScaleOpacity>
+      <ScaleOpacity onPress={() => onChatScreenNavigate(index)}>
+        <S.CommunityMainBottomIconContainer>
+          <Icon name="chatbubble-outline" size={22} color={theme.placeholder} />
+          <Text size={14} color={theme.placeholder}>
+            댓글 {commentsLength}
+          </Text>
+        </S.CommunityMainBottomIconContainer>
+      </ScaleOpacity>
+    </S.CommunityMainBottom>
+  );
+};
+
+export const CommunityMainScreen: React.FC = () => {
+  const navigate = useNavigate();
+  const inset = useSafeAreaInsets();
+
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+
+  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
+
+  const [isSearchScreen, setIsSearchScreen] = useState(false);
 
   useEffect(() => {
     COMMUNITY_LIST.forEach((item, index) => {
@@ -99,20 +163,7 @@ export const CommunityMainScreen: React.FC = () => {
           paddingBottom: 60,
           rowGap: 16,
         }}
-        ListHeaderComponent={
-          <S.CommunityUserWrapper>
-            <ScaleOpacity onPress={() => navigate('CommunityCreatePost')}>
-              <S.CommunityUserContainer>
-                <CommunityUserImage userImage={userProfile} />
-                <S.CommunityUserThinkBox>
-                  <Text size={16} color={theme.placeholder}>
-                    어떤 생각을 하고 계신가요?
-                  </Text>
-                </S.CommunityUserThinkBox>
-              </S.CommunityUserContainer>
-            </ScaleOpacity>
-          </S.CommunityUserWrapper>
-        }
+        ListHeaderComponent={<CommunityMainHeader />}
         renderItem={({ item: { author, type, time, content }, index }) => (
           <S.CommunityMainBox>
             <CommunityPostHeader
@@ -132,28 +183,11 @@ export const CommunityMainScreen: React.FC = () => {
               index={index}
               imageHeights={imageHeights}
             />
-            <S.CommunityMainBottom>
-              <ScaleOpacity onPress={() => onLikeClick(index)}>
-                <S.CommunityMainBottomIconContainer>
-                  {likes[index] ? (
-                    <MCI name="cards-heart" size={24} color={theme.danger} />
-                  ) : (
-                    <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
-                  )}
-                  <Text size={14} color={theme.placeholder}>
-                    좋아요 {likes[index] ? content.likes + 1 : content.likes}
-                  </Text>
-                </S.CommunityMainBottomIconContainer>
-              </ScaleOpacity>
-              <ScaleOpacity onPress={() => onChatScreenNavigate(index)}>
-                <S.CommunityMainBottomIconContainer>
-                  <Icon name="chatbubble-outline" size={22} color={theme.placeholder} />
-                  <Text size={14} color={theme.placeholder}>
-                    댓글 {content.comments}
-                  </Text>
-                </S.CommunityMainBottomIconContainer>
-              </ScaleOpacity>
-            </S.CommunityMainBottom>
+            <CommunityMainBottom
+              index={index}
+              likesLength={content.likes}
+              commentsLength={content.comments}
+            />
           </S.CommunityMainBox>
         )}
       />
