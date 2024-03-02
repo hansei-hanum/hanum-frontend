@@ -4,3 +4,4 @@ export * from './pay';
 export * from './notification';
 export * from './eoullim';
 export * from './info';
+export * from './community';

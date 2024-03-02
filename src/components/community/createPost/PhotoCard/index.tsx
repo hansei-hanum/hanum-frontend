@@ -17,8 +17,8 @@ export interface PhotosInterface {
 export interface PhotoCardProps {
   item?: string;
   index: number;
-  setSelectedImage: React.Dispatch<React.SetStateAction<PhotosInterface[] | string[]>>;
-  selectedImage: PhotosInterface[] | string[];
+  setSelectedImage: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedImage: string[];
 }
 
 export const PhotoCard: React.FC<PhotoCardProps> = ({
@@ -36,9 +36,9 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
         ...communityEdit,
         image: communityEdit.image?.filter((_, i) => i !== index),
       });
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as string[]);
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
     } else {
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as PhotosInterface[]);
+      setSelectedImage(selectedImage?.filter((_, i) => i !== index));
     }
   };
 

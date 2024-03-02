@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native';
-import { MediaType, launchImageLibrary } from 'react-native-image-picker';
+import { Asset, MediaType, launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Animated } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -24,7 +24,7 @@ import {
   NoScrollbarScrollView,
   PhotosInterface,
 } from 'src/components';
-import { useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
+import { useCreatePost, useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import {
   ANONYMITY_OPTION_LIST,
@@ -33,7 +33,8 @@ import {
   VISIBLE_TYPE_LIST,
 } from 'src/constants';
 import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
-import { isIos } from 'src/utils';
+import { isAndroid, isIos } from 'src/utils';
+import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
@@ -45,11 +46,11 @@ const UserSection: React.FC = () => {
 
   const setVisibleTypeText = () => {
     switch (visibleType.text) {
-      case '모두에게 공개':
+      case LimitedArticleScopeOfDisclosure.Public:
         return '전체';
-      case '제한적 공개':
+      case LimitedArticleScopeOfDisclosure.Faculty:
         return '제한됨';
-      case '학생 공개':
+      case LimitedArticleScopeOfDisclosure.Alumni:
         return '학생';
       default:
         return '';
@@ -65,11 +66,13 @@ const UserSection: React.FC = () => {
       <View style={{ rowGap: 2 }}>
         <Text size={16}>{userData?.name || '박찬영'}</Text>
         <S.VisibleTypeContainer>
-          {visibleType.text === '모두에게 공개' && (
+          {visibleType.text === LimitedArticleScopeOfDisclosure.Public && (
             <MI name="public" size={16} color={theme.white} />
           )}
-          {visibleType.text === '제한적 공개' && <MI name="lock" size={16} color={theme.white} />}
-          {visibleType.text === '학생 공개' && (
+          {visibleType.text === LimitedArticleScopeOfDisclosure.Student && (
+            <MI name="lock" size={16} color={theme.white} />
+          )}
+          {visibleType.text === LimitedArticleScopeOfDisclosure.Peer && (
             <MCI name="account-group" size={16} color={theme.white} />
           )}
           <Text size={12} color={theme.white} fontFamily="bold">
@@ -86,6 +89,8 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
+  const { mutate } = useCreatePost();
+
   const { animation } = useSetAnimation();
 
   const navigate = useNavigate();
@@ -95,7 +100,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const theme = useTheme();
 
   const [text, setText] = useState<string>(communityEdit.text);
-  const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string[]>([]);
 
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
 
@@ -159,9 +164,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
           console.log('Image picker error: ', response.errorMessage);
         } else {
           const imageUri = response.assets?.map((item) => item.uri);
-          const imageName = response.assets?.map((item) => item.fileName) || 'image.png';
-          const image = imageUri?.map((uri, index) => ({ uri, name: imageName[index] }));
-          setSelectedImage((prev) => [...prev, ...image]);
+          setSelectedImage(imageUri as string[]);
         }
       });
     }
@@ -179,12 +182,37 @@ export const CommunityCreatePostScreen: React.FC = () => {
     setKeyboardShow(false);
   };
 
+  const createFormData = (photo: Asset, body = {}) => {
+    const data = new FormData();
+
+    data.append('photo', {
+      name: photo.fileName,
+      type: photo.type,
+      uri: isIos ? photo.uri?.replace('file://', '') : photo.uri,
+    });
+
+    Object.keys(body).forEach((key) => {
+      data.append(key, body[key]);
+    });
+
+    console.log(data, 'data');
+    return data;
+  };
+
   const onPost = () => {
-    setText('');
-    console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
-    setSelectedImage([]);
-    setVisibleType({ text: VISIBLE_TYPE_LIST[0].text, limitType: '' });
-    setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
+    mutate({
+      isAnonymous: Boolean(anonymityType),
+      author: null,
+      content: text,
+      scopeOfDisclosure: visibleType.text,
+      attachments: selectedImage,
+    });
+
+    // setText('');
+    // console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
+    // setSelectedImage([]);
+    // setVisibleType({ text: VISIBLE_TYPE_LIST[0].text, limitType: '' });
+    // setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
   };
 
   const isFocused = useIsFocused();

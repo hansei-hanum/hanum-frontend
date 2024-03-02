@@ -5,6 +5,7 @@ export const API_BASEURLS = {
   AUTH: 'https://account.hanum.us',
   INFO: 'https://info.hanum.us',
   FESTIVAL: 'https://festival.hanum.us',
+  COMMUNITY: 'https://xx.nekos.me',
 };
 
 export const API_SUFFIX = {
@@ -27,6 +28,10 @@ export const API_SUFFIX = {
   MEAL: '/meal/',
 };
 
+export const COMMUNITY_API_SUFFIX = {
+  CREATE: '/community/articles',
+};
+
 const baseConfig = {
   headers: {
     'Content-Type': 'application/json',
@@ -46,6 +51,7 @@ export const authInstance = createAxiosInstance(API_BASEURLS.AUTH);
 export const payInstance = createAxiosInstance(API_BASEURLS.PAY);
 export const infoInstance = createAxiosInstance(API_BASEURLS.INFO);
 export const festivalInstance = createAxiosInstance(API_BASEURLS.FESTIVAL);
+export const communityInstance = createAxiosInstance(API_BASEURLS.COMMUNITY);
 
 export interface APIResponse<T = unknown> {
   message: string;
