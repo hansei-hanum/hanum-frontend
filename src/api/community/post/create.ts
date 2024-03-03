@@ -58,7 +58,7 @@ export const createPost = async ({
     });
   }
 
-  const { data } = await communityInstance.post(API_SUFFIX.COMMUNITY.CREATE, formData, {
+  const { data } = await communityInstance.post(API_SUFFIX.COMMUNITY.BASE_URL, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

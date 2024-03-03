@@ -5,6 +5,6 @@ export interface deletePostValues {
 }
 
 export const deletePost = async ({ id }: deletePostValues) => {
-  const { data } = await communityInstance.delete(`${API_SUFFIX.COMMUNITY.DELETE}/${id}`);
+  const { data } = await communityInstance.delete(`${API_SUFFIX.COMMUNITY.BASE_URL}/${id}`);
   return data;
 };

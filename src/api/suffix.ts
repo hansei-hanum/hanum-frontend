@@ -28,9 +28,7 @@ export const EOULLIM = {
 };
 
 export const COMMUNITY = {
-  CREATE: '/community/articles',
-  EDIT: '/community/articles',
-  DELETE: '/community/articles',
+  BASE_URL: '/community/articles',
 };
 
 export interface ApiSuffixProps {

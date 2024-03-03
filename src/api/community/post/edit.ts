@@ -31,10 +31,14 @@ export const editPost = async ({ id, content, keepAttachments, attachments }: ed
     });
   }
 
-  const { data } = await communityInstance.post(`${API_SUFFIX.COMMUNITY.EDIT}/${id}`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
+  const { data } = await communityInstance.patch(
+    `${API_SUFFIX.COMMUNITY.BASE_URL}/${id}`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     },
-  });
+  );
   return data;
 };
