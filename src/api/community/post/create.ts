@@ -1,6 +1,5 @@
 import { PhotosInterface } from 'src/components';
-
-import { COMMUNITY_API_SUFFIX, communityInstance, setAccessToken } from '../api';
+import { API_SUFFIX, communityInstance, setAccessToken } from 'src/api';
 
 export enum LimitedArticleScopeOfDisclosure {
   /**
@@ -59,10 +58,10 @@ export const createPost = async ({
     });
   }
 
-  const data = await communityInstance.post(COMMUNITY_API_SUFFIX.CREATE, formData, {
+  const { data } = await communityInstance.post(API_SUFFIX.COMMUNITY.CREATE, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return data.data;
+  return data;
 };

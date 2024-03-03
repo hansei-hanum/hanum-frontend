@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { API_SUFFIX, authInstance, setAccessToken } from './api';
+import { authInstance, setAccessToken } from './api';
+import { API_SUFFIX } from './suffix';
 
 export interface PhoneValue {
   phone: string;
@@ -49,14 +50,14 @@ export interface UserVerifyValue {
 export type UserVerifyResponse = Omit<VerificationUser, 'graduated_at' | 'valid_until'>;
 
 export const phone = async ({ phone }: PhoneValue) => {
-  const { data } = await authInstance.post(API_SUFFIX.PHONE, {
+  const { data } = await authInstance.post(API_SUFFIX.AUTH.PHONE, {
     phone,
   });
   return data;
 };
 
 export const register = async ({ phone, code, name }: RegisterValues) => {
-  const { data } = await authInstance.post(API_SUFFIX.REGISTER, {
+  const { data } = await authInstance.post(API_SUFFIX.AUTH.REGISTER, {
     phone,
     code,
     name,
@@ -65,7 +66,7 @@ export const register = async ({ phone, code, name }: RegisterValues) => {
 };
 
 export const login = async ({ phone, code }: LoginValues) => {
-  const { data } = await authInstance.post(API_SUFFIX.LOGIN, {
+  const { data } = await authInstance.post(API_SUFFIX.AUTH.LOGIN, {
     phone,
     code,
   });
@@ -75,7 +76,7 @@ export const login = async ({ phone, code }: LoginValues) => {
 export const fetchUser = async () => {
   const token = await AsyncStorage.getItem('token');
   setAccessToken(token);
-  const { data } = await authInstance.get(`${API_SUFFIX.USERS}@me/`);
+  const { data } = await authInstance.get(`${API_SUFFIX.AUTH.USERS}@me/`);
   return data;
 };
 
@@ -84,10 +85,10 @@ export const userVerify = async ({ code, isCheck }: UserVerifyValue) => {
   if (!token) return null;
   setAccessToken(token);
   if (isCheck) {
-    const { data } = await authInstance.get(`${API_SUFFIX.KEYS}${code}/`);
+    const { data } = await authInstance.get(`${API_SUFFIX.AUTH.KEYS}${code}/`);
     return data;
   } else {
-    const { data } = await authInstance.post(API_SUFFIX.STUDENT_VERIFY, {
+    const { data } = await authInstance.post(API_SUFFIX.AUTH.STUDENT_VERIFY, {
       code,
     });
     return data;
@@ -95,6 +96,6 @@ export const userVerify = async ({ code, isCheck }: UserVerifyValue) => {
 };
 
 export const deleteUser = async () => {
-  await authInstance.delete(`${API_SUFFIX.USERS}@me/`);
+  await authInstance.delete(`${API_SUFFIX.AUTH.USERS}@me/`);
   await AsyncStorage.removeItem('token');
 };

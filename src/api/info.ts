@@ -1,4 +1,5 @@
-import { API_SUFFIX, infoInstance } from './api';
+import { infoInstance } from './api';
+import { API_SUFFIX } from './suffix';
 
 export interface GetInfoResponse {
   date: string;
@@ -19,21 +20,21 @@ export interface GetLunchMenusResponse {
 }
 
 export const getSchedule = async () => {
-  const { data } = await infoInstance.get(API_SUFFIX.SCHEDULE);
+  const { data } = await infoInstance.get(API_SUFFIX.INFO.SCHEDULE);
   return data;
 };
 
 export const getMonthSchedule = async ({ month }: GetMonthScheduleValue) => {
-  const { data } = await infoInstance.get(`${API_SUFFIX.SCHEDULE}${month}`);
+  const { data } = await infoInstance.get(`${API_SUFFIX.INFO.SCHEDULE}${month}`);
   return data;
 };
 
 export const getTimeTable = async () => {
-  const { data } = await infoInstance.get(API_SUFFIX.TIMETABLE);
+  const { data } = await infoInstance.get(API_SUFFIX.INFO.TIMETABLE);
   return data;
 };
 
 export const getMealTable = async ({ month }: GetLunchMenusValue) => {
-  const { data } = await infoInstance.get(`${API_SUFFIX.MEAL}${month}`);
+  const { data } = await infoInstance.get(`${API_SUFFIX.INFO.MEAL}${month}`);
   return data;
 };

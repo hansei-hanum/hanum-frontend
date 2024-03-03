@@ -1,6 +1,5 @@
+import { API_SUFFIX, communityInstance, setAccessToken } from 'src/api';
 import { PhotosInterface } from 'src/components';
-
-import { COMMUNITY_API_SUFFIX, communityInstance, setAccessToken } from '../api';
 
 export interface editPostValues {
   id: number;
@@ -32,10 +31,10 @@ export const editPost = async ({ id, content, keepAttachments, attachments }: ed
     });
   }
 
-  const data = await communityInstance.post(`${COMMUNITY_API_SUFFIX.EDIT}/${id}`, formData, {
+  const { data } = await communityInstance.post(`${API_SUFFIX.COMMUNITY.EDIT}/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return data.data;
+  return data;
 };

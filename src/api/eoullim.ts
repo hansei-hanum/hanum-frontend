@@ -1,4 +1,5 @@
-import { API_SUFFIX, festivalInstance } from './api';
+import { festivalInstance } from './api';
+import { API_SUFFIX } from './suffix';
 
 export interface EoullimLuckyDrawValue {
   token: string;
@@ -20,25 +21,25 @@ export interface EoullimVoteResponse {
 }
 
 export const eoullimLuckyDraw = async ({ token }: EoullimLuckyDrawValue) => {
-  const { data } = await festivalInstance.post(API_SUFFIX.EOULLIM_LUCKYDRAW, {
+  const { data } = await festivalInstance.post(API_SUFFIX.EOULLIM.EOULLIM_LUCKYDRAW, {
     token: token,
   });
   return data;
 };
 
 export const eoullimGetLuckyDraw = async () => {
-  const { data } = await festivalInstance.get(API_SUFFIX.EOULLIM_GET_LUCKYDRAW);
+  const { data } = await festivalInstance.get(API_SUFFIX.EOULLIM.EOULLIM_GET_LUCKYDRAW);
   return data;
 };
 
 export const eoullimVote = async ({ fieldId, id }: EoullimVoteValue) => {
-  const { data } = await festivalInstance.post(`${API_SUFFIX.EOULLIM_VOTE}${id}`, {
+  const { data } = await festivalInstance.post(`${API_SUFFIX.EOULLIM.EOULLIM_VOTE}${id}`, {
     fieldId,
   });
   return data;
 };
 
 export const eoullimGetVote = async () => {
-  const { data } = await festivalInstance.get(API_SUFFIX.EOULLIM_GET_VOTE);
+  const { data } = await festivalInstance.get(API_SUFFIX.EOULLIM.EOULLIM_GET_VOTE);
   return data;
 };
