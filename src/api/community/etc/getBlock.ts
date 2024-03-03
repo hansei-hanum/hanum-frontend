@@ -1,7 +1,16 @@
 import { communityInstance, API_SUFFIX, setAccessToken } from 'src/api';
 
 export interface getBlockListResponse {
-  blocks: [{ id: number; name: string; handle: string; picture?: string; createdAt: string }];
+  blocks: [
+    {
+      id: number;
+      name: string;
+      handle: string;
+      picture?: string;
+      createdAt: string;
+      verificationInfo?: string;
+    },
+  ];
 }
 
 export const getBlockList = async () => {

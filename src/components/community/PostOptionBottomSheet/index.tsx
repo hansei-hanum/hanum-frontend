@@ -39,7 +39,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-  const { mutate, isLoading } = useBlock();
+  const { mutate, isLoading, isSuccess } = useBlock();
 
   const theme = useTheme();
 
@@ -69,10 +69,8 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   };
 
   const onModalButtonPress = () => {
-    mutate({ targetId: 6 });
-    if (!isLoading) {
-      setModalOpen({ report: false, block: false });
-    }
+    mutate({ targetId: 5 });
+    !isLoading && setTimeout(() => setModalOpen({ report: false, block: false }), 200);
   };
 
   const onModalCancelPress = () => {
