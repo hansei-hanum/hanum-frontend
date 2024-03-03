@@ -20,7 +20,7 @@ import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export const CommunityMineScreen: React.FC = () => {
+export const UserPostScreen: React.FC = () => {
   const [height, setHeight] = useState<number>(0);
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
@@ -57,13 +57,13 @@ export const CommunityMineScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <S.CommunityMineHeader>
+      <S.UserPostHeader>
         <GoBackIcon style={{ position: 'absolute', left: 0, paddingLeft: 10 }} />
         <Text size={16} fontFamily="bold">
           내 게시물
         </Text>
-      </S.CommunityMineHeader>
-      <S.CommunityMineWrapper>
+      </S.UserPostHeader>
+      <S.UserPostWrapper>
         <FlatList
           scrollEventThrottle={16}
           data={COMMUNITY_LIST}
@@ -74,7 +74,7 @@ export const CommunityMineScreen: React.FC = () => {
             rowGap: 16,
           }}
           renderItem={({ item: { author, type, time, content }, index }) => (
-            <S.CommunityMinePostBox>
+            <S.UserPostBox>
               <CommunityPostHeader
                 author={author}
                 type={type}
@@ -97,10 +97,10 @@ export const CommunityMineScreen: React.FC = () => {
                 likesLength={content.likes}
                 commentsLength={content.comments}
               />
-            </S.CommunityMinePostBox>
+            </S.UserPostBox>
           )}
         />
-      </S.CommunityMineWrapper>
+      </S.UserPostWrapper>
       <CommunityMineBottomSheet
         ref={bottomSheetRef}
         setHeight={setHeight}

@@ -18,7 +18,12 @@ export const SHOW_MORE_LIST: ShowMoreItem[] = [
       {
         name: '내 게시물',
         icon: '📝',
-        navigateUrl: 'CommunityMine',
+        navigateUrl: 'UserPost',
+      },
+      {
+        name: '차단된 사용자',
+        icon: '🚫',
+        navigateUrl: 'UserBlock',
       },
     ],
   },

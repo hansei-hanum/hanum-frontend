@@ -2,7 +2,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import styled from '@emotion/native';
 
-export const CommunityMineHeader = styled.View`
+export const UserPostHeader = styled.View`
   position: relative;
   flex-direction: row;
   align-items: center;
@@ -13,12 +13,12 @@ export const CommunityMineHeader = styled.View`
   border-bottom-color: ${({ theme }) => theme.lightGray};
 `;
 
-export const CommunityMineWrapper = styled(GestureHandlerRootView)`
+export const UserPostWrapper = styled(GestureHandlerRootView)`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
 `;
 
-export const CommunityMinePostBox = styled.View`
+export const UserPostBox = styled.View`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;

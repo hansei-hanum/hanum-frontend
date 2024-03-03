@@ -123,8 +123,6 @@ export const Router: React.FC = () => {
           <Stack.Group>
             <Stack.Screen name="Main" component={SC.MainScreen} />
             <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
-            <Stack.Screen name="UserInfo" component={SC.UserInfoScreen} />
-            <Stack.Screen name="WebView" component={SC.WebViewScreen} />
             <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
           </Stack.Group>
           <Stack.Group>
@@ -148,7 +146,6 @@ export const Router: React.FC = () => {
               name="CommunityAnonymitySettings"
               component={SC.AnonymitySettingsScreen}
             />
-            <Stack.Screen name="CommunityMine" component={SC.CommunityMineScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanowlMain" component={SC.HanowlApplyMainScreen} />
@@ -156,6 +153,10 @@ export const Router: React.FC = () => {
             <Stack.Screen name="HanowlApplyDetails" component={SC.ApplyContentsScreen} />
             <Stack.Screen name="HanowlFinalConfirm" component={SC.FinalConfirmScreen} />
             <Stack.Screen name="HanowlConfirm" component={SC.ConfirmScreen} />
+          </Stack.Group>
+          <Stack.Group>
+            <Stack.Screen name="UserInfo" component={SC.UserInfoScreen} />
+            <Stack.Screen name="UserPost" component={SC.UserPostScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
