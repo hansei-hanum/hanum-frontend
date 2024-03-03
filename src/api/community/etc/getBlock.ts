@@ -1,10 +1,11 @@
-import { communityInstance, API_SUFFIX } from 'src/api';
+import { communityInstance, API_SUFFIX, setAccessToken } from 'src/api';
 
-export interface getBlockResponse {
+export interface getBlockListResponse {
   blocks: [{ id: number; name: string; handle: string; picture?: string; createdAt: string }];
 }
 
-export const getBlock = async () => {
+export const getBlockList = async () => {
+  setAccessToken('1');
   const { data } = await communityInstance.get(API_SUFFIX.COMMUNITY.BLOCK, {
     params: { page: 0, count: 20 },
   });

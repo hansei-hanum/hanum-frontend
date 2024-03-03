@@ -23,7 +23,7 @@ export const SHOW_MORE_LIST: ShowMoreItem[] = [
       {
         name: '차단된 사용자',
         icon: '🚫',
-        navigateUrl: 'UserBlock',
+        navigateUrl: 'UserBlocList',
       },
     ],
   },

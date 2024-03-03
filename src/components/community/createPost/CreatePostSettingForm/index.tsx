@@ -1,9 +1,7 @@
 import React from 'react';
 import { KeyboardAvoidingView, SafeAreaView } from 'react-native';
 
-import { Button } from 'src/components';
-
-import { CommunityHeader } from '../../Header';
+import { Button, ScreenHeader } from 'src/components';
 
 import * as S from './styled';
 
@@ -22,7 +20,7 @@ export const CreatePostSettingForm: React.FC<CreatePostSettingFormProps> = ({
 }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <CommunityHeader title={headerTitle} />
+      <ScreenHeader title={headerTitle} />
       <KeyboardAvoidingView
         behavior="padding"
         style={{ flex: 1 }}

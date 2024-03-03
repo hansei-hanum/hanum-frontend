@@ -4,6 +4,7 @@ import { FlatList, SafeAreaView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
+import { useTheme } from '@emotion/react';
 
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
@@ -11,9 +12,8 @@ import {
   CommunityMineBottomSheet,
   CommunityPost,
   CommunityPostHeader,
-  GoBackIcon,
   PostBottom,
-  Text,
+  ScreenHeader,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useNavigate } from 'src/hooks';
 import { communityEditAtom } from 'src/atoms';
@@ -21,12 +21,15 @@ import { communityEditAtom } from 'src/atoms';
 import * as S from './styled';
 
 export const UserPostScreen: React.FC = () => {
-  const [height, setHeight] = useState<number>(0);
+  const theme = useTheme();
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
 
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
+
+  const [height, setHeight] = useState<number>(0);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -57,14 +60,16 @@ export const UserPostScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <S.UserPostHeader>
-        <GoBackIcon style={{ position: 'absolute', left: 0, paddingLeft: 10 }} />
-        <Text size={16} fontFamily="bold">
-          내 게시물
-        </Text>
-      </S.UserPostHeader>
+      <ScreenHeader
+        title="내 게시물"
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: isScrolled ? theme.lightGray : 'transparent',
+        }}
+      />
       <S.UserPostWrapper>
         <FlatList
+          onScroll={(e) => setIsScrolled(e.nativeEvent.contentOffset.y > 0)}
           scrollEventThrottle={16}
           data={COMMUNITY_LIST}
           keyExtractor={(_, index) => index.toString()}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 import { Animated } from 'react-native';
 
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -7,7 +7,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 import { useRecoilState } from 'recoil';
 
-import { AnonymitySettingsCard, CreatePostSettingForm, Text } from 'src/components';
+import { AnonymitySettingsCard, CreatePostSettingForm } from 'src/components';
 import { ANONYMITY_OPTION_LIST, AnonymityOptionItems } from 'src/constants';
 import { isIos } from 'src/utils';
 import { fonts } from 'src/styles';
