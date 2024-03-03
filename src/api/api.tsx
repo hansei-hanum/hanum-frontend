@@ -8,30 +8,6 @@ export const API_BASEURLS = {
   COMMUNITY: 'https://xx.nekos.me',
 };
 
-export const API_SUFFIX = {
-  REGISTER: '/auth/register/',
-  LOGIN: '/auth/login/',
-  PHONE: '/auth/phone/',
-  USERS: '/users/',
-  KEYS: '/keys/',
-  STUDENT_VERIFY: '/users/@me/verifications',
-  PAYMENT_DETAIL: '/eoullim/balance/detail',
-  PAYMENT: '/eoullim/balance/payment',
-  PAYMENT_AMOUNT: '/eoullim/balance/amount',
-  NOTIFICATION: '/users/@me/tokens/fcm/',
-  SCHEDULE: '/schedule/',
-  TIMETABLE: '/timetable/',
-  EOULLIM_GET_VOTE: '/vote/primary',
-  EOULLIM_VOTE: '/vote/',
-  EOULLIM_LUCKYDRAW: '/luckydraw/lucky_numbers',
-  EOULLIM_GET_LUCKYDRAW: '/luckydraw/lucky_number',
-  MEAL: '/meal/',
-};
-
-export const COMMUNITY_API_SUFFIX = {
-  CREATE: '/community/articles',
-};
-
 const baseConfig = {
   headers: {
     'Content-Type': 'application/json',
@@ -64,7 +40,7 @@ export interface APIErrorResponse {
 }
 
 export const setAccessToken = (token: string | null) => {
-  const instances = [authInstance, payInstance, infoInstance, festivalInstance];
+  const instances = [authInstance, payInstance, infoInstance, festivalInstance, communityInstance];
 
   instances.forEach((instance) => {
     if (token) {

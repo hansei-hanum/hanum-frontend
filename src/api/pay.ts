@@ -1,4 +1,5 @@
-import { API_SUFFIX, payInstance } from './api';
+import { payInstance } from './api';
+import { API_SUFFIX } from './suffix';
 
 export interface GetPaymentAmountResponse {
   balanceAmount: number;
@@ -24,12 +25,12 @@ export interface PaymentValues {
 }
 
 export const getPaymentDetail = async () => {
-  const { data } = await payInstance.get(`${API_SUFFIX.PAYMENT_DETAIL}?page=1&limit=400`);
+  const { data } = await payInstance.get(`${API_SUFFIX.PAY.PAYMENT_DETAIL}?page=1&limit=400`);
   return data;
 };
 
 export const payment = async ({ boothId, amount }: PaymentValues) => {
-  const { data } = await payInstance.post(API_SUFFIX.PAYMENT, {
+  const { data } = await payInstance.post(API_SUFFIX.PAY.PAYMENT, {
     boothId,
     amount,
   });
@@ -37,6 +38,6 @@ export const payment = async ({ boothId, amount }: PaymentValues) => {
 };
 
 export const getPaymentAmount = async () => {
-  const { data } = await payInstance.get(API_SUFFIX.PAYMENT_AMOUNT);
+  const { data } = await payInstance.get(API_SUFFIX.PAY.PAYMENT_AMOUNT);
   return data;
 };

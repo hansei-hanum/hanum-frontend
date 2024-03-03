@@ -1,4 +1,4 @@
 export * from './post';
-export * from './comment';
 export * from './reply';
+export * from './comments';
 export * from './etc';

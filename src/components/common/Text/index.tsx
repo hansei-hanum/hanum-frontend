@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text as TextElement, TextStyle } from 'react-native';
+import { StyleProp, Text as TextElement, TextProps, TextStyle } from 'react-native';
 
 import { css } from '@emotion/native';
 import { useTheme } from '@emotion/react';
@@ -18,7 +18,7 @@ export const TextColumnContainer: React.FC<TextCommonType> = ({ children }) => {
   return <S.TextColumnContainer>{children}</S.TextColumnContainer>;
 };
 
-interface TextProps {
+interface TextCustomProps {
   children: React.ReactNode;
   size: number;
   fontFamily?: keyof typeof fonts;
@@ -29,7 +29,9 @@ interface TextProps {
   onPress?: () => void;
 }
 
-export const TextComponent: React.FC<TextProps> = ({
+export type TextComponentProps = TextCustomProps & TextProps;
+
+export const TextComponent: React.FC<TextComponentProps> = ({
   children,
   size,
   fontFamily,
@@ -38,6 +40,7 @@ export const TextComponent: React.FC<TextProps> = ({
   lineHeight,
   style,
   onPress,
+  ...props
 }) => {
   const theme = useTheme();
   return (
@@ -53,6 +56,7 @@ export const TextComponent: React.FC<TextProps> = ({
           text-align: ${isCenter ? 'center' : 'left'};
         `,
       ]}
+      {...props}
     >
       {children}
     </TextElement>

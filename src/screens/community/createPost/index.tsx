@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { Key, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
@@ -6,7 +5,6 @@ import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native';
 import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Animated } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 import { useIsFocused } from '@react-navigation/native';
@@ -24,14 +22,9 @@ import {
   NoScrollbarScrollView,
   PhotosInterface,
   Spinner,
+  AnimatedHoc,
 } from 'src/components';
-import {
-  useBlockGesture,
-  useCreatePost,
-  useGetUser,
-  useNavigate,
-  useSetAnimation,
-} from 'src/hooks';
+import { useBlockGesture, useCreatePost, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import {
   ANONYMITY_OPTION_LIST,
@@ -84,8 +77,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
 
   const { mutate, isLoading } = useCreatePost();
 
-  const { animation } = useSetAnimation();
-
   const navigate = useNavigate();
 
   const textInputRef = useRef<TextInput>(null);
@@ -96,9 +87,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
 
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
-
-  const keyboardOptionTranslateY = useRef<any>(new Animated.Value(0)).current;
-  const keyboardOptionOpacity = useRef<any>(new Animated.Value(0)).current;
 
   const exitSelectedImage = selectedImage && selectedImage?.length > 0;
 
@@ -174,16 +162,14 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const onKeyboardShow = () => {
-    animation({ animation: keyboardOptionTranslateY, value: isIos ? -10 : 0, duration: 400 });
-    animation({ animation: keyboardOptionOpacity, value: 1, duration: 200 });
     setKeyboardShow(true);
   };
 
   const onKeyboardHide = () => {
-    animation({ animation: keyboardOptionTranslateY, value: 0, duration: 400 });
-    animation({ animation: keyboardOptionOpacity, value: 0, duration: 200 });
     setKeyboardShow(false);
   };
+
+  console.log(keyboardShow, 'keyboardShow');
 
   const onPost = () => {
     mutate({
@@ -253,11 +239,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
           )
         }
       />
-      <S.CreatePostInnerContainer
-        behavior="padding"
-        keyboardVerticalOffset={isIos ? -10 : 0}
-        enabled={isIos}
-      >
+      <S.CreatePostInnerContainer behavior="padding" enabled={isIos}>
         <S.CreatePostMainSection style={{ flexGrow: 1 }}>
           <TouchableWithoutFeedback onPress={onTextInputBlur}>
             <UserSection />
@@ -274,6 +256,15 @@ export const CommunityCreatePostScreen: React.FC = () => {
             maxLength={5000}
           />
         </S.CreatePostMainSection>
+        <AnimatedHoc isOpen={keyboardShow}>
+          <S.CreatePostIconContainer style={{ opacity: keyboardShow ? 1 : 0 }}>
+            {POST_OPTION_LIST.map(({ icon, text }, index) => (
+              <ScaleOpacity key={index} onPress={() => onOptionClick(text)}>
+                <Icon icon={icon} includeBackground={false} />
+              </ScaleOpacity>
+            ))}
+          </S.CreatePostIconContainer>
+        </AnimatedHoc>
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
           <S.CreatePostImageSection>
             {(exitSelectedImage || Boolean(communityEdit.image?.length)) && (
@@ -304,19 +295,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
             ))}
           </S.CreatePostMainSection>
         </View>
-        <S.CreatePostIconContainer
-          ref={keyboardOptionTranslateY}
-          style={{
-            transform: [{ translateY: keyboardOptionTranslateY }],
-            display: keyboardShow ? 'flex' : 'none',
-          }}
-        >
-          {POST_OPTION_LIST.map(({ icon, text }, index) => (
-            <ScaleOpacity key={index} onPress={() => onOptionClick(text)}>
-              <Icon icon={icon} includeBackground={false} />
-            </ScaleOpacity>
-          ))}
-        </S.CreatePostIconContainer>
       </S.CreatePostInnerContainer>
     </S.CreatePostContainer>
   );

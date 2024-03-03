@@ -61,14 +61,14 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention })
           </>
         }
         renderItem={({ item: { author, time, message, replies, image }, index }) => (
-          <PostCommentCard
-            author={author}
-            time={time}
-            message={message}
-            index={index}
-            image={image}
-            children={
-              <>
+          <>
+            <PostCommentCard
+              author={author}
+              time={time}
+              message={message}
+              index={index}
+              image={image}
+              children={
                 <S.PostDetailLayoutReplyContainer>
                   <ScaleOpacity onPress={() => onMention(author.name, true)}>
                     <Text size={14} color={theme.placeholder}>
@@ -78,21 +78,28 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention })
                   {replies && replies.length > 0 && (
                     <ScaleOpacity onPress={() => showChatReplies(index)}>
                       <Text size={14} color={theme.placeholder}>
-                        {showReply[index] ? '댓글 숨기기' : `답글 ${replies.length}개 보기`}
+                        {showReply[index] ? '답글 숨기기' : `답글 ${replies.length}개 보기`}
                       </Text>
                     </ScaleOpacity>
                   )}
                 </S.PostDetailLayoutReplyContainer>
-                {showReply[index] && (
-                  <View style={{ rowGap: 20, marginBottom: 10 }}>
-                    {replies.map((props, index) => (
-                      <PostCommentCard {...props} index={index} key={index} isReply />
-                    ))}
-                  </View>
-                )}
-              </>
-            }
-          />
+              }
+            />
+            {showReply[index] && (
+              <View
+                style={{
+                  rowGap: 20,
+                  paddingLeft: 20,
+                  marginTop: 10,
+                  marginBottom: 20,
+                }}
+              >
+                {replies.map((props, index) => (
+                  <PostCommentCard {...props} index={index} key={index} isReply />
+                ))}
+              </View>
+            )}
+          </>
         )}
       />
     </S.PostDetailLayoutContainer>

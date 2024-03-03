@@ -1,34 +1,30 @@
-// import RNFetchBlob from 'rn-fetch-blob';
-
 import { PhotosInterface } from 'src/components';
+import { API_SUFFIX, communityInstance, setAccessToken } from 'src/api';
 
-import { COMMUNITY_API_SUFFIX, communityInstance } from './api';
-
-/// </summary>
 export enum LimitedArticleScopeOfDisclosure {
   /**
    * 전체 공개
    */
-  Public = 5,
+  Public = 'public',
   /**
    * 교직원 공개
    */
-  Faculty = 4,
+  Faculty = 'faculty',
   /**
    * 졸업생 공개
    */
-  Alumni = 3,
+  Alumni = 'alumni',
   /**
    * 학생 공개
    */
-  Student = 2,
+  Student = 'student',
   /**
    * 동급생 공개
    */
-  Peer = 1,
+  Peer = 'peer',
 }
 
-export interface createPostValues {
+export interface CreatePostValues {
   isAnonymous: boolean;
   author?: string;
   content: string;
@@ -42,8 +38,8 @@ export const createPost = async ({
   content,
   scopeOfDisclosure,
   attachments,
-}: createPostValues) => {
-  communityInstance.defaults.headers.common.Authorization = `Bearer 1`;
+}: CreatePostValues) => {
+  setAccessToken('2');
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));
@@ -62,10 +58,10 @@ export const createPost = async ({
     });
   }
 
-  const data = await communityInstance.post(COMMUNITY_API_SUFFIX.CREATE, formData, {
+  const { data } = await communityInstance.post(API_SUFFIX.COMMUNITY.BASE_URL, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return data.data;
+  return data;
 };
