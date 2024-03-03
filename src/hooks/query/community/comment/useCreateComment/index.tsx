@@ -3,6 +3,7 @@ import { UseMutationResult, useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 
 import { APIResponse, CreateCommentValues, createComment } from 'src/api';
+import { ErrorToast } from 'src/constants';
 
 export const useCreateComment = (): UseMutationResult<
   APIResponse<null>,
@@ -14,8 +15,8 @@ export const useCreateComment = (): UseMutationResult<
       console.log(response, 'onSuccess');
     },
     onError: (error) => {
-      // TODO: 에러 처리 토스트 추가
-      console.log('onError', error);
+      const message = error.response?.data.message;
+      ErrorToast(message);
     },
   });
 };

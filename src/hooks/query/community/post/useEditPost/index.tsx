@@ -4,6 +4,7 @@ import Toast from 'react-native-toast-message';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, EditPostValues, editPost } from 'src/api';
+import { ErrorToast } from 'src/constants';
 
 export const useEditPost = (): UseMutationResult<
   APIResponse<null>,
@@ -19,8 +20,8 @@ export const useEditPost = (): UseMutationResult<
       });
     },
     onError: (error) => {
-      // TODO: 에러 처리 토스트 추가
-      console.log('onError', error);
+      const message = error.response?.data.message;
+      ErrorToast(message);
     },
     retry: 0,
   });

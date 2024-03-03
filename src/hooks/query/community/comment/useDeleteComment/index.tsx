@@ -3,6 +3,7 @@ import { UseMutationResult, useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, DeleteCommentValues, deleteComment } from 'src/api';
+import { ErrorToast } from 'src/constants';
 
 export const useDeleteComment = (): UseMutationResult<
   APIResponse<null>,
@@ -11,11 +12,12 @@ export const useDeleteComment = (): UseMutationResult<
 > => {
   return useMutation('useDeleteComment', deleteComment, {
     onSuccess: (response) => {
+      // TODO: refresh comment list
       console.log(response, 'onSuccess');
     },
     onError: (error) => {
-      // TODO: 에러 처리 토스트 추가
-      console.log('onError', error);
+      const message = error.response?.data.message;
+      ErrorToast(message);
     },
   });
 };

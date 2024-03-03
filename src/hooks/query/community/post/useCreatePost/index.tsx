@@ -4,6 +4,7 @@ import Toast from 'react-native-toast-message';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, createPost, CreatePostValues } from 'src/api';
+import { ErrorToast } from 'src/constants';
 
 export const useCreatePost = (): UseMutationResult<
   APIResponse<number>,
@@ -18,8 +19,8 @@ export const useCreatePost = (): UseMutationResult<
       });
     },
     onError: (error) => {
-      console.log('onError', error);
-      // TODO: 에러 처리 토스트 추가
+      const message = error.response?.data.message;
+      ErrorToast(message);
     },
     retry: 0,
   });

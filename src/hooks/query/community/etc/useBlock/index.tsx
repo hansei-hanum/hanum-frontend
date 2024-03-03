@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, BlockValue, block } from 'src/api';
-import { AUTH_ERROR_MESSAGE, communityErrorMessage } from 'src/constants';
+import { ErrorToast } from 'src/constants';
 
 export const useBlock = (): UseMutationResult<
   APIResponse<null>,
@@ -13,15 +13,14 @@ export const useBlock = (): UseMutationResult<
 > => {
   return useMutation('useBlock', block, {
     onSuccess: () => {
-      console.log('useBlock onSuccess');
+      Toast.show({
+        type: 'success',
+        text1: '성공적으로 차단되었어요',
+      });
     },
     onError: (error) => {
       const message = error.response?.data.message;
-      console.log('useBlock onError', message);
-      Toast.show({
-        type: 'error',
-        text1: communityErrorMessage[message ?? ('' || AUTH_ERROR_MESSAGE)],
-      });
+      ErrorToast(message);
     },
   });
 };

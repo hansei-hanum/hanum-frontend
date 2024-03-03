@@ -69,7 +69,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   };
 
   const onModalButtonPress = () => {
-    mutate({ targetId: '2' });
+    mutate({ targetId: 6 });
     if (!isLoading) {
       setModalOpen({ report: false, block: false });
     }

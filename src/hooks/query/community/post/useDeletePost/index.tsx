@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, DeletePostValues, deletePost } from 'src/api';
-import { AUTH_ERROR_MESSAGE, communityErrorMessage } from 'src/constants';
+import { ErrorToast } from 'src/constants';
 
 export const useDeletePost = (): UseMutationResult<
   APIResponse<null>,
@@ -21,10 +21,7 @@ export const useDeletePost = (): UseMutationResult<
     },
     onError: (error) => {
       const message = error.response?.data.message;
-      Toast.show({
-        type: 'error',
-        text1: communityErrorMessage[message ?? ('' || AUTH_ERROR_MESSAGE)],
-      });
+      ErrorToast(message);
     },
   });
 };
