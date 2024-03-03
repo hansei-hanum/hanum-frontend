@@ -30,6 +30,7 @@ export const API_SUFFIX = {
 
 export const COMMUNITY_API_SUFFIX = {
   CREATE: '/community/articles',
+  EDIT: '/community/articles',
 };
 
 const baseConfig = {
@@ -64,7 +65,7 @@ export interface APIErrorResponse {
 }
 
 export const setAccessToken = (token: string | null) => {
-  const instances = [authInstance, payInstance, infoInstance, festivalInstance];
+  const instances = [authInstance, payInstance, infoInstance, festivalInstance, communityInstance];
 
   instances.forEach((instance) => {
     if (token) {

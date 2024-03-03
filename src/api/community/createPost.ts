@@ -1,10 +1,7 @@
-// import RNFetchBlob from 'rn-fetch-blob';
-
 import { PhotosInterface } from 'src/components';
 
-import { COMMUNITY_API_SUFFIX, communityInstance } from './api';
+import { COMMUNITY_API_SUFFIX, communityInstance, setAccessToken } from '../api';
 
-/// </summary>
 export enum LimitedArticleScopeOfDisclosure {
   /**
    * 전체 공개
@@ -43,7 +40,7 @@ export const createPost = async ({
   scopeOfDisclosure,
   attachments,
 }: createPostValues) => {
-  communityInstance.defaults.headers.common.Authorization = `Bearer 1`;
+  setAccessToken('2');
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));
