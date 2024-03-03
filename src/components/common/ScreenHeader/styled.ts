@@ -2,7 +2,7 @@ import styled from '@emotion/native';
 
 import { isIos } from 'src/utils';
 
-export const CommunityHeaderContainer = styled.View`
+export const ScreenHeaderContainer = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;

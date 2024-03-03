@@ -4,6 +4,7 @@ import { FlatList, SafeAreaView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
+import { useTheme } from '@emotion/react';
 
 import { COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
@@ -11,22 +12,24 @@ import {
   CommunityMineBottomSheet,
   CommunityPost,
   CommunityPostHeader,
-  GoBackIcon,
   PostBottom,
-  Text,
+  ScreenHeader,
 } from 'src/components';
 import { useBottomSheet, useGetImagesHeight, useNavigate } from 'src/hooks';
 import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export const CommunityMineScreen: React.FC = () => {
-  const [height, setHeight] = useState<number>(0);
+export const UserPostScreen: React.FC = () => {
+  const theme = useTheme();
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
 
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
+
+  const [height, setHeight] = useState<number>(0);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -57,14 +60,16 @@ export const CommunityMineScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <S.CommunityMineHeader>
-        <GoBackIcon style={{ position: 'absolute', left: 0, paddingLeft: 10 }} />
-        <Text size={16} fontFamily="bold">
-          내 게시물
-        </Text>
-      </S.CommunityMineHeader>
-      <S.CommunityMineWrapper>
+      <ScreenHeader
+        title="내 게시물"
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: isScrolled ? theme.lightGray : 'transparent',
+        }}
+      />
+      <S.UserPostWrapper>
         <FlatList
+          onScroll={(e) => setIsScrolled(e.nativeEvent.contentOffset.y > 0)}
           scrollEventThrottle={16}
           data={COMMUNITY_LIST}
           keyExtractor={(_, index) => index.toString()}
@@ -74,7 +79,7 @@ export const CommunityMineScreen: React.FC = () => {
             rowGap: 16,
           }}
           renderItem={({ item: { author, type, time, content }, index }) => (
-            <S.CommunityMinePostBox>
+            <S.UserPostBox>
               <CommunityPostHeader
                 author={author}
                 type={type}
@@ -97,10 +102,10 @@ export const CommunityMineScreen: React.FC = () => {
                 likesLength={content.likes}
                 commentsLength={content.comments}
               />
-            </S.CommunityMinePostBox>
+            </S.UserPostBox>
           )}
         />
-      </S.CommunityMineWrapper>
+      </S.UserPostWrapper>
       <CommunityMineBottomSheet
         ref={bottomSheetRef}
         setHeight={setHeight}

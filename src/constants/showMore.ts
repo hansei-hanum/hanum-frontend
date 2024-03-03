@@ -13,12 +13,17 @@ export interface ShowMoreItem {
 
 export const SHOW_MORE_LIST: ShowMoreItem[] = [
   {
-    name: '대나무 숲',
+    name: '대나무숲',
     section: [
       {
         name: '내 게시물',
         icon: '📝',
-        navigateUrl: 'CommunityMine',
+        navigateUrl: 'UserPost',
+      },
+      {
+        name: '차단된 사용자',
+        icon: '🚫',
+        navigateUrl: 'UserBlocList',
       },
     ],
   },

@@ -2,7 +2,7 @@ export * from './Post';
 export * from './PostHeader';
 export * from './postDetail/CommentCard';
 export * from './UserImage';
-export * from './Header';
+
 export * from './createPost';
 export * from './postDetail';
 export * from './reports';

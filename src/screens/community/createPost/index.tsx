@@ -13,7 +13,7 @@ import { useTheme } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import {
-  CommunityHeader,
+  ScreenHeader,
   Icon,
   PhotoCard,
   OptionCard,
@@ -224,7 +224,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
 
   return (
     <S.CreatePostContainer>
-      <CommunityHeader
+      <ScreenHeader
         isLoading={isLoading}
         title="게시글 작성하기"
         rightContent={
