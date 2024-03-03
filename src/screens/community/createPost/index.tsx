@@ -25,7 +25,13 @@ import {
   PhotosInterface,
   Spinner,
 } from 'src/components';
-import { useCreatePost, useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
+import {
+  useBlockGesture,
+  useCreatePost,
+  useGetUser,
+  useNavigate,
+  useSetAnimation,
+} from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import {
   ANONYMITY_OPTION_LIST,
@@ -34,7 +40,7 @@ import {
   VISIBLE_TYPE_LIST,
 } from 'src/constants';
 import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
-import { isIos } from 'src/utils';
+import { formatVisibleType, isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
@@ -44,19 +50,6 @@ const UserSection: React.FC = () => {
   const { userProfile, userData } = useGetUser();
 
   const visibleType = useRecoilValue(visibleTypeAtom);
-
-  const setVisibleTypeText = () => {
-    switch (visibleType) {
-      case LimitedArticleScopeOfDisclosure.Public:
-        return '전체';
-      case LimitedArticleScopeOfDisclosure.Faculty:
-        return '제한됨';
-      case LimitedArticleScopeOfDisclosure.Alumni:
-        return '학생';
-      default:
-        return '';
-    }
-  };
 
   return (
     <S.UserSectionContainer>
@@ -70,14 +63,13 @@ const UserSection: React.FC = () => {
           {visibleType === LimitedArticleScopeOfDisclosure.Public && (
             <MI name="public" size={16} color={theme.white} />
           )}
-          {visibleType === LimitedArticleScopeOfDisclosure.Student && (
+          {visibleType === LimitedArticleScopeOfDisclosure.Peer ? (
+            <MCI name="account-group" size={16} color={theme.white} />
+          ) : (
             <MI name="lock" size={16} color={theme.white} />
           )}
-          {visibleType === LimitedArticleScopeOfDisclosure.Peer && (
-            <MCI name="account-group" size={16} color={theme.white} />
-          )}
           <Text size={12} color={theme.white} fontFamily="bold">
-            공개범위: {setVisibleTypeText()}
+            공개범위: {formatVisibleType(visibleType)}
           </Text>
         </S.VisibleTypeContainer>
       </View>
@@ -195,23 +187,25 @@ export const CommunityCreatePostScreen: React.FC = () => {
 
   const onPost = () => {
     mutate({
-      isAnonymous: Boolean(anonymityType),
-      author: null,
+      isAnonymous: anonymityType.type === '실명 표시' ? false : true,
+      author:
+        anonymityType.type === '닉네임 사용' && anonymityType.nickname !== ''
+          ? anonymityType.nickname
+          : undefined,
       content: text,
       scopeOfDisclosure: visibleType,
       attachments: selectedImage as PhotosInterface[],
     });
 
     setText('');
-    console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
     setSelectedImage([]);
     setVisibleType(VISIBLE_TYPE_LIST[0].text);
-    setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
+    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
   };
 
   const isFocused = useIsFocused();
+  const blockGesture = useBlockGesture(isLoading);
 
-  console.log(selectedImage);
   useEffect(() => {
     if (communityEdit.image && Boolean(communityEdit.image?.length) && isFocused) {
       const images = communityEdit.image.map((image) => image);
@@ -219,13 +213,14 @@ export const CommunityCreatePostScreen: React.FC = () => {
     } else {
       setCommunityEdit({ text: '', image: [] });
     }
+    blockGesture;
   }, [isFocused]);
 
   const convertToKey = (value: string | PhotosInterface): Key | null | undefined => {
     if (typeof value === 'string') {
       return value;
     } else if (value && 'uri' in value) {
-      return value.uri; // 'key'는 PhotosInterface의 속성이어야 합니다.
+      return value.uri;
     } else {
       return undefined;
     }
@@ -235,7 +230,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
     if (typeof value === 'string') {
       return value;
     } else if (value && 'uri' in value) {
-      return value.uri; // 'uri'는 PhotosInterface의 속성이어야 합니다.
+      return value.uri;
     } else {
       return undefined;
     }
@@ -244,6 +239,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   return (
     <S.CreatePostContainer>
       <CommunityHeader
+        isLoading={isLoading}
         title="게시글 작성하기"
         rightContent={
           isLoading ? (

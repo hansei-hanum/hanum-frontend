@@ -1,6 +1,5 @@
 // import RNFetchBlob from 'rn-fetch-blob';
 
-import { isIos } from 'src/utils';
 import { PhotosInterface } from 'src/components';
 
 import { COMMUNITY_API_SUFFIX, communityInstance } from './api';
@@ -31,7 +30,7 @@ export enum LimitedArticleScopeOfDisclosure {
 
 export interface createPostValues {
   isAnonymous: boolean;
-  author: string | null;
+  author?: string;
   content: string;
   scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
   attachments?: PhotosInterface[];

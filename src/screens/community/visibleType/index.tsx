@@ -16,7 +16,7 @@ export const VisibleTypeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState(
     VISIBLE_TYPE_LIST.map((text) => text.text === visibleType),
   );
-  console.log(selectedCategory, 'selectedCategory');
+
   const onPressCategory = (index: number) => {
     setSelectedCategory((prev) => prev.map((_, i) => (i === index ? true : false)));
   };
