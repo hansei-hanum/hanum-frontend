@@ -14,7 +14,7 @@ export const useCreatePost = (): UseMutationResult<
     onSuccess: () => {
       Toast.show({
         type: 'success',
-        text1: '게시글이 성공적으로 작성되었요',
+        text1: '게시글이 성공적으로 작성되어었요',
       });
     },
     onError: (error) => {
