@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';

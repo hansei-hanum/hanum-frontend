@@ -14,6 +14,7 @@ import {
 } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 import { RPH } from 'src/utils';
+import { useBlock } from 'src/hooks';
 
 import { ReportBottomSheet } from '../reports';
 
@@ -38,7 +39,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-  const [loading, setLoading] = useState(false);
+  const { mutate, isLoading } = useBlock();
 
   const theme = useTheme();
 
@@ -68,11 +69,10 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   };
 
   const onModalButtonPress = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    mutate({ targetId: '2' });
+    if (!isLoading) {
       setModalOpen({ report: false, block: false });
-    }, 500);
+    }
   };
 
   const onModalCancelPress = () => {
@@ -120,10 +120,10 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           text={`“박찬영” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
           button={
             <ButtonContainer>
-              <Button onPress={onModalCancelPress} isModalBtn isWhite isDisabled={loading}>
+              <Button onPress={onModalCancelPress} isModalBtn isWhite isDisabled={isLoading}>
                 다시 생각할래요
               </Button>
-              <Button onPress={onModalButtonPress} isModalBtn isLoading={loading}>
+              <Button onPress={onModalButtonPress} isModalBtn isLoading={isLoading}>
                 확인했어요
               </Button>
             </ButtonContainer>

@@ -29,6 +29,7 @@ export const EOULLIM = {
 
 export const COMMUNITY = {
   BASE_URL: '/community/articles',
+  BLOCK: '/blocks',
 };
 
 export interface ApiSuffixProps {
@@ -38,4 +39,11 @@ export interface ApiSuffixProps {
   EOULLIM: typeof EOULLIM;
   COMMUNITY: typeof COMMUNITY;
 }
-export const API_SUFFIX: ApiSuffixProps = Object.assign({}, AUTH, INFO, PAY, EOULLIM, COMMUNITY);
+
+export const API_SUFFIX: ApiSuffixProps = {
+  AUTH,
+  INFO,
+  PAY,
+  EOULLIM,
+  COMMUNITY,
+};
