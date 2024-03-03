@@ -39,14 +39,11 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
 
-  const { mutate, isLoading, isSuccess } = useBlock();
+  const { mutate, isLoading } = useBlock();
 
   const theme = useTheme();
 
-  const [modalOpen, setModalOpen] = useState<openModalProps>({
-    report: false,
-    block: false,
-  });
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const onPress = (option: CommunityBottomSheetTextEnum) => {
     reportScreenAnimationValue.setValue(SCREEN_WIDTH);
@@ -58,7 +55,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         return reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
 
       case CommunityBottomSheetTextEnum.BLOCK:
-        return setModalOpen({ report: false, block: true });
+        return setModalOpen(true);
     }
   };
 
@@ -69,12 +66,12 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   };
 
   const onModalButtonPress = () => {
-    mutate({ targetId: 5 });
-    !isLoading && setTimeout(() => setModalOpen({ report: false, block: false }), 200);
+    mutate({ targetId: 4 });
+    setTimeout(() => setModalOpen(false), 400);
   };
 
   const onModalCancelPress = () => {
-    setModalOpen({ report: false, block: false });
+    setModalOpen(false);
   };
 
   return (
@@ -83,7 +80,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         ref={bottomSheetRef}
         maxScrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
         scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
-        modalBackDropVisible={modalOpen.block || modalOpen.report}
+        modalBackDropVisible={modalOpen}
       >
         <S.PostOptionBottomSheetContainer>
           {COMMUNITY_BOTTOM_SHEET_OPTION_LIST.map(({ text, isBlock, icon }) => (
@@ -110,10 +107,10 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         ref={reportBottomSheetRef}
         scrollHeight={REPORT_BOTTOM_SHEET_HEIGHT}
       />
-      {modalOpen.block && (
+      {modalOpen && (
         <Modal
           backDropVisible={false}
-          modalVisible={modalOpen.block}
+          modalVisible={modalOpen || isLoading}
           title="이 사용자 차단하기"
           text={`“박찬영” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
           button={
