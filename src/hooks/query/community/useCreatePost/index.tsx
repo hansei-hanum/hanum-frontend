@@ -3,12 +3,12 @@ import Toast from 'react-native-toast-message';
 
 import { AxiosError } from 'axios';
 
-import { APIErrorResponse, APIResponse, createPost, createPostValues } from 'src/api';
+import { APIErrorResponse, APIResponse, createPost, CreatePostValues } from 'src/api';
 
 export const useCreatePost = (): UseMutationResult<
   APIResponse<number>,
   AxiosError<APIErrorResponse>,
-  createPostValues
+  CreatePostValues
 > => {
   return useMutation('useCreatePost', createPost, {
     onSuccess: () => {

@@ -1,14 +1,14 @@
 import { API_SUFFIX, communityInstance, setAccessToken } from 'src/api';
 import { PhotosInterface } from 'src/components';
 
-export interface editPostValues {
+export interface EditPostValues {
   id: number;
   content: string;
   keepAttachments?: number[];
   attachments?: PhotosInterface[];
 }
 
-export const editPost = async ({ id, content, keepAttachments, attachments }: editPostValues) => {
+export const editPost = async ({ id, content, keepAttachments, attachments }: EditPostValues) => {
   setAccessToken('2');
   const formData = new FormData();
 

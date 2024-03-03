@@ -24,7 +24,7 @@ export enum LimitedArticleScopeOfDisclosure {
   Peer = 1,
 }
 
-export interface createPostValues {
+export interface CreatePostValues {
   isAnonymous: boolean;
   author?: string;
   content: string;
@@ -38,7 +38,7 @@ export const createPost = async ({
   content,
   scopeOfDisclosure,
   attachments,
-}: createPostValues) => {
+}: CreatePostValues) => {
   setAccessToken('2');
   const formData = new FormData();
 
