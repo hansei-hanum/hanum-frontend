@@ -23,8 +23,15 @@ import {
   Text,
   NoScrollbarScrollView,
   PhotosInterface,
+  Spinner,
 } from 'src/components';
-import { useGetUser, useNavigate, useSetAnimation } from 'src/hooks';
+import {
+  useBlockGesture,
+  useCreatePost,
+  useGetUser,
+  useNavigate,
+  useSetAnimation,
+} from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import {
   ANONYMITY_OPTION_LIST,
@@ -33,7 +40,8 @@ import {
   VISIBLE_TYPE_LIST,
 } from 'src/constants';
 import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
-import { isIos } from 'src/utils';
+import { formatVisibleType, isIos } from 'src/utils';
+import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
@@ -42,19 +50,6 @@ const UserSection: React.FC = () => {
   const { userProfile, userData } = useGetUser();
 
   const visibleType = useRecoilValue(visibleTypeAtom);
-
-  const setVisibleTypeText = () => {
-    switch (visibleType.text) {
-      case '모두에게 공개':
-        return '전체';
-      case '제한적 공개':
-        return '제한됨';
-      case '학생 공개':
-        return '학생';
-      default:
-        return '';
-    }
-  };
 
   return (
     <S.UserSectionContainer>
@@ -65,15 +60,16 @@ const UserSection: React.FC = () => {
       <View style={{ rowGap: 2 }}>
         <Text size={16}>{userData?.name || '박찬영'}</Text>
         <S.VisibleTypeContainer>
-          {visibleType.text === '모두에게 공개' && (
+          {visibleType === LimitedArticleScopeOfDisclosure.Public && (
             <MI name="public" size={16} color={theme.white} />
           )}
-          {visibleType.text === '제한적 공개' && <MI name="lock" size={16} color={theme.white} />}
-          {visibleType.text === '학생 공개' && (
+          {visibleType === LimitedArticleScopeOfDisclosure.Peer ? (
             <MCI name="account-group" size={16} color={theme.white} />
+          ) : (
+            <MI name="lock" size={16} color={theme.white} />
           )}
           <Text size={12} color={theme.white} fontFamily="bold">
-            공개범위: {setVisibleTypeText()}
+            공개범위: {formatVisibleType(visibleType)}
           </Text>
         </S.VisibleTypeContainer>
       </View>
@@ -85,6 +81,8 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
+
+  const { mutate, isLoading } = useCreatePost();
 
   const { animation } = useSetAnimation();
 
@@ -159,9 +157,17 @@ export const CommunityCreatePostScreen: React.FC = () => {
           console.log('Image picker error: ', response.errorMessage);
         } else {
           const imageUri = response.assets?.map((item) => item.uri);
-          const imageName = response.assets?.map((item) => item.fileName) || 'image.png';
-          const image = imageUri?.map((uri, index) => ({ uri, name: imageName[index] }));
-          setSelectedImage((prev) => [...prev, ...image]);
+          const imageName = response.assets?.map((item) => item.fileName);
+          const imageType = response.assets?.map((item) => item.type);
+          const images = imageUri?.map((uri, index) => ({
+            uri,
+            name: imageName?.[index] || '',
+            type: imageType?.[index] || '',
+          }));
+          setSelectedImage([
+            ...(selectedImage as PhotosInterface[]),
+            ...(images as PhotosInterface[]),
+          ]);
         }
       });
     }
@@ -180,16 +186,26 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const onPost = () => {
+    mutate({
+      isAnonymous: anonymityType.type === '실명 표시' ? false : true,
+      author:
+        anonymityType.type === '닉네임 사용' && anonymityType.nickname !== ''
+          ? anonymityType.nickname
+          : undefined,
+      content: text,
+      scopeOfDisclosure: visibleType,
+      attachments: selectedImage as PhotosInterface[],
+    });
+
     setText('');
-    console.log('image', selectedImage, 'visible', visibleType, 'anonymityType', anonymityType);
     setSelectedImage([]);
-    setVisibleType({ text: VISIBLE_TYPE_LIST[0].text, limitType: '' });
-    setAnonymityTypes(ANONYMITY_OPTION_LIST[0].title);
+    setVisibleType(VISIBLE_TYPE_LIST[0].text);
+    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
   };
 
   const isFocused = useIsFocused();
+  const blockGesture = useBlockGesture(isLoading);
 
-  console.log(selectedImage);
   useEffect(() => {
     if (communityEdit.image && Boolean(communityEdit.image?.length) && isFocused) {
       const images = communityEdit.image.map((image) => image);
@@ -197,13 +213,14 @@ export const CommunityCreatePostScreen: React.FC = () => {
     } else {
       setCommunityEdit({ text: '', image: [] });
     }
+    blockGesture;
   }, [isFocused]);
 
   const convertToKey = (value: string | PhotosInterface): Key | null | undefined => {
     if (typeof value === 'string') {
       return value;
     } else if (value && 'uri' in value) {
-      return value.uri; // 'key'는 PhotosInterface의 속성이어야 합니다.
+      return value.uri;
     } else {
       return undefined;
     }
@@ -213,7 +230,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
     if (typeof value === 'string') {
       return value;
     } else if (value && 'uri' in value) {
-      return value.uri; // 'uri'는 PhotosInterface의 속성이어야 합니다.
+      return value.uri;
     } else {
       return undefined;
     }
@@ -222,13 +239,18 @@ export const CommunityCreatePostScreen: React.FC = () => {
   return (
     <S.CreatePostContainer>
       <CommunityHeader
+        isLoading={isLoading}
         title="게시글 작성하기"
         rightContent={
-          <ScaleOpacity onPress={onPost}>
-            <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
-              게시
-            </Text>
-          </ScaleOpacity>
+          isLoading ? (
+            <Spinner size={24} color={theme.primary} />
+          ) : (
+            <ScaleOpacity onPress={onPost}>
+              <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
+                게시
+              </Text>
+            </ScaleOpacity>
+          )
         }
       />
       <S.CreatePostInnerContainer

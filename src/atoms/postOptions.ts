@@ -3,25 +3,24 @@ import { atom } from 'recoil';
 import {
   ANONYMITY_OPTION_LIST,
   AnonymityOptionItems,
-  LIMITED_VISIBLE_TYPE_LIST,
   VISIBLE_TYPE_LIST,
   VisibleTypeItems,
 } from 'src/constants';
 
-export interface VisibleTypeProps {
-  text: VisibleTypeItems['text'];
-  limitType: string;
-}
-
-export const visibleTypeAtom = atom<VisibleTypeProps>({
+export const visibleTypeAtom = atom<VisibleTypeItems['text']>({
   key: 'visibleTypeAtom',
-  default: {
-    text: VISIBLE_TYPE_LIST[0].text,
-    limitType: LIMITED_VISIBLE_TYPE_LIST[0],
-  },
+  default: VISIBLE_TYPE_LIST[0].text,
 });
 
-export const anonymityTypeAtom = atom<AnonymityOptionItems['title']>({
+export interface AnonymityTypeProps {
+  type: AnonymityOptionItems['title'];
+  nickname?: string;
+}
+
+export const anonymityTypeAtom = atom<AnonymityTypeProps>({
   key: 'anonymityTypeAtom',
-  default: ANONYMITY_OPTION_LIST[0].title,
+  default: {
+    type: ANONYMITY_OPTION_LIST[0].title,
+    nickname: '',
+  },
 });

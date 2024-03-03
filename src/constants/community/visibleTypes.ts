@@ -1,25 +1,37 @@
+import { LimitedArticleScopeOfDisclosure } from 'src/api';
+
 export interface VisibleTypeItems {
-  text: '모두에게 공개' | '학생 공개' | '제한적 공개';
+  text: LimitedArticleScopeOfDisclosure;
   icon: string;
 }
 
 export const VISIBLE_TYPE_LIST: VisibleTypeItems[] = [
   {
-    text: '모두에게 공개',
+    text: LimitedArticleScopeOfDisclosure.Public,
     icon: '🌏',
   },
   {
-    text: '학생 공개',
+    text: LimitedArticleScopeOfDisclosure.Faculty,
+    icon: '👨‍🏫',
+  },
+  {
+    text: LimitedArticleScopeOfDisclosure.Alumni,
     icon: '👨‍🎓',
   },
   {
-    text: '제한적 공개',
-    icon: '🔒',
+    text: LimitedArticleScopeOfDisclosure.Student,
+    icon: '📚',
+  },
+  {
+    text: LimitedArticleScopeOfDisclosure.Peer,
+    icon: '👥',
   },
 ];
 
 export const LIMITED_VISIBLE_TYPE_LIST: string[] = [
-  '재학생에게 공개',
-  '졸업생에게 공개',
-  '교직원에게 공개',
+  '전체 공개',
+  '교직원 공개',
+  '졸업생 공개',
+  '학생 공개',
+  '동급생 공개',
 ];

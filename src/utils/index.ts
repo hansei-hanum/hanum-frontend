@@ -5,3 +5,4 @@ export * from './getPrevTimeString';
 export * from './checkType';
 export * from './formatted';
 export * from './openContactChannel';
+export * from './formatVisibleType';

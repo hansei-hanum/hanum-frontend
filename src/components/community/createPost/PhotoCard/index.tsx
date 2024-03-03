@@ -12,6 +12,7 @@ import * as S from './styled';
 export interface PhotosInterface {
   uri: string;
   name: string;
+  type: string;
 }
 
 export interface PhotoCardProps {

@@ -9,6 +9,11 @@ export const AnonymitySettingsContainer = styled.View`
   margin-top: 14px;
 `;
 
+export const AnonymityNicknameContainer = styled(Animated.View)`
+  flex-direction: column;
+  row-gap: 6px;
+`;
+
 export const AnonymityNicknameWrapper = styled(Animated.View)`
   width: 100%;
   background-color: ${({ theme }) => theme.secondary};
