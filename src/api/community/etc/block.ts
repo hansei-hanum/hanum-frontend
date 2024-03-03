@@ -5,10 +5,14 @@ export interface BlockValue {
   targetId: string;
 }
 
-//ALREADY_BLOCKED
-
 export const block = async ({ targetId }: BlockValue) => {
   setAccessToken('1');
   const { data } = await communityInstance.put(`${API_SUFFIX.COMMUNITY.BLOCK}/${targetId}`);
+  return data;
+};
+
+export const unBlock = async ({ targetId }: BlockValue) => {
+  setAccessToken('1');
+  const { data } = await communityInstance.delete(`${API_SUFFIX.COMMUNITY.BLOCK}/${targetId}`);
   return data;
 };

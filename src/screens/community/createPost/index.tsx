@@ -169,6 +169,8 @@ export const CommunityCreatePostScreen: React.FC = () => {
     setKeyboardShow(false);
   };
 
+  console.log(keyboardShow, 'keyboardShow');
+
   const onPost = () => {
     mutate({
       isAnonymous: anonymityType.type === '실명 표시' ? false : true,
@@ -255,7 +257,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
           />
         </S.CreatePostMainSection>
         <AnimatedHoc isOpen={keyboardShow}>
-          <S.CreatePostIconContainer style={{ display: keyboardShow ? 'flex' : 'none' }}>
+          <S.CreatePostIconContainer style={{ opacity: keyboardShow ? 1 : 0 }}>
             {POST_OPTION_LIST.map(({ icon, text }, index) => (
               <ScaleOpacity key={index} onPress={() => onOptionClick(text)}>
                 <Icon icon={icon} includeBackground={false} />

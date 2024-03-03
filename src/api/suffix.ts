@@ -28,7 +28,7 @@ export const EOULLIM = {
 };
 
 export const COMMUNITY = {
-  BASE_URL: '/community/articles',
+  BASE_URL: '/articles',
   BLOCK: '/blocks',
 };
 

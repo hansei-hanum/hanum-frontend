@@ -5,23 +5,23 @@ export enum LimitedArticleScopeOfDisclosure {
   /**
    * 전체 공개
    */
-  Public = 5,
+  Public = 'Public',
   /**
    * 교직원 공개
    */
-  Faculty = 4,
+  Faculty = 'Faculty',
   /**
    * 졸업생 공개
    */
-  Alumni = 3,
+  Alumni = 'Alumni',
   /**
    * 학생 공개
    */
-  Student = 2,
+  Student = 'Student',
   /**
    * 동급생 공개
    */
-  Peer = 1,
+  Peer = 'Peer',
 }
 
 export interface CreatePostValues {

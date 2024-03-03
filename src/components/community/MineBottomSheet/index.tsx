@@ -11,7 +11,7 @@ import {
   COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST,
   CommunityMineBottomSheetTextEnum,
 } from 'src/constants';
-import { useNavigate } from 'src/hooks';
+import { useNavigate, useDeletePost } from 'src/hooks';
 import { isIos } from 'src/utils';
 import { BottomSheetRefProps } from 'src/types';
 
@@ -32,7 +32,10 @@ export const CommunityMineBottomSheet = forwardRef<
   const insets = useSafeAreaInsets();
 
   const navigate = useNavigate();
+
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const { mutate, isLoading } = useDeletePost();
 
   const onPress = (option: CommunityMineBottomSheetTextEnum) => {
     closeBottomSheet();
@@ -48,6 +51,14 @@ export const CommunityMineBottomSheet = forwardRef<
     const { height } = event.nativeEvent.layout;
     setHeight(height + insets.bottom + (isIos ? 30 : 80));
   };
+
+  const onModalDeleteButtonPress = () => {
+    mutate({ id: 53 });
+    if (!isLoading) {
+      setModalOpen(false);
+    }
+  };
+
   return (
     <>
       <BottomSheet ref={ref} scrollHeight={-height}>
@@ -76,7 +87,12 @@ export const CommunityMineBottomSheet = forwardRef<
             <Button onPress={() => setModalOpen(false)} isModalBtn isWhite>
               취소
             </Button>
-            <Button onPress={() => setModalOpen(false)} isModalBtn backgroundColor={theme.danger}>
+            <Button
+              onPress={onModalDeleteButtonPress}
+              isModalBtn
+              backgroundColor={theme.danger}
+              isLoading={isLoading}
+            >
               삭제
             </Button>
           </Button.Container>
