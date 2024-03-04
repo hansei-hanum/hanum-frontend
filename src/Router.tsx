@@ -58,8 +58,6 @@ export const Router: React.FC = () => {
   };
 
   useEffect(() => {
-    SplashScreen.show();
-
     async function prepare() {
       getTheme();
       await getToken();
@@ -68,22 +66,22 @@ export const Router: React.FC = () => {
       } catch (e) {
         console.warn(e);
       } finally {
-        setIsReady(true);
-        SplashScreen.hide();
+        if (!isLoading) {
+          setIsReady(true);
+        }
       }
     }
 
     prepare();
-  }, []);
+  }, [isLoading]);
 
   const onLayoutRootView = useCallback(async () => {}, [isReady]);
 
   const [isUpdating] = useCodePush();
 
-  console.log('isUpdating', isUpdating, isReady, 'isReady', isLoading, 'isLoading');
-  if (isReady && !isUpdating && !isLoading) {
+  if (isReady && !isUpdating) {
     SplashScreen.hide();
-  } else if (!isReady) {
+  } else {
     return null;
   }
 
@@ -118,16 +116,16 @@ export const Router: React.FC = () => {
           initialRouteName={getInitialRoute()}
         >
           <Stack.Group>
-            <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
-            <Stack.Screen name="Main" component={SC.MainScreen} />
-            <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
-          </Stack.Group>
-          <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
             <Stack.Screen name="Login" component={SC.FormScreen} />
             <Stack.Screen name="Register" component={SC.FormScreen} />
             <Stack.Screen name="VerifyCode" component={SC.VerifyCodeScreen} />
             <Stack.Screen name="Verify" component={SC.VerifyScreen} />
+          </Stack.Group>
+          <Stack.Group>
+            <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
+            <Stack.Screen name="Main" component={SC.MainScreen} />
+            <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanumPayMain" component={SC.HanumPayMainScreen} />

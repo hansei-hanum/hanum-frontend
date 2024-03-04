@@ -4,27 +4,27 @@ import { useTheme } from '@emotion/react';
 
 import { Button, Icon, ScaleOpacity, Text } from 'src/components';
 import { isAndroid, openContactChannel } from 'src/utils';
-import { useFetchUser, useNavigate } from 'src/hooks';
+import { useFetchUser, useInitNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
 export const NoInternetScreen: React.FC = () => {
   const theme = useTheme();
 
-  const navigate = useNavigate();
+  const { initNavigate } = useInitNavigate();
 
   const getUserData = useFetchUser();
 
   useEffect(() => {
     if (getUserData.data && getUserData.data?.data) {
-      navigate('Main');
+      initNavigate('Main');
     }
   }, [getUserData]);
 
   return (
     <S.NoInternetWrapper>
       <S.NoInternetTopSection>
-        <ScaleOpacity onPress={() => navigate('AuthMain')}>
+        <ScaleOpacity onPress={() => initNavigate('AuthMain')}>
           <Text size={14} color={theme.primary} fontFamily="bold">
             다시 로그인
           </Text>
