@@ -58,8 +58,8 @@ export const MealTableScreen: React.FC = () => {
               }, [])
               .map((items, index) => (
                 <S.MealTableListContainer key={index}>
-                  {items.map((item) => (
-                    <MealTableCard {...item} />
+                  {items.map((item, index) => (
+                    <MealTableCard key={index} {...item} />
                   ))}
                 </S.MealTableListContainer>
               ))}

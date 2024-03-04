@@ -3,12 +3,12 @@ import { Animated, LayoutChangeEvent, TextInput } from 'react-native';
 
 import { useIsFocused, useRoute } from '@react-navigation/native';
 
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { AuthInputForm, AppLayout } from 'src/components';
 import { NAME_REGEX, PHONE_REGEX } from 'src/constants';
 import { useAuthInput, useBlockGesture, usePhone, useSetAnimation } from 'src/hooks';
-import { authAtom } from 'src/atoms';
+import { authAtom, isDisableAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -19,13 +19,14 @@ export const FormScreen: React.FC = () => {
   const isRegister = route.name === 'Register';
 
   const setAuth = useSetRecoilState(authAtom);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [isDisabled, setIsDisabled] = useRecoilState(isDisableAtom);
 
   const phoneInputRef = useRef<TextInput>(null);
   const animatedController = useRef(new Animated.Value(0)).current;
 
   const [isPhoneInput, setIsPhoneInput] = useState<boolean>(false);
   const [nameInputFocused, setNameInputFocused] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(isRegister ? '이름을' : '전화번호를');
   const [height, setHeight] = useState<number>(0);
 
   const { mutate: phoneMutate, isLoading: isPhoneLoading } = usePhone();
@@ -43,6 +44,7 @@ export const FormScreen: React.FC = () => {
   const onNameSubmit = () => {
     setAuth((prev) => ({ ...prev, name: name, phone: '' }));
     setIsPhoneInput(true);
+    setTitle('전화번호를');
     setIsDisabled(true);
     phoneInputRef.current?.focus();
     animation({ animation: animatedController, value: 1, useNativeDriver: false });
@@ -54,6 +56,7 @@ export const FormScreen: React.FC = () => {
   };
 
   const nameInputFocus = () => {
+    setTitle('이름을');
     setNameInputFocused(true);
     setIsDisabled(name.length < 2);
   };
@@ -83,7 +86,7 @@ export const FormScreen: React.FC = () => {
   return (
     <AppLayout
       isLoading={isPhoneLoading}
-      headerText={`${isPhoneInput && !nameInputFocused ? '전화번호를' : '이름을'} 알려주세요`}
+      headerText={`${title} 알려주세요`}
       bottomText="다음"
       onPress={isPhoneInput && !nameInputFocused ? onPhoneSubmit : onNameSubmit}
       isDisabled={isDisabled}

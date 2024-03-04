@@ -58,6 +58,8 @@ export const Router: React.FC = () => {
   };
 
   useEffect(() => {
+    SplashScreen.show();
+
     async function prepare() {
       getTheme();
       await getToken();
@@ -67,6 +69,7 @@ export const Router: React.FC = () => {
         console.warn(e);
       } finally {
         setIsReady(true);
+        SplashScreen.hide();
       }
     }
 
@@ -77,7 +80,8 @@ export const Router: React.FC = () => {
 
   const [isUpdating] = useCodePush();
 
-  if (isReady && !isUpdating) {
+  console.log('isUpdating', isUpdating, isReady, 'isReady', isLoading, 'isLoading');
+  if (isReady && !isUpdating && !isLoading) {
     SplashScreen.hide();
   } else if (!isReady) {
     return null;
@@ -88,7 +92,7 @@ export const Router: React.FC = () => {
       if (!token) return 'AuthMain';
       if (data && data?.data) return 'Main';
       if (auth.errorMessage === ERROR_MESSAGE) return 'AuthMain';
-      return 'Main';
+      return 'NoInternet';
     }
   };
 
@@ -111,19 +115,19 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'Main'}
+          initialRouteName={getInitialRoute()}
         >
+          <Stack.Group>
+            <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
+            <Stack.Screen name="Main" component={SC.MainScreen} />
+            <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
+          </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
             <Stack.Screen name="Login" component={SC.FormScreen} />
             <Stack.Screen name="Register" component={SC.FormScreen} />
             <Stack.Screen name="VerifyCode" component={SC.VerifyCodeScreen} />
             <Stack.Screen name="Verify" component={SC.VerifyScreen} />
-          </Stack.Group>
-          <Stack.Group>
-            <Stack.Screen name="Main" component={SC.MainScreen} />
-            <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
-            <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanumPayMain" component={SC.HanumPayMainScreen} />
