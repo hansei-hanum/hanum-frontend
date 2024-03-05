@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  ActivityIndicator,
-  Animated,
-  FlatList,
-  Linking,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { ActivityIndicator, FlatList, Linking, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import ReAnimated, {
@@ -28,9 +21,8 @@ import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-ro
 import { useTheme } from '@emotion/react';
 import { Portal } from '@gorhom/portal';
 
-import { BackDrop, Button, Icon, ScaleOpacity, Text } from 'src/components';
-import { PhotoPermissionProps, selectedPhotosInterface } from 'src/screens';
-import { isIos } from 'src/utils';
+import { BackDrop, Button, Icon, PhotosInterface, ScaleOpacity, Text } from 'src/components';
+import { PhotoPermissionProps } from 'src/screens';
 import { BottomSheetRefProps } from 'src/types';
 import { SCREEN_HEIGHT } from 'src/constants';
 
@@ -39,14 +31,11 @@ import * as S from './styled';
 interface ImageListBottomSheetProps extends AnimatedScrollViewProps {
   scrollHeight: number;
   permission: PhotoPermissionProps;
-  setSelectedPhotos: React.Dispatch<React.SetStateAction<selectedPhotosInterface[]>>;
-  selectedPhotos: selectedPhotosInterface[];
+  setSelectedPhotos: React.Dispatch<React.SetStateAction<PhotosInterface | null>>;
+  selectedPhotos: PhotosInterface | null;
   setDoneCheck: React.Dispatch<React.SetStateAction<boolean>>;
   doneCheck: boolean;
 }
-
-const REPLY_BOX_IOS_OFFSET = -70;
-const REPLY_BOX_ANDROID_OFFSET = -40.6;
 
 export const ImageListBottomSheet = React.forwardRef<
   BottomSheetRefProps,
@@ -77,7 +66,6 @@ export const ImageListBottomSheet = React.forwardRef<
     const active = useSharedValue(false);
     const scrollBegin = useSharedValue(0);
     const scrollY = useSharedValue(0);
-    const buttonTranslateY = useRef<any>(new Animated.Value(0)).current;
 
     const [enableScroll, setEnableScroll] = useState(false);
     const [photos, setPhotos] = useState<PhotoIdentifier[]>([]);
@@ -119,6 +107,7 @@ export const ImageListBottomSheet = React.forwardRef<
       .onEnd(() => {
         if (hasPermission) {
           if (translateY.value > scrollHeight) {
+            runOnJS(setDoneCheck)(true);
             scrollTo(0);
           } else if (translateY.value < context.value.y && -SCREEN_HEIGHT + inset.top) {
             scrollTo(-SCREEN_HEIGHT + inset.top);
@@ -163,10 +152,10 @@ export const ImageListBottomSheet = React.forwardRef<
     }, []);
 
     const onTouchStart = () => {
+      runOnJS(setDoneCheck)(true);
       scrollTo(0);
       flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
       runOnJS(setEnableScroll)(false);
-      runOnJS(setDoneCheck)(true);
     };
 
     const onScroll = useAnimatedScrollHandler({
@@ -204,13 +193,14 @@ export const ImageListBottomSheet = React.forwardRef<
     };
 
     const selectPhoto = useCallback(
-      (props: selectedPhotosInterface) => {
-        const isExist = selectedPhotos.find((photo) => photo.uri === props.uri);
+      ({ type, uri, name }: PhotosInterface) => {
+        const isExist = selectedPhotos?.uri === uri;
+        console.log(type, 'type', uri, 'uri', name, 'name', isExist, 'isExist');
         if (isExist) {
-          return setSelectedPhotos([]);
+          return setSelectedPhotos(null);
         }
-        if (selectedPhotos.length <= 1) {
-          setSelectedPhotos([props]);
+        if (selectedPhotos) {
+          setSelectedPhotos({ type, uri, name });
           return;
         }
       },
@@ -230,25 +220,7 @@ export const ImageListBottomSheet = React.forwardRef<
     const onButtonPress = () => {
       runOnJS(setDoneCheck)(true);
       scrollTo(0);
-      Animated.spring(buttonTranslateY, {
-        toValue: 50,
-        useNativeDriver: true,
-      }).start();
     };
-
-    useEffect(() => {
-      if (selectedPhotos.length === 1 && !doneCheck) {
-        Animated.spring(buttonTranslateY, {
-          toValue: isIos ? REPLY_BOX_IOS_OFFSET : REPLY_BOX_ANDROID_OFFSET,
-          useNativeDriver: true,
-        }).start();
-      } else {
-        Animated.spring(buttonTranslateY, {
-          toValue: 50,
-          useNativeDriver: true,
-        }).start();
-      }
-    }, [selectedPhotos, doneCheck]);
 
     return (
       <Portal>
@@ -303,11 +275,12 @@ export const ImageListBottomSheet = React.forwardRef<
                   renderItem={({ item }) => {
                     const uri = item?.node?.image?.uri;
                     const name = item?.node?.image?.filename || 'image.png';
+                    const type = item?.node?.type;
                     const isSelected = (uri: string) => {
-                      return selectedPhotos.find((photo) => photo.uri === uri);
+                      return selectedPhotos?.uri === uri;
                     };
                     return (
-                      <TouchableWithoutFeedback onPress={() => selectPhoto({ uri, name })}>
+                      <TouchableWithoutFeedback onPress={() => selectPhoto({ uri, name, type })}>
                         <S.ImageWrapper>
                           {isSelected(uri) && (
                             <S.IconWrapper>
@@ -347,13 +320,8 @@ export const ImageListBottomSheet = React.forwardRef<
             )}
           </S.ImageListBottomSheetContainer>
         </GestureDetector>
-        {!doneCheck && selectedPhotos.length === 1 && (
-          <S.ImageListBottomSheetButtonWrapper
-            ref={buttonTranslateY}
-            style={{
-              transform: [{ translateY: buttonTranslateY }],
-            }}
-          >
+        {!doneCheck && selectedPhotos && (
+          <S.ImageListBottomSheetButtonWrapper>
             <Button backgroundColor={theme.primary} onPress={onButtonPress}>
               <Text size={16} color={theme.white}>
                 사진 보내기

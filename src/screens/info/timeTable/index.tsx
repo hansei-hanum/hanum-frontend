@@ -37,7 +37,7 @@ export const TimeTableScreen: React.FC = () => {
         <Spinner isCenter />
       </TimeTableLayout>
     );
-  } else if (isStudent && !isLoading) {
+  } else if (isStudent && !isLoading && data?.data && data?.data.length > 0) {
     return (
       <TimeTableLayout isStudent>
         <WeekDay />

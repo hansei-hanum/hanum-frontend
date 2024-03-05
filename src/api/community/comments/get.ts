@@ -47,10 +47,11 @@ export interface GetCommentsResponse {
   comments: [GetCommentsDetail];
 }
 
+// {"data": 65, "message": "SUCCESS"}
 export const getComments = async ({ articleId, page = 1, count = 10 }: GetCommentsValues) => {
   setAccessToken('9');
   const { data } = await communityInstance.get(
-    `https://xx.nekos.me/articles/7/comments?page=${page}&count=${count}`,
+    `https://xx.nekos.me/articles/${articleId}/comments?page=${page}&count=${count}`,
     {
       headers: {
         'Content-Type': 'text/plain',

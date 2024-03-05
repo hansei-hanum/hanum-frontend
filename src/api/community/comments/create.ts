@@ -1,12 +1,11 @@
-import { communityInstance } from 'src/api/api';
-import { API_SUFFIX } from 'src/api/suffix';
+import { communityInstance, setAccessToken, API_SUFFIX } from 'src/api';
 import { PhotosInterface } from 'src/components';
 
 export interface CreateCommentValues {
   articleId: number;
   isAnonymous: boolean;
   content: string;
-  attachments?: PhotosInterface;
+  attachments?: PhotosInterface | null;
 }
 
 export const createComment = async ({
@@ -15,6 +14,7 @@ export const createComment = async ({
   content,
   attachments,
 }: CreateCommentValues) => {
+  setAccessToken('9');
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));

@@ -25,13 +25,20 @@ import {
   PhotoCard,
   PhotosInterface,
   CommunityMineBottomSheet,
+  Spinner,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
   COMMUNITY_POST,
 } from 'src/constants';
-import { useBottomSheet, useCheckPhotoPermission, useGetComments, useGetUser } from 'src/hooks';
+import {
+  useBottomSheet,
+  useCheckPhotoPermission,
+  useCreateComment,
+  useGetComments,
+  useGetUser,
+} from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
@@ -80,13 +87,15 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [userId, setUserId] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
-  const [selectedPhotos, setSelectedPhotos] = useState<PhotosInterface[]>([]);
+  const [selectedPhotos, setSelectedPhotos] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
 
   const { data } = useGetComments({ articleId: 7, page: page, count: 10 });
   console.log(data, 'data');
+
+  const { mutate, isLoading } = useCreateComment();
 
   const theme = useTheme();
 
@@ -112,8 +121,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const sendChat = () => {
+    mutate({
+      articleId: 65,
+      isAnonymous,
+      content: comment,
+      attachments: selectedPhotos,
+    });
     setComment('');
-    setSelectedPhotos([]);
+    setSelectedPhotos(null);
     commentInputRef.current?.blur();
   };
 
@@ -156,6 +171,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     }
   };
 
+  const onPhotoPress = () => {
+    setSelectedPhotos(null);
+  };
+
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -189,7 +208,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           </View>
         )}
         <S.PostDetailBottomSection>
-          {Boolean(selectedPhotos.length) && (
+          {selectedPhotos && (
             <View
               style={{
                 flexDirection: 'row',
@@ -198,15 +217,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 marginVertical: 10,
               }}
             >
-              {selectedPhotos.map((item, index) => (
-                <PhotoCard
-                  key={item.uri}
-                  item={item.uri}
-                  index={index}
-                  setSelectedImage={setSelectedPhotos}
-                  selectedImage={selectedPhotos}
-                />
-              ))}
+              <PhotoCard item={selectedPhotos.uri} onPress={onPhotoPress} />
             </View>
           )}
           <AnimatedHoc isOpen={isReplyChat}>
@@ -226,7 +237,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 onBlur={onCommentInputBlur}
                 onFocus={onCommentInputFocus}
               />
-              {comment.length > 0 || Boolean(selectedPhotos.length) ? (
+              {isLoading ? (
+                <Spinner />
+              ) : comment.length > 0 || selectedPhotos ? (
                 <ScaleOpacity onPress={sendChat}>
                   <MI name="send" size={28} color={theme.primary} />
                 </ScaleOpacity>

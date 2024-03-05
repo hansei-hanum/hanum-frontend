@@ -85,6 +85,8 @@ export const Router: React.FC = () => {
     return null;
   }
 
+  console.log(token, data, auth.errorMessage);
+
   const getInitialRoute = () => {
     if (!isLoading) {
       if (!token) return 'AuthMain';
@@ -113,7 +115,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={getInitialRoute()}
+          initialRouteName={'Main'}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />

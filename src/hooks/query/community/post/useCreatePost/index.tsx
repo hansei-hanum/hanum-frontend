@@ -12,7 +12,8 @@ export const useCreatePost = (): UseMutationResult<
   CreatePostValues
 > => {
   return useMutation('useCreatePost', createPost, {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       Toast.show({
         type: 'success',
         text1: '게시글이 성공적으로 작성되어었요',
