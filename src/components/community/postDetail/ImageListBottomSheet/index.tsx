@@ -181,7 +181,9 @@ export const ImageListBottomSheet = React.forwardRef<
         first: getPhotosNum,
         assetType: 'Photos',
       });
+
       await new Promise((resolve) => setTimeout(resolve, 300));
+      console.log(res.edges[0].node.image.filepath);
       setPhotos(res?.edges);
       setIsLoading(false);
     }, [getPhotosNum]);
@@ -193,19 +195,22 @@ export const ImageListBottomSheet = React.forwardRef<
     };
 
     const selectPhoto = useCallback(
-      ({ type, uri, name }: PhotosInterface) => {
-        const isExist = selectedPhotos?.uri === uri;
-        console.log(type, 'type', uri, 'uri', name, 'name', isExist, 'isExist');
-        if (isExist) {
-          return setSelectedPhotos(null);
-        }
-        if (selectedPhotos) {
-          setSelectedPhotos({ type, uri, name });
+      async ({ type, uri, name }: PhotosInterface) => {
+        const fileData = await CameraRoll.iosGetImageDataById(uri);
+        console.log(fileData, 'fileData');
+        if (!selectedPhotos && fileData.node.image.filepath) {
+          setSelectedPhotos({ type, uri: fileData.node.image.filepath, name });
           return;
+        } else {
+          setSelectedPhotos(null);
         }
       },
       [selectedPhotos],
     );
+
+    const isSelected = (name: string) => {
+      return selectedPhotos?.name === name;
+    };
 
     const openPhotoSettings = () => {
       Linking.openSettings();
@@ -276,13 +281,11 @@ export const ImageListBottomSheet = React.forwardRef<
                     const uri = item?.node?.image?.uri;
                     const name = item?.node?.image?.filename || 'image.png';
                     const type = item?.node?.type;
-                    const isSelected = (uri: string) => {
-                      return selectedPhotos?.uri === uri;
-                    };
+
                     return (
                       <TouchableWithoutFeedback onPress={() => selectPhoto({ uri, name, type })}>
                         <S.ImageWrapper>
-                          {isSelected(uri) && (
+                          {isSelected(name) && (
                             <S.IconWrapper>
                               <Icons name="checkmark-circle" color={theme.primary} size={24} />
                             </S.IconWrapper>
@@ -293,7 +296,7 @@ export const ImageListBottomSheet = React.forwardRef<
                             height={140}
                             resizeMode="cover"
                             style={{
-                              opacity: isSelected(uri) ? 0.5 : 1,
+                              opacity: isSelected(name) ? 0.5 : 1,
                               borderColor: theme.lightGray,
                               borderWidth: 0.4,
                             }}

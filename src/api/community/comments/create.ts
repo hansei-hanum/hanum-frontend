@@ -5,28 +5,30 @@ export interface CreateCommentValues {
   articleId: number;
   isAnonymous: boolean;
   content: string;
-  attachments?: PhotosInterface | null;
+  attachment?: PhotosInterface | null;
 }
 
 export const createComment = async ({
   articleId,
   isAnonymous,
   content,
-  attachments,
+  attachment,
 }: CreateCommentValues) => {
-  setAccessToken('9');
+  setAccessToken('8');
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));
   formData.append('content', content);
 
-  if (attachments) {
+  console.log(articleId, 'articleId');
+
+  if (attachment) {
     const fileData = {
-      uri: attachments.uri,
-      name: attachments.name,
-      type: attachments.type,
+      uri: attachment.uri,
+      name: attachment.name,
+      type: attachment.type,
     };
-    formData.append(`attachments`, fileData);
+    formData.append(`attachment`, fileData);
   }
 
   const { data } = await communityInstance.post(

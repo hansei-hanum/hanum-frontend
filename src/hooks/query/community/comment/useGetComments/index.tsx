@@ -2,19 +2,27 @@ import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 
-import { APIResponse, GetCommentsResponse, GetCommentsValues, getComments } from 'src/api';
+import {
+  APIErrorResponse,
+  APIResponse,
+  GetCommentsResponse,
+  GetCommentsValues,
+  getComments,
+} from 'src/api';
+import { ErrorToast } from 'src/constants';
 
 export const useGetComments = ({
   articleId,
   page,
   count,
-}: GetCommentsValues): UseQueryResult<APIResponse<GetCommentsResponse>, AxiosError> => {
+}: GetCommentsValues): UseQueryResult<
+  APIResponse<GetCommentsResponse>,
+  AxiosError<APIErrorResponse>
+> => {
   return useQuery('useGetComments', () => getComments({ articleId, page, count }), {
-    onSuccess: (data) => {
-      console.log('useGetComments onSuccess', data);
-    },
     onError: (error) => {
-      console.log('error', error);
+      const message = error.response?.data.message;
+      ErrorToast(message);
     },
   });
 };

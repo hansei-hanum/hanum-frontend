@@ -9,27 +9,29 @@ import { useTheme } from '@emotion/react';
 import { UserLogo } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
-
-import { CommunityPostProps } from '../../Post';
+import { GetCommentsDetail } from 'src/api';
 
 import * as S from './styled';
 
-export interface PostCommentCardProps extends Pick<CommunityPostProps, 'author' | 'time'> {
+export interface PostCommentCardProps
+  extends Pick<
+    GetCommentsDetail,
+    'author' | 'createdAt' | 'content' | 'authorName' | 'attachment'
+  > {
   index: number;
-  message: string;
   isReply?: boolean;
   children?: React.ReactNode;
-  image?: string;
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   index,
   author,
-  time,
-  message,
+  createdAt,
+  authorName,
+  content,
   isReply,
-  image,
   children,
+  attachment,
 }) => {
   const theme = useTheme();
 
@@ -78,53 +80,59 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     <S.PostCommentCardContainer>
       <View style={{ flex: 1, flexDirection: 'row', columnGap: 6 }}>
         <S.PostCommentCardImage
-          source={author.image ? { uri: author.image } : UserLogo}
+          source={author && author.picture !== '' ? { uri: author.picture } : UserLogo}
           style={isReply && { width: 36, height: 36 }}
         />
         <View style={{ rowGap: 4, flex: 1 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text size={13}>{author.name}</Text>
+            <Text size={13}>{authorName}</Text>
             <Text size={13} color={theme.placeholder}>
               {'  '}
-              {getPrevTimeString(time)}
+              {getPrevTimeString(createdAt)}
             </Text>
           </View>
-          {!isShow[index] ? (
-            <S.PostCommentCardCommentContainer>
-              <S.PostCommentCardComment
-                numberOfLines={14}
-                ellipsizeMode="tail"
-                onTextLayout={(event: NativeSyntheticEvent<TextLayoutEventData>) => {
-                  event.nativeEvent.lines.length >= 14 && overlay(index);
-                }}
-              >
-                {message}
-              </S.PostCommentCardComment>
+          {content &&
+            (!isShow[index] ? (
+              <S.PostCommentCardCommentContainer>
+                <S.PostCommentCardComment
+                  numberOfLines={14}
+                  ellipsizeMode="tail"
+                  onTextLayout={(event: NativeSyntheticEvent<TextLayoutEventData>) => {
+                    event.nativeEvent.lines.length >= 14 && overlay(index);
+                  }}
+                >
+                  {content.spans?.map(({ text }) => text)}
+                </S.PostCommentCardComment>
 
-              {isOverlay[index] && (
-                <ScaleOpacity onPress={() => showMore(index)}>
+                {isOverlay[index] && (
+                  <ScaleOpacity onPress={() => showMore(index)}>
+                    <Text size={14} color={theme.placeholder}>
+                      더보기
+                    </Text>
+                  </ScaleOpacity>
+                )}
+              </S.PostCommentCardCommentContainer>
+            ) : (
+              <S.PostCommentCardCommentContainer>
+                <S.PostCommentCardComment>
+                  {content.spans?.map(({ text }) => text)}
+                </S.PostCommentCardComment>
+                <ScaleOpacity onPress={() => showLess(index)}>
                   <Text size={14} color={theme.placeholder}>
-                    더보기
+                    간략하게 보기
                   </Text>
                 </ScaleOpacity>
-              )}
-            </S.PostCommentCardCommentContainer>
-          ) : (
-            <S.PostCommentCardCommentContainer>
-              <S.PostCommentCardComment>{message}</S.PostCommentCardComment>
-              <ScaleOpacity onPress={() => showLess(index)}>
-                <Text size={14} color={theme.placeholder}>
-                  간략하게 보기
-                </Text>
-              </ScaleOpacity>
-            </S.PostCommentCardCommentContainer>
-          )}
-          {image && (
+              </S.PostCommentCardCommentContainer>
+            ))}
+          {attachment && (
             <ScaleOpacity onPress={() => setImageClicked(true)}>
-              <S.PostCommentImage source={{ uri: image }} />
+              <S.PostCommentImage source={{ uri: attachment.thumbnail }} />
               <ModalElement isVisible={imageClicked} backdropOpacity={0.8}>
                 <S.PostCommentImageWrapper onPress={() => setImageClicked(false)} activeOpacity={1}>
-                  <S.PostCommentImage source={{ uri: image }} style={{ width: 300, height: 300 }} />
+                  <S.PostCommentImage
+                    source={{ uri: attachment.original }}
+                    style={{ width: 300, height: 300 }}
+                  />
                 </S.PostCommentImageWrapper>
               </ModalElement>
             </ScaleOpacity>

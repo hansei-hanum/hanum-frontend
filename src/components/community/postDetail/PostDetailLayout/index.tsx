@@ -1,22 +1,30 @@
 import { useEffect, useState } from 'react';
-import { FlatList, FlatListProps } from 'react-native';
+import { FlatList } from 'react-native';
 import { View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
 import { useGetImagesHeight } from 'src/hooks';
 import { COMMUNITY_POST } from 'src/constants';
-import { PostCommentCard, CommunityPost, ScaleOpacity, Text } from 'src/components';
+import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
+import { GetCommentsDetail } from 'src/api';
 
 import { MentionUserListProps } from '../MetionUserList';
 
 import * as S from './styled';
 
 export interface PostDetailLayoutProps extends MentionUserListProps {
+  data?: GetCommentsDetail[];
   onEndReached: () => void;
+  isLoading: boolean;
 }
 
-export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention, onEndReached }) => {
+export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
+  onMention,
+  onEndReached,
+  data,
+  isLoading,
+}) => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
@@ -43,7 +51,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention, o
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={COMMUNITY_POST.chats}
+        data={data}
         keyExtractor={(_, index) => index.toString()}
         contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
         onEndReached={onEndReached}
@@ -64,47 +72,63 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention, o
             </Text>
           </>
         }
-        renderItem={({ item: { author, time, message, replies, image }, index }) => (
-          <>
-            <PostCommentCard
-              author={author}
-              time={time}
-              message={message}
-              index={index}
-              image={image}
-              children={
-                <S.PostDetailLayoutReplyContainer>
-                  <ScaleOpacity onPress={() => onMention(author.name, true)}>
-                    <Text size={14} color={theme.placeholder}>
-                      답글 달기
-                    </Text>
-                  </ScaleOpacity>
-                  {replies && replies.length > 0 && (
-                    <ScaleOpacity onPress={() => showChatReplies(index)}>
+        ListFooterComponent={
+          isLoading ? (
+            <View style={{ paddingVertical: 20 }}>
+              <Spinner size={40} />
+            </View>
+          ) : null
+        }
+        renderItem={({
+          item: { id, isAnonymous, author, authorName, content, createdAt, replyCount, attachment },
+          index,
+        }) =>
+          data && data.length <= 0 ? (
+            <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 14 }}>
+              첫 댓글을 남겨보세요
+            </Text>
+          ) : (
+            <>
+              <PostCommentCard
+                attachment={attachment}
+                author={author}
+                createdAt={createdAt}
+                content={content}
+                index={index}
+                children={
+                  <S.PostDetailLayoutReplyContainer>
+                    <ScaleOpacity onPress={() => onMention(id.toString(), true)}>
                       <Text size={14} color={theme.placeholder}>
-                        {showReply[index] ? '답글 숨기기' : `답글 ${replies.length}개 보기`}
+                        답글 달기
                       </Text>
                     </ScaleOpacity>
-                  )}
-                </S.PostDetailLayoutReplyContainer>
-              }
-            />
-            {showReply[index] && (
-              <View
-                style={{
-                  rowGap: 20,
-                  paddingLeft: 20,
-                  marginTop: 10,
-                  marginBottom: 20,
-                }}
-              >
-                {replies.map((props, index) => (
+                    {replyCount > 0 && (
+                      <ScaleOpacity onPress={() => showChatReplies(index)}>
+                        <Text size={14} color={theme.placeholder}>
+                          {showReply[index] ? '답글 숨기기' : `답글 ${replyCount}개 보기`}
+                        </Text>
+                      </ScaleOpacity>
+                    )}
+                  </S.PostDetailLayoutReplyContainer>
+                }
+              />
+              {showReply[index] && (
+                <View
+                  style={{
+                    rowGap: 20,
+                    paddingLeft: 20,
+                    marginTop: 10,
+                    marginBottom: 20,
+                  }}
+                >
+                  {/* {replies.map((props, index) => (
                   <PostCommentCard {...props} index={index} key={index} isReply />
-                ))}
-              </View>
-            )}
-          </>
-        )}
+                ))} */}
+                </View>
+              )}
+            </>
+          )
+        }
       />
     </S.PostDetailLayoutContainer>
   );

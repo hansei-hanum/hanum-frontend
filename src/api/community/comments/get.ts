@@ -1,5 +1,4 @@
 import { communityInstance, setAccessToken } from 'src/api/api';
-import { API_SUFFIX } from 'src/api/suffix';
 
 export interface GetCommentsValues {
   articleId: number;
@@ -12,22 +11,31 @@ export enum RichTextType {
   MENTION = 'Mention',
 }
 
+export interface GetCommentsAuthorProps {
+  id: number;
+  name?: string;
+  handle?: string;
+  picture: string;
+}
+
 export interface GetCommentsDetail {
   id: number;
   isAnonymous: boolean;
-  author: {
-    id: number;
-    name?: string;
-    handle?: string;
-    picture: string;
-  };
+  author?: GetCommentsAuthorProps;
   authorName?: string;
-  content: {
+  content?: {
     spans?: [
       {
+        text: string;
         type: RichTextType;
       },
     ];
+  };
+  attachment: {
+    thumbnail: string;
+    original: string;
+    id: number;
+    type: string;
   };
   createdAt: string;
   reactions?: [
@@ -44,20 +52,13 @@ export interface GetCommentsResponse {
   limit: number;
   total: number;
   totalPage: number;
-  comments: [GetCommentsDetail];
+  comments: GetCommentsDetail[];
 }
 
-// {"data": 65, "message": "SUCCESS"}
 export const getComments = async ({ articleId, page = 1, count = 10 }: GetCommentsValues) => {
-  setAccessToken('9');
+  setAccessToken('8');
   const { data } = await communityInstance.get(
-    `https://xx.nekos.me/articles/${articleId}/comments?page=${page}&count=${count}`,
-    {
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-    },
+    `https://xx.nekos.me/articles/${articleId}/comments/?page=${page}&count=${count}`,
   );
-  console.log('getComments', data);
   return data;
 };

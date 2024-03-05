@@ -49,6 +49,8 @@ export const createPost = async ({
 
   if (attachments && typeof attachments !== 'string') {
     attachments.forEach((attachment) => {
+      console.log(attachment, 'attachments');
+      // {"name": "5CF4BD8B-1465-443F-ACA7-1ECD026A1129.jpg", "type": "image/jpg", "uri": "file:///var/mobile/Containers/Data/Application/37D79F1B-2143-4EBA-8A4F-2744D8EF5315/tmp/5CF4BD8B-1465-443F-ACA7-1ECD026A1129.jpg"} attachments
       const fileData = {
         uri: attachment.uri,
         name: attachment.name,

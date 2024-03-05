@@ -92,10 +92,13 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [height, setHeight] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
 
-  const { data } = useGetComments({ articleId: 7, page: page, count: 10 });
-  console.log(data, 'data');
+  const { data, isLoading: isGetCommentsLoading } = useGetComments({
+    articleId: 64,
+    page: 0,
+    count: 10,
+  });
 
-  const { mutate, isLoading } = useCreateComment();
+  const { mutate: createCommentMutate, isLoading: createCommentLoading } = useCreateComment();
 
   const theme = useTheme();
 
@@ -121,11 +124,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const sendChat = () => {
-    mutate({
-      articleId: 65,
+    createCommentMutate({
+      articleId: 64,
       isAnonymous,
       content: comment,
-      attachments: selectedPhotos,
+      attachment: selectedPhotos,
     });
     setComment('');
     setSelectedPhotos(null);
@@ -191,6 +194,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           <PostDetailLayout
+            isLoading={isGetCommentsLoading}
+            data={data?.data.comments}
             onMention={onMention}
             onEndReached={() => {
               setPage(page + 1);
@@ -237,7 +242,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 onBlur={onCommentInputBlur}
                 onFocus={onCommentInputFocus}
               />
-              {isLoading ? (
+              {createCommentLoading ? (
                 <Spinner />
               ) : comment.length > 0 || selectedPhotos ? (
                 <ScaleOpacity onPress={sendChat}>
