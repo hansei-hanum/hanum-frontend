@@ -24,5 +24,6 @@ export const useGetComments = ({
       const message = error.response?.data.message;
       ErrorToast(message);
     },
+    retry: 0,
   });
 };

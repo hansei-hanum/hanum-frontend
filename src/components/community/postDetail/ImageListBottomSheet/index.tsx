@@ -31,8 +31,8 @@ import * as S from './styled';
 interface ImageListBottomSheetProps extends AnimatedScrollViewProps {
   scrollHeight: number;
   permission: PhotoPermissionProps;
-  setSelectedPhotos: React.Dispatch<React.SetStateAction<PhotosInterface | null>>;
-  selectedPhotos: PhotosInterface | null;
+  setPhoto: React.Dispatch<React.SetStateAction<PhotosInterface | null>>;
+  photo: PhotosInterface | null;
   setDoneCheck: React.Dispatch<React.SetStateAction<boolean>>;
   doneCheck: boolean;
 }
@@ -45,8 +45,8 @@ export const ImageListBottomSheet = React.forwardRef<
     {
       scrollHeight,
       permission,
-      setSelectedPhotos,
-      selectedPhotos,
+      setPhoto,
+      photo,
       setDoneCheck,
       doneCheck,
       ...rest
@@ -198,18 +198,18 @@ export const ImageListBottomSheet = React.forwardRef<
       async ({ type, uri, name }: PhotosInterface) => {
         const fileData = await CameraRoll.iosGetImageDataById(uri);
         console.log(fileData, 'fileData');
-        if (!selectedPhotos && fileData.node.image.filepath) {
-          setSelectedPhotos({ type, uri: fileData.node.image.filepath, name });
+        if (!photo && fileData.node.image.filepath) {
+          setPhoto({ type, uri: fileData.node.image.filepath, name });
           return;
         } else {
-          setSelectedPhotos(null);
+          setPhoto(null);
         }
       },
-      [selectedPhotos],
+      [photo],
     );
 
     const isSelected = (name: string) => {
-      return selectedPhotos?.name === name;
+      return photo?.name === name;
     };
 
     const openPhotoSettings = () => {
@@ -323,7 +323,7 @@ export const ImageListBottomSheet = React.forwardRef<
             )}
           </S.ImageListBottomSheetContainer>
         </GestureDetector>
-        {!doneCheck && selectedPhotos && (
+        {!doneCheck && photo && (
           <S.ImageListBottomSheetButtonWrapper>
             <Button backgroundColor={theme.primary} onPress={onButtonPress}>
               <Text size={16} color={theme.white}>

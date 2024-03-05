@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -87,14 +87,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [userId, setUserId] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
-  const [selectedPhotos, setSelectedPhotos] = useState<PhotosInterface | null>(null);
+  const [photo, setPhoto] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
 
   const { data, isLoading: isGetCommentsLoading } = useGetComments({
     articleId: 64,
-    page: 0,
+    page: page,
     count: 10,
   });
 
@@ -128,10 +128,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       articleId: 64,
       isAnonymous,
       content: comment,
-      attachment: selectedPhotos,
+      attachment: photo,
     });
     setComment('');
-    setSelectedPhotos(null);
+    setPhoto(null);
     commentInputRef.current?.blur();
   };
 
@@ -175,8 +175,27 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onPhotoPress = () => {
-    setSelectedPhotos(null);
+    setPhoto(null);
   };
+
+  const onEndReached = useCallback(() => {
+    console.log(data?.data.totalPage, page, 'end');
+    if (data?.data.totalPage === page) return;
+    setPage(page + 1);
+  }, [page, data]);
+
+  // useEffect(() => {
+  //   const fetchComments = async () => {
+  //     const { data } = await useGetComments({
+  //       articleId: 64,
+  //       page: page,
+  //       count: 10,
+  //     });
+  //     setComments((prevComments) => [...prevComments, ...data.data.comments]);
+  //   };
+
+  //   fetchComments();
+  // }, [page]);
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
@@ -197,9 +216,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             isLoading={isGetCommentsLoading}
             data={data?.data.comments}
             onMention={onMention}
-            onEndReached={() => {
-              setPage(page + 1);
-            }}
+            onEndReached={onEndReached}
           />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
@@ -213,7 +230,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           </View>
         )}
         <S.PostDetailBottomSection>
-          {selectedPhotos && (
+          {photo && (
             <View
               style={{
                 flexDirection: 'row',
@@ -222,7 +239,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 marginVertical: 10,
               }}
             >
-              <PhotoCard item={selectedPhotos.uri} onPress={onPhotoPress} />
+              <PhotoCard item={photo.uri} onPress={onPhotoPress} />
             </View>
           )}
           <AnimatedHoc isOpen={isReplyChat}>
@@ -244,7 +261,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
               />
               {createCommentLoading ? (
                 <Spinner />
-              ) : comment.length > 0 || selectedPhotos ? (
+              ) : comment.length > 0 || photo ? (
                 <ScaleOpacity onPress={sendChat}>
                   <MI name="send" size={28} color={theme.primary} />
                 </ScaleOpacity>
@@ -259,9 +276,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       </S.PostDetailInnerContainer>
       <ImageListBottomSheet
         ref={ImageListBottomSheetRef}
-        setSelectedPhotos={setSelectedPhotos}
+        setPhoto={setPhoto}
         setDoneCheck={setDoneCheck}
-        selectedPhotos={selectedPhotos}
+        photo={photo}
         scrollHeight={permissionHeight}
         permission={permission}
         doneCheck={doneCheck}
