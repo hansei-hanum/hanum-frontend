@@ -206,7 +206,6 @@ export const ImageListBottomSheet = React.forwardRef<
     const selectPhoto = useCallback(
       (props: selectedPhotosInterface) => {
         const isExist = selectedPhotos.find((photo) => photo.uri === props.uri);
-        console.log('selectedPhotos', selectedPhotos, isExist);
         if (isExist) {
           return setSelectedPhotos([]);
         }

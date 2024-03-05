@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -7,10 +7,8 @@ import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilState } from 'recoil';
 
 import {
   AnimatedHoc,
@@ -37,7 +35,6 @@ import { useBottomSheet, useCheckPhotoPermission, useGetComments, useGetUser } f
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
-import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -57,10 +54,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 >;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
-  const { id } = route.params;
-  console.log(id);
-
-  const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
+  const { isEdit } = route.params;
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
@@ -91,7 +85,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [height, setHeight] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
 
-  const { data } = useGetComments({ articleId: id, page: page, count: 20 });
+  const { data } = useGetComments({ articleId: 7, page: page, count: 10 });
+  console.log(data, 'data');
 
   const theme = useTheme();
 
@@ -128,7 +123,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const openPostBottomSheet = () => {
-    if (communityEdit.isEdit) {
+    if (isEdit) {
       bottomSheetRef.current?.scrollTo(-height);
     } else {
       commentInputRef.current?.blur();
@@ -160,15 +155,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       await AsyncStorage.setItem('checkTutorial', 'true');
     }
   };
-
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    if (isFocused) {
-      console.log(communityEdit);
-      setCommunityEdit((prev) => ({ ...prev, isEdit: true }));
-    }
-  }, [isFocused]);
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
@@ -262,16 +248,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         permission={permission}
         doneCheck={doneCheck}
       />
-      {!communityEdit.isEdit ? (
-        <PostOptionBottomSheet
-          bottomSheetRef={bottomSheetRef}
-          closeBottomSheet={closeBottomSheet}
-        />
-      ) : (
+      {isEdit ? (
         <CommunityMineBottomSheet
           ref={bottomSheetRef}
           setHeight={setHeight}
           height={height}
+          closeBottomSheet={closeBottomSheet}
+        />
+      ) : (
+        <PostOptionBottomSheet
+          bottomSheetRef={bottomSheetRef}
           closeBottomSheet={closeBottomSheet}
         />
       )}

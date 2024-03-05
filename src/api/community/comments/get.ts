@@ -3,8 +3,8 @@ import { API_SUFFIX } from 'src/api/suffix';
 
 export interface GetCommentsValues {
   articleId: number;
-  page: number;
-  count: number;
+  page?: number;
+  count?: number;
 }
 
 export enum RichTextType {
@@ -47,10 +47,16 @@ export interface GetCommentsResponse {
   comments: [GetCommentsDetail];
 }
 
-export const getComments = async ({ articleId, page, count }: GetCommentsValues) => {
-  setAccessToken('4');
+export const getComments = async ({ articleId, page = 1, count = 10 }: GetCommentsValues) => {
+  setAccessToken('9');
   const { data } = await communityInstance.get(
-    `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments?page=${page}&limit=${count}`,
+    `https://xx.nekos.me/articles/7/comments?page=${page}&count=${count}`,
+    {
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+    },
   );
+  console.log('getComments', data);
   return data;
 };

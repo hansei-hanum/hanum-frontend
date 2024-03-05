@@ -169,8 +169,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
     setKeyboardShow(false);
   };
 
-  console.log(keyboardShow, 'keyboardShow');
-
   const onPost = () => {
     mutate({
       isAnonymous: anonymityType.type === '실명 표시' ? false : true,

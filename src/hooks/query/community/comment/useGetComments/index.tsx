@@ -10,6 +10,9 @@ export const useGetComments = ({
   count,
 }: GetCommentsValues): UseQueryResult<APIResponse<GetCommentsResponse>, AxiosError> => {
   return useQuery('useGetComments', () => getComments({ articleId, page, count }), {
+    onSuccess: (data) => {
+      console.log('useGetComments onSuccess', data);
+    },
     onError: (error) => {
       console.log('error', error);
     },
