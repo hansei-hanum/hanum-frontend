@@ -33,7 +33,7 @@ import {
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
   COMMUNITY_POST,
 } from 'src/constants';
-import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
+import { useBottomSheet, useCheckPhotoPermission, useGetComments, useGetUser } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
@@ -89,6 +89,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [selectedPhotos, setSelectedPhotos] = useState<PhotosInterface[]>([]);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+
+  const { data } = useGetComments({ articleId: id, page: page, count: 20 });
 
   const theme = useTheme();
 
@@ -182,7 +185,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
-          <PostDetailLayout onMention={onMention} />
+          <PostDetailLayout
+            onMention={onMention}
+            onEndReached={() => {
+              setPage(page + 1);
+            }}
+          />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
             {comment.length < 2 ? (

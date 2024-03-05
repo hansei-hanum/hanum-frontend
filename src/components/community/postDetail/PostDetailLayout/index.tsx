@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, FlatListProps } from 'react-native';
 import { View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
@@ -12,9 +12,11 @@ import { MentionUserListProps } from '../MetionUserList';
 
 import * as S from './styled';
 
-export interface PostDetailLayoutProps extends MentionUserListProps {}
+export interface PostDetailLayoutProps extends MentionUserListProps {
+  onEndReached: () => void;
+}
 
-export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention }) => {
+export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention, onEndReached }) => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
@@ -44,6 +46,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({ onMention })
         data={COMMUNITY_POST.chats}
         keyExtractor={(_, index) => index.toString()}
         contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
             <CommunityPost
