@@ -1,8 +1,9 @@
 import { communityInstance, setAccessToken } from 'src/api/api';
+import { API_SUFFIX } from 'src/api/suffix';
 
 export interface GetCommentsValues {
   articleId: number;
-  page?: number;
+  page: number;
   count?: number;
 }
 
@@ -55,11 +56,13 @@ export interface GetCommentsResponse {
   comments: GetCommentsDetail[];
 }
 
-export const getComments = async ({ articleId, page, count }: GetCommentsValues) => {
+export const getComments = async ({ articleId, page, count = 10 }: GetCommentsValues) => {
   console.log('getComments', page, count);
   setAccessToken('8');
   const { data } = await communityInstance.get(
-    `https://xx.nekos.me/articles/${articleId}/comments/?page=${page}&count=${count}`,
+    `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/?page=${page}&count=${count}`,
   );
-  return data;
+  const nextPage = data.data.page < data.data.totalPage ? data.data.page + 1 : undefined;
+
+  return { ...data, nextPage };
 };

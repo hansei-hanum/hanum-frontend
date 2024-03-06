@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -90,12 +90,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
 
-  const { data, isLoading: isGetCommentsLoading } = useGetComments({
+  const {
+    data,
+    isLoading: isGetCommentsLoading,
+    fetchNextPage,
+    isFetching,
+  } = useGetComments({
     articleId: 64,
-    page: page,
-    count: 10,
   });
 
   const { mutate: createCommentMutate, isLoading: createCommentLoading } = useCreateComment();
@@ -178,25 +180,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setPhoto(null);
   };
 
-  const onEndReached = useCallback(() => {
-    console.log(data?.data.totalPage, page, 'end');
-    if (data?.data.totalPage === page) return;
-    setPage(page + 1);
-  }, [page, data]);
-
-  // useEffect(() => {
-  //   const fetchComments = async () => {
-  //     const { data } = await useGetComments({
-  //       articleId: 64,
-  //       page: page,
-  //       count: 10,
-  //     });
-  //     setComments((prevComments) => [...prevComments, ...data.data.comments]);
-  //   };
-
-  //   fetchComments();
-  // }, [page]);
-
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -213,10 +196,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           <PostDetailLayout
-            isLoading={isGetCommentsLoading}
-            data={data?.data.comments}
+            onEndReached={() => fetchNextPage()}
             onMention={onMention}
-            onEndReached={onEndReached}
+            data={data?.pages}
+            isLoading={isGetCommentsLoading || isFetching}
           />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>

@@ -1,4 +1,4 @@
-import { UseQueryResult, useQuery } from 'react-query';
+import { UseInfiniteQueryResult, useInfiniteQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 
@@ -13,17 +13,24 @@ import { ErrorToast } from 'src/constants';
 
 export const useGetComments = ({
   articleId,
-  page,
-  count,
-}: GetCommentsValues): UseQueryResult<
+}: Pick<GetCommentsValues, 'articleId'>): UseInfiniteQueryResult<
   APIResponse<GetCommentsResponse>,
   AxiosError<APIErrorResponse>
 > => {
-  return useQuery('useGetComments', () => getComments({ articleId, page, count }), {
-    onError: (error) => {
-      const message = error.response?.data.message;
-      ErrorToast(message);
+  return useInfiniteQuery(
+    ['getComments', articleId],
+    ({ pageParam = 1 }) => getComments({ articleId, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextPage;
+      },
+      onError: (error) => {
+        const message = error.response?.data.message;
+        ErrorToast(message);
+      },
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      retry: 1,
     },
-    retry: 0,
-  });
+  );
 };
