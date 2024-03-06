@@ -85,8 +85,6 @@ export const Router: React.FC = () => {
     return null;
   }
 
-  console.log(token, data, auth.errorMessage);
-
   const getInitialRoute = () => {
     if (!isLoading) {
       if (!token) return 'AuthMain';

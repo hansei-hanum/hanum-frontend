@@ -35,7 +35,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 }) => {
   const { userData } = useGetUser();
   const checkMyComment = userData?.id === author?.id;
-  console.log('PostCommentCard', checkMyComment);
   const articleId = useRecoilValue(articleIdAtom);
 
   const { mutate: updateReactionMutate } = useUpdateCommentReaction();

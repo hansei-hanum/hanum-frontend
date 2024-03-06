@@ -9,7 +9,7 @@ import { CommunityUserImage, ScaleOpacity, Text } from 'src/components';
 import * as S from './styled';
 
 export interface MentionUserListProps {
-  onMention: (id: string, isReply?: boolean) => void;
+  onMention: (id: string, commentId?: number) => void;
 }
 
 export const MentionUserList: React.FC<MentionUserListProps> = ({ onMention }) => {

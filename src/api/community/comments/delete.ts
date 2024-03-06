@@ -7,7 +7,6 @@ export interface DeleteCommentValues {
 }
 
 export const deleteComment = async ({ articleId, commentId }: DeleteCommentValues) => {
-  console.log(articleId, 'articleId', commentId, 'commentId');
   setAccessToken('9');
   const { data } = await communityInstance.delete(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/${commentId}`,

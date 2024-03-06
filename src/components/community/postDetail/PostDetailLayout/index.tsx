@@ -95,7 +95,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                     index={index}
                     children={
                       <S.PostDetailLayoutReplyContainer>
-                        <ScaleOpacity onPress={() => onMention(props.id.toString(), true)}>
+                        <ScaleOpacity onPress={() => onMention(props.id.toString(), props.id)}>
                           <Text size={14} color={theme.placeholder}>
                             답글 달기
                           </Text>
