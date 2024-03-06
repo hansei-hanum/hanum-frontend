@@ -20,8 +20,6 @@ export const createComment = async ({
   formData.append('isAnonymous', String(isAnonymous));
   formData.append('content', content);
 
-  console.log(articleId, 'articleId');
-
   if (attachment) {
     const fileData = {
       uri: attachment.uri,

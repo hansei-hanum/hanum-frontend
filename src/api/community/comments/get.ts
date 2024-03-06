@@ -57,7 +57,6 @@ export interface GetCommentsResponse {
 }
 
 export const getComments = async ({ articleId, page, count = 10 }: GetCommentsValues) => {
-  console.log('getComments', page, count);
   setAccessToken('8');
   const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/?page=${page}&count=${count}`,

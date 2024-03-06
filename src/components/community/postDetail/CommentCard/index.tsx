@@ -5,34 +5,36 @@ import { HapticFeedbackTypes, trigger } from 'react-native-haptic-feedback';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 
 import { UserLogo } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
 import { GetCommentsDetail } from 'src/api';
+import { useUpdateCommentReaction } from 'src/hooks';
+import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export interface PostCommentCardProps
-  extends Pick<
-    GetCommentsDetail,
-    'author' | 'createdAt' | 'content' | 'authorName' | 'attachment'
-  > {
+export interface PostCommentCardProps extends GetCommentsDetail {
   index: number;
   isReply?: boolean;
   children?: React.ReactNode;
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
+  id,
   index,
   author,
   createdAt,
-  authorName,
+  reactions,
   content,
   isReply,
   children,
   attachment,
 }) => {
+  const articleId = useRecoilValue(articleIdAtom);
+  const { mutate: updateReactionMutate } = useUpdateCommentReaction();
   const theme = useTheme();
 
   const [isShow, setIsShow] = useState<Array<boolean>>([]);
@@ -63,18 +65,15 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     });
   };
 
-  const [likes, setLikes] = useState<Array<boolean>>([]);
+  const [reaction, setReaction] = useState<boolean>(false);
 
-  const onLikeClick = (index: number) => {
+  const onLikeClick = (id: number) => {
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
-    setLikes((prev) => {
-      const newLikes = [...prev];
-      newLikes[index] = !newLikes[index];
-      return newLikes;
-    });
+    setReaction((prev) => !prev);
+    articleId && updateReactionMutate({ articleId: articleId, commentId: id });
   };
 
-  const likesLength = likes.filter((like) => like).length;
+  const likesLength = reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0);
 
   return (
     <S.PostCommentCardContainer>
@@ -85,7 +84,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
         />
         <View style={{ rowGap: 4, flex: 1 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text size={13}>{authorName}</Text>
+            <Text size={13}>{author && author.handle ? author.handle : '익명'}</Text>
             <Text size={13} color={theme.placeholder}>
               {'  '}
               {getPrevTimeString(createdAt)}
@@ -141,18 +140,19 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
         </View>
       </View>
       <S.PostCommentCardIconContainer>
-        <ScaleOpacity onPress={() => onLikeClick(index)}>
-          {likes[index] ? (
+        <ScaleOpacity onPress={() => onLikeClick(id)}>
+          {reaction ? (
             <MCI name="cards-heart" size={22} color={theme.danger} />
           ) : (
             <MCI name="cards-heart-outline" size={22} color={theme.placeholder} />
           )}
         </ScaleOpacity>
-        {likesLength !== 0 && (
-          <Text size={13} color={theme.placeholder}>
-            {likesLength}
-          </Text>
-        )}
+        {likesLength !== 0 ||
+          (reaction && (
+            <Text size={13} color={theme.placeholder}>
+              {reaction ? likesLength + 1 : likesLength}
+            </Text>
+          ))}
       </S.PostCommentCardIconContainer>
     </S.PostCommentCardContainer>
   );

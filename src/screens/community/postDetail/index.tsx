@@ -9,6 +9,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
 import {
   AnimatedHoc,
@@ -42,6 +43,7 @@ import {
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
+import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -60,10 +62,14 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
   'CommunityPostDetail'
 >;
 
+const articleId = 64;
+
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit } = route.params;
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+  const setArticleId = useSetRecoilState(articleIdAtom);
+  setArticleId(articleId);
 
   const inset = useSafeAreaInsets();
 
@@ -97,7 +103,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     fetchNextPage,
     isFetching,
   } = useGetComments({
-    articleId: 64,
+    articleId,
   });
 
   const { mutate: createCommentMutate, isLoading: createCommentLoading } = useCreateComment();
@@ -127,7 +133,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const sendChat = () => {
     createCommentMutate({
-      articleId: 64,
+      articleId,
       isAnonymous,
       content: comment,
       attachment: photo,

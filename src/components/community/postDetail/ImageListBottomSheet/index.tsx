@@ -183,7 +183,6 @@ export const ImageListBottomSheet = React.forwardRef<
       });
 
       await new Promise((resolve) => setTimeout(resolve, 300));
-      console.log(res.edges[0].node.image.filepath);
       setPhotos(res?.edges);
       setIsLoading(false);
     }, [getPhotosNum]);
@@ -197,7 +196,6 @@ export const ImageListBottomSheet = React.forwardRef<
     const selectPhoto = useCallback(
       async ({ type, uri, name }: PhotosInterface) => {
         const fileData = await CameraRoll.iosGetImageDataById(uri);
-        console.log(fileData, 'fileData');
         if (!photo && fileData.node.image.filepath) {
           setPhoto({ type, uri: fileData.node.image.filepath, name });
           return;

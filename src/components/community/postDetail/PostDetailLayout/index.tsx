@@ -25,7 +25,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
   data,
   isLoading,
 }) => {
-  console.log(data, 'data');
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
@@ -77,9 +76,11 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
               index={0}
               isSingle
             />
-            <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
-              댓글 {getCommentsLength()}개
-            </Text>
+            {!isLoading && (
+              <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
+                댓글 {getCommentsLength()}개
+              </Text>
+            )}
           </>
         }
         ListFooterComponent={
@@ -96,52 +97,44 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
             </Text>
           ) : (
             <>
-              {data.comments.map(
-                (
-                  { attachment, author, createdAt, content, id, replyCount }: GetCommentsDetail,
-                  index,
-                ) => (
-                  <>
-                    <PostCommentCard
-                      attachment={attachment}
-                      author={author}
-                      createdAt={createdAt}
-                      content={content}
-                      index={index}
-                      children={
-                        <S.PostDetailLayoutReplyContainer>
-                          <ScaleOpacity onPress={() => onMention(id.toString(), true)}>
+              {data.comments.map((props: GetCommentsDetail, index) => (
+                <>
+                  <PostCommentCard
+                    {...props}
+                    index={index}
+                    children={
+                      <S.PostDetailLayoutReplyContainer>
+                        <ScaleOpacity onPress={() => onMention(props.id.toString(), true)}>
+                          <Text size={14} color={theme.placeholder}>
+                            답글 달기
+                          </Text>
+                        </ScaleOpacity>
+                        {props.replyCount > 0 && (
+                          <ScaleOpacity onPress={() => showChatReplies(index)}>
                             <Text size={14} color={theme.placeholder}>
-                              답글 달기
+                              {showReply[index] ? '답글 숨기기' : `답글 ${props.replyCount}개 보기`}
                             </Text>
                           </ScaleOpacity>
-                          {replyCount > 0 && (
-                            <ScaleOpacity onPress={() => showChatReplies(index)}>
-                              <Text size={14} color={theme.placeholder}>
-                                {showReply[index] ? '답글 숨기기' : `답글 ${replyCount}개 보기`}
-                              </Text>
-                            </ScaleOpacity>
-                          )}
-                        </S.PostDetailLayoutReplyContainer>
-                      }
-                    />
-                    {showReply[index] && (
-                      <View
-                        style={{
-                          rowGap: 20,
-                          paddingLeft: 20,
-                          marginTop: 10,
-                          marginBottom: 20,
-                        }}
-                      >
-                        {/* {replies.map((props, index) => (
+                        )}
+                      </S.PostDetailLayoutReplyContainer>
+                    }
+                  />
+                  {showReply[index] && (
+                    <View
+                      style={{
+                        rowGap: 20,
+                        paddingLeft: 20,
+                        marginTop: 10,
+                        marginBottom: 20,
+                      }}
+                    >
+                      {/* {replies.map((props, index) => (
                   <PostCommentCard {...props} index={index} key={index} isReply />
                 ))} */}
-                      </View>
-                    )}
-                  </>
-                ),
-              )}
+                    </View>
+                  )}
+                </>
+              ))}
             </>
           )
         }
