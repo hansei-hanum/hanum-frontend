@@ -33,7 +33,7 @@ export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
       motive,
       aspiration,
     });
-    navigate('SelectTeam');
+    navigate('HanowlSelectTeam');
   };
 
   return (

@@ -5,14 +5,19 @@ import { AxiosError } from 'axios';
 import { APIResponse, CreateCommentValues, createComment } from 'src/api';
 import { ErrorToast } from 'src/constants';
 
-export const useCreateComment = (): UseMutationResult<
+import { useGetComments } from '../useGetComments';
+
+export const useCreateComment = ({
+  articleId,
+}: Pick<CreateCommentValues, 'articleId'>): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIResponse<null>>,
   CreateCommentValues
 > => {
+  const { refetch } = useGetComments({ articleId });
   return useMutation('useCreateComment', createComment, {
-    onSuccess: (response) => {
-      console.log(response, 'onSuccess');
+    onSuccess: () => {
+      refetch();
     },
     onError: (error) => {
       const message = error.response?.data.message;

@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
-import { useGetImagesHeight } from 'src/hooks';
+import { useBottomSheet, useGetImagesHeight } from 'src/hooks';
 import { COMMUNITY_POST } from 'src/constants';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
 import { APIResponse, GetCommentsDetail, GetCommentsResponse } from 'src/api';
@@ -129,8 +129,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                       }}
                     >
                       {/* {replies.map((props, index) => (
-                  <PostCommentCard {...props} index={index} key={index} isReply />
-                ))} */}
+                        <PostCommentCard {...props} index={index} key={index} isReply />
+                      ))} */}
                     </View>
                   )}
                 </>

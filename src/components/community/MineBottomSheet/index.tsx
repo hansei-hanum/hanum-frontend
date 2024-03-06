@@ -6,7 +6,7 @@ import Icons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@emotion/react';
 
-import { BottomSheet, Button, Modal, ScaleOpacity, Text } from 'src/components/common';
+import { BottomSheet, Button, Modal, ScaleOpacityCustomProps, Text } from 'src/components/common';
 import {
   COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST,
   CommunityMineBottomSheetTextEnum,

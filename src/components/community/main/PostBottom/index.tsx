@@ -24,7 +24,7 @@ export const PostBottom: React.FC<PostBottom> = ({ index, likesLength, commentsL
   const [likes, setLikes] = useState<Array<boolean>>([]);
 
   const onChatScreenNavigate = (index: number) => {
-    navigate('CommunityPostDetail', { id: index });
+    navigate('CommunityPostDetail', { id: index, isEdit: false });
   };
 
   const onLikeClick = (index: number) => {

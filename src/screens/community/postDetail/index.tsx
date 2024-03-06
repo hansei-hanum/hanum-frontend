@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -9,7 +9,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '@emotion/react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import {
   AnimatedHoc,
@@ -17,7 +17,6 @@ import {
   CommunityUserImage,
   Header,
   ReplyBox,
-  ScaleOpacity,
   Text,
   PostDetailLayout,
   MentionUserList,
@@ -27,6 +26,8 @@ import {
   PhotosInterface,
   CommunityMineBottomSheet,
   Spinner,
+  ScaleOpacity,
+  CommentBottomSheet,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
@@ -43,7 +44,7 @@ import {
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
-import { articleIdAtom } from 'src/atoms';
+import { articleIdAtom, commentBottomSheetAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -68,8 +69,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const { isEdit } = route.params;
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+
   const setArticleId = useSetRecoilState(articleIdAtom);
   setArticleId(articleId);
+
+  const isCommentBottomSheetOpen = useRecoilValue(commentBottomSheetAtom);
 
   const inset = useSafeAreaInsets();
 
@@ -106,7 +110,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     articleId,
   });
 
-  const { mutate: createCommentMutate, isLoading: createCommentLoading } = useCreateComment();
+  const { mutate: createCommentMutate, isLoading: createCommentLoading } = useCreateComment({
+    articleId,
+  });
 
   const theme = useTheme();
 
@@ -185,6 +191,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const onPhotoPress = () => {
     setPhoto(null);
   };
+
+  useEffect(() => {
+    console.log('isCommentBottomSheetOpen', isCommentBottomSheetOpen);
+
+    if (isCommentBottomSheetOpen) {
+      bottomSheetRef.current?.scrollTo(-100);
+    }
+  }, [isCommentBottomSheetOpen]);
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
@@ -272,7 +286,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         permission={permission}
         doneCheck={doneCheck}
       />
-      {isEdit ? (
+      {isCommentBottomSheetOpen ? (
+        <CommentBottomSheet ref={bottomSheetRef} />
+      ) : isEdit ? (
         <CommunityMineBottomSheet
           ref={bottomSheetRef}
           setHeight={setHeight}
