@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
-import { useBottomSheet, useGetImagesHeight } from 'src/hooks';
+import { useGetImagesHeight } from 'src/hooks';
 import { COMMUNITY_POST } from 'src/constants';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
 import { APIResponse, GetCommentsDetail, GetCommentsResponse } from 'src/api';
@@ -39,15 +39,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     });
   };
 
-  const getCommentsLength = () => {
-    if (data && data[0].data && data[0].data.comments.length >= 0) {
-      return data
-        ?.map(({ data: { comments } }) => comments.length)
-        .reduce((acc, cur) => acc + cur, 0);
-    }
-    return 0;
-  };
-
   useEffect(() => {
     COMMUNITY_POST.content.image.forEach((uri, index) => {
       getHeightsForImage(uri, index);
@@ -76,9 +67,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
               index={0}
               isSingle
             />
-            {!isLoading && (
+            {!isLoading && data && (
               <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
-                댓글 {getCommentsLength()}개
+                댓글 {data[0].data.total}개
               </Text>
             )}
           </>

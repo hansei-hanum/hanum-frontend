@@ -7,4 +7,5 @@ module.exports = {
       src: path.resolve(__dirname, 'src'),
     },
   },
+  extends: '@react-native/metro-config',
 };

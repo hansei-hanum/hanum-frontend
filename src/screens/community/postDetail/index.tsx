@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -9,7 +9,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import {
   AnimatedHoc,
@@ -42,9 +42,9 @@ import {
   useGetUser,
 } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
-import { isAndroid } from 'src/utils';
+import { RPH, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
-import { articleIdAtom, commentBottomSheetAtom } from 'src/atoms';
+import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -73,11 +73,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const setArticleId = useSetRecoilState(articleIdAtom);
   setArticleId(articleId);
 
-  const isCommentBottomSheetOpen = useRecoilValue(commentBottomSheetAtom);
-
   const inset = useSafeAreaInsets();
 
   const ImageListBottomSheetRef = useRef<BottomSheetRefProps>(null);
+  const commentBottomSheetRef = useRef<BottomSheetRefProps>(null);
   const commentInputRef = useRef<TextInput>(null);
 
   const { checkPhotoPermission, permissionHeight, permission } = useCheckPhotoPermission({
@@ -192,14 +191,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setPhoto(null);
   };
 
-  useEffect(() => {
-    console.log('isCommentBottomSheetOpen', isCommentBottomSheetOpen);
-
-    if (isCommentBottomSheetOpen) {
-      bottomSheetRef.current?.scrollTo(-100);
-    }
-  }, [isCommentBottomSheetOpen]);
-
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -286,9 +277,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         permission={permission}
         doneCheck={doneCheck}
       />
-      {isCommentBottomSheetOpen ? (
-        <CommentBottomSheet ref={bottomSheetRef} />
-      ) : isEdit ? (
+      {isEdit ? (
         <CommunityMineBottomSheet
           ref={bottomSheetRef}
           setHeight={setHeight}

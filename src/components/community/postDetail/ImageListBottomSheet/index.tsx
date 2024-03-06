@@ -21,14 +21,7 @@ import { CameraRoll, PhotoIdentifier } from '@react-native-camera-roll/camera-ro
 import { useTheme } from '@emotion/react';
 import { Portal } from '@gorhom/portal';
 
-import {
-  BackDrop,
-  Button,
-  Icon,
-  PhotosInterface,
-  ScaleOpacityCustomProps,
-  Text,
-} from 'src/components';
+import { BackDrop, Button, Icon, PhotosInterface, ScaleOpacity, Text } from 'src/components';
 import { PhotoPermissionProps } from 'src/screens';
 import { BottomSheetRefProps } from 'src/types';
 import { SCREEN_HEIGHT } from 'src/constants';

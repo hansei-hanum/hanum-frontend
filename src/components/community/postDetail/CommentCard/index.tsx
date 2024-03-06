@@ -5,14 +5,14 @@ import { HapticFeedbackTypes, trigger } from 'react-native-haptic-feedback';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { UserLogo } from 'src/assets';
-import { BottomSheet, ScaleOpacity, Text } from 'src/components';
+import { Button, Modal, ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
 import { GetCommentsDetail } from 'src/api';
-import { useBottomSheet, useUpdateCommentReaction } from 'src/hooks';
-import { articleIdAtom, commentBottomSheetAtom } from 'src/atoms';
+import { useGetUser, useUpdateCommentReaction } from 'src/hooks';
+import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -20,7 +20,6 @@ export interface PostCommentCardProps extends GetCommentsDetail {
   index: number;
   isReply?: boolean;
   children?: React.ReactNode;
-  onLongPress?: () => void;
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
@@ -34,9 +33,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   children,
   attachment,
 }) => {
-  const { openBottomSheet } = useBottomSheet();
-  const setCommentBottomSheet = useSetRecoilState(commentBottomSheetAtom);
-
+  const { userData } = useGetUser();
+  const checkMyComment = userData?.id === author?.id;
   const articleId = useRecoilValue(articleIdAtom);
   const { mutate: updateReactionMutate } = useUpdateCommentReaction();
   const theme = useTheme();
@@ -44,6 +42,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const [isShow, setIsShow] = useState<Array<boolean>>([]);
   const [isOverlay, setIsOverlay] = useState<Array<boolean>>([]);
   const [imageClicked, setImageClicked] = useState<boolean>(false);
+  const [commentDeleteModal, setCommentDeleteModal] = useState<boolean>(false);
 
   const showMore = (index: number) => {
     setIsShow((prev) => {
@@ -77,9 +76,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     articleId && updateReactionMutate({ articleId: articleId, commentId: id });
   };
 
-  const onLongPress = () => {
-    setCommentBottomSheet(true);
-    openBottomSheet({ scrollTo: -100 });
+  const onPressOut = () => {
+    checkMyComment && setCommentDeleteModal(true);
   };
 
   const likesLength = reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0);
@@ -94,13 +92,13 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           />
           <View style={{ rowGap: 4, flex: 1 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text size={13}>{author && author.handle ? author.handle : '익명'}</Text>
+              <Text size={13}>{author && author.name ? author.name : '익명'}</Text>
               <Text size={13} color={theme.placeholder}>
                 {'  '}
                 {getPrevTimeString(createdAt)}
               </Text>
             </View>
-            <TouchableOpacity onLongPress={onLongPress} activeOpacity={0.6}>
+            <TouchableOpacity onPressOut={onPressOut} activeOpacity={checkMyComment ? 0.6 : 1}>
               {content &&
                 (!isShow[index] ? (
                   <S.PostCommentCardCommentContainer>
@@ -169,13 +167,25 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             ))}
         </S.PostCommentCardIconContainer>
       </S.PostCommentCardContainer>
-      {/* <BottomSheet ref={bottomSheetRef} scrollHeight={-100}>
-        <View style={{ padding: 10 }}>
-          <ScaleOpacity onPress={() => console.log('신고')}>
-            <Text size={16}>신고</Text>
-          </ScaleOpacity>
-        </View>
-      </BottomSheet> */}
+      <Modal
+        modalVisible={commentDeleteModal}
+        title="댓글 삭제"
+        text={`정말로 댓글을 삭제할까요?\n삭제된 댓글은 다시 복구할 수 없어요`}
+        button={
+          <Button.Container>
+            <Button onPress={() => setCommentDeleteModal(false)} isModalBtn isWhite>
+              아니요
+            </Button>
+            <Button
+              onPress={() => setCommentDeleteModal(false)}
+              isModalBtn
+              backgroundColor={theme.danger}
+            >
+              네
+            </Button>
+          </Button.Container>
+        }
+      />
     </>
   );
 };
