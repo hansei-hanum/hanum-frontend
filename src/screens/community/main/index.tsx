@@ -92,7 +92,7 @@ export const CommunityMainScreen: React.FC = () => {
       Toast.show({
         type: 'info',
         position: 'top',
-        text1: '인증된 사용자에요',
+        text1: '클라우드보안과 2학년 2반 재학생이에요',
       });
     } else {
       Toast.show({

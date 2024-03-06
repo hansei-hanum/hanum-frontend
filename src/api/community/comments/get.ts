@@ -1,5 +1,6 @@
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
+import { PaginationType } from 'src/types';
 
 export interface GetCommentsValues {
   articleId: number;
@@ -48,19 +49,20 @@ export interface GetCommentsDetail {
   replyCount: number;
 }
 
-export interface GetCommentsResponse {
-  page: number;
-  limit: number;
-  total: number;
-  totalPage: number;
-  comments: GetCommentsDetail[];
-}
+export type GetCommentsResponse = PaginationType<GetCommentsDetail>;
 
 export const getComments = async ({ articleId, page, count = 10 }: GetCommentsValues) => {
-  setAccessToken('8');
+  setAccessToken('9');
   const { data } = await communityInstance.get(
-    `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/?page=${page}&count=${count}`,
+    `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments`,
+    {
+      params: {
+        page,
+        count,
+      },
+    },
   );
+
   const nextPage = data.data.page < data.data.totalPage ? data.data.page + 1 : undefined;
 
   return { ...data, nextPage };

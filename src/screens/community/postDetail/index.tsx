@@ -39,6 +39,7 @@ import {
   useCreateComment,
   useCreateReply,
   useGetComments,
+  useGetReplies,
   useGetUser,
 } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
@@ -72,7 +73,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     data,
     isLoading: isGetCommentsLoading,
     fetchNextPage,
-    isFetching,
     refetch,
   } = useGetComments({
     articleId,
@@ -120,6 +120,13 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
+
+  const { data: repliesData, isLoading: repliesLoading } = useGetReplies({
+    articleId,
+    commentId: commentId || -1,
+  });
+
+  console.log('repliesData', repliesData?.pages, commentId, 'commentId');
 
   const theme = useTheme();
 
@@ -225,10 +232,13 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           <PostDetailLayout
+            setCommentId={setCommentId}
             onEndReached={() => fetchNextPage()}
             onMention={onMention}
             data={data?.pages}
             isLoading={isGetCommentsLoading}
+            repliesData={repliesData?.pages}
+            repliesLoading={repliesLoading}
           />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>

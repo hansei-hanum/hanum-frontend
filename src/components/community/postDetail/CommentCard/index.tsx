@@ -112,7 +112,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 {getPrevTimeString(createdAt)}
               </Text>
             </View>
-            <TouchableOpacity onPressOut={onPressOut} activeOpacity={checkMyComment ? 0.6 : 1}>
+            <TouchableOpacity
+              onLongPress={onPressOut}
+              activeOpacity={checkMyComment ? 0.6 : 1}
+              delayLongPress={180}
+            >
               {content &&
                 (!isShow[index] ? (
                   <S.PostCommentCardCommentContainer>

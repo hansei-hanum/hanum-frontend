@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react';
 import { useGetImagesHeight } from 'src/hooks';
 import { COMMUNITY_POST } from 'src/constants';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
-import { APIResponse, GetCommentsDetail, GetCommentsResponse } from 'src/api';
+import { APIResponse, GetCommentsDetail, GetCommentsResponse, GetRepliesResponse } from 'src/api';
 
 import { MentionUserListProps } from '../MetionUserList';
 
@@ -15,15 +15,21 @@ import * as S from './styled';
 
 export interface PostDetailLayoutProps extends MentionUserListProps {
   data?: APIResponse<GetCommentsResponse>[];
+  setCommentId: (value: React.SetStateAction<number | null>) => void;
   onEndReached: () => void;
   isLoading: boolean;
+  repliesData?: APIResponse<GetRepliesResponse>[];
+  repliesLoading: boolean;
 }
 
 export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
   onMention,
+  setCommentId,
   onEndReached,
   data,
   isLoading,
+  repliesData,
+  repliesLoading,
 }) => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
@@ -82,13 +88,13 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
           ) : null
         }
         renderItem={({ item: { data } }) =>
-          data && data.comments.length <= 0 ? (
+          !isLoading && data && data.items.length <= 0 ? (
             <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 14 }}>
               첫 댓글을 남겨보세요
             </Text>
           ) : (
             <>
-              {data.comments.map((props: GetCommentsDetail, index) => (
+              {data.items.map((props: GetCommentsDetail, index) => (
                 <>
                   <PostCommentCard
                     {...props}
@@ -101,7 +107,12 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                           </Text>
                         </ScaleOpacity>
                         {props.replyCount > 0 && (
-                          <ScaleOpacity onPress={() => showChatReplies(index)}>
+                          <ScaleOpacity
+                            onPress={() => {
+                              showChatReplies(index);
+                              setCommentId(props.id);
+                            }}
+                          >
                             <Text size={14} color={theme.placeholder}>
                               {showReply[index] ? '답글 숨기기' : `답글 ${props.replyCount}개 보기`}
                             </Text>
@@ -119,9 +130,22 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                         marginBottom: 20,
                       }}
                     >
-                      {/* {replies.map((props, index) => (
-                        <PostCommentCard {...props} index={index} key={index} isReply />
-                      ))} */}
+                      {repliesLoading ? (
+                        <View style={{ paddingVertical: 20 }}>
+                          <Spinner size={40} />
+                        </View>
+                      ) : (
+                        repliesData &&
+                        repliesData.length > 0 &&
+                        repliesData.map(
+                          ({ data: { items } }) =>
+                            items &&
+                            items.length > 0 &&
+                            items.map((reply, index) => (
+                              <PostCommentCard {...reply} index={index} key={index} isReply />
+                            )),
+                        )
+                      )}
                     </View>
                   )}
                 </>
