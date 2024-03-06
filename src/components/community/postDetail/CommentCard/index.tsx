@@ -11,7 +11,7 @@ import { UserLogo } from 'src/assets';
 import { Button, Modal, ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
 import { GetCommentsDetail } from 'src/api';
-import { useGetUser, useUpdateCommentReaction } from 'src/hooks';
+import { useDeleteComment, useGetUser, useUpdateCommentReaction } from 'src/hooks';
 import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
@@ -35,8 +35,14 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 }) => {
   const { userData } = useGetUser();
   const checkMyComment = userData?.id === author?.id;
+  console.log('PostCommentCard', checkMyComment);
   const articleId = useRecoilValue(articleIdAtom);
+
   const { mutate: updateReactionMutate } = useUpdateCommentReaction();
+  const { mutate: deleteCommentMutate, isLoading } = useDeleteComment({
+    articleId: articleId ?? 0,
+  });
+
   const theme = useTheme();
 
   const [isShow, setIsShow] = useState<Array<boolean>>([]);
@@ -77,7 +83,16 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   };
 
   const onPressOut = () => {
-    checkMyComment && setCommentDeleteModal(true);
+    if (checkMyComment) {
+      setCommentDeleteModal(true);
+    }
+  };
+
+  const onDeletePress = () => {
+    deleteCommentMutate({ articleId: articleId ?? 0, commentId: id });
+    if (!isLoading) {
+      setCommentDeleteModal(false);
+    }
   };
 
   const likesLength = reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0);
@@ -177,9 +192,10 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               아니요
             </Button>
             <Button
-              onPress={() => setCommentDeleteModal(false)}
+              onPress={onDeletePress}
               isModalBtn
               backgroundColor={theme.danger}
+              isLoading={isLoading}
             >
               네
             </Button>

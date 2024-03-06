@@ -5,17 +5,22 @@ import { AxiosError } from 'axios';
 import { APIErrorResponse, APIResponse, DeleteCommentValues, deleteComment } from 'src/api';
 import { ErrorToast } from 'src/constants';
 
-export const useDeleteComment = (): UseMutationResult<
+import { useGetComments } from '../useGetComments';
+
+export const useDeleteComment = ({
+  articleId,
+}: Pick<DeleteCommentValues, 'articleId'>): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
   DeleteCommentValues
 > => {
+  const { refetch } = useGetComments({ articleId });
   return useMutation('useDeleteComment', deleteComment, {
-    onSuccess: (response) => {
-      // TODO: refresh comment list
-      console.log(response, 'onSuccess');
+    onSuccess: () => {
+      refetch();
     },
     onError: (error) => {
+      console.log(error, 'useDeleteComment onError');
       const message = error.response?.data.message;
       ErrorToast(message);
     },

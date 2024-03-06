@@ -27,7 +27,6 @@ import {
   CommunityMineBottomSheet,
   Spinner,
   ScaleOpacity,
-  CommentBottomSheet,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
@@ -42,7 +41,7 @@ import {
   useGetUser,
 } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
-import { RPH, isAndroid } from 'src/utils';
+import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom } from 'src/atoms';
 
@@ -76,7 +75,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const inset = useSafeAreaInsets();
 
   const ImageListBottomSheetRef = useRef<BottomSheetRefProps>(null);
-  const commentBottomSheetRef = useRef<BottomSheetRefProps>(null);
   const commentInputRef = useRef<TextInput>(null);
 
   const { checkPhotoPermission, permissionHeight, permission } = useCheckPhotoPermission({
