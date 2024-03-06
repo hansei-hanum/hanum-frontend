@@ -9,3 +9,4 @@ export * from './postOptions';
 export * from './modal';
 export * from './hanowlApply';
 export * from './communityEdit';
+export * from './articleId';

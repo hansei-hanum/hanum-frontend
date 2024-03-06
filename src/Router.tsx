@@ -66,12 +66,14 @@ export const Router: React.FC = () => {
       } catch (e) {
         console.warn(e);
       } finally {
-        setIsReady(true);
+        if (!isLoading) {
+          setIsReady(true);
+        }
       }
     }
 
     prepare();
-  }, []);
+  }, [isLoading]);
 
   const onLayoutRootView = useCallback(async () => {}, [isReady]);
 
@@ -79,16 +81,18 @@ export const Router: React.FC = () => {
 
   if (isReady && !isUpdating) {
     SplashScreen.hide();
-  } else if (!isReady) {
+  } else {
     return null;
   }
+
+  console.log(token, data, auth.errorMessage);
 
   const getInitialRoute = () => {
     if (!isLoading) {
       if (!token) return 'AuthMain';
       if (data && data?.data) return 'Main';
       if (auth.errorMessage === ERROR_MESSAGE) return 'AuthMain';
-      return 'Main';
+      return 'NoInternet';
     }
   };
 
@@ -121,9 +125,9 @@ export const Router: React.FC = () => {
             <Stack.Screen name="Verify" component={SC.VerifyScreen} />
           </Stack.Group>
           <Stack.Group>
+            <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
             <Stack.Screen name="Main" component={SC.MainScreen} />
             <Stack.Screen name="Schedule" component={SC.ScheduleScreen} />
-            <Stack.Screen name="NoInternet" component={SC.NoInternetScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanumPayMain" component={SC.HanumPayMainScreen} />

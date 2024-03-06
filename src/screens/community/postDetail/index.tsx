@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -7,10 +7,9 @@ import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import {
   AnimatedHoc,
@@ -18,7 +17,6 @@ import {
   CommunityUserImage,
   Header,
   ReplyBox,
-  ScaleOpacity,
   Text,
   PostDetailLayout,
   MentionUserList,
@@ -27,17 +25,25 @@ import {
   PhotoCard,
   PhotosInterface,
   CommunityMineBottomSheet,
+  Spinner,
+  ScaleOpacity,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
   COMMUNITY_POST,
 } from 'src/constants';
-import { useBottomSheet, useCheckPhotoPermission, useGetUser } from 'src/hooks';
+import {
+  useBottomSheet,
+  useCheckPhotoPermission,
+  useCreateComment,
+  useGetComments,
+  useGetUser,
+} from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
 import { isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
-import { communityEditAtom } from 'src/atoms';
+import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -56,13 +62,15 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
   'CommunityPostDetail'
 >;
 
-export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
-  const { id } = route.params;
-  console.log(id);
+const articleId = 64;
 
-  const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
+export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
+  const { isEdit } = route.params;
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+
+  const setArticleId = useSetRecoilState(articleIdAtom);
+  setArticleId(articleId);
 
   const inset = useSafeAreaInsets();
 
@@ -86,9 +94,22 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [userId, setUserId] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
-  const [selectedPhotos, setSelectedPhotos] = useState<PhotosInterface[]>([]);
+  const [photo, setPhoto] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
+
+  const {
+    data,
+    isLoading: isGetCommentsLoading,
+    fetchNextPage,
+    isFetching,
+  } = useGetComments({
+    articleId,
+  });
+
+  const { mutate: createCommentMutate, isLoading: createCommentLoading } = useCreateComment({
+    articleId,
+  });
 
   const theme = useTheme();
 
@@ -114,8 +135,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const sendChat = () => {
+    createCommentMutate({
+      articleId,
+      isAnonymous,
+      content: comment,
+      attachment: photo,
+    });
     setComment('');
-    setSelectedPhotos([]);
+    setPhoto(null);
     commentInputRef.current?.blur();
   };
 
@@ -125,7 +152,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const openPostBottomSheet = () => {
-    if (communityEdit.isEdit) {
+    if (isEdit) {
       bottomSheetRef.current?.scrollTo(-height);
     } else {
       commentInputRef.current?.blur();
@@ -158,14 +185,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     }
   };
 
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    if (isFocused) {
-      console.log(communityEdit);
-      setCommunityEdit((prev) => ({ ...prev, isEdit: true }));
-    }
-  }, [isFocused]);
+  const onPhotoPress = () => {
+    setPhoto(null);
+  };
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
@@ -182,7 +204,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
-          <PostDetailLayout onMention={onMention} />
+          <PostDetailLayout
+            onEndReached={() => fetchNextPage()}
+            onMention={onMention}
+            data={data?.pages}
+            isLoading={isGetCommentsLoading || isFetching}
+          />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
             {comment.length < 2 ? (
@@ -195,7 +222,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           </View>
         )}
         <S.PostDetailBottomSection>
-          {Boolean(selectedPhotos.length) && (
+          {photo && (
             <View
               style={{
                 flexDirection: 'row',
@@ -204,15 +231,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 marginVertical: 10,
               }}
             >
-              {selectedPhotos.map((item, index) => (
-                <PhotoCard
-                  key={item.uri}
-                  item={item.uri}
-                  index={index}
-                  setSelectedImage={setSelectedPhotos}
-                  selectedImage={selectedPhotos}
-                />
-              ))}
+              <PhotoCard item={photo.uri} onPress={onPhotoPress} />
             </View>
           )}
           <AnimatedHoc isOpen={isReplyChat}>
@@ -232,7 +251,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 onBlur={onCommentInputBlur}
                 onFocus={onCommentInputFocus}
               />
-              {comment.length > 0 || Boolean(selectedPhotos.length) ? (
+              {createCommentLoading ? (
+                <Spinner />
+              ) : comment.length > 0 || photo ? (
                 <ScaleOpacity onPress={sendChat}>
                   <MI name="send" size={28} color={theme.primary} />
                 </ScaleOpacity>
@@ -247,23 +268,23 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       </S.PostDetailInnerContainer>
       <ImageListBottomSheet
         ref={ImageListBottomSheetRef}
-        setSelectedPhotos={setSelectedPhotos}
+        setPhoto={setPhoto}
         setDoneCheck={setDoneCheck}
-        selectedPhotos={selectedPhotos}
+        photo={photo}
         scrollHeight={permissionHeight}
         permission={permission}
         doneCheck={doneCheck}
       />
-      {!communityEdit.isEdit ? (
-        <PostOptionBottomSheet
-          bottomSheetRef={bottomSheetRef}
-          closeBottomSheet={closeBottomSheet}
-        />
-      ) : (
+      {isEdit ? (
         <CommunityMineBottomSheet
           ref={bottomSheetRef}
           setHeight={setHeight}
           height={height}
+          closeBottomSheet={closeBottomSheet}
+        />
+      ) : (
+        <PostOptionBottomSheet
+          bottomSheetRef={bottomSheetRef}
           closeBottomSheet={closeBottomSheet}
         />
       )}

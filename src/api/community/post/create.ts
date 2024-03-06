@@ -39,7 +39,7 @@ export const createPost = async ({
   scopeOfDisclosure,
   attachments,
 }: CreatePostValues) => {
-  setAccessToken('2');
+  setAccessToken('9');
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));

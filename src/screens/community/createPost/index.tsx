@@ -161,6 +161,16 @@ export const CommunityCreatePostScreen: React.FC = () => {
     }
   };
 
+  const onPhotoPres = (index: number) => {
+    if (Boolean(communityEdit.image?.length)) {
+      setCommunityEdit({
+        ...communityEdit,
+        image: communityEdit.image?.filter((_, i) => i !== index),
+      });
+    }
+    setSelectedImage(selectedImage?.filter((_, i) => i !== index) as string[]);
+  };
+
   const onKeyboardShow = () => {
     setKeyboardShow(true);
   };
@@ -168,8 +178,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const onKeyboardHide = () => {
     setKeyboardShow(false);
   };
-
-  console.log(keyboardShow, 'keyboardShow');
 
   const onPost = () => {
     mutate({
@@ -281,9 +289,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
                   <PhotoCard
                     key={`${convertToKey(item)}` + `${index}`}
                     item={convertToString(item)}
-                    index={index}
-                    setSelectedImage={setSelectedImage}
-                    selectedImage={selectedImage}
+                    onPress={() => onPhotoPres(index)}
                   />
                 ))}
               </NoScrollbarScrollView>

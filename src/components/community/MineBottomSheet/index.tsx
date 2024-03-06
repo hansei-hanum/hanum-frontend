@@ -64,7 +64,7 @@ export const CommunityMineBottomSheet = forwardRef<
       <BottomSheet ref={ref} scrollHeight={-height}>
         <S.CommunityMineBottomSheetContainer onLayout={onLayout}>
           {COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST.map(({ text, icon, isDanger }) => (
-            <ScaleOpacity onPress={() => onPress(text)}>
+            <ScaleOpacity onPress={() => onPress(text)} key={text}>
               <S.CommunityMineOptionContainer key={text}>
                 <S.CommunityMainOptionIconContainer>
                   <Icon name={icon} size={24} color={isDanger ? theme.danger : theme.default} />

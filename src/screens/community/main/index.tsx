@@ -63,7 +63,7 @@ export const CommunityMainScreen: React.FC = () => {
   }, [COMMUNITY_LIST, getHeightsForImage]);
 
   const onChatScreenNavigate = (index: number) => {
-    navigate('CommunityPostDetail', { id: index });
+    navigate('CommunityPostDetail', { id: index, isEdit: false });
   };
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;

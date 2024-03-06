@@ -17,7 +17,6 @@ export const useFetchUser = (): UseQueryResult<
 
   return useQuery('useFetchUser', fetchUser, {
     onError: (error) => {
-      console.log(error.response?.data, 'useFetchUser error');
       if (error.response?.data.message === ERROR_MESSAGE) AsyncStorage.removeItem('token');
       setAuth((prev) => ({ ...prev, errorMessage: error.response?.data.message }));
     },

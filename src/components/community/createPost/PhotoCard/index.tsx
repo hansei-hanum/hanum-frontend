@@ -2,10 +2,8 @@ import React from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilState } from 'recoil';
 
 import { ScaleOpacity } from 'src/components/common';
-import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -17,31 +15,11 @@ export interface PhotosInterface {
 
 export interface PhotoCardProps {
   item?: string;
-  index: number;
-  setSelectedImage: React.Dispatch<React.SetStateAction<PhotosInterface[] | string[]>>;
-  selectedImage: PhotosInterface[] | string[];
+  onPress: () => void;
 }
 
-export const PhotoCard: React.FC<PhotoCardProps> = ({
-  index,
-  item,
-  selectedImage,
-  setSelectedImage,
-}) => {
-  const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
+export const PhotoCard: React.FC<PhotoCardProps> = ({ item, onPress }) => {
   const theme = useTheme();
-
-  const onPress = () => {
-    if (Boolean(communityEdit.image?.length)) {
-      setCommunityEdit({
-        ...communityEdit,
-        image: communityEdit.image?.filter((_, i) => i !== index),
-      });
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as string[]);
-    } else {
-      setSelectedImage(selectedImage?.filter((_, i) => i !== index) as PhotosInterface[]);
-    }
-  };
 
   return (
     <ScaleOpacity onPress={onPress}>
