@@ -2,7 +2,7 @@ import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
 import { PhotosInterface } from 'src/components';
 
-export interface createReplyValues {
+export interface CreateReplyValues {
   articleId: number;
   commentId: number;
   isAnonymous: boolean;
@@ -16,7 +16,7 @@ export const createReply = async ({
   isAnonymous,
   content,
   attachment,
-}: createReplyValues) => {
+}: CreateReplyValues) => {
   setAccessToken('9');
   const formData = new FormData();
 

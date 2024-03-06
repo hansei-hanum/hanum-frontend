@@ -36,7 +36,7 @@ export const Image = styled.Image`
 
 export const ImageListBottomSheetButtonWrapper = styled(Animated.View)`
   position: absolute;
-  bottom: 20;
+  bottom: 10px;
   width: 100%;
   padding: 14px;
   z-index: 9999;

@@ -2,17 +2,22 @@ import { UseMutationResult, useMutation } from 'react-query';
 
 import { AxiosError } from 'axios';
 
-import { APIErrorResponse, APIResponse, createReply, CreateReplyValues } from 'src/api';
+import {
+  APIErrorResponse,
+  APIResponse,
+  UpdateReplyReactionValues,
+  updateReplyReaction,
+} from 'src/api';
 import { ErrorToast } from 'src/constants';
 
-export const useCreateReply = (): UseMutationResult<
+export const useUpdateReplyReaction = (): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
-  CreateReplyValues
+  UpdateReplyReactionValues
 > => {
-  return useMutation('useCreateReply', createReply, {
-    onSuccess: (response) => {
-      console.log(response, 'onSuccess');
+  return useMutation('useUpdateReplyReaction', updateReplyReaction, {
+    onSuccess: (data) => {
+      console.log('data', data);
     },
     onError: (error) => {
       const message = error.response?.data.message;

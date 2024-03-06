@@ -64,7 +64,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
   'CommunityPostDetail'
 >;
 
-const articleId = 64;
+const articleId = 73;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit } = route.params;
@@ -126,7 +126,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     commentId: commentId || -1,
   });
 
-  console.log('repliesData', repliesData?.pages, commentId, 'commentId');
+  // console.log('repliesData', repliesData?.pages, commentId, 'commentId');
 
   const theme = useTheme();
 
@@ -162,9 +162,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     } else {
       createReplyMutate({ articleId, commentId, isAnonymous, content: comment, attachment: photo });
     }
-    setComment('');
-    setPhoto(null);
-    commentInputRef.current?.blur();
+    if (!isCreateReplyLoading && !isCreateCommentLoading) {
+      setComment('');
+      setPhoto(null);
+      commentInputRef.current?.blur();
+    }
   };
 
   const closeReplyBox = () => {

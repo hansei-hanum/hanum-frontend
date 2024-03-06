@@ -10,17 +10,27 @@ import { useRecoilValue } from 'recoil';
 import { UserLogo } from 'src/assets';
 import { Button, Modal, ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
-import { GetCommentsDetail } from 'src/api';
-import { useDeleteComment, useGetUser, useUpdateCommentReaction } from 'src/hooks';
+import { GetCommentsDetail, GetRepliesDetail } from 'src/api';
+import {
+  useDeleteComment,
+  useDeleteReply,
+  useGetUser,
+  useUpdateCommentReaction,
+  useUpdateReplyReaction,
+} from 'src/hooks';
 import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export interface PostCommentCardProps extends GetCommentsDetail {
+export interface PostCommentCardBaseProps extends GetCommentsDetail {
   index: number;
   isReply?: boolean;
   children?: React.ReactNode;
 }
+
+export type PostCommentCardProps = PostCommentCardBaseProps &
+  GetCommentsDetail &
+  Partial<GetRepliesDetail>;
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   id,
@@ -30,6 +40,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   reactions,
   content,
   isReply,
+  parentId,
   children,
   attachment,
 }) => {
@@ -38,8 +49,14 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const articleId = useRecoilValue(articleIdAtom);
 
   const { mutate: updateReactionMutate } = useUpdateCommentReaction();
-  const { mutate: deleteCommentMutate, isLoading } = useDeleteComment({
+  const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment({
     articleId: articleId ?? 0,
+  });
+
+  const { mutate: updateReplyReactionMutation } = useUpdateReplyReaction();
+  const { mutate: deleteReplyMutate, isLoading: isDeleteReplyLoading } = useDeleteReply({
+    articleId: articleId ?? 0,
+    commentId: parentId ?? 0,
   });
 
   const theme = useTheme();
@@ -78,7 +95,13 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const onLikeClick = (id: number) => {
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
     setReaction((prev) => !prev);
-    articleId && updateReactionMutate({ articleId: articleId, commentId: id });
+    if (articleId) {
+      if (isReply && parentId) {
+        updateReplyReactionMutation({ articleId: articleId, commentId: parentId, replyId: id });
+      } else {
+        updateReactionMutate({ articleId: articleId, commentId: id });
+      }
+    }
   };
 
   const onPressOut = () => {
@@ -88,10 +111,12 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   };
 
   const onDeletePress = () => {
-    deleteCommentMutate({ articleId: articleId ?? 0, commentId: id });
-    if (!isLoading) {
-      setCommentDeleteModal(false);
+    if (isReply && articleId && parentId) {
+      deleteReplyMutate({ articleId: articleId, commentId: parentId, replyId: id });
+    } else {
+      deleteCommentMutate({ articleId: articleId ?? 0, commentId: id });
     }
+    setCommentDeleteModal(!isDeleteCommentLoading || isDeleteReplyLoading);
   };
 
   const likesLength = reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0);
@@ -198,7 +223,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               onPress={onDeletePress}
               isModalBtn
               backgroundColor={theme.danger}
-              isLoading={isLoading}
+              isLoading={isDeleteCommentLoading || isDeleteReplyLoading}
             >
               네
             </Button>

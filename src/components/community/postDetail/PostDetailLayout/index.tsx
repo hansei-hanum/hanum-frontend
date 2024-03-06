@@ -89,7 +89,12 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
         }
         renderItem={({ item: { data } }) =>
           !isLoading && data && data.items.length <= 0 ? (
-            <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 14 }}>
+            <Text
+              size={16}
+              style={{ paddingHorizontal: 14, paddingVertical: 14 }}
+              isCenter
+              color={theme.placeholder}
+            >
               첫 댓글을 남겨보세요
             </Text>
           ) : (
