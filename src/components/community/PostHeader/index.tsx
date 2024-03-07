@@ -2,29 +2,32 @@ import React from 'react';
 import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import MI from 'react-native-vector-icons/MaterialIcons';
 
 import { useTheme } from '@emotion/react';
 
 import { UserLogo } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString } from 'src/utils';
+import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import { CommunityPostProps } from '../Post';
 
 import * as S from './styled';
 
-export interface CommunityPostHeaderProps
-  extends Pick<CommunityPostProps, 'author' | 'type' | 'time'> {
+export interface CommunityPostHeaderProps extends Pick<CommunityPostProps, 'createdAt'> {
+  author?: GetCommentsAuthorProps;
   style?: StyleProp<ViewStyle>;
   openBottomSheet: () => void;
   onPress?: () => void;
   userImagePress?: () => void;
+  scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
 }
 
 export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
   author,
-  type,
-  time,
+  scopeOfDisclosure,
+  createdAt,
   style,
   openBottomSheet,
   onPress,
@@ -37,19 +40,24 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
       <S.CommunityHeaderTitle>
         <ScaleOpacity onPress={userImagePress}>
           <S.CommunityHeaderUserImg
-            source={author.image && !author.isHidden ? { uri: author.image } : UserLogo}
+            source={author && author.picture ? { uri: author.picture } : UserLogo}
             style={{ resizeMode: 'contain' }}
           />
         </ScaleOpacity>
         <View>
-          <Text size={16}>{author.isHidden ? '익명' : author.name}</Text>
+          <Text size={16}>{author && author.name ? author.name : '익명'}</Text>
           <S.CommunityHeaderUserSection>
             <Text size={14} color={theme.placeholder}>
-              {getPrevTimeString(time)}
+              {getPrevTimeString(createdAt)}
             </Text>
-            {type === 'ALL' && <Icon name="public" size={16} color={theme.placeholder} />}
-            {type === 'PRIVATE' && <Icon name="lock" size={16} color={theme.placeholder} />}
-            {type === 'STUDENT' && <MCI name="account-group" size={16} color={theme.placeholder} />}
+            {scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Public && (
+              <MI name="public" size={16} color={theme.white} />
+            )}
+            {scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Peer ? (
+              <MCI name="account-group" size={16} color={theme.white} />
+            ) : (
+              <MI name="lock" size={16} color={theme.white} />
+            )}
           </S.CommunityHeaderUserSection>
         </View>
       </S.CommunityHeaderTitle>

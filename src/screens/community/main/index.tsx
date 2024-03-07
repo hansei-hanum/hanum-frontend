@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 
@@ -14,6 +16,8 @@ import {
   CommunityMainAnimatedHeader,
   PostOptionBottomSheet,
   PostBottom,
+  PostMenu,
+  Spinner,
 } from 'src/components';
 import {
   useBottomSheet,
@@ -52,8 +56,14 @@ const CommunityMainHeader: React.FC = () => {
 };
 
 export const CommunityMainScreen: React.FC = () => {
-  const { data, isLoading } = useGetPosts({
-    scope: LimitedArticleScopeOfDisclosure.Public,
+  const theme = useTheme();
+
+  const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure>(
+    LimitedArticleScopeOfDisclosure.Public,
+  );
+
+  const { data, isLoading, refetch } = useGetPosts({
+    scope: postScope,
     cursor: null,
   });
 
@@ -115,6 +125,14 @@ export const CommunityMainScreen: React.FC = () => {
     }
   };
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [postScope]);
+
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
@@ -125,46 +143,80 @@ export const CommunityMainScreen: React.FC = () => {
         isSearchScreen={isSearchScreen}
         setHidden={setHidden}
       />
-      <FlatList
-        onScroll={onScroll}
-        onMomentumScrollEnd={onSetScrollY}
-        scrollEventThrottle={16}
-        data={COMMUNITY_LIST}
-        keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{
-          paddingTop: isIos ? inset.top + 24 : 68,
-          paddingBottom: 60,
-          rowGap: 16,
-        }}
-        ListHeaderComponent={<CommunityMainHeader />}
-        renderItem={({ item: { author, type, time, content }, index }) => (
-          <S.CommunityMainBox>
-            <CommunityPostHeader
-              author={author}
-              type={type}
-              time={time}
-              style={{ width: '100%' }}
-              openBottomSheet={() => openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT })}
-              onPress={() => onChatScreenNavigate(index)}
-              userImagePress={onProfilePress}
-            />
-            <CommunityPost
-              author={author}
-              content={content}
-              time={time}
-              type={type}
-              onPress={() => onChatScreenNavigate(index)}
-              index={index}
-              imageHeights={imageHeights}
-            />
-            <PostBottom
-              index={index}
-              likesLength={content.likes}
-              commentsLength={content.comments}
-            />
-          </S.CommunityMainBox>
-        )}
-      />
+      <S.CommunityMainTopSection style={{ paddingTop: isIos ? inset.top + 24 : 68 }}>
+        <CommunityMainHeader />
+        <PostMenu setPostScope={setPostScope} postScope={postScope} />
+      </S.CommunityMainTopSection>
+      {isLoading ? (
+        <Spinner size={40} isCenter />
+      ) : data ? (
+        data.pages[0].data.items.length > 0 ? (
+          <FlatList
+            onScroll={onScroll}
+            onMomentumScrollEnd={onSetScrollY}
+            scrollEventThrottle={16}
+            data={data.pages}
+            keyExtractor={(_, index) => index.toString()}
+            contentContainerStyle={{
+              paddingTop: isIos ? inset.top + 24 : 68,
+              paddingBottom: 60,
+            }}
+            renderItem={({ item: { data } }) => (
+              <View style={{ rowGap: 40 }}>
+                {data.items.map(
+                  (
+                    {
+                      author,
+                      scopeOfDisclosure,
+                      createdAt,
+                      content,
+                      attachments,
+                      commentCount,
+                      reactions,
+                    },
+                    index,
+                  ) => (
+                    <S.CommunityMainBox key={index}>
+                      <CommunityPostHeader
+                        author={author}
+                        scopeOfDisclosure={scopeOfDisclosure}
+                        createdAt={createdAt}
+                        style={{ width: '100%' }}
+                        openBottomSheet={() =>
+                          openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT })
+                        }
+                        onPress={() => onChatScreenNavigate(index)}
+                        userImagePress={onProfilePress}
+                      />
+                      <CommunityPost
+                        content={content}
+                        attachments={attachments}
+                        createdAt={createdAt}
+                        onPress={() => onChatScreenNavigate(index)}
+                        index={index}
+                        imageHeights={imageHeights}
+                      />
+                      <PostBottom
+                        index={index}
+                        likesLength={reactions
+                          ?.map(({ count }) => count)
+                          .reduce((acc, cur) => acc + cur, 0)}
+                        commentCount={commentCount}
+                      />
+                    </S.CommunityMainBox>
+                  ),
+                )}
+              </View>
+            )}
+          />
+        ) : (
+          <S.CommunityMainNoDataWrapper>
+            <Text size={16} color={theme.placeholder} isCenter>
+              이 메뉴에는 아직 작성된 글이 없어요
+            </Text>
+          </S.CommunityMainNoDataWrapper>
+        )
+      ) : null}
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>
   );

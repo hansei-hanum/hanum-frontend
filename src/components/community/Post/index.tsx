@@ -4,76 +4,70 @@ import Swiper from 'react-native-swiper';
 
 import { useTheme } from '@emotion/react';
 
-import { Text } from 'src/components';
+import { FormattedContent, Text } from 'src/components';
 import { RPH } from 'src/utils';
+import { GetPostsDetail } from 'src/api';
 
 import * as S from './styled';
 
 export interface CommunityPostProps {
   index: number;
-  author: {
-    name: string;
-    isHidden?: boolean;
-    image: string | null;
-  };
-  time: string;
-  content: {
-    message: string;
-    image: string[];
-  };
-  type: 'ALL' | 'PRIVATE' | 'STUDENT';
+  createdAt: string;
+  content: GetPostsDetail['content'];
+  attachments: GetPostsDetail['attachments'];
   imageHeights: number[];
-  isSingle?: boolean;
   onPress?: () => void;
 }
 
 export const CommunityPost: React.FC<CommunityPostProps> = ({
   content,
   imageHeights,
+  attachments,
   index,
-  isSingle,
   onPress,
 }) => {
-  const imageHeight = imageHeights[index * content.image.length];
+  const imageHeight = imageHeights[index * attachments.length];
+  const oneImage = attachments.length === 1;
 
   const theme = useTheme();
 
   return (
     <S.CommunityPostContainer>
-      <S.CommunityPostContentWrapper style={isSingle && { paddingTop: 12 }}>
+      <S.CommunityPostContentWrapper style={oneImage && { paddingTop: 12 }}>
         <TouchableOpacity activeOpacity={onPress ? 0.8 : 1} onPress={onPress}>
-          {content.image.length <= 0 ? (
-            <Text size={18} style={{ width: '100%' }}>
-              {content.message}
-            </Text>
-          ) : (
-            <Text size={16} style={{ width: '100%' }}>
-              {content.message}
-            </Text>
-          )}
+          {content.spans &&
+            (attachments.length <= 0 ? (
+              <Text size={18} style={{ width: '100%' }}>
+                <FormattedContent spans={content.spans} />
+              </Text>
+            ) : (
+              <Text size={16} style={{ width: '100%' }}>
+                <FormattedContent spans={content.spans} />
+              </Text>
+            ))}
         </TouchableOpacity>
       </S.CommunityPostContentWrapper>
-      {content.image.length > 0 && (
+      {attachments.length > 0 && (
         <Swiper
           loop={false}
           containerStyle={{
             height:
-              imageHeight > RPH(48) || (isSingle && imageHeight > RPH(48)) ? RPH(48) : imageHeight,
+              imageHeight > RPH(48) || (oneImage && imageHeight > RPH(48)) ? RPH(48) : imageHeight,
           }}
           dotColor="#A3A3A3"
           activeDotColor={theme.primary}
         >
-          {content.image.map((image, i) => {
-            const imageHeight = isSingle
+          {attachments.map(({ original }, i) => {
+            const imageHeight = oneImage
               ? imageHeights[i]
-              : imageHeights[index * content.image.length + i];
+              : imageHeights[index * attachments.length + i];
             return (
               <S.CommunityPostImageWrapper key={i}>
                 <Image
                   style={{ width: '100%' }}
                   key={i}
                   source={{
-                    uri: image,
+                    uri: original,
                     height: imageHeight > RPH(48) ? RPH(48) : imageHeight,
                   }}
                   resizeMode="contain"

@@ -1,4 +1,4 @@
-import { PaginationItemProps, PaginationType } from 'src/types';
+import { AttachmentType, PaginationItemProps, PaginationType } from 'src/types';
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
 
@@ -10,9 +10,10 @@ export interface GetPostsValues {
   limit?: number;
 }
 
-export interface GetPostsDetail extends PaginationItemProps {
+export interface GetPostsDetail extends Exclude<PaginationItemProps, 'attachment'> {
   commentCount: number;
   scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
+  attachments: [AttachmentType];
 }
 
 export type GetPostsResponse = PaginationType<GetPostsDetail>;

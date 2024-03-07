@@ -71,7 +71,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const { isEdit } = route.params;
 
   const {
-    data,
+    data: commentsData,
     isLoading: isGetCommentsLoading,
     isFetching: isFetchingComments,
     fetchNextPage,
@@ -223,7 +223,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onEndReached = () => {
-    if (data && data?.pages[data.pages.length - 1].data.nextCursor) {
+    if (commentsData && commentsData?.pages[commentsData.pages.length - 1].data.nextCursor) {
       fetchNextPage();
     }
   };
@@ -249,11 +249,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
         hasGoBackIcon
       >
-        <CommunityPostHeader
+        {/* <CommunityPostHeader
           {...COMMUNITY_POST}
           style={{ flex: 1 }}
           openBottomSheet={openPostBottomSheet}
-        />
+        /> */}
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
@@ -261,7 +261,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             setCommentId={setCommentId}
             onEndReached={onEndReached}
             onMention={onMention}
-            data={data?.pages}
+            commentsData={commentsData?.pages}
             isLoading={isGetCommentsLoading || isFetchingComments}
           />
         ) : (

@@ -8,14 +8,9 @@ import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
 import { UserLogo } from 'src/assets';
-import { Button, Modal, ScaleOpacity, Text } from 'src/components';
+import { Button, FormattedContent, Modal, ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
-import {
-  GetCommentsContentsProps,
-  GetCommentsDetail,
-  GetRepliesDetail,
-  RichTextType,
-} from 'src/api';
+import { GetCommentsDetail, GetRepliesDetail } from 'src/api';
 import {
   useDeleteComment,
   useDeleteReply,
@@ -27,36 +22,6 @@ import { articleIdAtom } from 'src/atoms';
 import { PaginationItemProps } from 'src/types';
 
 import * as S from './styled';
-
-const FormattedContent: React.FC<GetCommentsContentsProps> = ({ spans }) => {
-  const theme = useTheme();
-
-  if (!spans) return null;
-
-  return (
-    <>
-      {spans.map((spanProps, index) => {
-        if (spanProps.type === RichTextType.TEXT) {
-          if (spanProps.text.includes('\n')) {
-            return spanProps.text.split('\n').map((line, index) => (
-              <>
-                {line}
-                {index !== spanProps.text.split('\n').length - 1 && '\n'}
-              </>
-            ));
-          }
-          return spanProps.text;
-        } else if (spanProps.type === RichTextType.MENTION) {
-          return (
-            <Text size={15} key={index} color={theme.primary}>
-              @{spanProps.mention.toString()}
-            </Text>
-          );
-        }
-      })}
-    </>
-  );
-};
 
 export interface PostCommentCardBaseProps {
   index: number;
@@ -189,7 +154,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                         event.nativeEvent.lines.length >= 14 && overlay(index);
                       }}
                     >
-                      <FormattedContent spans={content.spans} />
+                      <FormattedContent spans={content.spans} withPrimaryText />
                     </S.PostCommentCardComment>
                     {isOverlay[index] && (
                       <ScaleOpacity onPress={() => showMore(index)}>

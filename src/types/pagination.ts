@@ -9,6 +9,13 @@ export interface PaginationType<T> {
   items: T[];
 }
 
+export interface AttachmentType {
+  thumbnail: string;
+  original: string;
+  id: number;
+  type: string;
+}
+
 export interface PaginationItemProps {
   id: number;
   isAnonymous: boolean;
@@ -27,14 +34,9 @@ export interface PaginationItemProps {
       },
     ];
   };
-  attachment: {
-    thumbnail: string;
-    original: string;
-    id: number;
-    type: string;
-  };
+  attachment: AttachmentType;
   createdAt: string;
-  reactions?: [
+  reactions: [
     {
       emoji: string;
       count: number;

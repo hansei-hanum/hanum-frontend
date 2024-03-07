@@ -14,10 +14,10 @@ import * as S from './styled';
 export interface PostBottom {
   index: number;
   likesLength: number;
-  commentsLength: number;
+  commentCount: number;
 }
 
-export const PostBottom: React.FC<PostBottom> = ({ index, likesLength, commentsLength }) => {
+export const PostBottom: React.FC<PostBottom> = ({ index, likesLength, commentCount }) => {
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -54,7 +54,7 @@ export const PostBottom: React.FC<PostBottom> = ({ index, likesLength, commentsL
         <S.PostBottomIconContainer>
           <Icon name="chatbubble-outline" size={22} color={theme.placeholder} />
           <Text size={14} color={theme.placeholder}>
-            댓글 {commentsLength}
+            댓글 {commentCount}
           </Text>
         </S.PostBottomIconContainer>
       </ScaleOpacity>

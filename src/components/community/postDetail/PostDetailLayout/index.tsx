@@ -5,10 +5,15 @@ import { View } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
-import { useGetImagesHeight, useGetReplies } from 'src/hooks';
+import { useGetImagesHeight, useGetPosts, useGetReplies } from 'src/hooks';
 import { COMMUNITY_POST } from 'src/constants';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
-import { APIResponse, GetCommentsDetail, GetCommentsResponse } from 'src/api';
+import {
+  APIResponse,
+  GetCommentsDetail,
+  GetCommentsResponse,
+  LimitedArticleScopeOfDisclosure,
+} from 'src/api';
 import { articleIdAtom } from 'src/atoms';
 
 import { MentionUserListProps } from '../MetionUserList';
@@ -16,7 +21,7 @@ import { MentionUserListProps } from '../MetionUserList';
 import * as S from './styled';
 
 export interface PostDetailLayoutProps extends MentionUserListProps {
-  data?: APIResponse<GetCommentsResponse>[];
+  commentsData?: APIResponse<GetCommentsResponse>[];
   setCommentId: (value: React.SetStateAction<number | null>) => void;
   onEndReached: () => void;
   isLoading: boolean;
@@ -26,9 +31,14 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
   onMention,
   setCommentId,
   onEndReached,
-  data,
+  commentsData,
   isLoading,
 }) => {
+  const { data: postData, isLoading: isPostsLoaindg } = useGetPosts({
+    scope: LimitedArticleScopeOfDisclosure.Public,
+    cursor: null,
+  });
+
   const articleId = useRecoilValue(articleIdAtom);
   const [localCommentId, setLocalCommentId] = useState<number | null>(null);
 
@@ -77,23 +87,32 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={data}
+        data={commentsData}
         keyExtractor={(_, index) => index.toString()}
         contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
-            <CommunityPost
-              author={COMMUNITY_POST.author}
-              content={COMMUNITY_POST.content}
-              time={COMMUNITY_POST.time}
-              type={COMMUNITY_POST.type}
-              imageHeights={imageHeights}
-              index={0}
-              isSingle
-            />
-            {isLoading && !data ? (
+            {!isPostsLoaindg && postData ? (
+              <CommunityPost
+                content={postData.pages[0].data.items[0].content}
+                createdAt={postData?.pages[0].data.items[0].createdAt}
+                attachments={postData?.pages[0].data.items[0].attachments}
+                index={0}
+                imageHeights={imageHeights}
+              />
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Spinner size={40} />
+              </View>
+            )}
+            {isLoading && !commentsData ? (
               <View
                 style={{
                   justifyContent: 'flex-start',
@@ -103,9 +122,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                 <Spinner size={40} />
               </View>
             ) : (
-              data && (
+              commentsData && (
                 <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
-                  댓글 {data[0].data.total}개
+                  댓글 {commentsData[0].data.total}개
                 </Text>
               )
             )}
