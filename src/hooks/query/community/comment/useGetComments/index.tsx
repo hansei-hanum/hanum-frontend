@@ -19,7 +19,7 @@ export const useGetComments = ({
 > => {
   return useInfiniteQuery(
     ['getComments', articleId],
-    ({ pageParam = 1 }) => getComments({ articleId, page: pageParam }),
+    ({ pageParam = null }) => getComments({ articleId, cursor: pageParam }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;

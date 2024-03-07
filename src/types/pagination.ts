@@ -3,5 +3,7 @@ export interface PaginationType<T> {
   limit: number;
   total: number;
   totalPage: number;
+  cursor: number;
+  nextCursor: number;
   items: T[];
 }

@@ -20,7 +20,7 @@ export const useGetReplies = ({
 > => {
   return useInfiniteQuery(
     ['useGetReplies', articleId, commentId],
-    ({ pageParam = 1 }) => getReplies({ articleId, page: pageParam, commentId }),
+    ({ pageParam = null }) => getReplies({ articleId, cursor: pageParam, commentId }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
@@ -32,7 +32,7 @@ export const useGetReplies = ({
       refetchOnMount: true,
       refetchOnReconnect: true,
       retry: 0,
-      enabled: commentId !== -1,
+      enabled: commentId !== -1 || articleId !== -1,
     },
   );
 };

@@ -3,11 +3,13 @@ import { FlatList } from 'react-native';
 import { View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 
-import { useGetImagesHeight } from 'src/hooks';
+import { useGetImagesHeight, useGetReplies } from 'src/hooks';
 import { COMMUNITY_POST } from 'src/constants';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
-import { APIResponse, GetCommentsDetail, GetCommentsResponse, GetRepliesResponse } from 'src/api';
+import { APIResponse, GetCommentsDetail, GetCommentsResponse } from 'src/api';
+import { articleIdAtom } from 'src/atoms';
 
 import { MentionUserListProps } from '../MetionUserList';
 
@@ -18,8 +20,6 @@ export interface PostDetailLayoutProps extends MentionUserListProps {
   setCommentId: (value: React.SetStateAction<number | null>) => void;
   onEndReached: () => void;
   isLoading: boolean;
-  repliesData?: APIResponse<GetRepliesResponse>[];
-  repliesLoading: boolean;
 }
 
 export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
@@ -28,9 +28,22 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
   onEndReached,
   data,
   isLoading,
-  repliesData,
-  repliesLoading,
 }) => {
+  const articleId = useRecoilValue(articleIdAtom);
+  const [localCommentId, setLocalCommentId] = useState<number | null>(null);
+
+  const {
+    data: repliesPageData,
+    fetchNextPage: fetchNextPageReplies,
+    isFetchingNextPage: isFetchingReplyNextPage,
+    isLoading: replyLoading,
+  } = useGetReplies({
+    articleId: articleId || -1,
+    commentId: localCommentId || -1,
+  });
+
+  const repliesData = repliesPageData?.pages;
+
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
@@ -43,6 +56,12 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
       temp[index] = !temp[index];
       return temp;
     });
+  };
+
+  const showMoreReplies = (id: number) => {
+    showChatReplies(id);
+    setCommentId(id);
+    setLocalCommentId(id);
   };
 
   useEffect(() => {
@@ -73,10 +92,21 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
               index={0}
               isSingle
             />
-            {!isLoading && data && (
-              <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
-                댓글 {data[0].data.total}개
-              </Text>
+            {isLoading ? (
+              <View
+                style={{
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Spinner size={40} />
+              </View>
+            ) : (
+              data && (
+                <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
+                  댓글 {data[0].data.total}개
+                </Text>
+              )
             )}
           </>
         }
@@ -112,30 +142,27 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                           </Text>
                         </ScaleOpacity>
                         {props.replyCount > 0 && (
-                          <ScaleOpacity
-                            onPress={() => {
-                              showChatReplies(index);
-                              setCommentId(props.id);
-                            }}
-                          >
+                          <ScaleOpacity onPress={() => showMoreReplies(props.id)}>
                             <Text size={14} color={theme.placeholder}>
-                              {showReply[index] ? '답글 숨기기' : `답글 ${props.replyCount}개 보기`}
+                              {showReply[props.id]
+                                ? '답글 숨기기'
+                                : `답글 ${props.replyCount}개 보기`}
                             </Text>
                           </ScaleOpacity>
                         )}
                       </S.PostDetailLayoutReplyContainer>
                     }
                   />
-                  {showReply[index] && (
+                  {showReply[props.id] && (
                     <View
                       style={{
-                        rowGap: 20,
+                        rowGap: 14,
                         paddingLeft: 20,
                         marginTop: 10,
                         marginBottom: 20,
                       }}
                     >
-                      {repliesLoading ? (
+                      {replyLoading ? (
                         <View style={{ paddingVertical: 20 }}>
                           <Spinner size={40} />
                         </View>
@@ -151,6 +178,18 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                             )),
                         )
                       )}
+                      {isFetchingReplyNextPage && (
+                        <View style={{ paddingVertical: 20 }}>
+                          <Spinner size={40} />
+                        </View>
+                      )}
+                      <View style={{ paddingLeft: 20 }}>
+                        <ScaleOpacity onPress={fetchNextPageReplies}>
+                          <Text size={14} color={theme.placeholder}>
+                            답글 더보기
+                          </Text>
+                        </ScaleOpacity>
+                      </View>
                     </View>
                   )}
                 </>

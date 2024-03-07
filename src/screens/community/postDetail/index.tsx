@@ -65,7 +65,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
   'CommunityPostDetail'
 >;
 
-const articleId = 73;
+const articleId = 87;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit } = route.params;
@@ -73,12 +73,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const {
     data,
     isLoading: isGetCommentsLoading,
+    isFetching: isFetchingComments,
     fetchNextPage,
     refetch,
   } = useGetComments({
     articleId,
   });
-  console.log(isGetCommentsLoading, 'isGetCommentsLoading');
 
   const {
     mutate: createCommentMutate,
@@ -120,14 +120,17 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [commentId, setCommentId] = useState<number | null>(null);
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
+  const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
 
-  const { data: repliesData, isLoading: repliesLoading } = useGetReplies({
+  const {
+    data: repliesData,
+    isLoading: repliesLoading,
+    refetch: refetchReplies,
+  } = useGetReplies({
     articleId,
     commentId: commentId || -1,
   });
-
-  console.log(repliesLoading, 'repliesLoading');
 
   const theme = useTheme();
 
@@ -146,6 +149,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onMention = (id: string, commentId?: number) => {
+    setOpenReplyBox(true);
     setUserId(id);
     onChangeText(`${comment.split('@').slice(0, -1).join('@')}@${id} `);
     setMentionListOpen(false);
@@ -161,9 +165,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         attachment: photo,
       });
     } else {
-      createReplyMutate({ articleId, commentId, isAnonymous, content: comment, attachment: photo });
+      createReplyMutate({
+        articleId,
+        commentId,
+        isAnonymous,
+        content: comment,
+        attachment: photo,
+      });
     }
     if (!isCreateReplyLoading && !isCreateCommentLoading) {
+      setOpenReplyBox(false);
       setComment('');
       setPhoto(null);
       commentInputRef.current?.blur();
@@ -171,6 +182,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const closeReplyBox = () => {
+    setOpenReplyBox(false);
     setCommentId(null);
     setComment('');
   };
@@ -213,9 +225,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setPhoto(null);
   };
 
+  const onEndReached = () => {
+    if (data && data?.pages[data.pages.length - 1].data.nextCursor) {
+      fetchNextPage();
+    }
+  };
+
   useEffect(() => {
     if (isCreateCommentSuccess || isCreateReplySuccess) {
       refetch();
+      refetchReplies();
     }
   }, [isCreateCommentLoading, isCreateReplyLoading]);
 
@@ -241,12 +260,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           <PostDetailLayout
             setCommentId={setCommentId}
-            onEndReached={() => fetchNextPage()}
+            onEndReached={onEndReached}
             onMention={onMention}
             data={data?.pages}
-            isLoading={isGetCommentsLoading}
-            repliesData={repliesData?.pages}
-            repliesLoading={repliesLoading}
+            isLoading={isGetCommentsLoading || isFetchingComments}
           />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
@@ -272,7 +289,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
               <PhotoCard item={photo.uri} onPress={onPhotoPress} />
             </View>
           )}
-          <AnimatedHoc isOpen={commentId !== null}>
+          <AnimatedHoc isOpen={openReplyBox}>
             <ReplyBox closeReplyBox={closeReplyBox} userId={userId} />
           </AnimatedHoc>
           <S.PostDetailCommentContainer>

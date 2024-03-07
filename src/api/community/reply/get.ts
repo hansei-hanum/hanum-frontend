@@ -19,20 +19,24 @@ export interface GetRepliesDetail extends Exclude<GetCommentsDetail, 'replyCount
 
 export type GetRepliesResponse = PaginationType<GetRepliesDetail>;
 
-export const getReplies = async ({ articleId, commentId, page, count = 10 }: GetRepliesValues) => {
-  console.log('getReplies', articleId, commentId, page, count);
+export const getReplies = async ({
+  articleId,
+  commentId,
+  cursor = null,
+  limit = 10,
+}: GetRepliesValues) => {
   setAccessToken('9');
   const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/${commentId}/replies`,
     {
       params: {
-        page,
-        count,
+        cursor,
+        limit,
       },
     },
   );
 
-  const nextPage = data.data.page < data.data.totalPage ? data.data.page + 1 : undefined;
+  const nextPage = data.data.cursor < data.data.nextCursor ? data.data.nextCursor : undefined;
 
   return { ...data, nextPage };
 };

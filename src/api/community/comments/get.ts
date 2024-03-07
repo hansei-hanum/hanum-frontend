@@ -4,8 +4,8 @@ import { PaginationType } from 'src/types';
 
 export interface GetCommentsValues {
   articleId: number;
-  page: number;
-  count?: number;
+  limit?: number;
+  cursor?: number | null;
 }
 
 export enum RichTextType {
@@ -51,21 +51,19 @@ export interface GetCommentsDetail {
 
 export type GetCommentsResponse = PaginationType<GetCommentsDetail>;
 
-export const getComments = async ({ articleId, page, count = 10 }: GetCommentsValues) => {
+export const getComments = async ({ articleId, cursor, limit = 10 }: GetCommentsValues) => {
   setAccessToken('9');
-  const { data, headers } = await communityInstance.get(
+  const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments`,
     {
       params: {
-        page,
-        count,
+        limit,
+        cursor: cursor,
       },
     },
   );
 
-  console.log('headers', headers);
-
-  const nextPage = data.data.page < data.data.totalPage ? data.data.page + 1 : undefined;
+  const nextPage = data.data.cursor < data.data.nextCursor ? data.data.nextCursor : undefined;
 
   return { ...data, nextPage };
 };
