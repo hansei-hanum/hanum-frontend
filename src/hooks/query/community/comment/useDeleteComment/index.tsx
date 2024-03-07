@@ -20,7 +20,6 @@ export const useDeleteComment = ({
       refetch();
     },
     onError: (error) => {
-      console.log(error, 'useDeleteComment onError');
       const message = error.response?.data.message;
       ErrorToast(message);
     },

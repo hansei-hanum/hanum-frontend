@@ -10,7 +10,12 @@ import { useRecoilValue } from 'recoil';
 import { UserLogo } from 'src/assets';
 import { Button, Modal, ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
-import { GetCommentsDetail, GetRepliesDetail } from 'src/api';
+import {
+  GetCommentsContentsProps,
+  GetCommentsDetail,
+  GetRepliesDetail,
+  RichTextType,
+} from 'src/api';
 import {
   useDeleteComment,
   useDeleteReply,
@@ -21,6 +26,28 @@ import {
 import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
+
+const FormattedContent: React.FC<GetCommentsContentsProps> = ({ spans }) => {
+  const theme = useTheme();
+
+  if (!spans) return null;
+
+  return (
+    <>
+      {spans.map((spanProps, index) => {
+        if (spanProps.type === RichTextType.TEXT) {
+          return spanProps.text;
+        } else if (spanProps.type === RichTextType.MENTION) {
+          return (
+            <Text size={15} key={index} color={theme.primary}>
+              @{spanProps.mention.toString()}
+            </Text>
+          );
+        }
+      })}
+    </>
+  );
+};
 
 export interface PostCommentCardBaseProps extends GetCommentsDetail {
   index: number;
@@ -142,7 +169,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               activeOpacity={checkMyComment ? 0.6 : 1}
               delayLongPress={180}
             >
-              {content &&
+              {content.spans &&
                 (!isShow[index] ? (
                   <S.PostCommentCardCommentContainer>
                     <S.PostCommentCardComment
@@ -152,7 +179,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                         event.nativeEvent.lines.length >= 14 && overlay(index);
                       }}
                     >
-                      {content.spans?.map(({ text }) => text)}
+                      <FormattedContent spans={content.spans} />
                     </S.PostCommentCardComment>
                     {isOverlay[index] && (
                       <ScaleOpacity onPress={() => showMore(index)}>
@@ -165,7 +192,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 ) : (
                   <S.PostCommentCardCommentContainer>
                     <S.PostCommentCardComment>
-                      {content.spans?.map(({ text }) => text)}
+                      <FormattedContent spans={content.spans} />
                     </S.PostCommentCardComment>
                     <ScaleOpacity onPress={() => showLess(index)}>
                       <Text size={14} color={theme.placeholder}>
@@ -202,12 +229,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               <MCI name="cards-heart-outline" size={22} color={theme.placeholder} />
             )}
           </ScaleOpacity>
-          {likesLength !== 0 ||
-            (reaction && (
-              <Text size={13} color={theme.placeholder}>
-                {reaction ? likesLength + 1 : likesLength}
-              </Text>
-            ))}
+          {(likesLength !== 0 || reaction) && (
+            <Text size={13} color={theme.placeholder}>
+              {reaction && likesLength ? likesLength + 1 : likesLength}
+            </Text>
+          )}
         </S.PostCommentCardIconContainer>
       </S.PostCommentCardContainer>
       <Modal

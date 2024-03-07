@@ -27,7 +27,7 @@ export const useGetReplies = ({
       },
       onError: (error) => {
         const message = error.response?.data.message;
-        ErrorToast(message);
+        message && ErrorToast(message);
       },
       refetchOnMount: true,
       refetchOnReconnect: true,

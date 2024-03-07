@@ -26,7 +26,7 @@ export const useGetComments = ({
       },
       onError: (error) => {
         const message = error.response?.data.message;
-        ErrorToast(message);
+        message && ErrorToast(message);
       },
     },
   );

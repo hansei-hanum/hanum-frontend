@@ -44,7 +44,7 @@ import {
   useGetUser,
 } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
-import { isAndroid } from 'src/utils';
+import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom } from 'src/atoms';
 
@@ -123,11 +123,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
 
-  const {
-    data: repliesData,
-    isLoading: repliesLoading,
-    refetch: refetchReplies,
-  } = useGetReplies({
+  const { refetch: refetchReplies } = useGetReplies({
     articleId,
     commentId: commentId || -1,
   });
@@ -157,11 +153,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const sendChat = () => {
+    const formattedComment = formattedMention(comment);
     if (!commentId) {
       createCommentMutate({
         articleId,
         isAnonymous,
-        content: comment,
+        content: formattedComment,
         attachment: photo,
       });
     } else {
@@ -169,7 +166,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         articleId,
         commentId,
         isAnonymous,
-        content: comment,
+        content: formattedComment,
         attachment: photo,
       });
     }
@@ -241,6 +238,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const isFocused = useIsFocused();
   useEffect(() => {
     setArticleId(articleId);
+    refetch();
+    refetchReplies();
   }, [isFocused]);
 
   return (

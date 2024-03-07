@@ -20,16 +20,35 @@ export interface GetCommentsAuthorProps {
   picture: string;
 }
 
+export interface GetCommentsContentsProps {
+  spans: [
+    {
+      text: string;
+      type: RichTextType.TEXT;
+    },
+    {
+      mention: string;
+      id: number;
+      type: RichTextType.MENTION;
+    },
+  ];
+}
+
 export interface GetCommentsDetail {
   id: number;
   isAnonymous: boolean;
   author?: GetCommentsAuthorProps;
   authorName?: string;
-  content?: {
+  content: {
     spans?: [
       {
         text: string;
-        type: RichTextType;
+        type: RichTextType.TEXT;
+      },
+      {
+        mention: string;
+        id: number;
+        type: RichTextType.MENTION;
       },
     ];
   };

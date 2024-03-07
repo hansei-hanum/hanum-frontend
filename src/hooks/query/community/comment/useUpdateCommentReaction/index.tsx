@@ -16,6 +16,9 @@ export const useUpdateCommentReaction = (): UseMutationResult<
   UpdateCommentReactionValues
 > => {
   return useMutation(updateCommentReaction, {
+    onSuccess: (data) => {
+      console.log(data, 'onSuccess');
+    },
     onError: (error) => {
       const message = error.response?.data.message;
       ErrorToast(message);

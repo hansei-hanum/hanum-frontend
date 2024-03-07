@@ -42,7 +42,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     commentId: localCommentId || -1,
   });
 
-  const repliesData = repliesPageData?.pages;
+  const repliesData = repliesPageData?.pages || [];
+  const lastPage = repliesData[repliesData.length - 1] || [];
 
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
@@ -92,7 +93,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
               index={0}
               isSingle
             />
-            {isLoading ? (
+            {isLoading && !data ? (
               <View
                 style={{
                   justifyContent: 'flex-start',
@@ -156,7 +157,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                   {showReply[props.id] && (
                     <View
                       style={{
-                        rowGap: 14,
+                        rowGap: 4,
                         paddingLeft: 20,
                         marginTop: 10,
                         marginBottom: 20,
@@ -183,13 +184,18 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                           <Spinner size={40} />
                         </View>
                       )}
-                      <View style={{ paddingLeft: 20 }}>
-                        <ScaleOpacity onPress={fetchNextPageReplies}>
-                          <Text size={14} color={theme.placeholder}>
-                            답글 더보기
-                          </Text>
-                        </ScaleOpacity>
-                      </View>
+                      {!replyLoading &&
+                        repliesData &&
+                        repliesData[0].data.total >= 10 &&
+                        lastPage.data.cursor < lastPage.data.nextCursor && (
+                          <View style={{ paddingLeft: 20 }}>
+                            <ScaleOpacity onPress={fetchNextPageReplies}>
+                              <Text size={14} color={theme.placeholder}>
+                                답글 더보기
+                              </Text>
+                            </ScaleOpacity>
+                          </View>
+                        )}
                     </View>
                   )}
                 </>
