@@ -2,7 +2,6 @@ import React from 'react';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import WebView from 'react-native-webview';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 

@@ -46,7 +46,6 @@ export const PostCommentCardIconContainer = styled.View`
   align-items: center;
   justify-content: center;
   row-gap: 4px;
-  margin-top: 18px;
 `;
 
 export const PostCommentCardComment = styled.Text`

@@ -5,19 +5,19 @@ import { AxiosError } from 'axios';
 import {
   APIErrorResponse,
   APIResponse,
-  UpdateCommentReactionValues,
-  updateCommentReaction,
+  UpdateReplyReactionValues,
+  updateReplyReaction,
 } from 'src/api';
 import { ErrorToast } from 'src/constants';
 
-export const useUpdateCommentReaction = (): UseMutationResult<
+export const useUpdateReplyReaction = (): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
-  UpdateCommentReactionValues
+  UpdateReplyReactionValues
 > => {
-  return useMutation(updateCommentReaction, {
+  return useMutation('useUpdateReplyReaction', updateReplyReaction, {
     onSuccess: (data) => {
-      console.log(data, 'onSuccess');
+      console.log('data', data);
     },
     onError: (error) => {
       const message = error.response?.data.message;

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
@@ -7,6 +7,7 @@ import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
@@ -37,11 +38,13 @@ import {
   useBottomSheet,
   useCheckPhotoPermission,
   useCreateComment,
+  useCreateReply,
   useGetComments,
+  useGetReplies,
   useGetUser,
 } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
-import { isAndroid } from 'src/utils';
+import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom } from 'src/atoms';
 
@@ -62,15 +65,36 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
   'CommunityPostDetail'
 >;
 
-const articleId = 64;
+const articleId = 87;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit } = route.params;
 
+  const {
+    data,
+    isLoading: isGetCommentsLoading,
+    isFetching: isFetchingComments,
+    fetchNextPage,
+    refetch,
+  } = useGetComments({
+    articleId,
+  });
+
+  const {
+    mutate: createCommentMutate,
+    isLoading: isCreateCommentLoading,
+    isSuccess: isCreateCommentSuccess,
+  } = useCreateComment();
+
+  const {
+    mutate: createReplyMutate,
+    isLoading: isCreateReplyLoading,
+    isSuccess: isCreateReplySuccess,
+  } = useCreateReply();
+
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const setArticleId = useSetRecoilState(articleIdAtom);
-  setArticleId(articleId);
 
   const inset = useSafeAreaInsets();
 
@@ -93,22 +117,15 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
-  const [isReplyChat, setIsReplyChat] = useState<boolean>(false);
+  const [commentId, setCommentId] = useState<number | null>(null);
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
+  const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
 
-  const {
-    data,
-    isLoading: isGetCommentsLoading,
-    fetchNextPage,
-    isFetching,
-  } = useGetComments({
+  const { refetch: refetchReplies } = useGetReplies({
     articleId,
-  });
-
-  const { mutate: createCommentMutate, isLoading: createCommentLoading } = useCreateComment({
-    articleId,
+    commentId: commentId || -1,
   });
 
   const theme = useTheme();
@@ -123,31 +140,47 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const onCommentInputBlur = () => {
     setComment('');
-    setIsReplyChat(false);
+    setCommentId(null);
     setIsAnonymous(false);
   };
 
-  const onMention = (id: string, isReply?: boolean) => {
+  const onMention = (id: string, commentId?: number) => {
+    setOpenReplyBox(true);
     setUserId(id);
     onChangeText(`${comment.split('@').slice(0, -1).join('@')}@${id} `);
     setMentionListOpen(false);
-    if (isReply) setIsReplyChat(true);
+    if (commentId) setCommentId(commentId);
   };
 
   const sendChat = () => {
-    createCommentMutate({
-      articleId,
-      isAnonymous,
-      content: comment,
-      attachment: photo,
-    });
-    setComment('');
-    setPhoto(null);
-    commentInputRef.current?.blur();
+    const formattedComment = formattedMention(comment);
+    if (!commentId) {
+      createCommentMutate({
+        articleId,
+        isAnonymous,
+        content: formattedComment,
+        attachment: photo,
+      });
+    } else {
+      createReplyMutate({
+        articleId,
+        commentId,
+        isAnonymous,
+        content: formattedComment,
+        attachment: photo,
+      });
+    }
+    if (!isCreateReplyLoading && !isCreateCommentLoading) {
+      setOpenReplyBox(false);
+      setComment('');
+      setPhoto(null);
+      commentInputRef.current?.blur();
+    }
   };
 
   const closeReplyBox = () => {
-    setIsReplyChat(false);
+    setOpenReplyBox(false);
+    setCommentId(null);
     setComment('');
   };
 
@@ -189,6 +222,26 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setPhoto(null);
   };
 
+  const onEndReached = () => {
+    if (data && data?.pages[data.pages.length - 1].data.nextCursor) {
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    if (isCreateCommentSuccess || isCreateReplySuccess) {
+      refetch();
+      refetchReplies();
+    }
+  }, [isCreateCommentLoading, isCreateReplyLoading]);
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    setArticleId(articleId);
+    refetch();
+    refetchReplies();
+  }, [isFocused]);
+
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
@@ -205,10 +258,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           <PostDetailLayout
-            onEndReached={() => fetchNextPage()}
+            setCommentId={setCommentId}
+            onEndReached={onEndReached}
             onMention={onMention}
             data={data?.pages}
-            isLoading={isGetCommentsLoading || isFetching}
+            isLoading={isGetCommentsLoading || isFetchingComments}
           />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
@@ -234,7 +288,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
               <PhotoCard item={photo.uri} onPress={onPhotoPress} />
             </View>
           )}
-          <AnimatedHoc isOpen={isReplyChat}>
+          <AnimatedHoc isOpen={openReplyBox}>
             <ReplyBox closeReplyBox={closeReplyBox} userId={userId} />
           </AnimatedHoc>
           <S.PostDetailCommentContainer>
@@ -251,7 +305,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 onBlur={onCommentInputBlur}
                 onFocus={onCommentInputFocus}
               />
-              {createCommentLoading ? (
+              {isCreateCommentLoading || isCreateReplyLoading ? (
                 <Spinner />
               ) : comment.length > 0 || photo ? (
                 <ScaleOpacity onPress={sendChat}>

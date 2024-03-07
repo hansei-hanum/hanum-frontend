@@ -14,7 +14,7 @@ export const useReleaseBlock = (): UseMutationResult<
   ReleaseBlockValue
 > => {
   const blockList = useGetBlockList();
-  return useMutation(releaseBlock, {
+  return useMutation('useReleaseBlock', releaseBlock, {
     onSuccess: () => {
       Toast.show({
         type: 'success',

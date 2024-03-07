@@ -10,17 +10,54 @@ import { useRecoilValue } from 'recoil';
 import { UserLogo } from 'src/assets';
 import { Button, Modal, ScaleOpacity, Text } from 'src/components';
 import { getPrevTimeString, isIos } from 'src/utils';
-import { GetCommentsDetail } from 'src/api';
-import { useDeleteComment, useGetUser, useUpdateCommentReaction } from 'src/hooks';
+import {
+  GetCommentsContentsProps,
+  GetCommentsDetail,
+  GetRepliesDetail,
+  RichTextType,
+} from 'src/api';
+import {
+  useDeleteComment,
+  useDeleteReply,
+  useGetUser,
+  useUpdateCommentReaction,
+  useUpdateReplyReaction,
+} from 'src/hooks';
 import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
 
-export interface PostCommentCardProps extends GetCommentsDetail {
+const FormattedContent: React.FC<GetCommentsContentsProps> = ({ spans }) => {
+  const theme = useTheme();
+
+  if (!spans) return null;
+
+  return (
+    <>
+      {spans.map((spanProps, index) => {
+        if (spanProps.type === RichTextType.TEXT) {
+          return spanProps.text;
+        } else if (spanProps.type === RichTextType.MENTION) {
+          return (
+            <Text size={15} key={index} color={theme.primary}>
+              @{spanProps.mention.toString()}
+            </Text>
+          );
+        }
+      })}
+    </>
+  );
+};
+
+export interface PostCommentCardBaseProps extends GetCommentsDetail {
   index: number;
   isReply?: boolean;
   children?: React.ReactNode;
 }
+
+export type PostCommentCardProps = PostCommentCardBaseProps &
+  GetCommentsDetail &
+  Partial<GetRepliesDetail>;
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   id,
@@ -30,17 +67,23 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   reactions,
   content,
   isReply,
+  parentId,
   children,
   attachment,
 }) => {
   const { userData } = useGetUser();
   const checkMyComment = userData?.id === author?.id;
-  console.log('PostCommentCard', checkMyComment);
   const articleId = useRecoilValue(articleIdAtom);
 
   const { mutate: updateReactionMutate } = useUpdateCommentReaction();
-  const { mutate: deleteCommentMutate, isLoading } = useDeleteComment({
+  const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment({
     articleId: articleId ?? 0,
+  });
+
+  const { mutate: updateReplyReactionMutation } = useUpdateReplyReaction();
+  const { mutate: deleteReplyMutate, isLoading: isDeleteReplyLoading } = useDeleteReply({
+    articleId: articleId ?? 0,
+    commentId: parentId ?? 0,
   });
 
   const theme = useTheme();
@@ -79,7 +122,13 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const onLikeClick = (id: number) => {
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
     setReaction((prev) => !prev);
-    articleId && updateReactionMutate({ articleId: articleId, commentId: id });
+    if (articleId) {
+      if (isReply && parentId) {
+        updateReplyReactionMutation({ articleId: articleId, commentId: parentId, replyId: id });
+      } else {
+        updateReactionMutate({ articleId: articleId, commentId: id });
+      }
+    }
   };
 
   const onPressOut = () => {
@@ -89,10 +138,12 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   };
 
   const onDeletePress = () => {
-    deleteCommentMutate({ articleId: articleId ?? 0, commentId: id });
-    if (!isLoading) {
-      setCommentDeleteModal(false);
+    if (isReply && articleId && parentId) {
+      deleteReplyMutate({ articleId: articleId, commentId: parentId, replyId: id });
+    } else {
+      deleteCommentMutate({ articleId: articleId ?? 0, commentId: id });
     }
+    setCommentDeleteModal(!isDeleteCommentLoading || isDeleteReplyLoading);
   };
 
   const likesLength = reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0);
@@ -113,8 +164,12 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 {getPrevTimeString(createdAt)}
               </Text>
             </View>
-            <TouchableOpacity onPressOut={onPressOut} activeOpacity={checkMyComment ? 0.6 : 1}>
-              {content &&
+            <TouchableOpacity
+              onLongPress={onPressOut}
+              activeOpacity={checkMyComment ? 0.6 : 1}
+              delayLongPress={180}
+            >
+              {content.spans &&
                 (!isShow[index] ? (
                   <S.PostCommentCardCommentContainer>
                     <S.PostCommentCardComment
@@ -124,7 +179,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                         event.nativeEvent.lines.length >= 14 && overlay(index);
                       }}
                     >
-                      {content.spans?.map(({ text }) => text)}
+                      <FormattedContent spans={content.spans} />
                     </S.PostCommentCardComment>
                     {isOverlay[index] && (
                       <ScaleOpacity onPress={() => showMore(index)}>
@@ -137,7 +192,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 ) : (
                   <S.PostCommentCardCommentContainer>
                     <S.PostCommentCardComment>
-                      {content.spans?.map(({ text }) => text)}
+                      <FormattedContent spans={content.spans} />
                     </S.PostCommentCardComment>
                     <ScaleOpacity onPress={() => showLess(index)}>
                       <Text size={14} color={theme.placeholder}>
@@ -174,12 +229,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               <MCI name="cards-heart-outline" size={22} color={theme.placeholder} />
             )}
           </ScaleOpacity>
-          {likesLength !== 0 ||
-            (reaction && (
-              <Text size={13} color={theme.placeholder}>
-                {reaction ? likesLength + 1 : likesLength}
-              </Text>
-            ))}
+          {(likesLength !== 0 || reaction) && (
+            <Text size={13} color={theme.placeholder}>
+              {reaction && likesLength ? likesLength + 1 : likesLength}
+            </Text>
+          )}
         </S.PostCommentCardIconContainer>
       </S.PostCommentCardContainer>
       <Modal
@@ -195,7 +249,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               onPress={onDeletePress}
               isModalBtn
               backgroundColor={theme.danger}
-              isLoading={isLoading}
+              isLoading={isDeleteCommentLoading || isDeleteReplyLoading}
             >
               네
             </Button>

@@ -1,10 +1,11 @@
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
+import { PaginationType } from 'src/types';
 
 export interface GetCommentsValues {
   articleId: number;
-  page: number;
-  count?: number;
+  limit?: number;
+  cursor?: number | null;
 }
 
 export enum RichTextType {
@@ -19,16 +20,35 @@ export interface GetCommentsAuthorProps {
   picture: string;
 }
 
+export interface GetCommentsContentsProps {
+  spans: [
+    {
+      text: string;
+      type: RichTextType.TEXT;
+    },
+    {
+      mention: string;
+      id: number;
+      type: RichTextType.MENTION;
+    },
+  ];
+}
+
 export interface GetCommentsDetail {
   id: number;
   isAnonymous: boolean;
   author?: GetCommentsAuthorProps;
   authorName?: string;
-  content?: {
+  content: {
     spans?: [
       {
         text: string;
-        type: RichTextType;
+        type: RichTextType.TEXT;
+      },
+      {
+        mention: string;
+        id: number;
+        type: RichTextType.MENTION;
       },
     ];
   };
@@ -48,20 +68,21 @@ export interface GetCommentsDetail {
   replyCount: number;
 }
 
-export interface GetCommentsResponse {
-  page: number;
-  limit: number;
-  total: number;
-  totalPage: number;
-  comments: GetCommentsDetail[];
-}
+export type GetCommentsResponse = PaginationType<GetCommentsDetail>;
 
-export const getComments = async ({ articleId, page, count = 10 }: GetCommentsValues) => {
-  setAccessToken('8');
+export const getComments = async ({ articleId, cursor, limit = 10 }: GetCommentsValues) => {
+  setAccessToken('9');
   const { data } = await communityInstance.get(
-    `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/?page=${page}&count=${count}`,
+    `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments`,
+    {
+      params: {
+        limit,
+        cursor: cursor,
+      },
+    },
   );
-  const nextPage = data.data.page < data.data.totalPage ? data.data.page + 1 : undefined;
+
+  const nextPage = data.data.cursor < data.data.nextCursor ? data.data.nextCursor : undefined;
 
   return { ...data, nextPage };
 };

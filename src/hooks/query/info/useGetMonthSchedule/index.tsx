@@ -13,7 +13,7 @@ export const useGetMonthSchedule = ({
 > => {
   return useQuery('useGetMonthSchedule', () => getMonthSchedule({ month }), {
     onError: (error) => {
-      console.log(error, 'error');
+      console.log(error, 'useGetMonthSchedule error');
     },
     retry: 0,
     staleTime: 1000 * 60 * 60 * 24,

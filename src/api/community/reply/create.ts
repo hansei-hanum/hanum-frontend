@@ -1,13 +1,13 @@
-import { communityInstance } from 'src/api/api';
+import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
 import { PhotosInterface } from 'src/components';
 
-export interface createReplyValues {
+export interface CreateReplyValues {
   articleId: number;
   commentId: number;
   isAnonymous: boolean;
   content: string;
-  attachments?: PhotosInterface;
+  attachment?: PhotosInterface | null;
 }
 
 export const createReply = async ({
@@ -15,20 +15,21 @@ export const createReply = async ({
   commentId,
   isAnonymous,
   content,
-  attachments,
-}: createReplyValues) => {
+  attachment,
+}: CreateReplyValues) => {
+  setAccessToken('9');
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));
   formData.append('content', content);
 
-  if (attachments) {
+  if (attachment) {
     const fileData = {
-      uri: attachments.uri,
-      name: attachments.name,
-      type: attachments.type,
+      uri: attachment.uri,
+      name: attachment.name,
+      type: attachment.type,
     };
-    formData.append(`attachments`, fileData);
+    formData.append(`attachment`, fileData);
   }
 
   const { data } = await communityInstance.post(

@@ -5,21 +5,22 @@ import { AxiosError } from 'axios';
 import {
   APIErrorResponse,
   APIResponse,
-  GetCommentsResponse,
-  GetCommentsValues,
-  getComments,
+  GetRepliesResponse,
+  GetRepliesValues,
+  getReplies,
 } from 'src/api';
 import { ErrorToast } from 'src/constants';
 
-export const useGetComments = ({
+export const useGetReplies = ({
   articleId,
-}: Pick<GetCommentsValues, 'articleId'>): UseInfiniteQueryResult<
-  APIResponse<GetCommentsResponse>,
+  commentId,
+}: Pick<GetRepliesValues, 'articleId' | 'commentId'>): UseInfiniteQueryResult<
+  APIResponse<GetRepliesResponse>,
   AxiosError<APIErrorResponse>
 > => {
   return useInfiniteQuery(
-    ['getComments', articleId],
-    ({ pageParam = null }) => getComments({ articleId, cursor: pageParam }),
+    ['useGetReplies', articleId, commentId],
+    ({ pageParam = null }) => getReplies({ articleId, cursor: pageParam, commentId }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
@@ -28,6 +29,10 @@ export const useGetComments = ({
         const message = error.response?.data.message;
         message && ErrorToast(message);
       },
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      retry: 0,
+      enabled: commentId !== -1 || articleId !== -1,
     },
   );
 };
