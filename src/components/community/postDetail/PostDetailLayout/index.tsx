@@ -119,7 +119,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
           ) : null
         }
         renderItem={({ item: { data } }) =>
-          !isLoading && data && data.items.length <= 0 ? (
+          !isLoading && data && data.items.length <= 0 && data.cursor === 0 ? (
             <Text
               size={16}
               style={{ paddingHorizontal: 14, paddingVertical: 14 }}

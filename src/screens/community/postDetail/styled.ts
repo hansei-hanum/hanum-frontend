@@ -40,8 +40,6 @@ export const PostDetailCommentIconContainer = styled.View`
   background-color: ${({ theme }) => theme.lightGray};
   flex-direction: row;
   column-gap: 10px;
-  padding: 0;
-  border-radius: 40px;
   padding: 0 10px;
 `;
 

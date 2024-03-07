@@ -24,6 +24,7 @@ import {
   useUpdateReplyReaction,
 } from 'src/hooks';
 import { articleIdAtom } from 'src/atoms';
+import { PaginationItemProps } from 'src/types';
 
 import * as S from './styled';
 
@@ -36,6 +37,14 @@ const FormattedContent: React.FC<GetCommentsContentsProps> = ({ spans }) => {
     <>
       {spans.map((spanProps, index) => {
         if (spanProps.type === RichTextType.TEXT) {
+          if (spanProps.text.includes('\n')) {
+            return spanProps.text.split('\n').map((line, index) => (
+              <>
+                {line}
+                {index !== spanProps.text.split('\n').length - 1 && '\n'}
+              </>
+            ));
+          }
           return spanProps.text;
         } else if (spanProps.type === RichTextType.MENTION) {
           return (
@@ -49,14 +58,15 @@ const FormattedContent: React.FC<GetCommentsContentsProps> = ({ spans }) => {
   );
 };
 
-export interface PostCommentCardBaseProps extends GetCommentsDetail {
+export interface PostCommentCardBaseProps {
   index: number;
   isReply?: boolean;
   children?: React.ReactNode;
 }
 
 export type PostCommentCardProps = PostCommentCardBaseProps &
-  GetCommentsDetail &
+  PaginationItemProps &
+  Partial<GetCommentsDetail> &
   Partial<GetRepliesDetail>;
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({

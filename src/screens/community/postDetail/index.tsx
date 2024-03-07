@@ -295,8 +295,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             <ScaleOpacity onPress={toggleAnonymous}>
               <CommunityUserImage userImage={userProfile} />
             </ScaleOpacity>
-            <S.PostDetailCommentIconContainer>
+            <S.PostDetailCommentIconContainer
+              style={{ borderRadius: comment.length > 0 ? 20 : 40 }}
+            >
               <S.PostDetailCommentInput
+                multiline
                 placeholder="댓글을 입력하세요"
                 placeholderTextColor={theme.placeholder}
                 ref={commentInputRef}

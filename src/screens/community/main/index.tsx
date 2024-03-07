@@ -15,9 +15,16 @@ import {
   PostOptionBottomSheet,
   PostBottom,
 } from 'src/components';
-import { useBottomSheet, useGetImagesHeight, useGetUser, useNavigate } from 'src/hooks';
+import {
+  useBottomSheet,
+  useGetImagesHeight,
+  useGetPosts,
+  useGetUser,
+  useNavigate,
+} from 'src/hooks';
 import { COMMUNITY_BOTTOM_SHEET_HEIGHT, COMMUNITY_LIST } from 'src/constants';
 import { isIos } from 'src/utils';
+import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
@@ -45,6 +52,11 @@ const CommunityMainHeader: React.FC = () => {
 };
 
 export const CommunityMainScreen: React.FC = () => {
+  const { data, isLoading } = useGetPosts({
+    scope: LimitedArticleScopeOfDisclosure.Public,
+    cursor: null,
+  });
+
   const navigate = useNavigate();
   const inset = useSafeAreaInsets();
 
