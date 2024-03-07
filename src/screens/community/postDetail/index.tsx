@@ -7,6 +7,7 @@ import Toast from 'react-native-toast-message';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
@@ -77,6 +78,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   } = useGetComments({
     articleId,
   });
+  console.log(isGetCommentsLoading, 'isGetCommentsLoading');
 
   const {
     mutate: createCommentMutate,
@@ -93,7 +95,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const setArticleId = useSetRecoilState(articleIdAtom);
-  setArticleId(articleId);
 
   const inset = useSafeAreaInsets();
 
@@ -126,7 +127,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     commentId: commentId || -1,
   });
 
-  // console.log('repliesData', repliesData?.pages, commentId, 'commentId');
+  console.log(repliesLoading, 'repliesLoading');
 
   const theme = useTheme();
 
@@ -217,6 +218,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       refetch();
     }
   }, [isCreateCommentLoading, isCreateReplyLoading]);
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    setArticleId(articleId);
+  }, [isFocused]);
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>

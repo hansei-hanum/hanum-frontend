@@ -53,7 +53,7 @@ export type GetCommentsResponse = PaginationType<GetCommentsDetail>;
 
 export const getComments = async ({ articleId, page, count = 10 }: GetCommentsValues) => {
   setAccessToken('9');
-  const { data } = await communityInstance.get(
+  const { data, headers } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments`,
     {
       params: {
@@ -62,6 +62,8 @@ export const getComments = async ({ articleId, page, count = 10 }: GetCommentsVa
       },
     },
   );
+
+  console.log('headers', headers);
 
   const nextPage = data.data.page < data.data.totalPage ? data.data.page + 1 : undefined;
 
