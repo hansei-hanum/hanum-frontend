@@ -12,6 +12,7 @@ export const PostDetailContainer = styled(GestureHandlerRootView)`
 
 export const PostDetailInnerContainer = styled(isIos ? KeyboardAvoidingView : View)`
   flex: 1;
+  width: 100%;
 `;
 
 export const PostDetailBottomSection = styled.View`

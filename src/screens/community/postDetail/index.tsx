@@ -32,7 +32,6 @@ import {
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
-  COMMUNITY_POST,
 } from 'src/constants';
 import {
   useBottomSheet,
@@ -40,6 +39,7 @@ import {
   useCreateComment,
   useCreateReply,
   useGetComments,
+  useGetPosts,
   useGetReplies,
   useGetUser,
 } from 'src/hooks';
@@ -47,6 +47,7 @@ import { BottomSheetRefProps } from 'src/types';
 import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom } from 'src/atoms';
+import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
@@ -69,6 +70,11 @@ const articleId = 87;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit } = route.params;
+
+  const { data: postsData, isLoading: isPostsLoading } = useGetPosts({
+    scope: LimitedArticleScopeOfDisclosure.Public,
+    cursor: null,
+  });
 
   const {
     data: commentsData,
@@ -249,11 +255,15 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
         hasGoBackIcon
       >
-        {/* <CommunityPostHeader
-          {...COMMUNITY_POST}
-          style={{ flex: 1 }}
-          openBottomSheet={openPostBottomSheet}
-        /> */}
+        {!isPostsLoading && postsData && (
+          <CommunityPostHeader
+            style={{ flex: 1, paddingRight: 4 }}
+            author={postsData.pages[0].data.items[0].author}
+            scopeOfDisclosure={postsData.pages[0].data.items[0].scopeOfDisclosure}
+            createdAt={postsData.pages[0].data.items[0].createdAt}
+            openBottomSheet={openPostBottomSheet}
+          />
+        )}
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (

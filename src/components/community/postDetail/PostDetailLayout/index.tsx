@@ -20,6 +20,14 @@ import { MentionUserListProps } from '../MetionUserList';
 
 import * as S from './styled';
 
+export const LoadingSpinner = () => {
+  return (
+    <S.PostDetailSpinnerWrapper>
+      <Spinner size={40} />
+    </S.PostDetailSpinnerWrapper>
+  );
+};
+
 export interface PostDetailLayoutProps extends MentionUserListProps {
   commentsData?: APIResponse<GetCommentsResponse>[];
   setCommentId: (value: React.SetStateAction<number | null>) => void;
@@ -38,6 +46,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     scope: LimitedArticleScopeOfDisclosure.Public,
     cursor: null,
   });
+  console.log('postData', postData, postData?.pages[0]);
 
   const articleId = useRecoilValue(articleIdAtom);
   const [localCommentId, setLocalCommentId] = useState<number | null>(null);
@@ -89,38 +98,30 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
         showsHorizontalScrollIndicator={false}
         data={commentsData}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
+        style={{ width: '100%' }}
+        contentContainerStyle={{
+          paddingBottom: 10,
+          rowGap: 10,
+        }}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
             {!isPostsLoaindg && postData ? (
-              <CommunityPost
-                content={postData.pages[0].data.items[0].content}
-                createdAt={postData?.pages[0].data.items[0].createdAt}
-                attachments={postData?.pages[0].data.items[0].attachments}
-                index={0}
-                imageHeights={imageHeights}
-              />
+              <S.CommunityPostWrapper>
+                <CommunityPost
+                  content={postData.pages[0].data.items[0].content}
+                  createdAt={postData?.pages[0].data.items[0].createdAt}
+                  attachments={postData?.pages[0].data.items[0].attachments}
+                  index={0}
+                  imageHeights={imageHeights}
+                />
+              </S.CommunityPostWrapper>
             ) : (
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}
-              >
-                <Spinner size={40} />
-              </View>
+              <LoadingSpinner />
             )}
             {isLoading && !commentsData ? (
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}
-              >
-                <Spinner size={40} />
-              </View>
+              <LoadingSpinner />
             ) : (
               commentsData && (
                 <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>

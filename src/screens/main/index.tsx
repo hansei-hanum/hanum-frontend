@@ -70,7 +70,7 @@ export const MainScreen: React.FC = () => {
         }}
       />
       <BottomTab.Screen
-        name="Community"
+        name="CommunityMain"
         component={CommunityMainScreen}
         options={getScreenOptions('대나무숲', 'article')}
         listeners={{

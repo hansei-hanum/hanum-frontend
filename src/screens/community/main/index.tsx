@@ -62,7 +62,7 @@ export const CommunityMainScreen: React.FC = () => {
     LimitedArticleScopeOfDisclosure.Public,
   );
 
-  const { data, isLoading, refetch } = useGetPosts({
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } = useGetPosts({
     scope: postScope,
     cursor: null,
   });
@@ -75,6 +75,7 @@ export const CommunityMainScreen: React.FC = () => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const [isSearchScreen, setIsSearchScreen] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     COMMUNITY_LIST.forEach((item, index) => {
@@ -127,6 +128,17 @@ export const CommunityMainScreen: React.FC = () => {
 
   const isFocused = useIsFocused();
 
+  const onEndReached = () => {
+    setIsFetching(true);
+    fetchNextPage();
+  };
+
+  useEffect(() => {
+    if (isFetching) {
+      setIsFetching(false);
+    }
+  }, [data]);
+
   useEffect(() => {
     if (isFocused) {
       refetch();
@@ -143,12 +155,15 @@ export const CommunityMainScreen: React.FC = () => {
         isSearchScreen={isSearchScreen}
         setHidden={setHidden}
       />
-      <S.CommunityMainTopSection style={{ paddingTop: isIos ? inset.top + 24 : 68 }}>
-        <CommunityMainHeader />
-        <PostMenu setPostScope={setPostScope} postScope={postScope} />
-      </S.CommunityMainTopSection>
+
       {isLoading ? (
-        <Spinner size={40} isCenter />
+        <>
+          <S.CommunityMainTopSection style={{ paddingTop: isIos ? inset.top + 24 : 68 }}>
+            <CommunityMainHeader />
+            <PostMenu setPostScope={setPostScope} postScope={postScope} />
+          </S.CommunityMainTopSection>
+          <Spinner size={40} isCenter />
+        </>
       ) : data ? (
         data.pages[0].data.items.length > 0 ? (
           <FlatList
@@ -157,12 +172,21 @@ export const CommunityMainScreen: React.FC = () => {
             scrollEventThrottle={16}
             data={data.pages}
             keyExtractor={(_, index) => index.toString()}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={0.5}
+            ListHeaderComponent={
+              <S.CommunityMainTopSection>
+                <CommunityMainHeader />
+                <PostMenu setPostScope={setPostScope} postScope={postScope} />
+              </S.CommunityMainTopSection>
+            }
             contentContainerStyle={{
               paddingTop: isIos ? inset.top + 24 : 68,
               paddingBottom: 60,
+              rowGap: 40,
             }}
             renderItem={({ item: { data } }) => (
-              <View style={{ rowGap: 40 }}>
+              <View style={{ rowGap: 60 }}>
                 {data.items.map(
                   (
                     {
@@ -205,6 +229,11 @@ export const CommunityMainScreen: React.FC = () => {
                       />
                     </S.CommunityMainBox>
                   ),
+                )}
+                {isFetchingNextPage && (
+                  <View style={{ paddingVertical: 20 }}>
+                    <Spinner size={40} />
+                  </View>
                 )}
               </View>
             )}

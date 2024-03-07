@@ -57,7 +57,7 @@ export const CommunityMainBox = styled.View`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  row-gap: 14px;
+  row-gap: 20px;
   width: 100%;
   position: relative;
 `;
