@@ -16,7 +16,6 @@ import {
   PostBottom,
   Spinner,
   PostsTopSection,
-  Modal,
 } from 'src/components';
 import { useBottomSheet, useGetPosts, useGetUser, useNavigate } from 'src/hooks';
 import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
@@ -32,7 +31,7 @@ export const CommunityMainScreen: React.FC = () => {
     LimitedArticleScopeOfDisclosure.Public,
   );
 
-  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage, isError } = useGetPosts({
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } = useGetPosts({
     scope: postScope,
     cursor: null,
   });

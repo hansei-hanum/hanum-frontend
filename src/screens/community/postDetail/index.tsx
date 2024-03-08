@@ -39,7 +39,7 @@ import {
   useCreateComment,
   useCreateReply,
   useGetComments,
-  useGetPosts,
+  useGetPostById,
   useGetReplies,
   useGetUser,
 } from 'src/hooks';
@@ -47,7 +47,6 @@ import { BottomSheetRefProps } from 'src/types';
 import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom } from 'src/atoms';
-import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
@@ -66,15 +65,10 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
   'CommunityPostDetail'
 >;
 
-const articleId = 87;
-
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit, id } = route.params;
 
-  const { data: postsData, isLoading: isPostsLoading } = useGetPosts({
-    scope: LimitedArticleScopeOfDisclosure.Public,
-    cursor: null,
-  });
+  const { data: postsData, isLoading: isPostsLoading } = useGetPostById({ articleId: id });
 
   const {
     data: commentsData,
@@ -83,7 +77,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     fetchNextPage,
     refetch,
   } = useGetComments({
-    articleId,
+    articleId: id,
   });
 
   const {
@@ -130,7 +124,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [height, setHeight] = useState<number>(0);
 
   const { refetch: refetchReplies } = useGetReplies({
-    articleId,
+    articleId: id,
     commentId: commentId || -1,
   });
 
@@ -162,14 +156,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     const formattedComment = formattedMention(comment);
     if (!commentId) {
       createCommentMutate({
-        articleId,
+        articleId: id,
         isAnonymous,
         content: formattedComment,
         attachment: photo,
       });
     } else {
       createReplyMutate({
-        articleId,
+        articleId: id,
         commentId,
         isAnonymous,
         content: formattedComment,
@@ -244,7 +238,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    setArticleId(articleId);
+    setArticleId(id);
     refetch();
     refetchReplies();
   }, [isFocused]);
@@ -259,9 +253,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         {!isPostsLoading && postsData && (
           <CommunityPostHeader
             style={{ flex: 1, paddingRight: 4 }}
-            author={postsData.pages[0].data.items[0].author}
-            scopeOfDisclosure={postsData.pages[0].data.items[0].scopeOfDisclosure}
-            createdAt={postsData.pages[0].data.items[0].createdAt}
+            author={postsData.data.author}
+            scopeOfDisclosure={postsData.data.scopeOfDisclosure}
+            createdAt={postsData.data.createdAt}
             openBottomSheet={openPostBottomSheet}
           />
         )}

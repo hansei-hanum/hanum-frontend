@@ -39,6 +39,7 @@ import { LimitedArticleScopeOfDisclosure } from 'src/api';
 import * as S from './styled';
 
 const UserSection: React.FC = () => {
+  const anonymityType = useRecoilValue(anonymityTypeAtom);
   const theme = useTheme();
 
   const { userProfile, userData } = useGetUser();
@@ -52,12 +53,17 @@ const UserSection: React.FC = () => {
         source={userProfile ? { uri: userProfile } : UserLogo}
       />
       <View style={{ rowGap: 2 }}>
-        <Text size={16}>{userData?.name || '박찬영'}</Text>
+        <Text size={16}>
+          {anonymityType.nickname !== ''
+            ? anonymityType.nickname
+            : anonymityType.type === '익명으로 표시'
+              ? '익명'
+              : userData?.name}
+        </Text>
         <S.VisibleTypeContainer>
-          {visibleType === LimitedArticleScopeOfDisclosure.Public && (
+          {visibleType === LimitedArticleScopeOfDisclosure.Public ? (
             <MI name="public" size={16} color={theme.white} />
-          )}
-          {visibleType === LimitedArticleScopeOfDisclosure.Peer ? (
+          ) : visibleType === LimitedArticleScopeOfDisclosure.Peer ? (
             <MCI name="account-group" size={16} color={theme.white} />
           ) : (
             <MI name="lock" size={16} color={theme.white} />

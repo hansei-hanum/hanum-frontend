@@ -3,3 +3,4 @@ export * from './useCreatePost';
 export * from './useDeletePost';
 export * from './useGetPosts';
 export * from './useUpdatePostReactions';
+export * from './useGetPostById';
