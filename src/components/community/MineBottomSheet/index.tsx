@@ -21,12 +21,13 @@ export interface CommunityMineBottomSheetProps {
   setHeight: React.Dispatch<React.SetStateAction<number>>;
   height: number;
   closeBottomSheet: () => void;
+  postId: number | null;
 }
 
 export const CommunityMineBottomSheet = forwardRef<
   BottomSheetRefProps,
   CommunityMineBottomSheetProps
->(({ setHeight, height, closeBottomSheet }, ref) => {
+>(({ setHeight, height, closeBottomSheet, postId }, ref) => {
   const theme = useTheme();
 
   const insets = useSafeAreaInsets();
@@ -53,7 +54,7 @@ export const CommunityMineBottomSheet = forwardRef<
   };
 
   const onModalDeleteButtonPress = () => {
-    mutate({ id: 53 });
+    postId && mutate({ id: postId });
     if (!isLoading) {
       setModalOpen(false);
     }

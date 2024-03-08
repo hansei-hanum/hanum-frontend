@@ -13,18 +13,20 @@ export interface CommunityMainTopSectionProps {
   postScope: LimitedArticleScopeOfDisclosure;
   setPostScope: React.Dispatch<React.SetStateAction<LimitedArticleScopeOfDisclosure>>;
   withUserThinkBox?: boolean;
+  hasPadding?: boolean;
 }
 
 export const PostsTopSection: React.FC<CommunityMainTopSectionProps> = ({
   postScope,
   setPostScope,
   withUserThinkBox = true,
+  hasPadding = true,
 }) => {
   const inset = useSafeAreaInsets();
   return (
     <FlatList
       contentContainerStyle={{
-        paddingTop: isIos ? inset.top + 24 : 64,
+        ...(hasPadding && { paddingTop: isIos ? inset.top + 24 : 64 }),
       }}
       scrollEnabled={false}
       ListHeaderComponent={

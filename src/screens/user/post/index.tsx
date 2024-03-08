@@ -41,6 +41,7 @@ export const UserPostScreen: React.FC = () => {
 
   const [height, setHeight] = useState<number>(0);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [postId, setPostId] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
@@ -48,9 +49,10 @@ export const UserPostScreen: React.FC = () => {
     navigate('CommunityPostDetail', { id: index, isEdit: true });
   };
 
-  const openBottomSheet = (text: string, image: string[]) => {
+  const openBottomSheet = (postId: number | null) => {
+    setPostId(postId);
     bottomSheetRef.current?.scrollTo(-height);
-    setCommunityEdit({ text, image });
+    // setCommunityEdit({ text, image });
   };
 
   useEffect(() => {
@@ -64,9 +66,7 @@ export const UserPostScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused) {
-      setCommunityEdit((prev) => ({ ...prev, isEdit: true }));
-    }
+    setCommunityEdit((prev) => ({ ...prev, isEdit: true }));
   }, [isFocused]);
 
   return (
@@ -81,7 +81,12 @@ export const UserPostScreen: React.FC = () => {
       <S.UserPostWrapper>
         {isLoading ? (
           <>
-            <PostsTopSection withUserThinkBox={false} postScope={scope} setPostScope={setScope} />
+            <PostsTopSection
+              hasPadding={false}
+              withUserThinkBox={false}
+              postScope={scope}
+              setPostScope={setScope}
+            />
             <Spinner size={40} isCenter />
           </>
         ) : (
@@ -117,6 +122,7 @@ export const UserPostScreen: React.FC = () => {
                         attachments,
                         commentCount,
                         reactions,
+                        id,
                       },
                       index,
                     ) => (
@@ -126,7 +132,7 @@ export const UserPostScreen: React.FC = () => {
                           scopeOfDisclosure={scopeOfDisclosure}
                           createdAt={createdAt}
                           style={{ width: '100%' }}
-                          openBottomSheet={() => bottomSheetRef.current?.scrollTo(-height)}
+                          openBottomSheet={() => openBottomSheet(id)}
                           onPress={() => onChatScreenNavigate(index)}
                         />
                         <CommunityPost
@@ -168,6 +174,7 @@ export const UserPostScreen: React.FC = () => {
         )}
       </S.UserPostWrapper>
       <CommunityMineBottomSheet
+        postId={postId}
         ref={bottomSheetRef}
         setHeight={setHeight}
         height={height}
