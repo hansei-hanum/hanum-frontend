@@ -7,7 +7,7 @@ export const ButtonElement = styled(TouchableOpacity)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  column-gap: 6;
+  column-gap: 6px;
 `;
 
 export const ButtonContainer = styled.View`

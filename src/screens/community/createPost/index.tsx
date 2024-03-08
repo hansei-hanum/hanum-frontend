@@ -24,7 +24,7 @@ import {
   Spinner,
   AnimatedHoc,
 } from 'src/components';
-import { useBlockGesture, useCreatePost, useGetUser, useNavigate } from 'src/hooks';
+import { useBlockGesture, useCreatePost, useEditPost, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
 import {
   ANONYMITY_OPTION_LIST,
@@ -40,6 +40,7 @@ import * as S from './styled';
 
 const UserSection: React.FC = () => {
   const theme = useTheme();
+
   const { userProfile, userData } = useGetUser();
 
   const visibleType = useRecoilValue(visibleTypeAtom);
@@ -76,6 +77,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
   const { mutate, isLoading } = useCreatePost();
+  const { mutate: editPostMutate, isLoading: isEditPostLoading } = useEditPost();
 
   const navigate = useNavigate();
 
@@ -162,10 +164,10 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const onPhotoPres = (index: number) => {
-    if (Boolean(communityEdit.image?.length)) {
+    if (Boolean(communityEdit.images?.length)) {
       setCommunityEdit({
         ...communityEdit,
-        image: communityEdit.image?.filter((_, i) => i !== index),
+        images: communityEdit.images?.filter((_, i) => i !== index),
       });
     }
     setSelectedImage(selectedImage?.filter((_, i) => i !== index) as string[]);
@@ -180,16 +182,25 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const onPost = () => {
-    mutate({
-      isAnonymous: anonymityType.type === '실명 표시' ? false : true,
-      author:
-        anonymityType.type === '닉네임 사용' && anonymityType.nickname !== ''
-          ? anonymityType.nickname
-          : undefined,
-      content: text,
-      scopeOfDisclosure: visibleType,
-      attachments: selectedImage as PhotosInterface[],
-    });
+    if (communityEdit.id) {
+      editPostMutate({
+        id: communityEdit.id,
+        content: text,
+        attachments: selectedImage as PhotosInterface[],
+        keepAttachments: communityEdit.images?.map((image) => image.id),
+      });
+    } else {
+      mutate({
+        isAnonymous: anonymityType.type === '실명 표시' ? false : true,
+        author:
+          anonymityType.type === '닉네임 사용' && anonymityType.nickname !== ''
+            ? anonymityType.nickname
+            : undefined,
+        content: text,
+        scopeOfDisclosure: visibleType,
+        attachments: selectedImage as PhotosInterface[],
+      });
+    }
 
     setText('');
     setSelectedImage([]);
@@ -198,14 +209,14 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const isFocused = useIsFocused();
-  const blockGesture = useBlockGesture(isLoading);
+  const blockGesture = useBlockGesture(isLoading || isEditPostLoading);
 
   useEffect(() => {
-    if (communityEdit.image && Boolean(communityEdit.image?.length) && isFocused) {
-      const images = communityEdit.image.map((image) => image);
+    if (communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
+      const images = communityEdit.images.map((image) => image.uri);
       setSelectedImage(images);
     } else {
-      setCommunityEdit({ text: '', image: [] });
+      setCommunityEdit({ text: '', images: [], id: null });
     }
     blockGesture;
   }, [isFocused]);
@@ -233,10 +244,10 @@ export const CommunityCreatePostScreen: React.FC = () => {
   return (
     <S.CreatePostContainer>
       <ScreenHeader
-        isLoading={isLoading}
-        title="게시글 작성하기"
+        isLoading={isLoading || isEditPostLoading}
+        title={`게시글 ${communityEdit.id ? '수정' : '작성'}하기`}
         rightContent={
-          isLoading ? (
+          isLoading || isEditPostLoading ? (
             <Spinner size={24} color={theme.primary} />
           ) : (
             <ScaleOpacity onPress={onPost}>
@@ -275,7 +286,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
         </AnimatedHoc>
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
           <S.CreatePostImageSection>
-            {(exitSelectedImage || Boolean(communityEdit.image?.length)) && (
+            {(exitSelectedImage || Boolean(communityEdit.images?.length)) && (
               <NoScrollbarScrollView
                 horizontal={true}
                 contentContainerStyle={{

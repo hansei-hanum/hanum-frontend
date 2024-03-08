@@ -23,11 +23,19 @@ import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
+export interface OpenBottomSheetProps {
+  postId: number | null;
+  text: string;
+  images: { uri: string; id: number }[];
+}
+
 export const UserPostScreen: React.FC = () => {
   const [scope, setScope] = useState<LimitedArticleScopeOfDisclosure>(
     LimitedArticleScopeOfDisclosure.Public,
   );
+
   const theme = useTheme();
+
   const { data, isLoading, fetchNextPage, isFetchingNextPage } = useGetMyPosts({
     scope,
     cursor: null,
@@ -45,14 +53,14 @@ export const UserPostScreen: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const onChatScreenNavigate = (index: number) => {
-    navigate('CommunityPostDetail', { id: index, isEdit: true });
+  const onChatScreenNavigate = (id: number) => {
+    navigate('CommunityPostDetail', { id, isEdit: true });
   };
 
-  const openBottomSheet = (postId: number | null) => {
+  const openBottomSheet = ({ postId, text, images }: OpenBottomSheetProps) => {
+    setCommunityEdit({ text, images, id: postId });
     setPostId(postId);
     bottomSheetRef.current?.scrollTo(-height);
-    // setCommunityEdit({ text, image });
   };
 
   useEffect(() => {
@@ -132,7 +140,16 @@ export const UserPostScreen: React.FC = () => {
                           scopeOfDisclosure={scopeOfDisclosure}
                           createdAt={createdAt}
                           style={{ width: '100%' }}
-                          openBottomSheet={() => openBottomSheet(id)}
+                          openBottomSheet={() =>
+                            openBottomSheet({
+                              postId: id,
+                              text: content.spans ? content.spans[0].text : '',
+                              images: attachments.map((item) => ({
+                                uri: item.thumbnail,
+                                id: item.id,
+                              })),
+                            })
+                          }
                           onPress={() => onChatScreenNavigate(index)}
                         />
                         <CommunityPost

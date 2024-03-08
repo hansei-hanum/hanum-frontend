@@ -13,7 +13,7 @@ export const useGetMealTable = ({
 > => {
   return useQuery('useGetMealTable', () => getMealTable({ month }), {
     onError: (error) => {
-      console.log(error.response?.data, 'useGetMealTable error');
+      // console.log(error.response?.data, 'useGetMealTable error');
     },
     retry: 0,
     staleTime: 1000 * 60 * 60 * 24,

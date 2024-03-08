@@ -46,7 +46,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     scope: LimitedArticleScopeOfDisclosure.Public,
     cursor: null,
   });
-  console.log('postData', postData, postData?.pages[0]);
+  // console.log('postData', postData, postData?.pages[0]);
 
   const articleId = useRecoilValue(articleIdAtom);
   const [localCommentId, setLocalCommentId] = useState<number | null>(null);

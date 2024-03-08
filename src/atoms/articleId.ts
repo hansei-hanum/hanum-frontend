@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
 export const articleIdAtom = atom<number | null>({
-  key: 'articleId',
+  key: 'articleIdAtom',
   default: null,
 });

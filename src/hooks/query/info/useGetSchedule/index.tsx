@@ -11,7 +11,7 @@ export const useGetSchedule = (): UseQueryResult<
 > => {
   return useQuery('useGetSchedule', getSchedule, {
     onError: (error) => {
-      console.log(error, 'useGetSchedule error');
+      // console.log(error, 'useGetSchedule error');
     },
     retry: 0,
     staleTime: 1000 * 60 * 60 * 24,

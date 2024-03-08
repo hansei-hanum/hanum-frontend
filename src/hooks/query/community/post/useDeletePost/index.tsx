@@ -11,6 +11,7 @@ import {
   deletePost,
 } from 'src/api';
 import { ErrorToast } from 'src/constants';
+import { useNavigate } from 'src/hooks/useNavigate';
 
 import { useGetMyPosts } from '../../etc';
 
@@ -23,9 +24,13 @@ export const useDeletePost = (): UseMutationResult<
     scope: LimitedArticleScopeOfDisclosure.Public,
     cursor: null,
   });
+
+  const navigate = useNavigate();
+
   return useMutation('useDeletePost', deletePost, {
     onSuccess: (response) => {
       console.log(response, 'onSuccess');
+      navigate('UserPost');
       Toast.show({
         type: 'success',
         text1: '게시글이 성공적으로 삭제되었어요',

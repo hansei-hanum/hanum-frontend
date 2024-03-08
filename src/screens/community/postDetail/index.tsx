@@ -69,7 +69,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 const articleId = 87;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
-  const { isEdit } = route.params;
+  const { isEdit, id } = route.params;
 
   const { data: postsData, isLoading: isPostsLoading } = useGetPosts({
     scope: LimitedArticleScopeOfDisclosure.Public,
@@ -348,6 +348,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           setHeight={setHeight}
           height={height}
           closeBottomSheet={closeBottomSheet}
+          postId={id}
         />
       ) : (
         <PostOptionBottomSheet
