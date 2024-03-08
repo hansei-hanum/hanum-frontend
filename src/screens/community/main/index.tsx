@@ -10,14 +10,12 @@ import { useTheme } from '@emotion/react';
 import {
   CommunityPostHeader,
   CommunityPost,
-  CommunityUserImage,
-  ScaleOpacity,
   Text,
   CommunityMainAnimatedHeader,
   PostOptionBottomSheet,
   PostBottom,
-  PostMenu,
   Spinner,
+  PostsTopSection,
 } from 'src/components';
 import {
   useBottomSheet,
@@ -31,29 +29,6 @@ import { isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
-
-const CommunityMainHeader: React.FC = () => {
-  const { userProfile } = useGetUser();
-
-  const theme = useTheme();
-
-  const navigate = useNavigate();
-
-  return (
-    <S.CommunityUserWrapper>
-      <ScaleOpacity onPress={() => navigate('CommunityCreatePost')}>
-        <S.CommunityUserContainer>
-          <CommunityUserImage userImage={userProfile} />
-          <S.CommunityUserThinkBox>
-            <Text size={16} color={theme.placeholder}>
-              어떤 생각을 하고 계신가요?
-            </Text>
-          </S.CommunityUserThinkBox>
-        </S.CommunityUserContainer>
-      </ScaleOpacity>
-    </S.CommunityUserWrapper>
-  );
-};
 
 export const CommunityMainScreen: React.FC = () => {
   const theme = useTheme();
@@ -155,17 +130,14 @@ export const CommunityMainScreen: React.FC = () => {
         isSearchScreen={isSearchScreen}
         setHidden={setHidden}
       />
-
       {isLoading ? (
         <>
-          <S.CommunityMainTopSection style={{ paddingTop: isIos ? inset.top + 24 : 68 }}>
-            <CommunityMainHeader />
-            <PostMenu setPostScope={setPostScope} postScope={postScope} />
-          </S.CommunityMainTopSection>
+          <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
           <Spinner size={40} isCenter />
         </>
-      ) : data ? (
-        data.pages[0].data.items.length > 0 ? (
+      ) : (
+        data &&
+        (data.pages[0].data.items.length > 0 ? (
           <FlatList
             onScroll={onScroll}
             onMomentumScrollEnd={onSetScrollY}
@@ -175,10 +147,7 @@ export const CommunityMainScreen: React.FC = () => {
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
             ListHeaderComponent={
-              <S.CommunityMainTopSection>
-                <CommunityMainHeader />
-                <PostMenu setPostScope={setPostScope} postScope={postScope} />
-              </S.CommunityMainTopSection>
+              <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
             }
             contentContainerStyle={{
               paddingTop: isIos ? inset.top + 24 : 68,
@@ -239,13 +208,16 @@ export const CommunityMainScreen: React.FC = () => {
             )}
           />
         ) : (
-          <S.CommunityMainNoDataWrapper>
-            <Text size={16} color={theme.placeholder} isCenter>
-              이 메뉴에는 아직 작성된 글이 없어요
-            </Text>
-          </S.CommunityMainNoDataWrapper>
-        )
-      ) : null}
+          <>
+            <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
+            <S.CommunityMainNoDataWrapper>
+              <Text size={16} color={theme.placeholder} isCenter>
+                이 메뉴에는 아직 작성된 글이 없어요
+              </Text>
+            </S.CommunityMainNoDataWrapper>
+          </>
+        ))
+      )}
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>
   );

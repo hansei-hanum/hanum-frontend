@@ -10,3 +10,4 @@ export * from './PostOptionBottomSheet';
 export * from './main';
 export * from './MineBottomSheet';
 export * from './FormattedContent';
+export * from './PostsTopSection';

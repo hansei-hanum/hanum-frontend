@@ -36,7 +36,7 @@ export const PostMenu: React.FC<PostMenuProps> = ({ setPostScope, postScope }) =
               style={[
                 {
                   borderRadius: 16,
-                  backgroundColor: postScope === scope ? theme.primary : theme.modalBg,
+                  backgroundColor: postScope === scope ? theme.primary : theme.secondary,
                 },
               ]}
             >

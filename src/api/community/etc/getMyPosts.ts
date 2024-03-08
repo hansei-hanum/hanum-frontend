@@ -2,25 +2,25 @@ import { AttachmentType, PaginationItemProps, PaginationType } from 'src/types';
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
 
-import { LimitedArticleScopeOfDisclosure } from './create';
+import { LimitedArticleScopeOfDisclosure } from '../post';
 
-export interface GetPostsValues {
+export interface GetMyPostsValues {
   scope: LimitedArticleScopeOfDisclosure;
   cursor: number | null;
   limit?: number;
 }
 
-export interface GetPostsDetail extends Exclude<PaginationItemProps, 'attachment'> {
+export interface GetMyPostsDetail extends Exclude<PaginationItemProps, 'attachment'> {
   commentCount: number;
   scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
   attachments: [AttachmentType];
 }
 
-export type GetPostsResponse = PaginationType<GetPostsDetail>;
+export type GetMyPostsResponse = PaginationType<GetMyPostsDetail>;
 
-export const getPosts = async ({ scope, cursor, limit = 10 }: GetPostsValues) => {
+export const getMyPosts = async ({ scope, cursor, limit = 10 }: GetMyPostsValues) => {
   setAccessToken('9');
-  const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.BASE_URL}`, {
+  const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.MY_ARTICLES}`, {
     params: {
       scope,
       cursor,

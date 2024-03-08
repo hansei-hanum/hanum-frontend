@@ -2,7 +2,13 @@ import { UseInfiniteQueryResult, useInfiniteQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 
-import { APIErrorResponse, APIResponse, GetPostsResponse, GetPostsValues, getPosts } from 'src/api';
+import {
+  APIErrorResponse,
+  APIResponse,
+  GetMyPostsResponse,
+  GetMyPostsValues,
+  getMyPosts,
+} from 'src/api';
 import { ErrorToast } from 'src/constants';
 
 /**
@@ -13,16 +19,16 @@ import { ErrorToast } from 'src/constants';
  * 페이지네이션을 위한 커서값을 설정합니다 (기본값은 null)
  * @returns
  */
-export const useGetPosts = ({
+export const useGetMyPosts = ({
   scope,
   cursor,
-}: Exclude<GetPostsValues, 'limit'>): UseInfiniteQueryResult<
-  APIResponse<GetPostsResponse>,
+}: Exclude<GetMyPostsValues, 'limit'>): UseInfiniteQueryResult<
+  APIResponse<GetMyPostsResponse>,
   AxiosError<APIErrorResponse>
 > => {
   return useInfiniteQuery(
-    ['useGetPosts', scope, cursor],
-    ({ pageParam = cursor }) => getPosts({ scope, cursor: pageParam }),
+    ['useGetMyPosts', scope, cursor],
+    ({ pageParam = cursor }) => getMyPosts({ scope, cursor: pageParam }),
     {
       onSuccess: (data) => {
         console.log('data', data);

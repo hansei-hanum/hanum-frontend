@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
+import { FlatList, SafeAreaView, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -7,21 +7,32 @@ import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
 import { COMMUNITY_LIST } from 'src/constants';
-import { isIos } from 'src/utils';
 import {
   CommunityMineBottomSheet,
   CommunityPost,
   CommunityPostHeader,
   PostBottom,
+  PostsTopSection,
   ScreenHeader,
+  Spinner,
+  Text,
 } from 'src/components';
-import { useBottomSheet, useGetImagesHeight, useNavigate } from 'src/hooks';
+import { useBottomSheet, useGetImagesHeight, useGetMyPosts, useNavigate } from 'src/hooks';
 import { communityEditAtom } from 'src/atoms';
+import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import * as S from './styled';
 
 export const UserPostScreen: React.FC = () => {
+  const [scope, setScope] = useState<LimitedArticleScopeOfDisclosure>(
+    LimitedArticleScopeOfDisclosure.Public,
+  );
   const theme = useTheme();
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } = useGetMyPosts({
+    scope,
+    cursor: null,
+  });
+
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
@@ -68,43 +79,93 @@ export const UserPostScreen: React.FC = () => {
         }}
       />
       <S.UserPostWrapper>
-        <FlatList
-          onScroll={(e) => setIsScrolled(e.nativeEvent.contentOffset.y > 0)}
-          scrollEventThrottle={16}
-          data={COMMUNITY_LIST}
-          keyExtractor={(_, index) => index.toString()}
-          contentContainerStyle={{
-            paddingTop: isIos ? 10 : 38,
-            paddingBottom: 60,
-            rowGap: 16,
-          }}
-          renderItem={({ item: { author, type, time, content }, index }) => (
-            <S.UserPostBox>
-              <CommunityPostHeader
-                author={author}
-                type={type}
-                time={time}
-                style={{ width: '100%' }}
-                openBottomSheet={() => openBottomSheet(content.message, content.image)}
-                onPress={() => onChatScreenNavigate(index)}
-              />
-              <CommunityPost
-                author={author}
-                content={content}
-                time={time}
-                type={type}
-                onPress={() => onChatScreenNavigate(index)}
-                index={index}
-                imageHeights={imageHeights}
-              />
-              <PostBottom
-                index={index}
-                likesLength={content.likes}
-                commentsLength={content.comments}
-              />
-            </S.UserPostBox>
-          )}
-        />
+        {isLoading ? (
+          <>
+            <PostsTopSection withUserThinkBox={false} postScope={scope} setPostScope={setScope} />
+            <Spinner size={40} isCenter />
+          </>
+        ) : (
+          data &&
+          (data.pages[0].data.items.length > 0 ? (
+            <FlatList
+              scrollEventThrottle={16}
+              data={data.pages}
+              onScroll={(e) => setIsScrolled(e.nativeEvent.contentOffset.y > 0)}
+              keyExtractor={(_, index) => index.toString()}
+              onEndReached={() => fetchNextPage()}
+              onEndReachedThreshold={0.5}
+              ListHeaderComponent={
+                <PostsTopSection
+                  withUserThinkBox={false}
+                  postScope={scope}
+                  setPostScope={setScope}
+                />
+              }
+              contentContainerStyle={{
+                paddingBottom: 60,
+                rowGap: 40,
+              }}
+              renderItem={({ item: { data } }) => (
+                <View style={{ rowGap: 60 }}>
+                  {data.items.map(
+                    (
+                      {
+                        author,
+                        scopeOfDisclosure,
+                        createdAt,
+                        content,
+                        attachments,
+                        commentCount,
+                        reactions,
+                      },
+                      index,
+                    ) => (
+                      <S.UserPostBox key={index}>
+                        <CommunityPostHeader
+                          author={author}
+                          scopeOfDisclosure={scopeOfDisclosure}
+                          createdAt={createdAt}
+                          style={{ width: '100%' }}
+                          openBottomSheet={() => bottomSheetRef.current?.scrollTo(-height)}
+                          onPress={() => onChatScreenNavigate(index)}
+                        />
+                        <CommunityPost
+                          content={content}
+                          attachments={attachments}
+                          createdAt={createdAt}
+                          onPress={() => onChatScreenNavigate(index)}
+                          index={index}
+                          imageHeights={imageHeights}
+                        />
+                        <PostBottom
+                          index={index}
+                          likesLength={reactions
+                            ?.map(({ count }) => count)
+                            .reduce((acc, cur) => acc + cur, 0)}
+                          commentCount={commentCount}
+                        />
+                      </S.UserPostBox>
+                    ),
+                  )}
+                  {isFetchingNextPage && (
+                    <View style={{ paddingVertical: 20 }}>
+                      <Spinner size={40} />
+                    </View>
+                  )}
+                </View>
+              )}
+            />
+          ) : (
+            <>
+              <PostsTopSection withUserThinkBox={false} postScope={scope} setPostScope={setScope} />
+              <S.CommunityMainNoDataWrapper>
+                <Text size={16} color={theme.placeholder} isCenter>
+                  이 메뉴에는 아직 작성된 글이 없어요
+                </Text>
+              </S.CommunityMainNoDataWrapper>
+            </>
+          ))
+        )}
       </S.UserPostWrapper>
       <CommunityMineBottomSheet
         ref={bottomSheetRef}

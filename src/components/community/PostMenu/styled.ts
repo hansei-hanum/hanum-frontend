@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 
 export const CommunityMainMenuContainer = styled.View`
   width: 100%;
-  background-color: ${({ theme }) => theme.modalBg};
+  background-color: ${({ theme }) => theme.secondary};
   z-index: 9999;
   border-radius: 16px;
 `;

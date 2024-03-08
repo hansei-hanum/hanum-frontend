@@ -85,7 +85,7 @@ export const CommunityMainTopSection = styled.View`
 `;
 
 export const CommunityMainNoDataWrapper = styled.View`
-  flex: 1;
+  height: 70%;
   align-items: center;
   justify-content: center;
 `;
