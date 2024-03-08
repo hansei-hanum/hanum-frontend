@@ -16,9 +16,6 @@ export const useUpdateReplyReaction = (): UseMutationResult<
   UpdateReplyReactionValues
 > => {
   return useMutation('useUpdateReplyReaction', updateReplyReaction, {
-    onSuccess: (data) => {
-      console.log('data', data);
-    },
     onError: (error) => {
       const message = error.response?.data.message;
       ErrorToast(message);

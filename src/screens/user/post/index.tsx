@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
 
+import { useIsFocused } from '@react-navigation/native';
+
 import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
@@ -40,7 +42,7 @@ export const UserPostScreen: React.FC = () => {
 
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
-  const { bottomSheetRef, closeBottomSheet, isActive } = useBottomSheet();
+  const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
 
   const [height, setHeight] = useState<number>(0);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -58,12 +60,12 @@ export const UserPostScreen: React.FC = () => {
     bottomSheetRef.current?.scrollTo(-height);
   };
 
+  const isFocused = useIsFocused();
   useEffect(() => {
-    console.log('isActive', isActive());
-    if (!isActive()) {
+    if (!isFocused) {
       setCommunityEdit({ text: '', images: [], id: null });
     }
-  }, [postId]);
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

@@ -182,6 +182,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const onPost = () => {
+    console.log('communityEdit', communityEdit);
     if (communityEdit.id) {
       editPostMutate({
         id: communityEdit.id,
@@ -212,11 +213,10 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const blockGesture = useBlockGesture(isLoading || isEditPostLoading);
 
   useEffect(() => {
+    console.log(communityEdit.images, 'edit images', communityEdit.id, 'edit id');
     if (communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
       const images = communityEdit.images.map((image) => image.uri);
       setSelectedImage(images);
-    } else {
-      setCommunityEdit({ text: '', images: [], id: null });
     }
     blockGesture;
   }, [isFocused]);

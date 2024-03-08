@@ -24,9 +24,6 @@ export const useGetPosts = ({
     ['useGetPosts', scope, cursor],
     ({ pageParam = cursor }) => getPosts({ scope, cursor: pageParam }),
     {
-      onSuccess: (data) => {
-        console.log('data', data);
-      },
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
       },

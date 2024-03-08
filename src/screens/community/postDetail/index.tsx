@@ -242,6 +242,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   }, [isCreateCommentLoading, isCreateReplyLoading]);
 
   const isFocused = useIsFocused();
+
   useEffect(() => {
     setArticleId(articleId);
     refetch();
