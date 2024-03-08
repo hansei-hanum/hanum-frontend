@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FlatList } from 'react-native';
 import { View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
-import { useGetImagesHeight, useGetPosts, useGetReplies } from 'src/hooks';
-import { COMMUNITY_POST } from 'src/constants';
+import { useGetPosts, useGetReplies } from 'src/hooks';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
 import {
   APIResponse,
@@ -46,7 +45,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     scope: LimitedArticleScopeOfDisclosure.Public,
     cursor: null,
   });
-  // console.log('postData', postData, postData?.pages[0]);
 
   const articleId = useRecoilValue(articleIdAtom);
   const [localCommentId, setLocalCommentId] = useState<number | null>(null);
@@ -63,8 +61,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
 
   const repliesData = repliesPageData?.pages || [];
   const lastPage = repliesData[repliesData.length - 1] || [];
-
-  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
 
@@ -83,12 +79,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     setCommentId(id);
     setLocalCommentId(id);
   };
-
-  useEffect(() => {
-    COMMUNITY_POST.content.image.forEach((uri, index) => {
-      getHeightsForImage(uri, index);
-    });
-  }, [getHeightsForImage]);
 
   return (
     <S.PostDetailLayoutContainer>
@@ -114,7 +104,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                   createdAt={postData?.pages[0].data.items[0].createdAt}
                   attachments={postData?.pages[0].data.items[0].attachments}
                   index={0}
-                  imageHeights={imageHeights}
                 />
               </S.CommunityPostWrapper>
             ) : (

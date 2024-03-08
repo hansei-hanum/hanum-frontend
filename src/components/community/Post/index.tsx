@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 
@@ -7,6 +7,7 @@ import { useTheme } from '@emotion/react';
 import { FormattedContent, Text } from 'src/components';
 import { RPH } from 'src/utils';
 import { GetPostsDetail } from 'src/api';
+import { useGetImagesHeight } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -15,21 +16,27 @@ export interface CommunityPostProps {
   createdAt: string;
   content: GetPostsDetail['content'];
   attachments: GetPostsDetail['attachments'];
-  imageHeights: number[];
   onPress?: () => void;
 }
 
 export const CommunityPost: React.FC<CommunityPostProps> = ({
   content,
-  imageHeights,
   attachments,
   index,
   onPress,
 }) => {
+  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
+
   const imageHeight = imageHeights[index * attachments.length];
   const oneImage = attachments.length === 1;
 
   const theme = useTheme();
+
+  useEffect(() => {
+    attachments.forEach(({ original }, i) => {
+      getHeightsForImage(original, index * attachments.length + i);
+    });
+  }, [getHeightsForImage]);
 
   return (
     <S.CommunityPostContainer>
@@ -65,10 +72,9 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
               <S.CommunityPostImageWrapper key={i}>
                 <Image
                   style={{ width: '100%' }}
-                  key={i}
                   source={{
                     uri: original,
-                    height: imageHeight > RPH(48) ? RPH(48) : imageHeight,
+                    height: !imageHeight || imageHeight < RPH(48) ? RPH(48) : imageHeight,
                   }}
                   resizeMode="contain"
                 />

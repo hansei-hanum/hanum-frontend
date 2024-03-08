@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
 
-import { useIsFocused } from '@react-navigation/native';
-
 import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { COMMUNITY_LIST } from 'src/constants';
 import {
   CommunityMineBottomSheet,
   CommunityPost,
@@ -17,7 +14,7 @@ import {
   Spinner,
   Text,
 } from 'src/components';
-import { useBottomSheet, useGetImagesHeight, useGetMyPosts, useNavigate } from 'src/hooks';
+import { useBottomSheet, useGetMyPosts, useNavigate } from 'src/hooks';
 import { communityEditAtom } from 'src/atoms';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
@@ -43,9 +40,7 @@ export const UserPostScreen: React.FC = () => {
 
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
-  const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
-
-  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
+  const { bottomSheetRef, closeBottomSheet, isActive } = useBottomSheet();
 
   const [height, setHeight] = useState<number>(0);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -64,18 +59,11 @@ export const UserPostScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    COMMUNITY_LIST.forEach((item, index) => {
-      item.content.image.forEach((image, i) => {
-        getHeightsForImage(image, index * item.content.image.length + i);
-      });
-    });
-  }, [COMMUNITY_LIST, getHeightsForImage]);
-
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    setCommunityEdit((prev) => ({ ...prev, isEdit: true }));
-  }, [isFocused]);
+    console.log('isActive', isActive());
+    if (!isActive()) {
+      setCommunityEdit({ text: '', images: [], id: null });
+    }
+  }, [postId]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -158,10 +146,9 @@ export const UserPostScreen: React.FC = () => {
                           createdAt={createdAt}
                           onPress={() => onChatScreenNavigate(index)}
                           index={index}
-                          imageHeights={imageHeights}
                         />
                         <PostBottom
-                          index={index}
+                          id={id}
                           likesLength={reactions
                             ?.map(({ count }) => count)
                             .reduce((acc, cur) => acc + cur, 0)}

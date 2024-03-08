@@ -16,15 +16,10 @@ import {
   PostBottom,
   Spinner,
   PostsTopSection,
+  Modal,
 } from 'src/components';
-import {
-  useBottomSheet,
-  useGetImagesHeight,
-  useGetPosts,
-  useGetUser,
-  useNavigate,
-} from 'src/hooks';
-import { COMMUNITY_BOTTOM_SHEET_HEIGHT, COMMUNITY_LIST } from 'src/constants';
+import { useBottomSheet, useGetPosts, useGetUser, useNavigate } from 'src/hooks';
+import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
 import { isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 
@@ -37,7 +32,7 @@ export const CommunityMainScreen: React.FC = () => {
     LimitedArticleScopeOfDisclosure.Public,
   );
 
-  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } = useGetPosts({
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage, isError } = useGetPosts({
     scope: postScope,
     cursor: null,
   });
@@ -47,18 +42,8 @@ export const CommunityMainScreen: React.FC = () => {
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
-  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
-
   const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-
-  useEffect(() => {
-    COMMUNITY_LIST.forEach((item, index) => {
-      item.content.image.forEach((image, i) => {
-        getHeightsForImage(image, index * item.content.image.length + i);
-      });
-    });
-  }, [COMMUNITY_LIST, getHeightsForImage]);
 
   const onChatScreenNavigate = (index: number) => {
     console.log('index', index);
@@ -137,9 +122,8 @@ export const CommunityMainScreen: React.FC = () => {
           <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
           <Spinner size={40} isCenter />
         </>
-      ) : (
-        data &&
-        (data.pages[0].data.items.length > 0 ? (
+      ) : data ? (
+        data.pages[0].data.items.length > 0 ? (
           <FlatList
             onScroll={onScroll}
             onMomentumScrollEnd={onSetScrollY}
@@ -168,10 +152,11 @@ export const CommunityMainScreen: React.FC = () => {
                       attachments,
                       commentCount,
                       reactions,
+                      id,
                     },
                     index,
                   ) => (
-                    <S.CommunityMainBox key={index}>
+                    <S.CommunityMainBox key={id}>
                       <CommunityPostHeader
                         author={author}
                         scopeOfDisclosure={scopeOfDisclosure}
@@ -180,19 +165,18 @@ export const CommunityMainScreen: React.FC = () => {
                         openBottomSheet={() =>
                           openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT })
                         }
-                        onPress={() => onChatScreenNavigate(index)}
+                        onPress={() => onChatScreenNavigate(id)}
                         userImagePress={onProfilePress}
                       />
                       <CommunityPost
                         content={content}
                         attachments={attachments}
                         createdAt={createdAt}
-                        onPress={() => onChatScreenNavigate(index)}
+                        onPress={() => onChatScreenNavigate(id)}
                         index={index}
-                        imageHeights={imageHeights}
                       />
                       <PostBottom
-                        index={index}
+                        id={id}
                         likesLength={reactions
                           ?.map(({ count }) => count)
                           .reduce((acc, cur) => acc + cur, 0)}
@@ -218,7 +202,16 @@ export const CommunityMainScreen: React.FC = () => {
               </Text>
             </S.CommunityMainNoDataWrapper>
           </>
-        ))
+        )
+      ) : (
+        <>
+          <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
+          <S.CommunityMainNoDataWrapper>
+            <Text size={16} color={theme.placeholder} isCenter>
+              지금은 게시글을 불러올 수 없어요
+            </Text>
+          </S.CommunityMainNoDataWrapper>
+        </>
       )}
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>

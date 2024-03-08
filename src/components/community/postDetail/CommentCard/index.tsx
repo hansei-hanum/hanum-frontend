@@ -144,7 +144,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               activeOpacity={checkMyComment ? 0.6 : 1}
               delayLongPress={180}
             >
-              {content.spans &&
+              {content &&
+                content.spans &&
                 (!isShow[index] ? (
                   <S.PostCommentCardCommentContainer>
                     <S.PostCommentCardComment
