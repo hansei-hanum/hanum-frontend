@@ -12,7 +12,7 @@ import {
   MainWebView,
   TEAM_ID_TO_TEXT,
   TeamId,
-  TeamsSkeleton,
+  HanowlApplyTeamsSkeleton,
   TeamsWebView,
 } from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
@@ -68,7 +68,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
         scrollHeight={-SCREEN_HEIGHT + 100}
         style={{ backgroundColor: '#2A2B2E' }}
       >
-        {teamLoading && <TeamsSkeleton theme={theme} />}
+        {teamLoading && <HanowlApplyTeamsSkeleton theme={theme} />}
         {isAndroid ? (
           <ScrollView
             contentContainerStyle={{

@@ -23,7 +23,7 @@ const SkeletonItem: React.FC<{ paddingLeft?: number; theme: Theme }> = ({ paddin
   </SkeletonPlaceholder>
 );
 
-export const TeamsSkeleton: React.FC<TeamsSkeletonProps> = ({ theme }) => {
+export const HanowlApplyTeamsSkeleton: React.FC<TeamsSkeletonProps> = ({ theme }) => {
   return (
     <View style={{ flex: 0.8, paddingHorizontal: 20 }}>
       <View style={{ rowGap: 40, marginTop: 16 }}>
