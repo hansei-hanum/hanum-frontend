@@ -76,6 +76,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit, id } = route.params;
+  console.log(id, 'id');
 
   const { data: postData, isLoading: isPostLoading } = useGetPostById({ articleId: id });
 
@@ -147,8 +148,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   });
 
   const theme = useTheme();
-
-  console.log('debouncedValue', debouncedValue, mentionData, 'mentionData');
 
   const onChangeText = (text: string) => {
     setComment(text);
@@ -267,6 +266,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       fetchNextPage();
     }
   };
+
+  console.log(isRefetchingComments, 'isRefetchingComments');
 
   useEffect(() => {
     if (isCreateCommentSuccess || isCreateReplySuccess) {

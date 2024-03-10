@@ -20,15 +20,14 @@ import { ErrorToast } from 'src/constants';
  * @returns
  */
 export const useGetMyPosts = ({
-  scope,
   cursor,
 }: Exclude<GetMyPostsValues, 'limit'>): UseInfiniteQueryResult<
   APIResponse<GetMyPostsResponse>,
   AxiosError<APIErrorResponse>
 > => {
   return useInfiniteQuery(
-    ['useGetMyPosts', scope, cursor],
-    ({ pageParam = cursor }) => getMyPosts({ scope, cursor: pageParam }),
+    ['useGetMyPosts', cursor],
+    ({ pageParam = cursor }) => getMyPosts({ cursor: pageParam }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
