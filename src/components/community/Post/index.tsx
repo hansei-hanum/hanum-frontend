@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, ViewProps } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import { useTheme } from '@emotion/react';
@@ -11,7 +11,7 @@ import { useGetImagesHeight } from 'src/hooks';
 
 import * as S from './styled';
 
-export interface CommunityPostProps {
+export interface CommunityPostCustomProps {
   index: number;
   createdAt: string;
   content: GetPostsDetail['content'];
@@ -19,11 +19,14 @@ export interface CommunityPostProps {
   onPress?: () => void;
 }
 
+export type CommunityPostProps = CommunityPostCustomProps & ViewProps;
+
 export const CommunityPost: React.FC<CommunityPostProps> = ({
   content,
   attachments,
   index,
   onPress,
+  ...props
 }) => {
   const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
@@ -54,7 +57,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
             ))}
         </TouchableOpacity>
       </S.CommunityPostContentWrapper>
-      {attachments.length > 0 && (
+      {attachments.length >= 1 && (
         <Swiper
           loop={false}
           containerStyle={{
@@ -75,6 +78,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
                   source={{
                     uri: original,
                     height: !imageHeight || imageHeight < RPH(48) ? RPH(48) : imageHeight,
+                    cache: 'force-cache',
                   }}
                   resizeMode="contain"
                 />

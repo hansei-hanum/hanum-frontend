@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
+import {
+  Animated,
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  View,
+  ScrollView,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -31,7 +39,7 @@ export const CommunityMainScreen: React.FC = () => {
     LimitedArticleScopeOfDisclosure.Public,
   );
 
-  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } = useGetPosts({
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage, isFetching } = useGetPosts({
     scope: postScope,
     cursor: null,
   });
@@ -42,7 +50,6 @@ export const CommunityMainScreen: React.FC = () => {
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const [isSearchScreen, setIsSearchScreen] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
 
   const onChatScreenNavigate = (index: number) => {
     console.log('index', index);
@@ -90,15 +97,8 @@ export const CommunityMainScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   const onEndReached = () => {
-    setIsFetching(true);
     fetchNextPage();
   };
-
-  useEffect(() => {
-    if (isFetching) {
-      setIsFetching(false);
-    }
-  }, [data]);
 
   useEffect(() => {
     if (isFocused) {
@@ -133,6 +133,13 @@ export const CommunityMainScreen: React.FC = () => {
             onEndReachedThreshold={0.5}
             ListHeaderComponent={
               <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
+            }
+            refreshControl={
+              <RefreshControl
+                onRefresh={refetch}
+                refreshing={isFetching}
+                style={{ borderColor: 'blue', borderWidth: 1 }}
+              />
             }
             contentContainerStyle={{
               paddingTop: isIos ? inset.top + 24 : 68,

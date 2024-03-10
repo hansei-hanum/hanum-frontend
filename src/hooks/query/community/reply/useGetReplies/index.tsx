@@ -26,13 +26,14 @@ export const useGetReplies = ({
         return lastPage.nextPage;
       },
       onError: (error) => {
+        console.log('useGetReplies error', error.response?.data);
         const message = error.response?.data.message;
         message && ErrorToast(message);
       },
       refetchOnMount: true,
       refetchOnReconnect: true,
       retry: 0,
-      enabled: commentId !== -1 || articleId !== -1,
+      enabled: commentId !== -1 && articleId !== -1,
     },
   );
 };

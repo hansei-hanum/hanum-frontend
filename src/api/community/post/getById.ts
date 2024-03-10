@@ -18,5 +18,5 @@ export const getPostById = async ({ articleId }: GetPostByIdValue) => {
   setAccessToken('9');
   const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}`);
 
-  return { data };
+  return data;
 };

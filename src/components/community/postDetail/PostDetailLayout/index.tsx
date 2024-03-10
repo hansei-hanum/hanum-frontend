@@ -5,14 +5,9 @@ import { View } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
-import { useGetPosts, useGetReplies } from 'src/hooks';
+import { useGetReplies } from 'src/hooks';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
-import {
-  APIResponse,
-  GetCommentsDetail,
-  GetCommentsResponse,
-  LimitedArticleScopeOfDisclosure,
-} from 'src/api';
+import { APIResponse, GetCommentsDetail, GetCommentsResponse, GetPostByIdResponse } from 'src/api';
 import { articleIdAtom } from 'src/atoms';
 
 import { MentionUserListProps } from '../MetionUserList';
@@ -32,6 +27,8 @@ export interface PostDetailLayoutProps extends MentionUserListProps {
   setCommentId: (value: React.SetStateAction<number | null>) => void;
   onEndReached: () => void;
   isLoading: boolean;
+  postData?: GetPostByIdResponse;
+  isPostLoading: boolean;
 }
 
 export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
@@ -40,12 +37,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
   onEndReached,
   commentsData,
   isLoading,
+  postData,
+  isPostLoading,
 }) => {
-  const { data: postData, isLoading: isPostsLoaindg } = useGetPosts({
-    scope: LimitedArticleScopeOfDisclosure.Public,
-    cursor: null,
-  });
-
   const articleId = useRecoilValue(articleIdAtom);
   const [localCommentId, setLocalCommentId] = useState<number | null>(null);
 
@@ -55,8 +49,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     isFetchingNextPage: isFetchingReplyNextPage,
     isLoading: replyLoading,
   } = useGetReplies({
-    articleId: articleId || -1,
-    commentId: localCommentId || -1,
+    articleId: articleId ? articleId : -1,
+    commentId: localCommentId ? localCommentId : -1,
   });
 
   const repliesData = repliesPageData?.pages || [];
@@ -97,13 +91,14 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
         onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
-            {!isPostsLoaindg && postData ? (
+            {!isPostLoading && postData ? (
               <S.CommunityPostWrapper>
                 <CommunityPost
-                  content={postData.pages[0].data.items[0].content}
-                  createdAt={postData?.pages[0].data.items[0].createdAt}
-                  attachments={postData?.pages[0].data.items[0].attachments}
+                  content={postData.content}
+                  createdAt={postData.createdAt}
+                  attachments={postData.attachments}
                   index={0}
+                  style={{ minHeight: 280, borderColor: 'red', borderWidth: 1 }}
                 />
               </S.CommunityPostWrapper>
             ) : (

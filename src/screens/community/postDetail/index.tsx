@@ -68,7 +68,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit, id } = route.params;
 
-  const { data: postsData, isLoading: isPostsLoading } = useGetPostById({ articleId: id });
+  const { data: postData, isLoading: isPostLoading } = useGetPostById({ articleId: id });
 
   const {
     data: commentsData,
@@ -125,7 +125,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const { refetch: refetchReplies } = useGetReplies({
     articleId: id,
-    commentId: commentId || -1,
+    commentId: commentId ? commentId : -1,
   });
 
   const theme = useTheme();
@@ -223,7 +223,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onEndReached = () => {
-    if (commentsData && commentsData?.pages[commentsData.pages.length - 1].data.nextCursor) {
+    const lastComment = commentsData?.pages[commentsData.pages.length - 1].data;
+    if (commentsData && lastComment) {
       fetchNextPage();
     }
   };
@@ -238,9 +239,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    setArticleId(id);
-    refetch();
-    refetchReplies();
+    if (isFocused) {
+      setArticleId(id);
+      refetch();
+      refetchReplies();
+    }
   }, [isFocused]);
 
   return (
@@ -250,12 +253,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
         hasGoBackIcon
       >
-        {!isPostsLoading && postsData && (
+        {!isPostLoading && postData && (
           <CommunityPostHeader
             style={{ flex: 1, paddingRight: 4 }}
-            author={postsData.data.author}
-            scopeOfDisclosure={postsData.data.scopeOfDisclosure}
-            createdAt={postsData.data.createdAt}
+            author={postData.data.author}
+            scopeOfDisclosure={postData.data.scopeOfDisclosure}
+            createdAt={postData.data.createdAt}
             openBottomSheet={openPostBottomSheet}
           />
         )}
@@ -268,6 +271,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             onMention={onMention}
             commentsData={commentsData?.pages}
             isLoading={isGetCommentsLoading || isFetchingComments}
+            postData={postData?.data}
+            isPostLoading={isPostLoading}
           />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
@@ -305,6 +310,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             >
               <S.PostDetailCommentInput
                 multiline
+                numberOfLines={5}
                 placeholder="댓글을 입력하세요"
                 placeholderTextColor={theme.placeholder}
                 ref={commentInputRef}
