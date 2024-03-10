@@ -39,7 +39,9 @@ import {
   useCheckPhotoPermission,
   useCreateComment,
   useCreateReply,
+  useDebounce,
   useGetComments,
+  useGetMention,
   useGetPostById,
   useGetReplies,
   useGetUser,
@@ -82,6 +84,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     isLoading: isGetCommentsLoading,
     fetchNextPage,
     refetch,
+    isRefetching: isRefetchingComments,
   } = useGetComments({
     articleId: id,
   });
@@ -122,7 +125,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [comment, setComment] = useState<string>('');
   const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
-
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [commentId, setCommentId] = useState<number | null>(null);
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
@@ -130,6 +132,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
   const [users, setUsers] = useState({});
+  const [mentionSearch, setMentionSearch] = useState<string>('');
+
+  const { debouncedValue } = useDebounce(mentionSearch, 300);
+
+  const { data: mentionData, isLoading: isGetMentionLoading } = useGetMention({
+    name: debouncedValue,
+  });
+
   const { refetch: replyRefetch } = useGetReplies({
     articleId: id,
     commentId: commentId ?? -1,
@@ -138,11 +148,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const theme = useTheme();
 
+  console.log('debouncedValue', debouncedValue, mentionData, 'mentionData');
+
   const onChangeText = (text: string) => {
     setComment(text);
     if (!mentionListOpen && comment.includes('@')) {
       commentInputRef.current?.focus();
       setMentionListOpen(true);
+    }
+    if (mentionListOpen && CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment)) {
+      setMentionSearch(text.split('@').slice(-1)[0]);
     }
   };
 
@@ -267,7 +282,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       setArticleId(id);
       refetch();
     }
-    if (!isGetCommentsLoading && commentsData) {
+    if (commentsData) {
       let newUsers: { [key: string]: number } = { ...users };
       commentsData.pages.map(({ data }) => {
         data.items.map(({ author }) => {
@@ -279,6 +294,14 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       setUsers(newUsers);
     }
   }, [isFocused, isGetCommentsLoading]);
+
+  useEffect(() => {
+    if (mentionData) {
+      mentionData.data.items.map(({ name, id }) => {
+        setUsers((prev) => ({ ...prev, [name]: id }));
+      });
+    }
+  }, [mentionData, isGetMentionLoading]);
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
@@ -305,7 +328,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             onEndReached={onEndReached}
             onTag={onTag}
             commentsData={commentsData?.pages}
-            isLoading={isGetCommentsLoading}
+            isLoading={isGetCommentsLoading || isRefetchingComments}
             postData={postData?.data}
             isPostLoading={isPostLoading}
           />
@@ -316,7 +339,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 @뒤에 유저 이름을 써주세요
               </Text>
             ) : (
-              <MentionUserList onTag={onTag} />
+              <MentionUserList onTag={onTag} isLoading={isGetMentionLoading} data={mentionData} />
             )}
           </View>
         )}

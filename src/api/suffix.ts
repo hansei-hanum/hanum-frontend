@@ -30,7 +30,8 @@ export const EOULLIM = {
 export const COMMUNITY = {
   BASE_URL: '/articles',
   BLOCK: '/blocks',
-  MY_ARTICLES: '/my/articles',
+  MY_ARTICLES: '/users/@me/articles',
+  USER_MENTION: '/users/mentions/search',
 };
 
 export interface ApiSuffixProps {

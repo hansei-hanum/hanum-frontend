@@ -15,7 +15,7 @@ export interface GetPostByIdResponse extends Exclude<PaginationItemProps, 'attac
 }
 
 export const getPostById = async ({ articleId }: GetPostByIdValue) => {
-  setAccessToken('9');
+  setAccessToken('11');
   const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}`);
 
   return data;

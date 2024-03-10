@@ -14,7 +14,7 @@ export const createComment = async ({
   content,
   attachment,
 }: CreateCommentValues) => {
-  setAccessToken('110');
+  setAccessToken('11');
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));

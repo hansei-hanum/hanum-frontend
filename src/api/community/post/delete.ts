@@ -5,7 +5,7 @@ export interface DeletePostValues {
 }
 
 export const deletePost = async ({ id }: DeletePostValues) => {
-  setAccessToken('9');
+  setAccessToken('11');
   const { data } = await communityInstance.delete(`${API_SUFFIX.COMMUNITY.BASE_URL}/${id}`);
   return data;
 };

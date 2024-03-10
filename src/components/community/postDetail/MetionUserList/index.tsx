@@ -3,42 +3,56 @@ import { FlatList, View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
-import { COMMUNITY_USER_LIST } from 'src/constants';
 import { CommunityUserImage, ScaleOpacity, Text } from 'src/components';
 import { onTagProps } from 'src/screens';
+import { APIResponse, GetUserMentionResponse } from 'src/api';
 
 import * as S from './styled';
 
 export interface MentionUserListProps {
   onTag: ({ userName, isReply, commentId }: onTagProps) => void;
+  data: APIResponse<GetUserMentionResponse> | undefined;
+  isLoading: boolean;
 }
 
-export const MentionUserList: React.FC<MentionUserListProps> = ({ onTag: onMention }) => {
+export const MentionUserList: React.FC<MentionUserListProps> = ({ onTag, data, isLoading }) => {
   const theme = useTheme();
 
-  return (
-    <FlatList
-      keyboardShouldPersistTaps="always"
-      data={COMMUNITY_USER_LIST}
-      keyExtractor={(_, index) => index.toString()}
-      contentContainerStyle={{
-        width: '100%',
-        padding: 14,
-        rowGap: 24,
-      }}
-      renderItem={({ item: { name, image, id } }) => (
-        <ScaleOpacity onPress={() => onMention({ userName: id })}>
-          <S.MentionUserContainer>
-            <CommunityUserImage userImage={image} />
-            <View>
-              <Text size={16}>{name}</Text>
-              <Text size={14} color={theme.placeholder}>
-                {id}
-              </Text>
-            </View>
-          </S.MentionUserContainer>
-        </ScaleOpacity>
-      )}
-    />
-  );
+  if (isLoading && !data) {
+    return (
+      <View style={{ padding: 14 }}>
+        <Text size={14} color={theme.placeholder}>
+          로딩중..
+        </Text>
+      </View>
+    );
+  } else if (data && data.data) {
+    return (
+      <FlatList
+        keyboardShouldPersistTaps="always"
+        data={data.data.items}
+        keyExtractor={(_, index) => index.toString()}
+        contentContainerStyle={{
+          width: '100%',
+          padding: 14,
+          rowGap: 24,
+        }}
+        renderItem={({ item: { name, picture, verificationInfo } }) => (
+          <ScaleOpacity onPress={() => onTag({ userName: name })}>
+            <S.MentionUserContainer>
+              <CommunityUserImage userImage={picture} />
+              <View>
+                <Text size={16}>{name}</Text>
+                <Text size={14} color={theme.placeholder}>
+                  {verificationInfo}
+                </Text>
+              </View>
+            </S.MentionUserContainer>
+          </ScaleOpacity>
+        )}
+      />
+    );
+  } else {
+    return null;
+  }
 };
