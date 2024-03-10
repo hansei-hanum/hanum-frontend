@@ -47,10 +47,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   children,
   attachment,
 }) => {
-  console.log(
-    'isReacted',
-    reactions.map(({ isReacted }) => isReacted),
-  );
   const { userData } = useGetUser();
   const checkMyComment = userData?.id === author?.id;
   const articleId = useRecoilValue(articleIdAtom);
@@ -97,16 +93,30 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     });
   };
 
-  const [reaction, setReaction] = useState<boolean>(false);
+  const reactedCount = reactions.filter(({ isReacted }) => isReacted).length;
+  const [reaction, setReaction] = useState<boolean>(reactedCount >= 1 ? true : false);
+  const [likes, setLikes] = useState<number>(
+    reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0),
+  );
 
   const onLikeClick = (id: number) => {
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
     setReaction((prev) => !prev);
+    setLikes((prev) => (reaction ? prev - 1 : prev + 1));
     if (articleId) {
       if (isReply && parentId) {
-        updateReplyReactionMutation({ articleId: articleId, commentId: parentId, replyId: id });
+        updateReplyReactionMutation({
+          articleId: articleId,
+          commentId: parentId,
+          replyId: id,
+          emoji: !reaction ? 'Heart' : null,
+        });
       } else {
-        updateReactionMutate({ articleId: articleId, commentId: id });
+        updateReactionMutate({
+          articleId: articleId,
+          commentId: id,
+          emoji: !reaction ? 'Heart' : null,
+        });
       }
     }
   };
@@ -125,8 +135,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     }
     setCommentDeleteModal(!isDeleteCommentLoading || isDeleteReplyLoading);
   };
-
-  const likesLength = reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0);
 
   return (
     <>
@@ -204,17 +212,15 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
         </View>
         <S.PostCommentCardIconContainer>
           <ScaleOpacity onPress={() => onLikeClick(id)}>
-            {reaction || reactions.map(({ isReacted }) => isReacted).length > 1 ? (
+            {reaction ? (
               <MCI name="cards-heart" size={22} color={theme.danger} />
             ) : (
               <MCI name="cards-heart-outline" size={22} color={theme.placeholder} />
             )}
           </ScaleOpacity>
-          {(likesLength !== 0 || reaction) && (
+          {(likes !== 0 || reaction) && (
             <Text size={13} color={theme.placeholder}>
-              {reaction && likesLength && reactions.map(({ isReacted }) => isReacted).length < 1
-                ? likesLength + 1
-                : likesLength}
+              {likes}
             </Text>
           )}
         </S.PostCommentCardIconContainer>

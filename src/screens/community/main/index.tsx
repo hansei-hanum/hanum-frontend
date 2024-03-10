@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  FlatList,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  View,
-  ScrollView,
-} from 'react-native';
+import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { RefreshControl } from 'react-native';
@@ -183,13 +176,7 @@ export const CommunityMainScreen: React.FC = () => {
                         onPress={() => onChatScreenNavigate(id)}
                         index={index}
                       />
-                      <PostBottom
-                        id={id}
-                        likesLength={reactions
-                          ?.map(({ count }) => count)
-                          .reduce((acc, cur) => acc + cur, 0)}
-                        commentCount={commentCount}
-                      />
+                      <PostBottom id={id} reactions={reactions} commentCount={commentCount} />
                     </S.CommunityMainBox>
                   ),
                 )}

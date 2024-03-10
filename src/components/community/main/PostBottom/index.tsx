@@ -13,16 +13,24 @@ import * as S from './styled';
 
 export interface PostBottom {
   id: number;
-  likesLength: number;
   commentCount: number;
+  reactions: {
+    emoji: string;
+    count: number;
+    isReacted: boolean;
+  }[];
 }
 
-export const PostBottom: React.FC<PostBottom> = ({ id, likesLength, commentCount }) => {
+export const PostBottom: React.FC<PostBottom> = ({ id, reactions, commentCount }) => {
   const { mutate } = useUpdatePostReactions();
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const [likes, setLikes] = useState<Array<boolean>>([]);
+  const reactedCount = reactions.filter(({ isReacted }) => isReacted).length;
+  const [reaction, setReaction] = useState<boolean>(reactedCount >= 1 ? true : false);
+  const [likes, setLikes] = useState<number>(
+    reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0),
+  );
 
   const onChatScreenNavigate = () => {
     navigate('CommunityPostDetail', { id, isEdit: false });
@@ -30,11 +38,8 @@ export const PostBottom: React.FC<PostBottom> = ({ id, likesLength, commentCount
 
   const onLikeClick = (id: number) => {
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
-    setLikes((prev) => {
-      const newLikes = [...prev];
-      newLikes[id] = !newLikes[id];
-      return newLikes;
-    });
+    setReaction((prev) => !prev);
+    setLikes((prev) => (reaction ? prev - 1 : prev + 1));
     mutate({ articleId: id });
   };
 
@@ -42,13 +47,13 @@ export const PostBottom: React.FC<PostBottom> = ({ id, likesLength, commentCount
     <S.PostBottomContainer>
       <ScaleOpacity onPress={() => onLikeClick(id)}>
         <S.PostBottomIconContainer>
-          {likes[id] ? (
+          {reaction ? (
             <MCI name="cards-heart" size={24} color={theme.danger} />
           ) : (
             <MCI name="cards-heart-outline" size={24} color={theme.placeholder} />
           )}
           <Text size={14} color={theme.placeholder}>
-            좋아요 {likes[id] ? likesLength + 1 : likesLength}
+            좋아요 {likes}
           </Text>
         </S.PostBottomIconContainer>
       </ScaleOpacity>
