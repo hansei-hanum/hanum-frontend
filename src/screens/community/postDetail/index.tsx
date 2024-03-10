@@ -29,6 +29,7 @@ import {
   CommunityMineBottomSheet,
   Spinner,
   ScaleOpacity,
+  CommunityPostDetailSkeleton,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
@@ -76,7 +77,6 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
   const { isEdit, id } = route.params;
-  console.log(id, 'id');
 
   const { data: postData, isLoading: isPostLoading } = useGetPostById({ articleId: id });
 
@@ -85,7 +85,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     isLoading: isGetCommentsLoading,
     fetchNextPage,
     refetch,
-    isRefetching: isRefetchingComments,
+    isFetching: isFetchingComments,
   } = useGetComments({
     articleId: id,
   });
@@ -267,7 +267,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     }
   };
 
-  console.log(isRefetchingComments, 'isRefetchingComments');
+  // console.log(isFetchingComments, 'isFetchingComments');
 
   useEffect(() => {
     if (isCreateCommentSuccess || isCreateReplySuccess) {
@@ -311,7 +311,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
         hasGoBackIcon
       >
-        {!isPostLoading && postData && (
+        {!isPostLoading && postData ? (
           <CommunityPostHeader
             authorName={postData.data.authorName}
             style={{ flex: 1, paddingRight: 4 }}
@@ -320,19 +320,25 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             createdAt={postData.data.createdAt}
             openBottomSheet={openPostBottomSheet}
           />
+        ) : (
+          <CommunityPostDetailSkeleton.Header theme={theme} />
         )}
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
-          <PostDetailLayout
-            setCommentId={setCommentId}
-            onEndReached={onEndReached}
-            onTag={onTag}
-            commentsData={commentsData?.pages}
-            isLoading={isGetCommentsLoading || isRefetchingComments}
-            postData={postData?.data}
-            isPostLoading={isPostLoading}
-          />
+          isGetCommentsLoading || isPostLoading ? (
+            <CommunityPostDetailSkeleton.Content theme={theme} />
+          ) : (
+            <PostDetailLayout
+              setCommentId={setCommentId}
+              onEndReached={onEndReached}
+              onTag={onTag}
+              commentsData={commentsData?.pages}
+              isLoading={isGetCommentsLoading || isFetchingComments}
+              postData={postData?.data}
+              isPostLoading={isPostLoading}
+            />
+          )
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
             {comment.length < 2 ? (

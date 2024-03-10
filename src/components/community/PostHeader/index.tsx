@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import MI from 'react-native-vector-icons/MaterialIcons';
@@ -35,6 +35,7 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
   onPress,
   userImagePress,
 }) => {
+  console.log(scopeOfDisclosure, 'scopeOfDisclosure', LimitedArticleScopeOfDisclosure.Public);
   const theme = useTheme();
 
   return (
@@ -46,7 +47,7 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
             style={{ resizeMode: 'contain' }}
           />
         </ScaleOpacity>
-        <View>
+        <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
           <Text size={16}>{authorName}</Text>
           <S.CommunityHeaderUserSection>
             <Text size={14} color={theme.placeholder}>
@@ -60,7 +61,7 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
               <MI name="lock" size={16} color={theme.white} />
             )}
           </S.CommunityHeaderUserSection>
-        </View>
+        </TouchableOpacity>
       </S.CommunityHeaderTitle>
       <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={{ height: 40, flexGrow: 1 }} />
       <ScaleOpacity

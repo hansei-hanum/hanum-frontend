@@ -102,8 +102,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                   index={0}
                   style={{
                     minHeight: RPH(20),
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
                   }}
                 />
               </S.CommunityPostWrapper>
