@@ -10,7 +10,6 @@ export const PostCommentCardContainer = styled.View`
   justify-content: space-between;
   align-items: flex-start;
   padding: 0 14px;
-  margin: 10px 0;
 `;
 
 export const PostCommentCardImage = styled.Image`

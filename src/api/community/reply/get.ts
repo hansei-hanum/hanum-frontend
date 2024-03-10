@@ -6,6 +6,7 @@ import { GetCommentsValues } from '../comments';
 
 export interface GetRepliesValues extends GetCommentsValues {
   commentId: number;
+  isEnable?: boolean;
 }
 
 export interface GetRepliesDetail {

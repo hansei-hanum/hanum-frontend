@@ -25,3 +25,8 @@ export const CommunityPostWrapper = styled.View`
   padding-top: 20px;
   padding-bottom: 10px;
 `;
+
+export const PostCommentCardContainer = styled.View`
+  flex-direction: column;
+  row-gap: 14px;
+`;

@@ -158,12 +158,14 @@ export const CommunityMainScreen: React.FC = () => {
                       attachments,
                       commentCount,
                       reactions,
+                      authorName,
                       id,
                     },
                     index,
                   ) => (
                     <S.CommunityMainBox key={id}>
                       <CommunityPostHeader
+                        authorName={authorName}
                         author={author}
                         scopeOfDisclosure={scopeOfDisclosure}
                         createdAt={createdAt}

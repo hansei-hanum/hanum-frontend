@@ -5,14 +5,15 @@ import { useTheme } from '@emotion/react';
 
 import { COMMUNITY_USER_LIST } from 'src/constants';
 import { CommunityUserImage, ScaleOpacity, Text } from 'src/components';
+import { onTagProps } from 'src/screens';
 
 import * as S from './styled';
 
 export interface MentionUserListProps {
-  onMention: (id: string, commentId?: number) => void;
+  onTag: ({ userName, isReply, commentId }: onTagProps) => void;
 }
 
-export const MentionUserList: React.FC<MentionUserListProps> = ({ onMention }) => {
+export const MentionUserList: React.FC<MentionUserListProps> = ({ onTag: onMention }) => {
   const theme = useTheme();
 
   return (
@@ -26,7 +27,7 @@ export const MentionUserList: React.FC<MentionUserListProps> = ({ onMention }) =
         rowGap: 24,
       }}
       renderItem={({ item: { name, image, id } }) => (
-        <ScaleOpacity onPress={() => onMention(id)}>
+        <ScaleOpacity onPress={() => onMention({ userName: id })}>
           <S.MentionUserContainer>
             <CommunityUserImage userImage={image} />
             <View>

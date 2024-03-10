@@ -38,6 +38,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   id,
   index,
   author,
+  authorName,
   createdAt,
   reactions,
   content,
@@ -46,6 +47,10 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   children,
   attachment,
 }) => {
+  console.log(
+    'isReacted',
+    reactions.map(({ isReacted }) => isReacted),
+  );
   const { userData } = useGetUser();
   const checkMyComment = userData?.id === author?.id;
   const articleId = useRecoilValue(articleIdAtom);
@@ -133,7 +138,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           />
           <View style={{ rowGap: 4, flex: 1 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text size={13}>{author && author.name ? author.name : '익명'}</Text>
+              <Text size={13}>{authorName}</Text>
               <Text size={13} color={theme.placeholder}>
                 {'  '}
                 {getPrevTimeString(createdAt)}
@@ -199,7 +204,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
         </View>
         <S.PostCommentCardIconContainer>
           <ScaleOpacity onPress={() => onLikeClick(id)}>
-            {reaction ? (
+            {reaction || reactions.map(({ isReacted }) => isReacted).length > 1 ? (
               <MCI name="cards-heart" size={22} color={theme.danger} />
             ) : (
               <MCI name="cards-heart-outline" size={22} color={theme.placeholder} />
@@ -207,7 +212,9 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           </ScaleOpacity>
           {(likesLength !== 0 || reaction) && (
             <Text size={13} color={theme.placeholder}>
-              {reaction && likesLength ? likesLength + 1 : likesLength}
+              {reaction && likesLength && reactions.map(({ isReacted }) => isReacted).length < 1
+                ? likesLength + 1
+                : likesLength}
             </Text>
           )}
         </S.PostCommentCardIconContainer>

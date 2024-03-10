@@ -11,7 +11,7 @@ export const updateCommentReaction = async ({
   commentId,
   emoji = 'Heart',
 }: UpdateCommentReactionValues) => {
-  setAccessToken('8');
+  setAccessToken('9');
   const { data } = await communityInstance.post(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/${commentId}/reactions`,
     {

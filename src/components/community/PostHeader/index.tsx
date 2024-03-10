@@ -17,6 +17,7 @@ import * as S from './styled';
 
 export interface CommunityPostHeaderProps extends Pick<CommunityPostProps, 'createdAt'> {
   author?: GetCommentsAuthorProps;
+  authorName: string;
   style?: StyleProp<ViewStyle>;
   openBottomSheet: () => void;
   onPress?: () => void;
@@ -26,6 +27,7 @@ export interface CommunityPostHeaderProps extends Pick<CommunityPostProps, 'crea
 
 export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
   author,
+  authorName,
   scopeOfDisclosure,
   createdAt,
   style,
@@ -45,7 +47,7 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
           />
         </ScaleOpacity>
         <View>
-          <Text size={16}>{author && author.name ? author.name : '익명'}</Text>
+          <Text size={16}>{authorName}</Text>
           <S.CommunityHeaderUserSection>
             <Text size={14} color={theme.placeholder}>
               {getPrevTimeString(createdAt)}

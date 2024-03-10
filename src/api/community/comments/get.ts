@@ -15,7 +15,7 @@ export enum RichTextType {
 
 export interface GetCommentsAuthorProps {
   id: number;
-  name?: string;
+  name: string;
   handle?: string;
   picture: string;
 }

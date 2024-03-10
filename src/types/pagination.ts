@@ -20,7 +20,7 @@ export interface PaginationItemProps {
   id: number;
   isAnonymous: boolean;
   author?: GetCommentsAuthorProps;
-  authorName?: string;
+  authorName: string;
   content: {
     spans?: [
       {
@@ -40,6 +40,7 @@ export interface PaginationItemProps {
     {
       emoji: string;
       count: number;
+      isReacted: boolean;
     },
   ];
 }

@@ -42,7 +42,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   }, [getHeightsForImage]);
 
   return (
-    <S.CommunityPostContainer>
+    <S.CommunityPostContainer {...props}>
       <S.CommunityPostContentWrapper style={oneImage && { paddingTop: 12 }}>
         <TouchableOpacity activeOpacity={onPress ? 0.8 : 1} onPress={onPress}>
           {content.spans &&

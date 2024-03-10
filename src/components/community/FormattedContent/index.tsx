@@ -9,7 +9,6 @@ export interface FormattedContentProps extends GetCommentsContentsProps {
 
 export const FormattedContent: React.FC<FormattedContentProps> = ({ spans, withPrimaryText }) => {
   const theme = useTheme();
-
   if (!spans) return null;
 
   return (
@@ -26,7 +25,7 @@ export const FormattedContent: React.FC<FormattedContentProps> = ({ spans, withP
           }
           return spanProps.text;
         } else if (spanProps.type === RichTextType.MENTION) {
-          withPrimaryText ? (
+          return withPrimaryText ? (
             <Text size={15} key={index} color={theme.primary}>
               @{spanProps.mention.toString()}
             </Text>

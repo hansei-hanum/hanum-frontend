@@ -8,16 +8,16 @@ import { ScaleOpacity, Text } from 'src/components/common';
 import * as S from './styled';
 
 export interface ReplyBoxProps {
-  userId: string;
+  userName: string;
   closeReplyBox: () => void;
 }
 
-export const ReplyBox: React.FC<ReplyBoxProps> = ({ userId, closeReplyBox }) => {
+export const ReplyBox: React.FC<ReplyBoxProps> = ({ userName, closeReplyBox }) => {
   const theme = useTheme();
   return (
     <S.ReplyBoxContainer>
       <Text size={14} color={theme.placeholder}>
-        {userId}님에게 답글 남기는 중
+        {userName}님에게 답글 남기는 중
       </Text>
       <ScaleOpacity onPress={closeReplyBox}>
         <MI name="cancel" size={24} color={theme.placeholder} />

@@ -32,7 +32,7 @@ export interface PostDetailLayoutProps extends MentionUserListProps {
 }
 
 export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
-  onMention,
+  onTag: onMention,
   setCommentId,
   onEndReached,
   commentsData,
@@ -49,8 +49,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     isFetchingNextPage: isFetchingReplyNextPage,
     isLoading: replyLoading,
   } = useGetReplies({
-    articleId: articleId ? articleId : -1,
-    commentId: localCommentId ? localCommentId : -1,
+    articleId: articleId ?? -1,
+    commentId: localCommentId ?? -1,
+    isEnable: Boolean(localCommentId),
   });
 
   const repliesData = repliesPageData?.pages || [];
@@ -133,15 +134,23 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
               첫 댓글을 남겨보세요
             </Text>
           ) : (
-            <>
+            <S.PostCommentCardContainer>
               {data.items.map((props: GetCommentsDetail, index) => (
-                <>
+                <View key={index}>
                   <PostCommentCard
                     {...props}
                     index={index}
                     children={
                       <S.PostDetailLayoutReplyContainer>
-                        <ScaleOpacity onPress={() => onMention(props.id.toString(), props.id)}>
+                        <ScaleOpacity
+                          onPress={() =>
+                            onMention({
+                              userName: props.author?.name,
+                              commentId: props.id,
+                              isReply: true,
+                            })
+                          }
+                        >
                           <Text size={14} color={theme.placeholder}>
                             답글 달기
                           </Text>
@@ -161,9 +170,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                   {showReply[props.id] && (
                     <View
                       style={{
-                        rowGap: 4,
-                        paddingLeft: 20,
-                        marginTop: 10,
+                        rowGap: 14,
+                        paddingLeft: 44,
+                        marginTop: 4,
                         marginBottom: 20,
                       }}
                     >
@@ -202,9 +211,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                         )}
                     </View>
                   )}
-                </>
+                </View>
               ))}
-            </>
+            </S.PostCommentCardContainer>
           )
         }
       />
