@@ -18,9 +18,6 @@ export const useGetPostById = ({
   AxiosError<APIErrorResponse>
 > => {
   return useQuery('useGetPostById', () => getPostById({ articleId }), {
-    onSuccess: (data) => {
-      console.log('useGetPostById data', data);
-    },
     onError: (error) => {
       const message = error.response?.data.message;
       ErrorToast(message);

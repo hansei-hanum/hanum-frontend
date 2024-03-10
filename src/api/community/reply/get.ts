@@ -26,7 +26,7 @@ export const getReplies = async ({
   cursor = null,
   limit = 10,
 }: GetRepliesValues) => {
-  setAccessToken('9');
+  setAccessToken('11');
   const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/${commentId}/replies`,
     {

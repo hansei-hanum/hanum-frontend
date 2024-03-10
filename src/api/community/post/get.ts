@@ -19,7 +19,7 @@ export interface GetPostsDetail extends Exclude<PaginationItemProps, 'attachment
 export type GetPostsResponse = PaginationType<GetPostsDetail>;
 
 export const getPosts = async ({ scope, cursor, limit = 10 }: GetPostsValues) => {
-  setAccessToken('9');
+  setAccessToken('11');
   const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.BASE_URL}`, {
     params: {
       scope,

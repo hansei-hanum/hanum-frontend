@@ -9,6 +9,7 @@ import { useGetReplies } from 'src/hooks';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
 import { APIResponse, GetCommentsDetail, GetCommentsResponse, GetPostByIdResponse } from 'src/api';
 import { articleIdAtom } from 'src/atoms';
+import { RPH } from 'src/utils';
 
 import { MentionUserListProps } from '../MetionUserList';
 
@@ -22,7 +23,7 @@ export const LoadingSpinner = () => {
   );
 };
 
-export interface PostDetailLayoutProps extends MentionUserListProps {
+export interface PostDetailLayoutProps extends Pick<MentionUserListProps, 'onTag'> {
   commentsData?: APIResponse<GetCommentsResponse>[];
   setCommentId: (value: React.SetStateAction<number | null>) => void;
   onEndReached: () => void;
@@ -99,7 +100,11 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                   createdAt={postData.createdAt}
                   attachments={postData.attachments}
                   index={0}
-                  style={{ minHeight: 280, borderColor: 'red', borderWidth: 1 }}
+                  style={{
+                    minHeight: RPH(20),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
                 />
               </S.CommunityPostWrapper>
             ) : (
@@ -124,7 +129,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
           ) : null
         }
         renderItem={({ item: { data } }) =>
-          !isLoading && data && data.items.length <= 0 && data.cursor === 0 ? (
+          !isLoading && data.total === 0 ? (
             <Text
               size={16}
               style={{ paddingHorizontal: 14, paddingVertical: 14 }}

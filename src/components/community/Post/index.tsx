@@ -36,10 +36,11 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   const theme = useTheme();
 
   useEffect(() => {
+    console.log('attachments', attachments);
     attachments.forEach(({ original }, i) => {
       getHeightsForImage(original, index * attachments.length + i);
     });
-  }, [getHeightsForImage]);
+  }, []);
 
   return (
     <S.CommunityPostContainer {...props}>
@@ -61,8 +62,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
         <Swiper
           loop={false}
           containerStyle={{
-            height:
-              imageHeight > RPH(48) || (oneImage && imageHeight > RPH(48)) ? RPH(48) : imageHeight,
+            height: !imageHeight || imageHeight < RPH(48) ? RPH(48) : imageHeight,
           }}
           dotColor="#A3A3A3"
           activeDotColor={theme.primary}

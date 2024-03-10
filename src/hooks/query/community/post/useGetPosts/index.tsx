@@ -3,7 +3,6 @@ import { UseInfiniteQueryResult, useInfiniteQuery } from 'react-query';
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, GetPostsResponse, GetPostsValues, getPosts } from 'src/api';
-import { ErrorToast } from 'src/constants';
 
 /**
  *
@@ -26,10 +25,6 @@ export const useGetPosts = ({
     {
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
-      },
-      onError: (error) => {
-        const message = error.response?.data.message;
-        message && ErrorToast(message);
       },
       retry: 0,
     },

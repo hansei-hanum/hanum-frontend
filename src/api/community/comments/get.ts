@@ -41,7 +41,7 @@ export interface GetCommentsDetail extends PaginationItemProps {
 export type GetCommentsResponse = PaginationType<GetCommentsDetail>;
 
 export const getComments = async ({ articleId, cursor, limit = 10 }: GetCommentsValues) => {
-  setAccessToken('9');
+  setAccessToken('11');
   const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments`,
     {
