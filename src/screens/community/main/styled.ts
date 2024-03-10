@@ -42,7 +42,6 @@ export const CommunityUserContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   column-gap: 10px;
-  padding: 14px;
 `;
 
 export const CommunityUserThinkBox = styled.View`
@@ -58,36 +57,35 @@ export const CommunityMainBox = styled.View`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  row-gap: 14px;
+  row-gap: 20px;
   width: 100%;
-  padding: 10px 0;
   position: relative;
 `;
 
-export const TextWrapper2 = styled(Animated.View)`
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  height: 100%;
-`;
-
-export const CommunityMainAnimatedHeader = styled(Animated.View)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  justify-content: flex-end;
-  align-items: flex-end;
-  background-color: ${({ theme }) => theme.background};
-  flex-direction: row;
-  padding: 0 14px;
-  padding-bottom: 10px;
-`;
-
-export const CommunityMainSearchBarWrapper = styled(Animated.View)`
+export const CommunityMainMenuContainer = styled.View`
   width: 100%;
-  flex-direction: row;
-  justify-content: center;
+  background-color: ${({ theme }) => theme.lightPrimary};
+  z-index: 9999;
+  border-radius: 16px;
+`;
+
+export const CommunityMainMenu = styled(Animated.View)`
+  width: 80px;
+  padding: 12px 0;
   align-items: center;
+  justify-content: center;
+`;
+
+export const CommunityMainTopSection = styled.View`
+  width: 100%;
+  padding: 14px;
+  flex-direction: column;
+  row-gap: 40px;
+  padding-bottom: 0;
+`;
+
+export const CommunityMainNoDataWrapper = styled.View`
+  height: 70%;
+  align-items: center;
+  justify-content: center;
 `;

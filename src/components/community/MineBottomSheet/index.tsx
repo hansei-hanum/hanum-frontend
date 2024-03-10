@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
 import { BottomSheet, Button, Modal, ScaleOpacity, Text } from 'src/components/common';
 import {
@@ -14,6 +15,7 @@ import {
 import { useNavigate, useDeletePost } from 'src/hooks';
 import { isIos } from 'src/utils';
 import { BottomSheetRefProps } from 'src/types';
+import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -21,12 +23,13 @@ export interface CommunityMineBottomSheetProps {
   setHeight: React.Dispatch<React.SetStateAction<number>>;
   height: number;
   closeBottomSheet: () => void;
+  postId: number | null;
 }
 
 export const CommunityMineBottomSheet = forwardRef<
   BottomSheetRefProps,
   CommunityMineBottomSheetProps
->(({ setHeight, height, closeBottomSheet }, ref) => {
+>(({ setHeight, height, closeBottomSheet, postId }, ref) => {
   const theme = useTheme();
 
   const insets = useSafeAreaInsets();
@@ -47,13 +50,14 @@ export const CommunityMineBottomSheet = forwardRef<
         return setModalOpen(true);
     }
   };
+
   const onLayout = (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
     setHeight(height + insets.bottom + (isIos ? 30 : 80));
   };
 
   const onModalDeleteButtonPress = () => {
-    mutate({ id: 53 });
+    postId && mutate({ id: postId });
     if (!isLoading) {
       setModalOpen(false);
     }

@@ -19,8 +19,8 @@ export const lightTheme: Theme = {
   modalBg: '#FEFEFE',
   tabBarBg: '#FFFFFF',
   backDrop: 'rgba(0, 0, 0, 0.5)',
-  primaryLinear: ['#4585FE', '#4785FA', '#6497FA'],
   blackSkeleton: '#333333',
+  lightPrimary: '#A8BBD9',
 };
 
 export const darkTheme: Theme = {
@@ -42,6 +42,6 @@ export const darkTheme: Theme = {
   modalBg: '#333539',
   tabBarBg: '#373A40',
   backDrop: 'rgba(0, 0, 0, 0.5)',
-  primaryLinear: ['#4585FE', '#4785FA', '#6497FA'],
   blackSkeleton: '#333333',
+  lightPrimary: '#6E7A8C',
 };

@@ -17,9 +17,8 @@ export const useDeleteReply = ({
 > => {
   const { refetch } = useGetReplies({ articleId, commentId });
   return useMutation('useDeleteReply', deleteReply, {
-    onSuccess: (response) => {
+    onSuccess: () => {
       refetch();
-      console.log(response, 'onSuccess');
     },
     onError: (error) => {
       const message = error.response?.data.message;

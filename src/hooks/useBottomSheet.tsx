@@ -13,9 +13,14 @@ export const useBottomSheet = () => {
     bottomSheetRef.current?.scrollTo(0);
   };
 
+  const isActive = () => {
+    return bottomSheetRef.current?.isActive();
+  };
+
   return {
     bottomSheetRef,
     closeBottomSheet,
     openBottomSheet,
+    isActive,
   };
 };

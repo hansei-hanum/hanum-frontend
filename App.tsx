@@ -10,7 +10,7 @@ import { PortalProvider } from '@gorhom/portal';
 
 import { Router } from 'src/Router';
 
-const client = new QueryClient();
+const client = new QueryClient({ defaultOptions: { queries: { retry: 0 } } });
 
 LogBox.ignoreAllLogs();
 

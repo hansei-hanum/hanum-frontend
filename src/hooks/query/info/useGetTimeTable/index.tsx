@@ -11,7 +11,7 @@ export const useGetTimeTable = (): UseQueryResult<
 > => {
   return useQuery('useGetTimeTable', getTimeTable, {
     onError: (error) => {
-      console.log(error, 'useGetTimeTable error');
+      // console.log(error, 'useGetTimeTable error');
     },
     retry: 0,
     staleTime: 1000 * 60 * 60 * 24,

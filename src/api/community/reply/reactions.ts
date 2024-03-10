@@ -13,7 +13,7 @@ export const updateReplyReaction = async ({
   articleId,
   commentId,
   replyId,
-  emoji = 'Heart',
+  emoji,
 }: UpdateReplyReactionValues) => {
   setAccessToken('9');
   const { data } = await communityInstance.post(

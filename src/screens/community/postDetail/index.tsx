@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
@@ -32,7 +33,6 @@ import {
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
-  COMMUNITY_POST,
 } from 'src/constants';
 import {
   useBottomSheet,
@@ -40,6 +40,7 @@ import {
   useCreateComment,
   useCreateReply,
   useGetComments,
+  useGetPostById,
   useGetReplies,
   useGetUser,
 } from 'src/hooks';
@@ -49,6 +50,12 @@ import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom } from 'src/atoms';
 
 import * as S from './styled';
+
+export interface onTagProps {
+  userName?: string;
+  commentId?: number;
+  isReply?: boolean;
+}
 
 export interface selectedPhotosInterface {
   uri: string;
@@ -65,19 +72,18 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
   'CommunityPostDetail'
 >;
 
-const articleId = 87;
-
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
-  const { isEdit } = route.params;
+  const { isEdit, id } = route.params;
+
+  const { data: postData, isLoading: isPostLoading } = useGetPostById({ articleId: id });
 
   const {
-    data,
+    data: commentsData,
     isLoading: isGetCommentsLoading,
-    isFetching: isFetchingComments,
     fetchNextPage,
     refetch,
   } = useGetComments({
-    articleId,
+    articleId: id,
   });
 
   const {
@@ -115,25 +121,27 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const [comment, setComment] = useState<string>('');
   const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
-  const [userId, setUserId] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
+
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [commentId, setCommentId] = useState<number | null>(null);
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
   const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
   const [height, setHeight] = useState<number>(0);
-
-  const { refetch: refetchReplies } = useGetReplies({
-    articleId,
-    commentId: commentId || -1,
+  const [users, setUsers] = useState({});
+  const { refetch: replyRefetch } = useGetReplies({
+    articleId: id,
+    commentId: commentId ?? -1,
+    isEnable: Boolean(commentId),
   });
 
   const theme = useTheme();
 
   const onChangeText = (text: string) => {
     setComment(text);
-    commentInputRef.current?.focus();
     if (!mentionListOpen && comment.includes('@')) {
+      commentInputRef.current?.focus();
       setMentionListOpen(true);
     }
   };
@@ -142,40 +150,56 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setComment('');
     setCommentId(null);
     setIsAnonymous(false);
+    setMentionListOpen(false);
+    setOpenReplyBox(false);
   };
 
-  const onMention = (id: string, commentId?: number) => {
-    setOpenReplyBox(true);
-    setUserId(id);
-    onChangeText(`${comment.split('@').slice(0, -1).join('@')}@${id} `);
-    setMentionListOpen(false);
+  const onTag = ({ userName, isReply, commentId }: onTagProps) => {
+    if (userName) {
+      isReply && setOpenReplyBox(true);
+      commentInputRef.current?.focus();
+      setUserName(userName);
+      onChangeText(`${comment.split('@').slice(0, -1).join('@')}@${userName} `);
+      setMentionListOpen(false);
+    } else {
+      Toast.show({
+        type: 'info',
+        text1: '익명 유저는 언급할 수 없어요',
+      });
+    }
     if (commentId) setCommentId(commentId);
   };
 
   const sendChat = () => {
-    const formattedComment = formattedMention(comment);
+    let inputString = comment;
+    let regex = /@[가-힣]+/g;
+
+    let outputString = inputString.replace(regex, (match) => {
+      let userName = match.substring(1);
+      return `@${users[userName as keyof typeof users]}`;
+    });
+
+    const formattedComment = formattedMention(outputString);
     if (!commentId) {
       createCommentMutate({
-        articleId,
+        articleId: id,
         isAnonymous,
         content: formattedComment,
         attachment: photo,
       });
     } else {
       createReplyMutate({
-        articleId,
+        articleId: id,
         commentId,
         isAnonymous,
         content: formattedComment,
         attachment: photo,
       });
     }
-    if (!isCreateReplyLoading && !isCreateCommentLoading) {
-      setOpenReplyBox(false);
-      setComment('');
-      setPhoto(null);
-      commentInputRef.current?.blur();
-    }
+    setOpenReplyBox(false);
+    setComment('');
+    setPhoto(null);
+    commentInputRef.current?.blur();
   };
 
   const closeReplyBox = () => {
@@ -223,7 +247,8 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onEndReached = () => {
-    if (data && data?.pages[data.pages.length - 1].data.nextCursor) {
+    const lastComment = commentsData?.pages[commentsData.pages.length - 1].data;
+    if (commentsData && lastComment?.nextCursor) {
       fetchNextPage();
     }
   };
@@ -231,16 +256,29 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   useEffect(() => {
     if (isCreateCommentSuccess || isCreateReplySuccess) {
       refetch();
-      refetchReplies();
+      replyRefetch();
     }
   }, [isCreateCommentLoading, isCreateReplyLoading]);
 
   const isFocused = useIsFocused();
+
   useEffect(() => {
-    setArticleId(articleId);
-    refetch();
-    refetchReplies();
-  }, [isFocused]);
+    if (isFocused) {
+      setArticleId(id);
+      refetch();
+    }
+    if (!isGetCommentsLoading && commentsData) {
+      let newUsers: { [key: string]: number } = { ...users };
+      commentsData.pages.map(({ data }) => {
+        data.items.map(({ author }) => {
+          if (author) {
+            newUsers[author.name] = author.id;
+          }
+        });
+      });
+      setUsers(newUsers);
+    }
+  }, [isFocused, isGetCommentsLoading]);
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
@@ -249,20 +287,27 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
         hasGoBackIcon
       >
-        <CommunityPostHeader
-          {...COMMUNITY_POST}
-          style={{ flex: 1 }}
-          openBottomSheet={openPostBottomSheet}
-        />
+        {!isPostLoading && postData && (
+          <CommunityPostHeader
+            authorName={postData.data.authorName}
+            style={{ flex: 1, paddingRight: 4 }}
+            author={postData.data.author}
+            scopeOfDisclosure={postData.data.scopeOfDisclosure}
+            createdAt={postData.data.createdAt}
+            openBottomSheet={openPostBottomSheet}
+          />
+        )}
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           <PostDetailLayout
             setCommentId={setCommentId}
             onEndReached={onEndReached}
-            onMention={onMention}
-            data={data?.pages}
-            isLoading={isGetCommentsLoading || isFetchingComments}
+            onTag={onTag}
+            commentsData={commentsData?.pages}
+            isLoading={isGetCommentsLoading}
+            postData={postData?.data}
+            isPostLoading={isPostLoading}
           />
         ) : (
           <View style={{ width: '100%', flex: 1 }}>
@@ -271,7 +316,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 @뒤에 유저 이름을 써주세요
               </Text>
             ) : (
-              <MentionUserList onMention={onMention} />
+              <MentionUserList onTag={onTag} />
             )}
           </View>
         )}
@@ -289,14 +334,18 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             </View>
           )}
           <AnimatedHoc isOpen={openReplyBox}>
-            <ReplyBox closeReplyBox={closeReplyBox} userId={userId} />
+            <ReplyBox closeReplyBox={closeReplyBox} userName={userName} />
           </AnimatedHoc>
           <S.PostDetailCommentContainer>
             <ScaleOpacity onPress={toggleAnonymous}>
               <CommunityUserImage userImage={userProfile} />
             </ScaleOpacity>
-            <S.PostDetailCommentIconContainer>
+            <S.PostDetailCommentIconContainer
+              style={{ borderRadius: comment.length > 0 ? 20 : 40 }}
+            >
               <S.PostDetailCommentInput
+                multiline
+                numberOfLines={5}
                 placeholder="댓글을 입력하세요"
                 placeholderTextColor={theme.placeholder}
                 ref={commentInputRef}
@@ -335,6 +384,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           setHeight={setHeight}
           height={height}
           closeBottomSheet={closeBottomSheet}
+          postId={id}
         />
       ) : (
         <PostOptionBottomSheet

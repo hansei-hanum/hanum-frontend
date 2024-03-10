@@ -9,7 +9,7 @@ export interface EditPostValues {
 }
 
 export const editPost = async ({ id, content, keepAttachments, attachments }: EditPostValues) => {
-  setAccessToken('2');
+  setAccessToken('9');
   const formData = new FormData();
 
   formData.append('content', content);

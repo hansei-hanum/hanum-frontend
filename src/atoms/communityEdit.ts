@@ -1,16 +1,17 @@
 import { atom } from 'recoil';
 
-export interface communityEditAtomProps {
+export interface CommunityEditAtomProps {
   text: string;
-  image?: string[];
+  images?: { uri: string; id: number }[];
   isEdit?: boolean;
+  id: number | null;
 }
 
-export const communityEditAtom = atom<communityEditAtomProps>({
+export const communityEditAtom = atom<CommunityEditAtomProps>({
   key: 'communityEditAtom',
   default: {
     text: '',
-    image: [],
-    isEdit: false,
+    images: [],
+    id: null,
   },
 });

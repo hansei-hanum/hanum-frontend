@@ -16,3 +16,9 @@ export const UserPostBox = styled.View`
   padding: 10px 0;
   position: relative;
 `;
+
+export const CommunityMainNoDataWrapper = styled.View`
+  height: 70%;
+  align-items: center;
+  justify-content: center;
+`;

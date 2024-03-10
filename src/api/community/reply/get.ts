@@ -1,11 +1,12 @@
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
-import { PaginationType } from 'src/types';
+import { PaginationItemProps, PaginationType } from 'src/types';
 
-import { GetCommentsDetail, GetCommentsValues } from '../comments';
+import { GetCommentsValues } from '../comments';
 
 export interface GetRepliesValues extends GetCommentsValues {
   commentId: number;
+  isEnable?: boolean;
 }
 
 export interface GetRepliesDetail {
@@ -13,7 +14,7 @@ export interface GetRepliesDetail {
   isAnonymous: boolean;
 }
 
-export interface GetRepliesDetail extends Exclude<GetCommentsDetail, 'replyCount'> {
+export interface GetRepliesDetail extends PaginationItemProps {
   parentId: number;
 }
 
@@ -36,7 +37,7 @@ export const getReplies = async ({
     },
   );
 
-  const nextPage = data.data.cursor < data.data.nextCursor ? data.data.nextCursor : undefined;
+  const nextPage = data.data.nextCursor;
 
   return { ...data, nextPage };
 };

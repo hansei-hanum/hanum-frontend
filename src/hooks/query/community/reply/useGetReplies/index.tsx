@@ -14,7 +14,8 @@ import { ErrorToast } from 'src/constants';
 export const useGetReplies = ({
   articleId,
   commentId,
-}: Pick<GetRepliesValues, 'articleId' | 'commentId'>): UseInfiniteQueryResult<
+  isEnable,
+}: Pick<GetRepliesValues, 'articleId' | 'commentId' | 'isEnable'>): UseInfiniteQueryResult<
   APIResponse<GetRepliesResponse>,
   AxiosError<APIErrorResponse>
 > => {
@@ -26,13 +27,11 @@ export const useGetReplies = ({
         return lastPage.nextPage;
       },
       onError: (error) => {
+        console.log('useGetReplies error', error.response?.data, isEnable, articleId);
         const message = error.response?.data.message;
         message && ErrorToast(message);
       },
-      refetchOnMount: true,
-      refetchOnReconnect: true,
-      retry: 0,
-      enabled: commentId !== -1 || articleId !== -1,
+      enabled: isEnable ? isEnable : commentId === -1 ? false : false,
     },
   );
 };

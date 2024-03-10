@@ -1,33 +1,44 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FlatList } from 'react-native';
 import { View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
-import { useGetImagesHeight, useGetReplies } from 'src/hooks';
-import { COMMUNITY_POST } from 'src/constants';
+import { useGetReplies } from 'src/hooks';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
-import { APIResponse, GetCommentsDetail, GetCommentsResponse } from 'src/api';
+import { APIResponse, GetCommentsDetail, GetCommentsResponse, GetPostByIdResponse } from 'src/api';
 import { articleIdAtom } from 'src/atoms';
 
 import { MentionUserListProps } from '../MetionUserList';
 
 import * as S from './styled';
 
+export const LoadingSpinner = () => {
+  return (
+    <S.PostDetailSpinnerWrapper>
+      <Spinner size={40} />
+    </S.PostDetailSpinnerWrapper>
+  );
+};
+
 export interface PostDetailLayoutProps extends MentionUserListProps {
-  data?: APIResponse<GetCommentsResponse>[];
+  commentsData?: APIResponse<GetCommentsResponse>[];
   setCommentId: (value: React.SetStateAction<number | null>) => void;
   onEndReached: () => void;
   isLoading: boolean;
+  postData?: GetPostByIdResponse;
+  isPostLoading: boolean;
 }
 
 export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
-  onMention,
+  onTag: onMention,
   setCommentId,
   onEndReached,
-  data,
+  commentsData,
   isLoading,
+  postData,
+  isPostLoading,
 }) => {
   const articleId = useRecoilValue(articleIdAtom);
   const [localCommentId, setLocalCommentId] = useState<number | null>(null);
@@ -38,14 +49,13 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     isFetchingNextPage: isFetchingReplyNextPage,
     isLoading: replyLoading,
   } = useGetReplies({
-    articleId: articleId || -1,
-    commentId: localCommentId || -1,
+    articleId: articleId ?? -1,
+    commentId: localCommentId ?? -1,
+    isEnable: Boolean(localCommentId),
   });
 
   const repliesData = repliesPageData?.pages || [];
   const lastPage = repliesData[repliesData.length - 1] || [];
-
-  const { getHeightsForImage, imageHeights } = useGetImagesHeight();
 
   const theme = useTheme();
 
@@ -65,47 +75,42 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     setLocalCommentId(id);
   };
 
-  useEffect(() => {
-    COMMUNITY_POST.content.image.forEach((uri, index) => {
-      getHeightsForImage(uri, index);
-    });
-  }, [getHeightsForImage]);
-
   return (
     <S.PostDetailLayoutContainer>
       <FlatList
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={data}
+        data={commentsData}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{ paddingBottom: 10, rowGap: 10 }}
+        style={{ width: '100%' }}
+        contentContainerStyle={{
+          paddingBottom: 10,
+          rowGap: 10,
+        }}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
-            <CommunityPost
-              author={COMMUNITY_POST.author}
-              content={COMMUNITY_POST.content}
-              time={COMMUNITY_POST.time}
-              type={COMMUNITY_POST.type}
-              imageHeights={imageHeights}
-              index={0}
-              isSingle
-            />
-            {isLoading && !data ? (
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}
-              >
-                <Spinner size={40} />
-              </View>
+            {!isPostLoading && postData ? (
+              <S.CommunityPostWrapper>
+                <CommunityPost
+                  content={postData.content}
+                  createdAt={postData.createdAt}
+                  attachments={postData.attachments}
+                  index={0}
+                  style={{ minHeight: 280, borderColor: 'red', borderWidth: 1 }}
+                />
+              </S.CommunityPostWrapper>
             ) : (
-              data && (
+              <LoadingSpinner />
+            )}
+            {isLoading && !commentsData ? (
+              <LoadingSpinner />
+            ) : (
+              commentsData && (
                 <Text size={16} style={{ paddingHorizontal: 14, paddingVertical: 10 }}>
-                  댓글 {data[0].data.total}개
+                  댓글 {commentsData[0].data.total}개
                 </Text>
               )
             )}
@@ -119,7 +124,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
           ) : null
         }
         renderItem={({ item: { data } }) =>
-          !isLoading && data && data.items.length <= 0 ? (
+          !isLoading && data && data.items.length <= 0 && data.cursor === 0 ? (
             <Text
               size={16}
               style={{ paddingHorizontal: 14, paddingVertical: 14 }}
@@ -129,15 +134,23 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
               첫 댓글을 남겨보세요
             </Text>
           ) : (
-            <>
+            <S.PostCommentCardContainer>
               {data.items.map((props: GetCommentsDetail, index) => (
-                <>
+                <View key={index}>
                   <PostCommentCard
                     {...props}
                     index={index}
                     children={
                       <S.PostDetailLayoutReplyContainer>
-                        <ScaleOpacity onPress={() => onMention(props.id.toString(), props.id)}>
+                        <ScaleOpacity
+                          onPress={() =>
+                            onMention({
+                              userName: props.author?.name,
+                              commentId: props.id,
+                              isReply: true,
+                            })
+                          }
+                        >
                           <Text size={14} color={theme.placeholder}>
                             답글 달기
                           </Text>
@@ -157,9 +170,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                   {showReply[props.id] && (
                     <View
                       style={{
-                        rowGap: 4,
-                        paddingLeft: 20,
-                        marginTop: 10,
+                        rowGap: 14,
+                        paddingLeft: 44,
+                        marginTop: 4,
                         marginBottom: 20,
                       }}
                     >
@@ -198,9 +211,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                         )}
                     </View>
                   )}
-                </>
+                </View>
               ))}
-            </>
+            </S.PostCommentCardContainer>
           )
         }
       />

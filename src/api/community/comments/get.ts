@@ -1,6 +1,6 @@
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
-import { PaginationType } from 'src/types';
+import { PaginationItemProps, PaginationType } from 'src/types';
 
 export interface GetCommentsValues {
   articleId: number;
@@ -15,7 +15,7 @@ export enum RichTextType {
 
 export interface GetCommentsAuthorProps {
   id: number;
-  name?: string;
+  name: string;
   handle?: string;
   picture: string;
 }
@@ -34,37 +34,7 @@ export interface GetCommentsContentsProps {
   ];
 }
 
-export interface GetCommentsDetail {
-  id: number;
-  isAnonymous: boolean;
-  author?: GetCommentsAuthorProps;
-  authorName?: string;
-  content: {
-    spans?: [
-      {
-        text: string;
-        type: RichTextType.TEXT;
-      },
-      {
-        mention: string;
-        id: number;
-        type: RichTextType.MENTION;
-      },
-    ];
-  };
-  attachment: {
-    thumbnail: string;
-    original: string;
-    id: number;
-    type: string;
-  };
-  createdAt: string;
-  reactions?: [
-    {
-      emoji: string;
-      count: number;
-    },
-  ];
+export interface GetCommentsDetail extends PaginationItemProps {
   replyCount: number;
 }
 
@@ -82,7 +52,7 @@ export const getComments = async ({ articleId, cursor, limit = 10 }: GetComments
     },
   );
 
-  const nextPage = data.data.cursor < data.data.nextCursor ? data.data.nextCursor : undefined;
+  const nextPage = data.data.nextCursor;
 
   return { ...data, nextPage };
 };

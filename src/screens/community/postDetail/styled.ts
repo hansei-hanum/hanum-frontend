@@ -12,6 +12,7 @@ export const PostDetailContainer = styled(GestureHandlerRootView)`
 
 export const PostDetailInnerContainer = styled(isIos ? KeyboardAvoidingView : View)`
   flex: 1;
+  width: 100%;
 `;
 
 export const PostDetailBottomSection = styled.View`
@@ -40,8 +41,6 @@ export const PostDetailCommentIconContainer = styled.View`
   background-color: ${({ theme }) => theme.lightGray};
   flex-direction: row;
   column-gap: 10px;
-  padding: 0;
-  border-radius: 40px;
   padding: 0 10px;
 `;
 

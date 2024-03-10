@@ -12,7 +12,7 @@ import { ThemeProvider } from '@emotion/react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import * as SC from './screens';
-import { useCodePush, useFetchUser } from './hooks';
+import { useCodePush, useFetchUser, useGetPosts } from './hooks';
 import { darkTheme, lightTheme } from './styles';
 import { authAtom, themeAtom } from './atoms';
 import { isAndroid } from './utils';
@@ -113,7 +113,7 @@ export const Router: React.FC = () => {
                 }),
               }),
           }}
-          initialRouteName={'Main'}
+          initialRouteName={getInitialRoute()}
         >
           <Stack.Group>
             <Stack.Screen name="AuthMain" component={SC.AuthMainScreen} />
