@@ -3,26 +3,25 @@ import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
 
 import { LimitedArticleScopeOfDisclosure } from './create';
+import { GetPostsValues } from './get';
 
-export interface GetPostsValues {
-  scope: LimitedArticleScopeOfDisclosure;
-  cursor: number | null;
-  limit?: number;
+export interface SearchPostsValues extends GetPostsValues {
+  query: string;
 }
 
-export interface GetPostsDetail extends Exclude<PaginationItemProps, 'attachment'> {
+export interface SearchPostsDetail extends Exclude<PaginationItemProps, 'attachment'> {
   commentCount: number;
   scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
   attachments: [AttachmentType];
 }
 
-export type GetPostsResponse = PaginationType<GetPostsDetail>;
+export type SearchPostsResponse = PaginationType<SearchPostsDetail>;
 
-export const getPosts = async ({ scope, cursor, limit = 10 }: GetPostsValues) => {
-  console.log('scope', scope);
+export const searchPosts = async ({ query, scope, cursor, limit = 10 }: SearchPostsValues) => {
   setAccessToken('11');
-  const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.BASE_URL}`, {
+  const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.BASE_URL}/search`, {
     params: {
+      query,
       scope,
       cursor,
       limit,

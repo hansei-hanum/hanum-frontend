@@ -36,7 +36,6 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   const theme = useTheme();
 
   useEffect(() => {
-    console.log('attachments', attachments);
     attachments.forEach(({ original }, i) => {
       getHeightsForImage(original, index * attachments.length + i);
     });
