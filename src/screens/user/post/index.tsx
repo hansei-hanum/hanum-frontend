@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
-
-import { useIsFocused } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
@@ -36,7 +34,6 @@ export const UserPostScreen: React.FC = () => {
   const theme = useTheme();
 
   const { data, isLoading, fetchNextPage, isFetchingNextPage } = useGetMyPosts({
-    scope,
     cursor: null,
   });
 
@@ -60,13 +57,6 @@ export const UserPostScreen: React.FC = () => {
     bottomSheetRef.current?.scrollTo(-height);
   };
 
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (!isFocused) {
-      setCommunityEdit({ text: '', images: [], id: null });
-    }
-  }, [isFocused]);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScreenHeader
@@ -78,15 +68,7 @@ export const UserPostScreen: React.FC = () => {
       />
       <S.UserPostWrapper>
         {isLoading ? (
-          <>
-            <PostsTopSection
-              hasPadding={false}
-              withUserThinkBox={false}
-              postScope={scope}
-              setPostScope={setScope}
-            />
-            <Spinner size={40} isCenter />
-          </>
+          <Spinner size={40} isCenter />
         ) : (
           data &&
           (data.pages[0].data.items.length > 0 ? (
@@ -97,13 +79,6 @@ export const UserPostScreen: React.FC = () => {
               keyExtractor={(_, index) => index.toString()}
               onEndReached={() => fetchNextPage()}
               onEndReachedThreshold={0.5}
-              ListHeaderComponent={
-                <PostsTopSection
-                  withUserThinkBox={false}
-                  postScope={scope}
-                  setPostScope={setScope}
-                />
-              }
               contentContainerStyle={{
                 paddingBottom: 60,
                 rowGap: 40,
@@ -121,11 +96,13 @@ export const UserPostScreen: React.FC = () => {
                         commentCount,
                         reactions,
                         id,
+                        authorName,
                       },
                       index,
                     ) => (
                       <S.UserPostBox key={index}>
                         <CommunityPostHeader
+                          authorName={authorName}
                           author={author}
                           scopeOfDisclosure={scopeOfDisclosure}
                           createdAt={createdAt}
@@ -149,13 +126,7 @@ export const UserPostScreen: React.FC = () => {
                           onPress={() => onChatScreenNavigate(index)}
                           index={index}
                         />
-                        <PostBottom
-                          id={id}
-                          likesLength={reactions
-                            ?.map(({ count }) => count)
-                            .reduce((acc, cur) => acc + cur, 0)}
-                          commentCount={commentCount}
-                        />
+                        <PostBottom id={id} reactions={reactions} commentCount={commentCount} />
                       </S.UserPostBox>
                     ),
                   )}

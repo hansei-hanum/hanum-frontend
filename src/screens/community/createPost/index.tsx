@@ -54,7 +54,7 @@ const UserSection: React.FC = () => {
       />
       <View style={{ rowGap: 2 }}>
         <Text size={16}>
-          {anonymityType.nickname !== ''
+          {anonymityType.nickname
             ? anonymityType.nickname
             : anonymityType.type === '익명으로 표시'
               ? '익명'
@@ -187,8 +187,8 @@ export const CommunityCreatePostScreen: React.FC = () => {
     setKeyboardShow(false);
   };
 
+  console.log('communityEdit', communityEdit);
   const onPost = () => {
-    console.log('communityEdit', communityEdit);
     if (communityEdit.id) {
       editPostMutate({
         id: communityEdit.id,

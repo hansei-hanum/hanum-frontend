@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
@@ -39,12 +39,13 @@ export const CommunityMainScreen: React.FC = () => {
     LimitedArticleScopeOfDisclosure.Public,
   );
 
-  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage, isFetching } = useGetPosts({
+  const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } = useGetPosts({
     scope: postScope,
     cursor: null,
   });
 
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
+
   const { debouncedValue } = useDebounce(searchQuery ? searchQuery : '', 300);
 
   const { data: searchData, isLoading: isSearchLoading } = useSearchPosts({
@@ -58,8 +59,6 @@ export const CommunityMainScreen: React.FC = () => {
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
-  const [isSearchScreen, setIsSearchScreen] = useState(false);
-
   const onChatScreenNavigate = (index: number) => {
     navigate('CommunityPostDetail', { id: index, isEdit: false });
   };
@@ -68,8 +67,10 @@ export const CommunityMainScreen: React.FC = () => {
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
+  const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrollValue, setScrollValue] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -111,6 +112,16 @@ export const CommunityMainScreen: React.FC = () => {
     setSearchQuery(text);
   };
 
+  const wait = (timeout: number) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = useCallback(() => {
+    refetch();
+    setRefreshing(true);
+    wait(500).then(() => setRefreshing(false));
+  }, []);
+
   useEffect(() => {
     if (isFocused) {
       refetch();
@@ -151,9 +162,12 @@ export const CommunityMainScreen: React.FC = () => {
                 <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
               )
             }
-            refreshControl={<RefreshControl onRefresh={refetch} refreshing={isFetching} />}
+            refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
+            style={{
+              position: 'relative',
+              top: isIos ? inset.top + 24 : 68,
+            }}
             contentContainerStyle={{
-              paddingTop: isIos ? inset.top + 24 : 68,
               paddingBottom: 60,
               rowGap: 40,
             }}

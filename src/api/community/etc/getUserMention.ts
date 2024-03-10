@@ -17,7 +17,6 @@ export interface GetUserMentionResponse {
 }
 
 export const getUserMention = async ({ name }: GetUserMentionValue) => {
-  console.log('name', name);
   setAccessToken('11');
   if (name === '') return null;
   const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.USER_MENTION}`, {

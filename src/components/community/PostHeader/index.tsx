@@ -52,10 +52,9 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
             <Text size={14} color={theme.placeholder}>
               {getPrevTimeString(createdAt)}
             </Text>
-            {scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Public && (
+            {scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Public ? (
               <MI name="public" size={16} color={theme.white} />
-            )}
-            {scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Peer ? (
+            ) : scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Peer ? (
               <MCI name="account-group" size={16} color={theme.white} />
             ) : (
               <MI name="lock" size={16} color={theme.white} />
