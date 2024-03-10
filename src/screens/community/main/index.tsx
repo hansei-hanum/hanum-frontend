@@ -18,7 +18,14 @@ import {
   Spinner,
   PostsTopSection,
 } from 'src/components';
-import { useBottomSheet, useGetPosts, useGetUser, useNavigate } from 'src/hooks';
+import {
+  useBottomSheet,
+  useDebounce,
+  useGetPosts,
+  useGetUser,
+  useNavigate,
+  useSearchPosts,
+} from 'src/hooks';
 import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
 import { isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
@@ -37,6 +44,15 @@ export const CommunityMainScreen: React.FC = () => {
     cursor: null,
   });
 
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
+  const { debouncedValue } = useDebounce(searchQuery ? searchQuery : '', 300);
+
+  const { data: searchData, isLoading: isSearchLoading } = useSearchPosts({
+    scope: postScope,
+    cursor: null,
+    query: debouncedValue,
+  });
+
   const navigate = useNavigate();
   const inset = useSafeAreaInsets();
 
@@ -45,9 +61,7 @@ export const CommunityMainScreen: React.FC = () => {
   const [isSearchScreen, setIsSearchScreen] = useState(false);
 
   const onChatScreenNavigate = (index: number) => {
-    console.log('index', index);
     navigate('CommunityPostDetail', { id: index, isEdit: false });
-    console.log('onChatScreenNavigate', index);
   };
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
@@ -93,6 +107,10 @@ export const CommunityMainScreen: React.FC = () => {
     fetchNextPage();
   };
 
+  const onChangeText = (text: string) => {
+    setSearchQuery(text);
+  };
+
   useEffect(() => {
     if (isFocused) {
       refetch();
@@ -108,32 +126,32 @@ export const CommunityMainScreen: React.FC = () => {
         setIsSearchScreen={setIsSearchScreen}
         isSearchScreen={isSearchScreen}
         setHidden={setHidden}
+        onChangeText={onChangeText}
+        value={searchQuery ? searchQuery : ''}
       />
-      {isLoading ? (
+      {isSearchLoading ? (
+        <Spinner size={40} isCenter />
+      ) : isLoading ? (
         <>
           <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
           <Spinner size={40} isCenter />
         </>
-      ) : data ? (
-        data.pages[0].data.items.length > 0 ? (
+      ) : data || searchData ? (
+        data?.pages.length || searchData?.pages.length ? (
           <FlatList
             onScroll={onScroll}
             onMomentumScrollEnd={onSetScrollY}
             scrollEventThrottle={16}
-            data={data.pages}
+            data={searchData ? searchData.pages : data?.pages || []}
             keyExtractor={(_, index) => index.toString()}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
             ListHeaderComponent={
-              <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
+              searchData ? null : (
+                <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
+              )
             }
-            refreshControl={
-              <RefreshControl
-                onRefresh={refetch}
-                refreshing={isFetching}
-                style={{ borderColor: 'blue', borderWidth: 1 }}
-              />
-            }
+            refreshControl={<RefreshControl onRefresh={refetch} refreshing={isFetching} />}
             contentContainerStyle={{
               paddingTop: isIos ? inset.top + 24 : 68,
               paddingBottom: 60,
@@ -208,6 +226,7 @@ export const CommunityMainScreen: React.FC = () => {
           </S.CommunityMainNoDataWrapper>
         </>
       )}
+
       <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
     </S.CommunityMainWrapper>
   );

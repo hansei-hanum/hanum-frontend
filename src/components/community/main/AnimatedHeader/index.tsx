@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Animated, LayoutAnimation, TextInput } from 'react-native';
+import { Animated, LayoutAnimation, TextInput, TextInputProps } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native';
@@ -9,7 +9,7 @@ import { useTheme } from '@emotion/react';
 
 import * as S from './styled';
 
-export interface CommunityMainAnimatedHeaderProps {
+export interface CommunityMainAnimatedHeaderCustomProps {
   HEADER_HEIGHT: number;
   scrollY: Animated.Value;
   hidden: boolean;
@@ -18,6 +18,9 @@ export interface CommunityMainAnimatedHeaderProps {
   isSearchScreen: boolean;
 }
 
+export type CommunityMainAnimatedHeaderProps = CommunityMainAnimatedHeaderCustomProps &
+  TextInputProps;
+
 export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderProps> = ({
   HEADER_HEIGHT,
   scrollY,
@@ -25,6 +28,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
   setIsSearchScreen,
   setHidden,
   isSearchScreen,
+  ...props
 }) => {
   const theme = useTheme();
   const searchRef = useRef<TextInput>(null);
@@ -110,6 +114,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
             selectionColor={theme.placeholder}
             ref={searchRef}
             onFocus={showSearchScreen}
+            {...props}
           />
         </S.CommunityMainSearchBarContainer>
         {isSearchScreen && (
