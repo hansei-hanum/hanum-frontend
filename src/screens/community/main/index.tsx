@@ -131,7 +131,7 @@ export const CommunityMainScreen: React.FC = () => {
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
-        hidden={hidden}
+        hidden={false}
         scrollY={scrollY}
         HEADER_HEIGHT={HEADER_HEIGHT}
         setIsSearchScreen={setIsSearchScreen}

@@ -35,7 +35,6 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
   onPress,
   userImagePress,
 }) => {
-  console.log(scopeOfDisclosure, 'scopeOfDisclosure', LimitedArticleScopeOfDisclosure.Public);
   const theme = useTheme();
 
   return (
