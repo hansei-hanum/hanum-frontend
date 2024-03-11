@@ -8,29 +8,14 @@ import { useRecoilState } from 'recoil';
 import { CreatePostSettingForm, VisibleTypeCard } from 'src/components';
 import { VISIBLE_TYPE_LIST } from 'src/constants';
 import { visibleTypeAtom } from 'src/atoms';
-import { useGetUser } from 'src/hooks';
-import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { useFilteredVisibleType } from 'src/hooks';
 
 export const VisibleTypeScreen: React.FC = () => {
-  const { userType } = useGetUser();
+  const { filteredVisibleType } = useFilteredVisibleType();
+
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
 
   const navigation = useNavigation();
-
-  const filteredVisibleType = (text: LimitedArticleScopeOfDisclosure) => {
-    switch (userType()) {
-      case '졸업생':
-        return text === LimitedArticleScopeOfDisclosure.Public || text === 'Alumni';
-      case '재학생':
-        return (
-          text === LimitedArticleScopeOfDisclosure.Public || text === 'Student' || text === 'Peer'
-        );
-      case '교직원':
-        return text === LimitedArticleScopeOfDisclosure.Public || text === 'Faculty';
-      default:
-        return text === LimitedArticleScopeOfDisclosure.Public;
-    }
-  };
 
   const [selectedCategory, setSelectedCategory] = useState(
     VISIBLE_TYPE_LIST.map((item) => item.text === visibleType),

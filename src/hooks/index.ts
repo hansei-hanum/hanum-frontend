@@ -14,3 +14,4 @@ export * from './useOpacityAnimation';
 export * from './useCheckPermission';
 export * from './useAuthInput';
 export * from './useDebounce';
+export * from './useFilteredVisibleType';
