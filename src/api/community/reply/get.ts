@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
 import { PaginationItemProps, PaginationType } from 'src/types';
@@ -26,7 +28,8 @@ export const getReplies = async ({
   cursor = null,
   limit = 10,
 }: GetRepliesValues) => {
-  setAccessToken('11');
+  const token = await AsyncStorage.getItem('token');
+  setAccessToken(token);
   const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/${commentId}/replies`,
     {

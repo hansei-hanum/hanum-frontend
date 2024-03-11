@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
 
@@ -17,7 +19,8 @@ export interface GetUserMentionResponse {
 }
 
 export const getUserMention = async ({ name }: GetUserMentionValue) => {
-  setAccessToken('11');
+  const token = await AsyncStorage.getItem('token');
+  setAccessToken(token);
   if (name === '') return null;
   const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.USER_MENTION}`, {
     params: {

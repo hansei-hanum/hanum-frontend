@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { PhotosInterface } from 'src/components';
 import { API_SUFFIX, communityInstance, setAccessToken } from 'src/api';
 
@@ -39,7 +41,8 @@ export const createPost = async ({
   scopeOfDisclosure,
   attachments,
 }: CreatePostValues) => {
-  setAccessToken('11');
+  const token = await AsyncStorage.getItem('token');
+  setAccessToken(token);
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));

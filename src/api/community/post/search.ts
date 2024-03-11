@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { AttachmentType, PaginationItemProps, PaginationType } from 'src/types';
 import { communityInstance, setAccessToken } from 'src/api/api';
 import { API_SUFFIX } from 'src/api/suffix';
@@ -18,7 +20,8 @@ export interface SearchPostsDetail extends Exclude<PaginationItemProps, 'attachm
 export type SearchPostsResponse = PaginationType<SearchPostsDetail>;
 
 export const searchPosts = async ({ query, scope, cursor, limit = 10 }: SearchPostsValues) => {
-  setAccessToken('11');
+  const token = await AsyncStorage.getItem('token');
+  setAccessToken(token);
   const { data } = await communityInstance.get(`${API_SUFFIX.COMMUNITY.BASE_URL}/search`, {
     params: {
       query,

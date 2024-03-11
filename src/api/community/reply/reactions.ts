@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   communityInstance,
   setAccessToken,
@@ -15,7 +17,8 @@ export const updateReplyReaction = async ({
   replyId,
   emoji,
 }: UpdateReplyReactionValues) => {
-  setAccessToken('11');
+  const token = await AsyncStorage.getItem('token');
+  setAccessToken(token);
   const { data } = await communityInstance.post(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/${commentId}/replies/${replyId}/reactions`,
     {

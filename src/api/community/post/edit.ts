@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { API_SUFFIX, communityInstance, setAccessToken } from 'src/api';
 import { PhotosInterface } from 'src/components';
 
@@ -9,7 +11,8 @@ export interface EditPostValues {
 }
 
 export const editPost = async ({ id, content, keepAttachments, attachments }: EditPostValues) => {
-  setAccessToken('11');
+  const token = await AsyncStorage.getItem('token');
+  setAccessToken(token);
   const formData = new FormData();
 
   formData.append('content', content);
