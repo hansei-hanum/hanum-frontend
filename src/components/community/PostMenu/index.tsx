@@ -17,10 +17,12 @@ export interface PostMenuProps {
 
 export const PostMenu: React.FC<PostMenuProps> = ({ setPostScope, postScope }) => {
   const theme = useTheme();
+
   const onPress = (scope: LimitedArticleScopeOfDisclosure) => {
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
     setPostScope(scope);
   };
+
   return (
     <S.CommunityMainMenuContainer>
       <NoScrollbarScrollView
@@ -40,7 +42,7 @@ export const PostMenu: React.FC<PostMenuProps> = ({ setPostScope, postScope }) =
                 },
               ]}
             >
-              <Text size={16} color={theme.white}>
+              <Text size={16} color={postScope !== scope ? theme.default : theme.white}>
                 {text}
               </Text>
             </S.CommunityMainMenu>

@@ -131,7 +131,7 @@ export const CommunityMainScreen: React.FC = () => {
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
-        hidden={false}
+        hidden={hidden}
         scrollY={scrollY}
         HEADER_HEIGHT={HEADER_HEIGHT}
         setIsSearchScreen={setIsSearchScreen}
@@ -171,7 +171,7 @@ export const CommunityMainScreen: React.FC = () => {
             refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
             style={{
               position: 'relative',
-              top: hidden ? 0 : isIos ? inset.top + 24 : 68,
+              paddingTop: isIos ? inset.top + 24 : 68,
             }}
             contentContainerStyle={{
               paddingBottom: 60,
