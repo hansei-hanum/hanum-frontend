@@ -54,8 +54,8 @@ export const ConfirmScreen: React.FC = () => {
           }
         >
           <NoScrollbarScrollView contentContainerStyle={{ rowGap: 20, marginTop: 30 }}>
-            {HANOWL_APPLY.CONFIRM_DUMMY_LIST.map((props) => (
-              <ConfirmBox {...props} />
+            {HANOWL_APPLY.CONFIRM_DUMMY_LIST.map((props, index) => (
+              <ConfirmBox {...props} key={index} />
             ))}
           </NoScrollbarScrollView>
         </AppLayoutWithoutButton>

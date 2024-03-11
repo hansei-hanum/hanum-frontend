@@ -107,5 +107,5 @@ export const HANOWL_APPLY = {
     },
   ] as ConfirmBoxProps[],
 
-  URL: 'https://hanowl.com/',
+  URL: 'http://172.16.0.117:3000/',
 };
