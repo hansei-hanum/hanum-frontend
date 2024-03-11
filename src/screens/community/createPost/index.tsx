@@ -187,7 +187,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
     setKeyboardShow(false);
   };
 
-  console.log('communityEdit', communityEdit);
   const onPost = () => {
     if (communityEdit.id) {
       editPostMutate({

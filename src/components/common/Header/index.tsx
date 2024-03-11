@@ -29,12 +29,12 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <S.HeaderContainer
       style={[
-        style,
         {
           flexDirection: isRow ? 'row' : 'column',
           alignItems: isRow ? 'center' : 'flex-start',
           justifyContent: isRow ? 'space-between' : 'flex-start',
         },
+        style,
       ]}
     >
       {hasGoBackIcon && <GoBackIcon />}

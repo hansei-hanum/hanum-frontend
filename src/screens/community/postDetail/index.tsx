@@ -308,7 +308,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
       <Header
         isRow
-        style={{ borderBottomColor: theme.lightGray, borderBottomWidth: 1, zIndex: -11 }}
+        style={{
+          borderBottomColor: theme.lightGray,
+          borderBottomWidth: 1,
+          zIndex: -11,
+          paddingHorizontal: 10,
+        }}
         hasGoBackIcon
       >
         {!isPostLoading && postData ? (

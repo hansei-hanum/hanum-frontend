@@ -12,10 +12,6 @@ export interface CommunityBottomSheetOptionItems {
 
 export const COMMUNITY_BOTTOM_SHEET_OPTION_LIST: CommunityBottomSheetOptionItems[] = [
   {
-    text: CommunityBottomSheetTextEnum.SHARE,
-    icon: 'share-social',
-  },
-  {
     text: CommunityBottomSheetTextEnum.REPORT,
     icon: 'flag-outline',
   },
