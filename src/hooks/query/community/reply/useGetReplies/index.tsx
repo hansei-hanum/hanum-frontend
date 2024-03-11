@@ -27,7 +27,6 @@ export const useGetReplies = ({
         return lastPage.nextPage;
       },
       onError: (error) => {
-        console.log('useGetReplies error', error.response?.data, isEnable, articleId);
         const message = error.response?.data.message;
         message && ErrorToast(message);
       },

@@ -11,9 +11,6 @@ export const useCreateReply = (): UseMutationResult<
   CreateReplyValues
 > => {
   return useMutation('useCreateReply', createReply, {
-    onSuccess: (response) => {
-      console.log(response, 'onSuccess');
-    },
     onError: (error) => {
       const message = error.response?.data.message;
       ErrorToast(message);

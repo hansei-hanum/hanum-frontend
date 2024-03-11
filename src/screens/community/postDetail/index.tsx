@@ -267,8 +267,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     }
   };
 
-  // console.log(isFetchingComments, 'isFetchingComments');
-
   useEffect(() => {
     if (isCreateCommentSuccess || isCreateReplySuccess) {
       refetch();

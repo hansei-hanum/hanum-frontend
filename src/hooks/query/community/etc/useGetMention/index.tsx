@@ -17,9 +17,6 @@ export const useGetMention = ({
   AxiosError<APIErrorResponse>
 > => {
   return useQuery(['getUserMention', name], () => getUserMention({ name }), {
-    onSuccess: (data) => {
-      console.log('data', data);
-    },
     enabled: !!name,
   });
 };

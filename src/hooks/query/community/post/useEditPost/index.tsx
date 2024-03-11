@@ -30,8 +30,7 @@ export const useEditPost = (): UseMutationResult<
   });
   const navigate = useNavigate();
   return useMutation('useEditPost', editPost, {
-    onSuccess: (response) => {
-      console.log(response, 'onSuccess');
+    onSuccess: () => {
       postsRefetch();
       myPostsRefetch();
       navigate('UserPost');

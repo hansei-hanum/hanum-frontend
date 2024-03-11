@@ -21,15 +21,13 @@ export const useDeletePost = (): UseMutationResult<
   DeletePostValues
 > => {
   const { refetch } = useGetMyPosts({
-    scope: LimitedArticleScopeOfDisclosure.Public,
     cursor: null,
   });
 
   const navigate = useNavigate();
 
   return useMutation('useDeletePost', deletePost, {
-    onSuccess: (response) => {
-      console.log(response, 'onSuccess');
+    onSuccess: () => {
       navigate('UserPost');
       Toast.show({
         type: 'success',

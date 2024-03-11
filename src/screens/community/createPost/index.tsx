@@ -135,8 +135,8 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const openImagePicker = () => {
-    if (selectedImage.length >= 10) {
-      Toast.show({ type: 'error', text1: '이미지는 10장까지만 업로드 가능해요' });
+    if (selectedImage.length >= 5) {
+      Toast.show({ type: 'error', text1: '이미지는 5장까지만 업로드 가능해요' });
       return;
     } else {
       const options = {
@@ -144,7 +144,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
         includeBase64: true,
         maxHeight: 2000,
         maxWidth: 2000,
-        selectionLimit: 10,
+        selectionLimit: 5,
       };
       launchImageLibrary(options, (response) => {
         if (response.didCancel) {
@@ -218,7 +218,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const blockGesture = useBlockGesture(isLoading || isEditPostLoading);
 
   useEffect(() => {
-    console.log(communityEdit.images, 'edit images', communityEdit.id, 'edit id');
     if (communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
       const images = communityEdit.images.map((image) => image.uri);
       setSelectedImage(images);

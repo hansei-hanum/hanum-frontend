@@ -171,7 +171,6 @@ export const CommunityMainScreen: React.FC = () => {
             refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
             style={{
               position: 'relative',
-              backgroundColor: theme.placeholder,
               top: hidden ? 0 : isIos ? inset.top + 24 : 68,
             }}
             contentContainerStyle={{
