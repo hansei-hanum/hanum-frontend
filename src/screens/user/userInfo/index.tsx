@@ -74,8 +74,8 @@ export const UserInfoScreen: React.FC = () => {
                   phone: userData.phone,
                   endDate: verifyUser ? formattedDate(verifyUser.valid_until) : '없음',
                   verifyType: userType(),
-                }).map((props) => (
-                  <InfoBox {...props} />
+                }).map((props, index) => (
+                  <InfoBox {...props} key={index} />
                 ))}
               </S.InfoBoxContainer>
             </S.UserInfoProfileContainer>

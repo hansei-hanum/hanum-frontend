@@ -145,7 +145,13 @@ export const CommunityMainScreen: React.FC = () => {
       ) : isLoading ? (
         <>
           <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
-          <Spinner size={40} isCenter />
+          <View
+            style={{
+              flex: 2,
+            }}
+          >
+            <Spinner size={40} />
+          </View>
         </>
       ) : data || searchData ? (
         data?.pages.length || searchData?.pages.length ? (
@@ -165,7 +171,8 @@ export const CommunityMainScreen: React.FC = () => {
             refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
             style={{
               position: 'relative',
-              top: isIos ? inset.top + 24 : 68,
+              backgroundColor: theme.placeholder,
+              top: hidden ? 0 : isIos ? inset.top + 24 : 68,
             }}
             contentContainerStyle={{
               paddingBottom: 60,

@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@emotion/react';
-import { useSetRecoilState } from 'recoil';
 
 import { BottomSheet, Button, Modal, ScaleOpacity, Text } from 'src/components/common';
 import {
@@ -15,7 +14,6 @@ import {
 import { useNavigate, useDeletePost } from 'src/hooks';
 import { isIos } from 'src/utils';
 import { BottomSheetRefProps } from 'src/types';
-import { communityEditAtom } from 'src/atoms';
 
 import * as S from './styled';
 

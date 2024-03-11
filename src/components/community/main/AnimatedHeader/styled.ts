@@ -38,7 +38,7 @@ export const CommunityMainAnimatedHeader = styled(Animated.View)`
   align-items: flex-end;
   background-color: ${({ theme }) => theme.background};
   flex-direction: row;
-  padding: 0 10px;
+  padding: 10px;
 `;
 
 export const CommunityMainSearchBarWrapper = styled(Animated.View)`
