@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { RefreshControl } from 'react-native';
-
-import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 
@@ -102,8 +100,6 @@ export const CommunityMainScreen: React.FC = () => {
     }
   };
 
-  const isFocused = useIsFocused();
-
   const onEndReached = () => {
     fetchNextPage();
   };
@@ -121,12 +117,6 @@ export const CommunityMainScreen: React.FC = () => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
-
-  useEffect(() => {
-    if (isFocused) {
-      refetch();
-    }
-  }, [postScope]);
 
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
