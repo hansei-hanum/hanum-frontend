@@ -50,9 +50,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     isFetchingNextPage: isFetchingReplyNextPage,
     isLoading: replyLoading,
   } = useGetReplies({
-    articleId: articleId ?? -1,
-    commentId: localCommentId ?? -1,
-    isEnable: Boolean(localCommentId),
+    articleId: articleId,
+    commentId: localCommentId,
   });
 
   const repliesData = repliesPageData?.pages || [];

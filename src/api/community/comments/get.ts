@@ -5,7 +5,7 @@ import { API_SUFFIX } from 'src/api/suffix';
 import { PaginationItemProps, PaginationType } from 'src/types';
 
 export interface GetCommentsValues {
-  articleId: number;
+  articleId: number | null;
   limit?: number;
   cursor?: number | null;
 }
@@ -43,7 +43,10 @@ export interface GetCommentsDetail extends PaginationItemProps {
 export type GetCommentsResponse = PaginationType<GetCommentsDetail>;
 
 export const getComments = async ({ articleId, cursor, limit = 10 }: GetCommentsValues) => {
+  if (!articleId) return null;
+
   const token = await AsyncStorage.getItem('token');
+
   setAccessToken(token);
   const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments`,

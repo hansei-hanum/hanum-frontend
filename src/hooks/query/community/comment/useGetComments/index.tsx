@@ -28,9 +28,6 @@ export const useGetComments = ({
         const message = error.response?.data.message;
         message && ErrorToast(message);
       },
-      refetchOnMount: true,
-      refetchOnReconnect: true,
-      retry: 0,
     },
   );
 };

@@ -143,8 +143,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const { refetch: replyRefetch } = useGetReplies({
     articleId: id,
-    commentId: commentId ?? -1,
-    isEnable: Boolean(commentId),
+    commentId: commentId,
   });
 
   const theme = useTheme();
@@ -268,11 +267,13 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   useEffect(() => {
-    if (isCreateCommentSuccess || isCreateReplySuccess) {
+    if (isCreateCommentSuccess) {
       refetch();
+    }
+    if (isCreateReplySuccess) {
       replyRefetch();
     }
-  }, [isCreateCommentLoading, isCreateReplyLoading]);
+  }, [isCreateCommentSuccess, isCreateReplySuccess]);
 
   const isFocused = useIsFocused();
 
@@ -324,13 +325,13 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             openBottomSheet={openPostBottomSheet}
           />
         ) : (
-          <CommunityPostDetailSkeleton.Header theme={theme} />
+          <CommunityPostDetailSkeleton.Header />
         )}
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           isGetCommentsLoading || isPostLoading ? (
-            <CommunityPostDetailSkeleton.Content theme={theme} />
+            <CommunityPostDetailSkeleton.Content />
           ) : (
             <PostDetailLayout
               setCommentId={setCommentId}
