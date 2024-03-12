@@ -96,7 +96,7 @@ export const Router: React.FC = () => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      {/* <CheckVersion /> */}
+      <CheckVersion />
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
@@ -164,7 +164,11 @@ export const Router: React.FC = () => {
         </Stack.Navigator>
         <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
       </NavigationContainer>
-      <Toast position="top" bottomOffset={inset.bottom - 10} config={toastConfig} />
+      <Toast
+        position="top"
+        topOffset={isAndroid ? inset.top + 10 : inset.top}
+        config={toastConfig}
+      />
     </ThemeProvider>
   );
 };

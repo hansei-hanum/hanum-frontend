@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Animated, Share } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';
 
@@ -13,7 +14,7 @@ import {
   SCREEN_WIDTH,
 } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
-import { RPH } from 'src/utils';
+import { RPH, isIos } from 'src/utils';
 import { useBlock } from 'src/hooks';
 
 import { ReportBottomSheet } from '../reports';
@@ -32,7 +33,7 @@ export interface openModalProps {
   block: boolean;
 }
 
-const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-55);
+const REPORT_BOTTOM_SHEET_HEIGHT = isIos ? RPH(-55) : RPH(-64);
 
 export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
@@ -56,8 +57,22 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
       case CommunityBottomSheetTextEnum.SHARE:
         return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
+        if (!targetId) {
+          Toast.show({
+            type: 'info',
+            text1: '익명 사용자는 신고할 수 없어요',
+          });
+          return;
+        }
         return reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
       case CommunityBottomSheetTextEnum.BLOCK:
+        if (userName === '') {
+          Toast.show({
+            type: 'info',
+            text1: '익명 사용자는 차단할 수 없어요',
+          });
+          return;
+        }
         return setModalOpen(true);
     }
   };

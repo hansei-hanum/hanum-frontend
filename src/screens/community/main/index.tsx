@@ -134,15 +134,10 @@ export const CommunityMainScreen: React.FC = () => {
   const isFocused = useIsFocused();
 
   const onHeaderOptionPress = (id?: number, name?: string) => {
-    if (!id || !name) {
-      Toast.show({
-        type: 'info',
-        text1: '익명 사용자는 차단할 수 없어요',
-      });
-      return;
+    if (id && name) {
+      setTargetId(id);
+      setUserName(name);
     }
-    setTargetId(id);
-    setUserName(name);
     openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
   };
 
