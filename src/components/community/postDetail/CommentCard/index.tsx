@@ -48,13 +48,15 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   attachment,
 }) => {
   const { userData } = useGetUser();
+
   const checkMyComment = userData?.id === author?.id;
+
   const articleId = useRecoilValue(articleIdAtom);
 
-  const { mutate: updateReactionMutate } = useUpdateCommentReaction();
-  const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment({
-    articleId: articleId ?? 0,
-  });
+  // const { mutate: updateReactionMutate } = useUpdateCommentReaction();
+  // const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment({
+  //   articleId: articleId ?? 0,
+  // });
 
   const { mutate: updateReplyReactionMutation } = useUpdateReplyReaction();
   const { mutate: deleteReplyMutate, isLoading: isDeleteReplyLoading } = useDeleteReply({
@@ -94,7 +96,9 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   };
 
   const reactedCount = reactions.filter(({ isReacted }) => isReacted).length;
+
   const [reaction, setReaction] = useState<boolean>(reactedCount >= 1 ? true : false);
+
   const [likes, setLikes] = useState<number>(
     reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0),
   );
@@ -112,11 +116,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           emoji: !reaction ? 'Heart' : null,
         });
       } else {
-        updateReactionMutate({
-          articleId: articleId,
-          commentId: id,
-          emoji: !reaction ? 'Heart' : null,
-        });
+        // updateReactionMutate({
+        //   articleId: articleId,
+        //   commentId: id,
+        //   emoji: !reaction ? 'Heart' : null,
+        // });
       }
     }
   };

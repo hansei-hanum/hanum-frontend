@@ -21,6 +21,9 @@ export const useGetComments = ({
     ['getComments', articleId],
     ({ pageParam = null }) => getComments({ articleId, cursor: pageParam }),
     {
+      onSuccess: (data) => {
+        console.log('useGetComments data', data);
+      },
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
       },
@@ -28,6 +31,7 @@ export const useGetComments = ({
         const message = error.response?.data.message;
         message && ErrorToast(message);
       },
+      retry: 0,
     },
   );
 };

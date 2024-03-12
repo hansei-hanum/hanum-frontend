@@ -31,7 +31,7 @@ export const getPosts = async ({ scope, cursor, limit = 10 }: GetPostsValues) =>
     },
   });
 
-  const nextPage = data.data.cursor < data.data.nextCursor ? data.data.nextCursor : undefined;
+  const nextPage = data.data.nextCursor ? data.data.nextCursor : undefined;
 
   return { ...data, nextPage };
 };

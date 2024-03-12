@@ -58,7 +58,7 @@ export const getComments = async ({ articleId, cursor, limit = 10 }: GetComments
     },
   );
 
-  const nextPage = data.data.nextCursor;
+  const nextPage = data.data.nextCursor ? data.data.nextCursor : undefined;
 
   return { ...data, nextPage };
 };

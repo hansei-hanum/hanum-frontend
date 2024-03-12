@@ -260,38 +260,25 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onEndReached = () => {
-    const lastComment = commentsData?.pages[commentsData.pages.length - 1].data;
-    if (commentsData && lastComment?.nextCursor) {
-      fetchNextPage();
-    }
+    console.log('onEndReached');
+    // fetchNextPage();
   };
 
   useEffect(() => {
     if (isCreateCommentSuccess) {
+      console.log('isCreateCommentSuccess');
       refetch();
     }
     if (isCreateReplySuccess) {
       replyRefetch();
     }
-  }, [isCreateCommentSuccess, isCreateReplySuccess]);
+  }, [isCreateCommentLoading, isCreateReplyLoading]);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       setArticleId(id);
-      refetch();
-    }
-    if (commentsData) {
-      let newUsers: { [key: string]: number } = { ...users };
-      commentsData.pages.map(({ data }) => {
-        data.items.map(({ author }) => {
-          if (author) {
-            newUsers[author.name] = author.id;
-          }
-        });
-      });
-      setUsers(newUsers);
     }
   }, [isFocused, isGetCommentsLoading]);
 

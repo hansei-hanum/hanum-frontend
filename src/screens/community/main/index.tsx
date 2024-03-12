@@ -46,7 +46,12 @@ export const CommunityMainScreen: React.FC = () => {
 
   const { debouncedValue } = useDebounce(searchQuery ? searchQuery : '', 300);
 
-  const { data: searchData, isLoading: isSearchLoading } = useSearchPosts({
+  const {
+    data: searchData,
+    isLoading: isSearchLoading,
+    fetchNextPage: searchFetchNextPage,
+    isFetchingNextPage: isSearchFetchingNextPage,
+  } = useSearchPosts({
     scope: postScope,
     cursor: null,
     query: debouncedValue,
@@ -101,7 +106,11 @@ export const CommunityMainScreen: React.FC = () => {
   };
 
   const onEndReached = () => {
-    fetchNextPage();
+    if (searchData) {
+      searchFetchNextPage();
+    } else if (data) {
+      fetchNextPage();
+    }
   };
 
   const onChangeText = (text: string) => {
@@ -164,7 +173,7 @@ export const CommunityMainScreen: React.FC = () => {
               paddingTop: isIos ? inset.top + 24 : 68,
             }}
             contentContainerStyle={{
-              paddingBottom: 60,
+              paddingBottom: inset.bottom + 100,
               rowGap: 40,
             }}
             renderItem={({ item: { data } }) => (
@@ -208,7 +217,7 @@ export const CommunityMainScreen: React.FC = () => {
                     </S.CommunityMainBox>
                   ),
                 )}
-                {isFetchingNextPage && (
+                {(isFetchingNextPage || isSearchFetchingNextPage) && (
                   <View style={{ paddingVertical: 20 }}>
                     <Spinner size={40} />
                   </View>

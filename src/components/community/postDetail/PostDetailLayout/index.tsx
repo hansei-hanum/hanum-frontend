@@ -89,7 +89,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
           rowGap: 10,
         }}
         onEndReached={onEndReached}
-        onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
             {!isPostLoading && postData ? (
