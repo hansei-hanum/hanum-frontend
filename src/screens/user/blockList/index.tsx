@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { FlatList, SafeAreaView, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
@@ -16,7 +16,7 @@ export const UserBlockListScreen: React.FC = () => {
 
   const { mutate, isLoading } = useReleaseBlock();
 
-  const { data, refetch } = useGetBlockList();
+  const { data, refetch, isLoading: getBlockList } = useGetBlockList();
 
   const isFocused = useIsFocused();
 
@@ -29,48 +29,57 @@ export const UserBlockListScreen: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScreenHeader title="차단된 사용자" />
-      {isLoading ? (
+      {getBlockList ? (
         <Spinner isCenter />
-      ) : Boolean(!data?.data.blocks.length) ? (
+      ) : data?.pages && data?.pages[0].data.items.length <= 0 ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text size={16} color={theme.placeholder}>
             차단된 사용자가 없어요.
           </Text>
         </View>
       ) : (
-        <S.BlockListContainer>
-          {data?.data.blocks.map(({ picture, name, handle, id, verificationInfo }) => (
-            <S.BlockListBox key={id}>
-              <S.BlockListUserContainer>
-                <S.BlockListUserImage
-                  resizeMode="contain"
-                  source={picture ? { uri: picture } : UserLogo}
-                />
-                <S.BlockListUserInfoContainer>
-                  <Text size={16} fontFamily="bold">
-                    {handle ? handle : '핸들임'}
-                    <Text size={14} color={theme.placeholder}>
-                      {' '}
-                      ({name})
-                    </Text>
-                  </Text>
-                  <Text size={14}>{verificationInfo}</Text>
-                </S.BlockListUserInfoContainer>
-              </S.BlockListUserContainer>
-              <ScaleOpacity onPress={() => mutate({ targetId: id })}>
-                <S.BlockListCancelButton>
-                  {!isLoading ? (
-                    <Text size={14} fontFamily="bold">
-                      차단 해제
-                    </Text>
-                  ) : (
-                    <Spinner size={14} />
-                  )}
-                </S.BlockListCancelButton>
-              </ScaleOpacity>
-            </S.BlockListBox>
-          ))}
-        </S.BlockListContainer>
+        <FlatList
+          data={data?.pages}
+          keyExtractor={(index) => index.toString()}
+          contentContainerStyle={{
+            width: '100%',
+            flexDirection: 'column',
+            rowGap: 24,
+            padding: 14,
+            paddingTop: 20,
+          }}
+          renderItem={({ item: { data } }) => (
+            <>
+              {data.items.map(({ picture, name, id, verificationInfo }) => (
+                <S.BlockListBox key={id}>
+                  <S.BlockListUserContainer>
+                    <S.BlockListUserImage
+                      resizeMode="contain"
+                      source={picture ? { uri: picture } : UserLogo}
+                    />
+                    <S.BlockListUserInfoContainer>
+                      <Text size={16} fontFamily="bold">
+                        {name}
+                      </Text>
+                      <Text size={14}>{verificationInfo}</Text>
+                    </S.BlockListUserInfoContainer>
+                  </S.BlockListUserContainer>
+                  <ScaleOpacity onPress={() => mutate({ targetId: id })}>
+                    <S.BlockListCancelButton>
+                      {!isLoading ? (
+                        <Text size={14} fontFamily="bold">
+                          차단 해제
+                        </Text>
+                      ) : (
+                        <Spinner size={14} />
+                      )}
+                    </S.BlockListCancelButton>
+                  </ScaleOpacity>
+                </S.BlockListBox>
+              ))}
+            </>
+          )}
+        />
       )}
     </SafeAreaView>
   );

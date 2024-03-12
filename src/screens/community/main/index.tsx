@@ -76,6 +76,8 @@ export const CommunityMainScreen: React.FC = () => {
   const [hidden, setHidden] = useState(false);
   const [scrollValue, setScrollValue] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const [targetId, setTargetId] = useState<number | null>(null);
+  const [userName, setUserName] = useState<string>('');
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -130,6 +132,19 @@ export const CommunityMainScreen: React.FC = () => {
   }, []);
 
   const isFocused = useIsFocused();
+
+  const onHeaderOptionPress = (id?: number, name?: string) => {
+    if (!id || !name) {
+      Toast.show({
+        type: 'info',
+        text1: '익명 사용자는 차단할 수 없어요',
+      });
+      return;
+    }
+    setTargetId(id);
+    setUserName(name);
+    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
+  };
 
   useEffect(() => {
     if (isFocused) {
@@ -210,9 +225,9 @@ export const CommunityMainScreen: React.FC = () => {
                         scopeOfDisclosure={scopeOfDisclosure}
                         createdAt={createdAt}
                         style={{ width: '100%' }}
-                        openBottomSheet={() =>
-                          openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT })
-                        }
+                        openBottomSheet={() => {
+                          onHeaderOptionPress(author?.id, author?.name);
+                        }}
                         onPress={() => onChatScreenNavigate(id)}
                         userImagePress={onProfilePress}
                       />
@@ -256,7 +271,12 @@ export const CommunityMainScreen: React.FC = () => {
         </>
       )}
 
-      <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
+      <PostOptionBottomSheet
+        userName={userName}
+        bottomSheetRef={bottomSheetRef}
+        closeBottomSheet={closeBottomSheet}
+        targetId={targetId}
+      />
     </S.CommunityMainWrapper>
   );
 };

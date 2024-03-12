@@ -23,6 +23,8 @@ import * as S from './styled';
 export interface CommunityBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
   closeBottomSheet: () => void;
+  targetId: number | null;
+  userName: string;
 }
 
 export interface openModalProps {
@@ -35,6 +37,8 @@ const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-60);
 export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
   closeBottomSheet,
+  targetId,
+  userName,
 }) => {
   const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
@@ -53,7 +57,6 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
         return reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
-
       case CommunityBottomSheetTextEnum.BLOCK:
         return setModalOpen(true);
     }
@@ -66,7 +69,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   };
 
   const onModalButtonPress = () => {
-    mutate({ targetId: 4 });
+    mutate({ targetId: targetId });
     setTimeout(() => setModalOpen(false), 400);
   };
 
@@ -112,7 +115,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           backDropVisible={false}
           modalVisible={modalOpen || isLoading}
           title="이 사용자 차단하기"
-          text={`“박찬영” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
+          text={`“${userName}” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
           button={
             <ButtonContainer>
               <Button onPress={onModalCancelPress} isModalBtn isWhite isDisabled={isLoading}>
