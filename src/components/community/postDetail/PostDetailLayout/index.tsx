@@ -200,18 +200,15 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                           <Spinner size={40} />
                         </View>
                       )}
-                      {!replyLoading &&
-                        repliesData &&
-                        repliesData[0].data.total >= 10 &&
-                        lastPage.data.cursor < lastPage.data.nextCursor && (
-                          <View style={{ paddingLeft: 20 }}>
-                            <ScaleOpacity onPress={fetchNextPageReplies}>
-                              <Text size={14} color={theme.placeholder}>
-                                답글 더보기
-                              </Text>
-                            </ScaleOpacity>
-                          </View>
-                        )}
+                      {!replyLoading && lastPage && lastPage.data.nextCursor && (
+                        <View style={{ paddingLeft: 20 }}>
+                          <ScaleOpacity onPress={fetchNextPageReplies}>
+                            <Text size={14} color={theme.placeholder}>
+                              답글 더보기
+                            </Text>
+                          </ScaleOpacity>
+                        </View>
+                      )}
                     </View>
                   )}
                 </View>

@@ -260,17 +260,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onEndReached = () => {
-    console.log('onEndReached');
-    // fetchNextPage();
+    const lastPage = commentsData?.pages[commentsData.pages.length - 1].data;
+    if (lastPage && lastPage.nextCursor) {
+      fetchNextPage();
+    }
   };
 
   useEffect(() => {
-    if (isCreateCommentSuccess) {
-      console.log('isCreateCommentSuccess');
-      refetch();
-    }
-    if (isCreateReplySuccess) {
+    if (isCreateCommentSuccess || isCreateReplySuccess) {
       replyRefetch();
+      refetch();
     }
   }, [isCreateCommentLoading, isCreateReplyLoading]);
 

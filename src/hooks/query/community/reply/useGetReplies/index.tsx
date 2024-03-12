@@ -22,6 +22,7 @@ export const useGetReplies = ({
     ({ pageParam = null }) => getReplies({ articleId, cursor: pageParam, commentId }),
     {
       getNextPageParam: (lastPage) => {
+        if (!lastPage) return null;
         return lastPage.nextPage;
       },
       onError: (error) => {

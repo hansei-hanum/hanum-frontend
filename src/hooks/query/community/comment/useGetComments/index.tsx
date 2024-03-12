@@ -18,12 +18,9 @@ export const useGetComments = ({
   AxiosError<APIErrorResponse>
 > => {
   return useInfiniteQuery(
-    ['getComments', articleId],
+    ['useGetComments', articleId],
     ({ pageParam = null }) => getComments({ articleId, cursor: pageParam }),
     {
-      onSuccess: (data) => {
-        console.log('useGetComments data', data);
-      },
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
       },

@@ -53,16 +53,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 
   const articleId = useRecoilValue(articleIdAtom);
 
-  // const { mutate: updateReactionMutate } = useUpdateCommentReaction();
-  // const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment({
-  //   articleId: articleId ?? 0,
-  // });
+  const { mutate: updateReactionMutate } = useUpdateCommentReaction();
+  const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment();
 
   const { mutate: updateReplyReactionMutation } = useUpdateReplyReaction();
-  const { mutate: deleteReplyMutate, isLoading: isDeleteReplyLoading } = useDeleteReply({
-    articleId: articleId ?? 0,
-    commentId: parentId ?? 0,
-  });
+  const { mutate: deleteReplyMutate, isLoading: isDeleteReplyLoading } = useDeleteReply();
 
   const theme = useTheme();
 
@@ -116,11 +111,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           emoji: !reaction ? 'Heart' : null,
         });
       } else {
-        // updateReactionMutate({
-        //   articleId: articleId,
-        //   commentId: id,
-        //   emoji: !reaction ? 'Heart' : null,
-        // });
+        updateReactionMutate({
+          articleId: articleId,
+          commentId: id,
+          emoji: !reaction ? 'Heart' : null,
+        });
       }
     }
   };
@@ -137,7 +132,9 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     } else {
       deleteCommentMutate({ articleId: articleId ?? 0, commentId: id });
     }
-    setCommentDeleteModal(!isDeleteCommentLoading || isDeleteReplyLoading);
+    setTimeout(() => {
+      setCommentDeleteModal(isDeleteCommentLoading || isDeleteReplyLoading);
+    }, 500);
   };
 
   return (

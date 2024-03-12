@@ -10,7 +10,7 @@ import { PortalProvider } from '@gorhom/portal';
 
 import { Router } from 'src/Router';
 
-export const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 0 } } });
+const client = new QueryClient({ defaultOptions: { queries: { retry: 0 } } });
 
 LogBox.ignoreAllLogs();
 
@@ -20,7 +20,7 @@ function App() {
       <RecoilRoot>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PortalProvider>
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={client}>
               <NotifierWrapper>
                 <Router />
               </NotifierWrapper>

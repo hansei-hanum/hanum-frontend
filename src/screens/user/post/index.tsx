@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
@@ -33,7 +35,7 @@ export const UserPostScreen: React.FC = () => {
 
   const theme = useTheme();
 
-  const { data, isLoading, fetchNextPage, isFetchingNextPage } = useGetMyPosts({
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, refetch } = useGetMyPosts({
     cursor: null,
   });
 
@@ -56,6 +58,14 @@ export const UserPostScreen: React.FC = () => {
     setPostId(postId);
     bottomSheetRef.current?.scrollTo(-height);
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -117,13 +127,13 @@ export const UserPostScreen: React.FC = () => {
                               })),
                             })
                           }
-                          onPress={() => onChatScreenNavigate(index)}
+                          onPress={() => onChatScreenNavigate(id)}
                         />
                         <CommunityPost
                           content={content}
                           attachments={attachments}
                           createdAt={createdAt}
-                          onPress={() => onChatScreenNavigate(index)}
+                          onPress={() => onChatScreenNavigate(id)}
                           index={index}
                         />
                         <PostBottom id={id} reactions={reactions} commentCount={commentCount} />
