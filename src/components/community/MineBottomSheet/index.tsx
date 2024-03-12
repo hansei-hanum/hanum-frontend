@@ -1,6 +1,4 @@
 import React, { forwardRef, useState } from 'react';
-import { LayoutChangeEvent } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/Ionicons';
 
@@ -8,18 +6,16 @@ import { useTheme } from '@emotion/react';
 
 import { BottomSheet, Button, Modal, ScaleOpacity, Text } from 'src/components/common';
 import {
+  COMMUNITY_BOTTOM_SHEET_HEIGHT,
   COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST,
   CommunityMineBottomSheetTextEnum,
 } from 'src/constants';
 import { useNavigate, useDeletePost } from 'src/hooks';
-import { isIos } from 'src/utils';
 import { BottomSheetRefProps } from 'src/types';
 
 import * as S from './styled';
 
 export interface CommunityMineBottomSheetProps {
-  setHeight: React.Dispatch<React.SetStateAction<number>>;
-  height: number;
   closeBottomSheet: () => void;
   postId: number | null;
 }
@@ -27,10 +23,8 @@ export interface CommunityMineBottomSheetProps {
 export const CommunityMineBottomSheet = forwardRef<
   BottomSheetRefProps,
   CommunityMineBottomSheetProps
->(({ setHeight, height, closeBottomSheet, postId }, ref) => {
+>(({ closeBottomSheet, postId }, ref) => {
   const theme = useTheme();
-
-  const insets = useSafeAreaInsets();
 
   const navigate = useNavigate();
 
@@ -49,11 +43,6 @@ export const CommunityMineBottomSheet = forwardRef<
     }
   };
 
-  const onLayout = (event: LayoutChangeEvent) => {
-    const { height } = event.nativeEvent.layout;
-    setHeight(height + insets.bottom + (isIos ? 30 : 80));
-  };
-
   const onModalDeleteButtonPress = () => {
     postId && mutate({ id: postId });
     if (!isLoading) {
@@ -63,8 +52,8 @@ export const CommunityMineBottomSheet = forwardRef<
 
   return (
     <>
-      <BottomSheet ref={ref} scrollHeight={-height}>
-        <S.CommunityMineBottomSheetContainer onLayout={onLayout}>
+      <BottomSheet ref={ref} scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}>
+        <S.CommunityMineBottomSheetContainer>
           {COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST.map(({ text, icon, isDanger }) => (
             <ScaleOpacity onPress={() => onPress(text)} key={text}>
               <S.CommunityMineOptionContainer key={text}>

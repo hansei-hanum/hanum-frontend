@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import ReAnimated, { ScrollHandlerProcessed } from 'react-native-reanimated';
+import ReAnimated from 'react-native-reanimated';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { Theme } from '@emotion/react';
@@ -14,7 +14,6 @@ import * as S from './styled';
 export interface OptionListProps {
   flatListRef: React.RefObject<FlatList>;
   enableScroll: boolean;
-  onScroll: ScrollHandlerProcessed<Record<string, unknown>>;
   onPress: () => void;
   theme: Theme;
 }
@@ -23,7 +22,6 @@ export const OptionList: React.FC<OptionListProps> = ({
   flatListRef,
   enableScroll,
   onPress,
-  onScroll,
   theme,
 }) => {
   return (
@@ -42,7 +40,6 @@ export const OptionList: React.FC<OptionListProps> = ({
         scrollEnabled={enableScroll}
         bounces={false}
         scrollEventThrottle={16}
-        onScroll={onScroll}
         numColumns={1}
         contentContainerStyle={{
           width: '100%',

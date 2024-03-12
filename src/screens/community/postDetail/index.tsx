@@ -1,10 +1,10 @@
-/* eslint-disable prefer-const */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,7 +22,6 @@ import {
   Text,
   PostDetailLayout,
   MentionUserList,
-  ImageListBottomSheet,
   PostOptionBottomSheet,
   PhotoCard,
   PhotosInterface,
@@ -37,7 +36,6 @@ import {
 } from 'src/constants';
 import {
   useBottomSheet,
-  useCheckPhotoPermission,
   useCreateComment,
   useCreateReply,
   useDebounce,
@@ -47,7 +45,6 @@ import {
   useGetReplies,
   useGetUser,
 } from 'src/hooks';
-import { BottomSheetRefProps } from 'src/types';
 import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom } from 'src/atoms';
@@ -108,18 +105,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const inset = useSafeAreaInsets();
 
-  const ImageListBottomSheetRef = useRef<BottomSheetRefProps>(null);
   const commentInputRef = useRef<TextInput>(null);
-
-  const { checkPhotoPermission, permissionHeight, permission } = useCheckPhotoPermission({
-    ImageListBottomSheetRef,
-    commentInputRef,
-  });
-
-  const handlePresentModalPress = useCallback(() => {
-    setDoneCheck(false);
-    checkPhotoPermission();
-  }, []);
 
   const { userProfile } = useGetUser();
 
@@ -129,11 +115,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [commentId, setCommentId] = useState<number | null>(null);
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
-  const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
-  const [height, setHeight] = useState<number>(0);
   const [users, setUsers] = useState({});
   const [mentionSearch, setMentionSearch] = useState<string>('');
+  const [targetId, setTargetId] = useState<number | null>(null);
 
   const { debouncedValue } = useDebounce(mentionSearch, 300);
 
@@ -146,6 +131,39 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     commentId: commentId,
   });
 
+  const handlePresentModalPress = () => {
+    if (photo) {
+      Toast.show({ type: 'error', text1: '댓글 이미지는 1장까지만 업로드 가능해요' });
+      return;
+    } else {
+      const options = {
+        mediaType: 'photo' as MediaType,
+        includeBase64: true,
+        maxHeight: 2000,
+        maxWidth: 2000,
+        selectionLimit: 1,
+      };
+      launchImageLibrary(options, (response) => {
+        if (response.assets) {
+          const imageUri = response.assets.map((item) => item.uri);
+          const imageName = response.assets.map((item) => item.fileName);
+          const imageType = response.assets.map((item) => item.type);
+          if (imageUri && imageName && imageType) {
+            const image = {
+              uri: imageUri[0],
+              name: imageName[0],
+              type: imageType[0],
+            };
+            setPhoto({
+              uri: image.uri as string,
+              name: image.name as string,
+              type: image.type as string,
+            });
+          }
+        }
+      });
+    }
+  };
   const theme = useTheme();
 
   const onChangeText = (text: string) => {
@@ -184,11 +202,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const sendChat = () => {
-    let inputString = comment;
-    let regex = /@[가-힣]+/g;
+    const inputString = comment;
+    const regex = /@[가-힣]+/g;
 
-    let outputString = inputString.replace(regex, (match) => {
-      let userName = match.substring(1);
+    const outputString = inputString.replace(regex, (match) => {
+      const userName = match.substring(1);
       return `@${users[userName as keyof typeof users]}`;
     });
 
@@ -221,10 +239,19 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setComment('');
   };
 
-  const openPostBottomSheet = () => {
+  const openPostBottomSheet = (id?: number, name?: string) => {
     if (isEdit) {
-      bottomSheetRef.current?.scrollTo(-height);
+      bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
     } else {
+      if (!id || !name) {
+        Toast.show({
+          type: 'info',
+          text1: '익명 사용자는 차단할 수 없어요',
+        });
+        return;
+      }
+      setTargetId(id);
+      setUserName(name);
       commentInputRef.current?.blur();
       openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
     }
@@ -279,7 +306,19 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     if (isFocused) {
       setArticleId(id);
     }
-  }, [isFocused, isGetCommentsLoading]);
+    console.log('commentsData', commentsData);
+    if (commentsData) {
+      const newUsers: { [key: string]: number } = { ...users };
+      commentsData.pages.map(({ data }) => {
+        data.items.map(({ author }) => {
+          if (author) {
+            newUsers[author.name] = author.id;
+          }
+        });
+      });
+      setUsers(newUsers);
+    }
+  }, [isFocused, isGetCommentsLoading, commentsData]);
 
   useEffect(() => {
     if (mentionData) {
@@ -308,7 +347,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             author={postData.data.author}
             scopeOfDisclosure={postData.data.scopeOfDisclosure}
             createdAt={postData.data.createdAt}
-            openBottomSheet={openPostBottomSheet}
+            openBottomSheet={() =>
+              openPostBottomSheet(postData.data.author?.id, postData.data.author?.name)
+            }
           />
         ) : (
           <CommunityPostDetailSkeleton.Header />
@@ -389,25 +430,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           </S.PostDetailCommentContainer>
         </S.PostDetailBottomSection>
       </S.PostDetailInnerContainer>
-      <ImageListBottomSheet
-        ref={ImageListBottomSheetRef}
-        setPhoto={setPhoto}
-        setDoneCheck={setDoneCheck}
-        photo={photo}
-        scrollHeight={permissionHeight}
-        permission={permission}
-        doneCheck={doneCheck}
-      />
       {isEdit ? (
         <CommunityMineBottomSheet
           ref={bottomSheetRef}
-          setHeight={setHeight}
-          height={height}
           closeBottomSheet={closeBottomSheet}
           postId={id}
         />
       ) : (
         <PostOptionBottomSheet
+          userName={userName}
+          targetId={targetId}
           bottomSheetRef={bottomSheetRef}
           closeBottomSheet={closeBottomSheet}
         />

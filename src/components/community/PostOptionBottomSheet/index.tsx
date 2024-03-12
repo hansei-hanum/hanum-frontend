@@ -32,7 +32,7 @@ export interface openModalProps {
   block: boolean;
 }
 
-const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-60);
+const REPORT_BOTTOM_SHEET_HEIGHT = RPH(-55);
 
 export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,

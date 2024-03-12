@@ -7,20 +7,17 @@ import {
   interpolate,
   runOnJS,
   useAnimatedProps,
-  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@emotion/react';
 import { Portal } from '@gorhom/portal';
 
 import { BackDrop } from 'src/components';
 import { BottomSheetRefProps } from 'src/types';
-import { SCREEN_HEIGHT } from 'src/constants';
 
 import { OptionList } from '../OptionList';
 import { ReportCompleteWindow } from '../CompleteWindow';
@@ -39,17 +36,14 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
 
     const flatListRef = useRef<FlatList>(null);
 
-    const inset = useSafeAreaInsets();
-
     const translateY = useSharedValue(0);
     const active = useSharedValue(false);
-    const scrollBegin = useSharedValue(0);
     const scrollY = useSharedValue(0);
 
     const [enableScroll, setEnableScroll] = useState(false);
     const [reportWindowOpen, setReportWindowOpen] = useState(false);
 
-    const MAX_TRANSLATE_Y = !reportWindowOpen ? -SCREEN_HEIGHT + 50 : reportWindowHeight - 50;
+    const MAX_TRANSLATE_Y = !reportWindowOpen ? scrollHeight - 50 : reportWindowHeight - 50;
 
     const scrollTo = useCallback(
       (destination: number) => {
@@ -88,9 +82,6 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
           if (translateY.value > scrollHeight / 1.2) {
             runOnJS(setEnableScroll)(false);
             scrollTo(0);
-          } else if (translateY.value < context.value.y) {
-            scrollTo(-SCREEN_HEIGHT + inset.top);
-            runOnJS(setEnableScroll)(true);
           } else {
             runOnJS(setEnableScroll)(false);
             scrollTo(scrollHeight);
@@ -138,23 +129,6 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
       flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
     }, [scrollTo]);
 
-    const onScroll = useAnimatedScrollHandler({
-      onBeginDrag: (event) => {
-        scrollBegin.value = event.contentOffset.y;
-      },
-      onMomentumEnd: (event) => {
-        if (event.contentOffset.y === 0) {
-          runOnJS(setEnableScroll)(true);
-        }
-      },
-      onEndDrag: (event) => {
-        if (event.contentOffset.y === 0) {
-          runOnJS(setEnableScroll)(false);
-          scrollTo(scrollHeight);
-        }
-      },
-    });
-
     const openReportScreen = () => {
       scrollTo(reportWindowHeight);
       setEnableScroll(false);
@@ -192,7 +166,6 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
                 theme={theme}
                 flatListRef={flatListRef}
                 enableScroll={enableScroll}
-                onScroll={onScroll}
                 onPress={openReportScreen}
               />
             </S.ReportBottomSheetContainer>
