@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
+import {
+  Animated,
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  View,
+  TextInput,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { RefreshControl } from 'react-native';
@@ -71,6 +78,7 @@ export const CommunityMainScreen: React.FC = () => {
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
 
   const scrollY = useRef(new Animated.Value(0)).current;
+  const searchRef = useRef<TextInput>(null);
 
   const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -80,7 +88,8 @@ export const CommunityMainScreen: React.FC = () => {
   const [userName, setUserName] = useState<string>('');
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setHidden(false);
+    searchRef.current?.blur();
+    setIsSearchScreen(false);
     const offsetY = event.nativeEvent.contentOffset.y;
     scrollY.setValue(offsetY);
     setHidden(offsetY > 0 && scrollValue !== offsetY);
@@ -151,6 +160,7 @@ export const CommunityMainScreen: React.FC = () => {
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
+        ref={searchRef}
         hidden={hidden}
         scrollY={scrollY}
         HEADER_HEIGHT={HEADER_HEIGHT}

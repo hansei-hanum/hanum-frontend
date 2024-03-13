@@ -205,11 +205,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
         attachments: selectedImage as PhotosInterface[],
       });
     }
-
-    setText('');
-    setSelectedImage([]);
-    setVisibleType(VISIBLE_TYPE_LIST[0].text);
-    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
   };
 
   const isFocused = useIsFocused();
@@ -242,6 +237,15 @@ export const CommunityCreatePostScreen: React.FC = () => {
       return undefined;
     }
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      setText('');
+      setSelectedImage([]);
+      setVisibleType(VISIBLE_TYPE_LIST[0].text);
+      setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
+    }
+  }, [isLoading]);
 
   return (
     <S.CreatePostContainer>
