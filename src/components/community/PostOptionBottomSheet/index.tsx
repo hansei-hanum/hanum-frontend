@@ -57,13 +57,13 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
       case CommunityBottomSheetTextEnum.SHARE:
         return sharePost();
       case CommunityBottomSheetTextEnum.REPORT:
-        if (!targetId) {
-          Toast.show({
-            type: 'info',
-            text1: '익명 사용자는 신고할 수 없어요',
-          });
-          return;
-        }
+        // if (!targetId) {
+        //   Toast.show({
+        //     type: 'info',
+        //     text1: '익명 사용자는 신고할 수 없어요',
+        //   });
+        //   return;
+        // }
         return reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
       case CommunityBottomSheetTextEnum.BLOCK:
         if (userName === '') {

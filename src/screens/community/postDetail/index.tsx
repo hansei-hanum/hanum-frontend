@@ -243,15 +243,15 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     if (isEdit) {
       bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
     } else {
-      if (!id || !name) {
-        Toast.show({
-          type: 'info',
-          text1: '익명 사용자는 차단할 수 없어요',
-        });
-        return;
-      }
-      setTargetId(id);
-      setUserName(name);
+      // if (!id || !name) {
+      //   Toast.show({
+      //     type: 'info',
+      //     text1: '익명 사용자는 차단할 수 없어요',
+      //   });
+      //   return;
+      // }
+      setTargetId(id || null);
+      setUserName(name || '');
       commentInputRef.current?.blur();
       openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
     }
@@ -306,7 +306,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     if (isFocused) {
       setArticleId(id);
     }
-    console.log('commentsData', commentsData);
     if (commentsData) {
       const newUsers: { [key: string]: number } = { ...users };
       commentsData.pages.map(({ data }) => {
@@ -389,6 +388,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 columnGap: 4,
                 paddingRight: 14,
                 marginVertical: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                width: '100%',
               }}
             >
               <PhotoCard item={photo.uri} onPress={onPhotoPress} />

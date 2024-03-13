@@ -61,7 +61,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
         <Swiper
           loop={false}
           containerStyle={{
-            height: !imageHeight || imageHeight < RPH(48) ? RPH(48) : imageHeight,
+            height: !imageHeight || imageHeight > RPH(48) ? RPH(48) : imageHeight,
           }}
           dotColor="#A3A3A3"
           activeDotColor={theme.primary}

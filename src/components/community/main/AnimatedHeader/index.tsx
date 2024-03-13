@@ -16,6 +16,7 @@ export interface CommunityMainAnimatedHeaderCustomProps {
   setHidden: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSearchScreen: React.Dispatch<React.SetStateAction<boolean>>;
   isSearchScreen: boolean;
+  closeSearchScreenClick?: () => void;
 }
 
 export type CommunityMainAnimatedHeaderProps = CommunityMainAnimatedHeaderCustomProps &
@@ -28,6 +29,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
   setIsSearchScreen,
   setHidden,
   isSearchScreen,
+  closeSearchScreenClick,
   ...props
 }) => {
   const theme = useTheme();
@@ -70,10 +72,10 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
 
   const closeSearchScreen = () => {
     setIsSearchScreen(false);
-    searchRef.current?.context;
     searchRef.current?.blur();
     LayoutAnimation.configureNext(config);
     setHidden(false);
+    closeSearchScreenClick && closeSearchScreenClick();
   };
 
   const searchBarAnimation = {

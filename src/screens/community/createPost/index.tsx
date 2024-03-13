@@ -14,7 +14,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import {
   ScreenHeader,
-  Icon,
   PhotoCard,
   OptionCard,
   ScaleOpacity,
@@ -22,7 +21,6 @@ import {
   NoScrollbarScrollView,
   PhotosInterface,
   Spinner,
-  AnimatedHoc,
 } from 'src/components';
 import { useBlockGesture, useCreatePost, useEditPost, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
@@ -69,7 +67,7 @@ const UserSection: React.FC = () => {
             <MI name="lock" size={16} color={theme.white} />
           )}
           <Text size={12} color={theme.white} fontFamily="bold">
-            공개범위: {formatVisibleType(visibleType)}
+            {formatVisibleType(visibleType)}
           </Text>
         </S.VisibleTypeContainer>
       </View>
@@ -279,15 +277,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
             maxLength={5000}
           />
         </S.CreatePostMainSection>
-        <AnimatedHoc isOpen={keyboardShow}>
-          <S.CreatePostIconContainer style={{ opacity: keyboardShow ? 1 : 0 }}>
-            {POST_OPTION_LIST.map(({ icon, text }, index) => (
-              <ScaleOpacity key={index} onPress={() => onOptionClick(text)}>
-                <Icon icon={icon} includeBackground={false} />
-              </ScaleOpacity>
-            ))}
-          </S.CreatePostIconContainer>
-        </AnimatedHoc>
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
           <S.CreatePostImageSection>
             {(exitSelectedImage || Boolean(communityEdit.images?.length)) && (

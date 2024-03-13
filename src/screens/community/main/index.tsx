@@ -80,6 +80,7 @@ export const CommunityMainScreen: React.FC = () => {
   const [userName, setUserName] = useState<string>('');
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setHidden(false);
     const offsetY = event.nativeEvent.contentOffset.y;
     scrollY.setValue(offsetY);
     setHidden(offsetY > 0 && scrollValue !== offsetY);
@@ -158,6 +159,9 @@ export const CommunityMainScreen: React.FC = () => {
         setHidden={setHidden}
         onChangeText={onChangeText}
         value={searchQuery ? searchQuery : ''}
+        closeSearchScreenClick={() => {
+          setSearchQuery(null);
+        }}
       />
       {isSearchLoading ? (
         <Spinner size={40} isCenter />

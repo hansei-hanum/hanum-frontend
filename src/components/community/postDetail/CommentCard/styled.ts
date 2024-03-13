@@ -20,8 +20,8 @@ export const PostCommentCardImage = styled.Image`
 
 export const PostCommentImage = styled.Image`
   border-radius: 16px;
-  width: 140px;
-  height: 140px;
+  width: 80%;
+  height: 80%;
 `;
 
 export const PostCommentCardCommentContainer = styled.View`

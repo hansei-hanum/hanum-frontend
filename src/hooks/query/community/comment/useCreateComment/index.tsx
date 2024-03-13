@@ -12,7 +12,6 @@ export const useCreateComment = (): UseMutationResult<
 > => {
   return useMutation('useCreateComment', createComment, {
     onError: (error) => {
-      console.log('useCreateComment error', error.response?.data);
       const message = error.response?.data.message;
       ErrorToast(message);
     },
