@@ -26,3 +26,9 @@ export const CommunityHeaderUserImg = styled.Image`
   width: 40px;
   height: 40px;
 `;
+
+export const AuthorContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  column-gap: 4px;
+`;

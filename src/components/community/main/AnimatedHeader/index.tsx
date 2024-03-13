@@ -75,7 +75,6 @@ export const CommunityMainAnimatedHeader = forwardRef<TextInput, CommunityMainAn
 
     const closeSearchScreen = () => {
       setIsSearchScreen(false);
-      console.log('ref', ref);
       if (ref && 'current' in ref) {
         ref.current?.blur();
       }

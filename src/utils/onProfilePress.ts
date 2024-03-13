@@ -1,7 +1,6 @@
 import Toast from 'react-native-toast-message';
 
 export const onProfilePress = (authorId?: number, verificationInfo?: string) => {
-  console.log('verificationInfo', verificationInfo);
   if (verificationInfo) {
     Toast.show({
       type: 'success',

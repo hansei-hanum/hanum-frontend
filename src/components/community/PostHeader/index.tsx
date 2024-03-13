@@ -3,12 +3,13 @@ import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import MI from 'react-native-vector-icons/MaterialIcons';
+import { WithLocalSvg } from 'react-native-svg';
 
 import { useTheme } from '@emotion/react';
 
-import { UserLogo } from 'src/assets';
+import { UserLogo, VerifyCheckIcon } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
-import { getPrevTimeString } from 'src/utils';
+import { getPrevTimeString, onProfilePress } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import { CommunityPostProps } from '../Post';
@@ -46,18 +47,25 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
             style={{ resizeMode: 'contain' }}
           />
         </ScaleOpacity>
-        <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-          <Text size={16}>{authorName}</Text>
+        <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={{ rowGap: 2 }}>
+          <S.AuthorContainer>
+            <Text size={16}>{authorName}</Text>
+            {author && author.verificationInfo && (
+              <ScaleOpacity onPress={() => onProfilePress(author.id, author.verificationInfo)}>
+                <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
+              </ScaleOpacity>
+            )}
+          </S.AuthorContainer>
           <S.CommunityHeaderUserSection>
             <Text size={14} color={theme.placeholder}>
               {getPrevTimeString(createdAt)}
             </Text>
             {scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Public ? (
-              <MI name="public" size={16} color={theme.white} />
+              <MI name="public" size={16} color={theme.placeholder} />
             ) : scopeOfDisclosure === LimitedArticleScopeOfDisclosure.Peer ? (
-              <MCI name="account-group" size={16} color={theme.white} />
+              <MCI name="account-group" size={16} color={theme.placeholder} />
             ) : (
-              <MI name="lock" size={16} color={theme.white} />
+              <MI name="lock" size={16} color={theme.placeholder} />
             )}
           </S.CommunityHeaderUserSection>
         </TouchableOpacity>
