@@ -8,11 +8,13 @@ export const CommunityMineBottomSheetContainer = styled.View`
 
 export const CommunityMineOptionContainer = styled.View`
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
 `;
 
 export const CommunityMainOptionIconContainer = styled(CommunityMineOptionContainer)`
   column-gap: 10px;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
 `;

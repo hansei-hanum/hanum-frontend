@@ -1,5 +1,4 @@
 import React, { forwardRef, useState } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@emotion/react';
@@ -24,6 +23,7 @@ export const CommunityMineBottomSheet = forwardRef<
   BottomSheetRefProps,
   CommunityMineBottomSheetProps
 >(({ closeBottomSheet, postId }, ref) => {
+  const { options } = COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST();
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -54,12 +54,12 @@ export const CommunityMineBottomSheet = forwardRef<
     <>
       <BottomSheet ref={ref} scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}>
         <S.CommunityMineBottomSheetContainer>
-          {COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST.map(({ text, icon, isDanger }) => (
+          {options.map(({ text, icon, isDanger }) => (
             <ScaleOpacity onPress={() => onPress(text)} key={text}>
               <S.CommunityMineOptionContainer key={text}>
                 <S.CommunityMainOptionIconContainer>
-                  <Icon name={icon} size={24} color={isDanger ? theme.danger : theme.default} />
-                  <Text size={15} color={theme.default}>
+                  {icon}
+                  <Text size={15} color={isDanger ? theme.danger : theme.default}>
                     {text}
                   </Text>
                 </S.CommunityMainOptionIconContainer>
