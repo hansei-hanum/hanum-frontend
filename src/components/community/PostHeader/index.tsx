@@ -4,12 +4,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import { WithLocalSvg } from 'react-native-svg';
+import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';
 
 import { UserLogo, VerifyCheckIcon } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
-import { getPrevTimeString, onProfilePress } from 'src/utils';
+import { getPrevTimeString } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import { CommunityPostProps } from '../Post';
@@ -22,7 +23,6 @@ export interface CommunityPostHeaderProps extends Pick<CommunityPostProps, 'crea
   style?: StyleProp<ViewStyle>;
   openBottomSheet: () => void;
   onPress?: () => void;
-  userImagePress?: () => void;
   scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
 }
 
@@ -34,14 +34,35 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
   style,
   openBottomSheet,
   onPress,
-  userImagePress,
 }) => {
   const theme = useTheme();
+
+  const onProfilePress = (authorId?: number, verificationInfo?: string) => {
+    if (verificationInfo) {
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: `${verificationInfo}`,
+      });
+    } else if (authorId) {
+      Toast.show({
+        type: 'info',
+        position: 'top',
+        text1: '미인증 사용자에요',
+      });
+    } else {
+      Toast.show({
+        type: 'info',
+        position: 'top',
+        text1: '익명 사용자에요',
+      });
+    }
+  };
 
   return (
     <S.CommunityHeader style={style}>
       <S.CommunityHeaderTitle>
-        <ScaleOpacity onPress={userImagePress}>
+        <ScaleOpacity onPress={() => onProfilePress(author?.id, author?.verificationInfo)}>
           <S.CommunityHeaderUserImg
             source={author && author.picture ? { uri: author.picture } : UserLogo}
             style={{ resizeMode: 'contain' }}

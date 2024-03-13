@@ -85,7 +85,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
   };
 
   useEffect(() => {
-    console.log('repliesData', repliesData);
     if (repliesData && repliesData.length > 0 && localCommentId) {
       setReplyData((prev) => {
         const newReplyData = Array.isArray(repliesData) ? repliesData : [];

@@ -4,11 +4,9 @@ import Toast from 'react-native-toast-message';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { AxiosError } from 'axios';
-import { useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, DeletePostValues, deletePost } from 'src/api';
 import { ErrorToast } from 'src/constants';
-import { communityEditAtom } from 'src/atoms';
 
 export const useDeletePost = (): UseMutationResult<
   APIResponse<null>,
@@ -19,11 +17,8 @@ export const useDeletePost = (): UseMutationResult<
   const route = useRoute();
   const navigation = useNavigation();
 
-  const setCommunityEdit = useSetRecoilState(communityEditAtom);
-
   return useMutation('useDeletePost', deletePost, {
     onSuccess: () => {
-      setCommunityEdit({ text: '', images: [], id: null });
       route.name === 'CommunityPostDetail' ? navigation.goBack() : null;
       queryClient.invalidateQueries({ queryKey: ['useGetPosts'] });
       queryClient.invalidateQueries({ queryKey: ['useGetMyPosts'] });

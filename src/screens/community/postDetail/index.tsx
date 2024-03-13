@@ -45,7 +45,7 @@ import {
   useGetReplies,
   useGetUser,
 } from 'src/hooks';
-import { formattedMention, isAndroid, onProfilePress } from 'src/utils';
+import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom, communityEditAtom } from 'src/atoms';
 import { BottomSheetRefProps } from 'src/types';
@@ -370,9 +370,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                   id: item.id,
                 })),
               })
-            }
-            userImagePress={() =>
-              onProfilePress(postData.data.author?.id, postData.data.author?.verificationInfo)
             }
           />
         ) : (

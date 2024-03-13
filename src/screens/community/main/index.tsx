@@ -35,7 +35,7 @@ import {
   useSearchPosts,
 } from 'src/hooks';
 import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
-import { isIos, onProfilePress } from 'src/utils';
+import { isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
 import { communityEditAtom } from 'src/atoms';
@@ -260,7 +260,6 @@ export const CommunityMainScreen: React.FC = () => {
                           });
                         }}
                         onPress={() => onChatScreenNavigate(id)}
-                        userImagePress={() => onProfilePress(author?.id, author?.verificationInfo)}
                       />
                       <CommunityPost
                         content={content}

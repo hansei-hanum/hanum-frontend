@@ -88,7 +88,11 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
   const { mutate, isLoading, isSuccess } = useCreatePost();
-  const { mutate: editPostMutate, isLoading: isEditPostLoading } = useEditPost();
+  const {
+    mutate: editPostMutate,
+    isLoading: isEditPostLoading,
+    isSuccess: editSuccess,
+  } = useEditPost();
 
   const navigate = useNavigate();
 
@@ -245,17 +249,24 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
     }
   };
 
+  const resetData = () => {
+    setText('');
+    setSelectedImage([]);
+    setVisibleType(VISIBLE_TYPE_LIST[0].text);
+    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
+  };
+
   useEffect(() => {
-    if (isSuccess || !isEdit) {
-      isSuccess && navigate('CommunityMain');
+    if (!isEdit) {
+      resetData();
+    }
+    if (isSuccess || editSuccess) {
+      navigate('CommunityMain');
       setTimeout(() => {
-        setText('');
-        setSelectedImage([]);
-        setVisibleType(VISIBLE_TYPE_LIST[0].text);
-        setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
+        resetData();
       }, 1000);
     }
-  }, [isLoading]);
+  }, [isLoading, isEditPostLoading]);
 
   return (
     <S.CreatePostContainer>
