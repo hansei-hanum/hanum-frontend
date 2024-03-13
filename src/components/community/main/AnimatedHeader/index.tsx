@@ -70,6 +70,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
 
   const closeSearchScreen = () => {
     setIsSearchScreen(false);
+    searchRef.current?.context;
     searchRef.current?.blur();
     LayoutAnimation.configureNext(config);
     setHidden(false);
@@ -93,6 +94,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
     }
     return HEADER_HEIGHT + insets.top;
   };
+
   return (
     <S.CommunityMainAnimatedHeader
       style={{

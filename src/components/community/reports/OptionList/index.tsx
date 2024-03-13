@@ -1,7 +1,6 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import ReAnimated from 'react-native-reanimated';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { Theme } from '@emotion/react';
@@ -18,12 +17,7 @@ export interface OptionListProps {
   theme: Theme;
 }
 
-export const OptionList: React.FC<OptionListProps> = ({
-  flatListRef,
-  enableScroll,
-  onPress,
-  theme,
-}) => {
+export const OptionList: React.FC<OptionListProps> = ({ onPress, theme }) => {
   return (
     <>
       <S.ReportBottomSheetHeader>
@@ -35,44 +29,30 @@ export const OptionList: React.FC<OptionListProps> = ({
           위급한 상황에 있다고 생각된다면 즉시 문의 주시기 바랍니다.
         </Text>
       </S.ReportBottomSheetHeader>
-      <ReAnimated.FlatList
-        data={REPORT_LIST}
-        scrollEnabled={enableScroll}
-        bounces={false}
-        scrollEventThrottle={16}
-        numColumns={1}
-        contentContainerStyle={{
-          width: '100%',
-          paddingBottom: 80,
-          paddingTop: 10,
-        }}
-        initialScrollIndex={0}
-        ref={flatListRef}
-        renderItem={({ item, index }) => {
-          return (
-            <TouchableOpacity activeOpacity={0.7} onPress={onPress} key={index}>
-              <S.ReportBottmoSheetOptionList
-                style={[
-                  {
-                    borderTopColor: theme.lightGray,
-                    borderTopWidth: 1,
-                    backgroundColor: theme.modalBg,
-                  },
-                  index === REPORT_LIST.length - 1 && {
-                    borderBottomWidth: 1,
-                    borderBottomColor: theme.lightGray,
-                  },
-                ]}
-              >
-                <Text size={15} color={theme.default}>
-                  {item}
-                </Text>
-                <Icons name="chevron-forward" size={26} color={theme.placeholder} />
-              </S.ReportBottmoSheetOptionList>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      <View style={{ width: '100%', paddingTop: 10 }}>
+        {REPORT_LIST.map((item, index) => (
+          <TouchableOpacity activeOpacity={0.7} onPress={onPress} key={index}>
+            <S.ReportBottmoSheetOptionList
+              style={[
+                {
+                  borderTopColor: theme.lightGray,
+                  borderTopWidth: 1,
+                  backgroundColor: theme.modalBg,
+                },
+                index === REPORT_LIST.length - 1 && {
+                  borderBottomWidth: 1,
+                  borderBottomColor: theme.lightGray,
+                },
+              ]}
+            >
+              <Text size={15} color={theme.default}>
+                {item}
+              </Text>
+              <Icons name="chevron-forward" size={26} color={theme.placeholder} />
+            </S.ReportBottmoSheetOptionList>
+          </TouchableOpacity>
+        ))}
+      </View>
     </>
   );
 };
