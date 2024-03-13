@@ -33,7 +33,7 @@ export const PostBottom: React.FC<PostBottom> = ({ id, reactions, commentCount }
   );
 
   const onChatScreenNavigate = () => {
-    navigate('CommunityPostDetail', { id, isEdit: false });
+    navigate('CommunityPostDetail', { id });
   };
 
   const onLikeClick = (id: number) => {

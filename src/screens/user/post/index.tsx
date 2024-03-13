@@ -50,7 +50,7 @@ export const UserPostScreen: React.FC = () => {
   const navigate = useNavigate();
 
   const onChatScreenNavigate = (id: number) => {
-    navigate('CommunityPostDetail', { id, isEdit: true });
+    navigate('CommunityPostDetail', { id });
   };
 
   const openBottomSheet = ({ postId, text, images }: OpenBottomSheetProps) => {

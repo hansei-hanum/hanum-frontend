@@ -200,7 +200,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                     onPress={() => setImageClicked(false)}
                     activeOpacity={1}
                   >
-                    <S.PostCommentImage source={{ uri: attachment.original }} />
+                    <S.PostCommentImage
+                      source={{ uri: attachment.original }}
+                      resizeMode="contain"
+                      style={{ width: '80%', height: '80%' }}
+                    />
                   </S.PostCommentImageWrapper>
                 </ModalElement>
               </ScaleOpacity>

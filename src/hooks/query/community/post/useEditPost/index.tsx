@@ -18,7 +18,7 @@ export const useEditPost = (): UseMutationResult<
       navigate('UserPost');
       Toast.show({
         type: 'success',
-        text1: '게시글이 성공적으로 수정되어었요',
+        text1: '게시글이 성공적으로 수정되었어요',
       });
     },
     onError: (error) => {

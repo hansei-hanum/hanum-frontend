@@ -84,8 +84,8 @@ export const CommunityMainScreen: React.FC = () => {
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
   const mineBottomSheet = useRef<BottomSheetRefProps>(null);
 
-  const onChatScreenNavigate = (index: number) => {
-    navigate('CommunityPostDetail', { id: index, isEdit: false });
+  const onChatScreenNavigate = (id: number) => {
+    navigate('CommunityPostDetail', { id });
   };
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
@@ -115,14 +115,20 @@ export const CommunityMainScreen: React.FC = () => {
   const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
-  const { verifyUser, userData } = useGetUser();
+  const { verifyUser, userData, department } = useGetUser();
 
-  const onProfilePress = () => {
+  const onProfilePress = (authorId?: number) => {
     if (verifyUser) {
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: `${department} ${verifyUser.grade}학년 ${verifyUser.classroom}반`,
+      });
+    } else if (authorId) {
       Toast.show({
         type: 'info',
         position: 'top',
-        text1: '클라우드보안과 2학년 2반 재학생이에요',
+        text1: '미인증 사용자에요',
       });
     } else {
       Toast.show({
@@ -277,7 +283,7 @@ export const CommunityMainScreen: React.FC = () => {
                           });
                         }}
                         onPress={() => onChatScreenNavigate(id)}
-                        userImagePress={onProfilePress}
+                        userImagePress={() => onProfilePress(author?.id)}
                       />
                       <CommunityPost
                         content={content}

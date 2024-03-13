@@ -1,6 +1,6 @@
 export type CommunityStackParamList = {
   CommunityMain: undefined;
-  CommunityPostDetail: { id: number; isEdit: boolean };
+  CommunityPostDetail: { id: number };
   CommunityCreatePost: undefined;
   CommunityVisibleType: undefined;
   CommunityAnonymitySettings: undefined;
