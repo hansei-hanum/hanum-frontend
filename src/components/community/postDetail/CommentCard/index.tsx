@@ -174,7 +174,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                     {isOverlay[index] && (
                       <ScaleOpacity onPress={() => showMore(index)}>
                         <Text size={14} color={theme.placeholder}>
-                          더보기
+                          더 보기
                         </Text>
                       </ScaleOpacity>
                     )}

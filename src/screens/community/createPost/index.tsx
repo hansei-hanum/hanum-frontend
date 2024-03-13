@@ -120,7 +120,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
         if (isEdit) {
           Toast.show({
             type: 'error',
-            text1: '편집할때 공개범위는 설정할 수 없어요',
+            text1: '공개 설정은 수정할 수 없어요.',
           });
           return;
         } else {
@@ -130,7 +130,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
         if (isEdit) {
           Toast.show({
             type: 'error',
-            text1: '편집할때 익명성은 설정할 수 없어요',
+            text1: '익명성 설정은 수정할 수 없어요.',
           });
           return;
         } else {

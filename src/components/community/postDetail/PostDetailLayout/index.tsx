@@ -204,7 +204,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                         <View style={{ paddingLeft: 20 }}>
                           <ScaleOpacity onPress={fetchNextPageReplies}>
                             <Text size={14} color={theme.placeholder}>
-                              답글 더보기
+                              더 보기
                             </Text>
                           </ScaleOpacity>
                         </View>

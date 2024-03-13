@@ -73,7 +73,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
         {isOverLay && (
           <ScaleOpacity onPress={() => setShow(!show)} style={{ marginTop: 4 }}>
             <Text size={size} color={theme.placeholder}>
-              더보기
+              더 보기
             </Text>
           </ScaleOpacity>
         )}
