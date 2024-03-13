@@ -117,7 +117,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
         onTextInputBlur();
         return openImagePicker();
       case PostOptionEnum.VISIBLE:
-        if (Boolean(communityEdit.text)) {
+        if (isEdit) {
           Toast.show({
             type: 'error',
             text1: '편집할때 공개범위는 설정할 수 없어요',
@@ -127,7 +127,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
           return navigate('CommunityVisibleType');
         }
       case PostOptionEnum.ANONYMOUS:
-        if (Boolean(communityEdit.text)) {
+        if (isEdit) {
           Toast.show({
             type: 'error',
             text1: '편집할때 익명성은 설정할 수 없어요',
@@ -193,7 +193,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
   };
 
   const onPost = () => {
-    if (communityEdit.id) {
+    if (communityEdit.id && isEdit) {
       editPostMutate({
         id: communityEdit.id,
         content: text,
@@ -218,7 +218,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
   const blockGesture = useBlockGesture(isLoading || isEditPostLoading);
 
   useEffect(() => {
-    if (communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
+    if (isEdit && communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
       const images = communityEdit.images.map((image) => image.uri);
       setSelectedImage(images);
     }
@@ -258,7 +258,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
     <S.CreatePostContainer>
       <ScreenHeader
         isLoading={isLoading || isEditPostLoading}
-        title={`게시글 ${communityEdit.id ? '수정' : '작성'}하기`}
+        title={`게시글 ${isEdit ? '수정' : '작성'}하기`}
         rightContent={
           isLoading || isEditPostLoading ? (
             <Spinner size={24} color={theme.primary} />
