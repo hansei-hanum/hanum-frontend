@@ -20,6 +20,7 @@ export interface GetCommentsAuthorProps {
   name: string;
   handle?: string;
   picture: string;
+  verificationInfo?: string;
 }
 
 export interface GetCommentsContentsProps {

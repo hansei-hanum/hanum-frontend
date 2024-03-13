@@ -8,7 +8,6 @@ import {
   TextInput,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Toast from 'react-native-toast-message';
 import { RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
@@ -36,7 +35,7 @@ import {
   useSearchPosts,
 } from 'src/hooks';
 import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
-import { isIos } from 'src/utils';
+import { isIos, onProfilePress } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
 import { communityEditAtom } from 'src/atoms';
@@ -115,29 +114,7 @@ export const CommunityMainScreen: React.FC = () => {
   const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
-  const { verifyUser, userData } = useGetUser();
-
-  const onProfilePress = (authorId?: number) => {
-    if (verifyUser) {
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: `인증된 사용자에요`,
-      });
-    } else if (authorId) {
-      Toast.show({
-        type: 'info',
-        position: 'top',
-        text1: '미인증 사용자에요',
-      });
-    } else {
-      Toast.show({
-        type: 'info',
-        position: 'top',
-        text1: '익명 사용자에요',
-      });
-    }
-  };
+  const { userData } = useGetUser();
 
   const onEndReached = () => {
     if (searchData) {
@@ -283,7 +260,7 @@ export const CommunityMainScreen: React.FC = () => {
                           });
                         }}
                         onPress={() => onChatScreenNavigate(id)}
-                        userImagePress={() => onProfilePress(author?.id)}
+                        userImagePress={() => onProfilePress(author?.id, author?.verificationInfo)}
                       />
                       <CommunityPost
                         content={content}
