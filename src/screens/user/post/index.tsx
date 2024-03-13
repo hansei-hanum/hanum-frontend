@@ -19,6 +19,7 @@ import {
 import { useBottomSheet, useGetMyPosts, useNavigate } from 'src/hooks';
 import { communityEditAtom } from 'src/atoms';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
 
 import * as S from './styled';
 
@@ -43,7 +44,6 @@ export const UserPostScreen: React.FC = () => {
 
   const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
 
-  const [height, setHeight] = useState<number>(0);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [postId, setPostId] = useState<number | null>(null);
 
@@ -56,7 +56,7 @@ export const UserPostScreen: React.FC = () => {
   const openBottomSheet = ({ postId, text, images }: OpenBottomSheetProps) => {
     setCommunityEdit({ text, images, id: postId });
     setPostId(postId);
-    bottomSheetRef.current?.scrollTo(-height);
+    bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
   };
 
   const isFocused = useIsFocused();
@@ -163,8 +163,6 @@ export const UserPostScreen: React.FC = () => {
       <CommunityMineBottomSheet
         postId={postId}
         ref={bottomSheetRef}
-        setHeight={setHeight}
-        height={height}
         closeBottomSheet={closeBottomSheet}
       />
     </SafeAreaView>

@@ -1,11 +1,14 @@
 import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
 
+import { useNavigation, useRoute } from '@react-navigation/native';
+
 import { AxiosError } from 'axios';
+import { useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse, DeletePostValues, deletePost } from 'src/api';
 import { ErrorToast } from 'src/constants';
-import { useNavigate } from 'src/hooks/useNavigate';
+import { communityEditAtom } from 'src/atoms';
 
 export const useDeletePost = (): UseMutationResult<
   APIResponse<null>,
@@ -13,12 +16,17 @@ export const useDeletePost = (): UseMutationResult<
   DeletePostValues
 > => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const route = useRoute();
+  const navigation = useNavigation();
+
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   return useMutation('useDeletePost', deletePost, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['useGetMyPosts', 'useGetPosts'] });
-      navigate('UserPost');
+      setCommunityEdit({ text: '', images: [], id: null });
+      route.name === 'CommunityPostDetail' ? navigation.goBack() : null;
+      queryClient.invalidateQueries({ queryKey: ['useGetPosts'] });
+      queryClient.invalidateQueries({ queryKey: ['useGetMyPosts'] });
       Toast.show({
         type: 'success',
         text1: '게시글이 성공적으로 삭제되었어요',

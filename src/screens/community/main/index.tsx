@@ -14,6 +14,7 @@ import { RefreshControl } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
 import {
   CommunityPostHeader,
@@ -24,6 +25,7 @@ import {
   PostBottom,
   Spinner,
   PostsTopSection,
+  CommunityMineBottomSheet,
 } from 'src/components';
 import {
   useBottomSheet,
@@ -36,11 +38,21 @@ import {
 import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
 import { isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { OpenBottomSheetProps } from 'src/screens/user';
+import { communityEditAtom } from 'src/atoms';
+import { BottomSheetRefProps } from 'src/types';
 
 import * as S from './styled';
 
+export interface HeaderOptionProps extends OpenBottomSheetProps {
+  id?: number;
+  name?: string;
+}
+
 export const CommunityMainScreen: React.FC = () => {
   const theme = useTheme();
+
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure>(
     LimitedArticleScopeOfDisclosure.Public,
@@ -70,6 +82,7 @@ export const CommunityMainScreen: React.FC = () => {
   const inset = useSafeAreaInsets();
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+  const mineBottomSheet = useRef<BottomSheetRefProps>(null);
 
   const onChatScreenNavigate = (index: number) => {
     navigate('CommunityPostDetail', { id: index, isEdit: false });
@@ -86,6 +99,7 @@ export const CommunityMainScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [targetId, setTargetId] = useState<number | null>(null);
   const [userName, setUserName] = useState<string>('');
+  const [postId, setPostId] = useState<number | null>(null);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     searchRef.current?.blur();
@@ -101,7 +115,7 @@ export const CommunityMainScreen: React.FC = () => {
   const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
-  const { verifyUser } = useGetUser();
+  const { verifyUser, userData } = useGetUser();
 
   const onProfilePress = () => {
     if (verifyUser) {
@@ -143,17 +157,33 @@ export const CommunityMainScreen: React.FC = () => {
 
   const isFocused = useIsFocused();
 
-  const onHeaderOptionPress = (id?: number, name?: string) => {
-    if (id && name) {
-      setTargetId(id);
-      setUserName(name);
+  const onHeaderOptionPress = ({ postId, id, name, text, images }: HeaderOptionProps) => {
+    setPostId(postId);
+    const isOwn = id && userData?.id === id && name ? true : false;
+    setTargetId(id || null);
+    setUserName(name || '');
+    if (isOwn) {
+      setCommunityEdit({ text, images, id: postId });
     }
-    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
+    openPostOptionBottomSheet(isOwn);
+  };
+
+  const openPostOptionBottomSheet = (isOwn: boolean) => {
+    if (isOwn) {
+      mineBottomSheet.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
+    } else {
+      openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
+    }
+  };
+
+  const closeMinBottomSheet = () => {
+    mineBottomSheet.current?.scrollTo(0);
   };
 
   useEffect(() => {
     if (isFocused) {
       refetch();
+      setCommunityEdit({ text: '', images: [], id: null });
     }
   }, [isFocused]);
 
@@ -235,7 +265,16 @@ export const CommunityMainScreen: React.FC = () => {
                         createdAt={createdAt}
                         style={{ width: '100%' }}
                         openBottomSheet={() => {
-                          onHeaderOptionPress(author?.id, author?.name);
+                          onHeaderOptionPress({
+                            postId: id,
+                            id: author?.id,
+                            name: author?.name,
+                            text: content.spans ? content.spans[0].text : '',
+                            images: attachments.map((item) => ({
+                              uri: item.thumbnail,
+                              id: item.id,
+                            })),
+                          });
                         }}
                         onPress={() => onChatScreenNavigate(id)}
                         userImagePress={onProfilePress}
@@ -279,7 +318,11 @@ export const CommunityMainScreen: React.FC = () => {
           </S.CommunityMainNoDataWrapper>
         </>
       )}
-
+      <CommunityMineBottomSheet
+        ref={mineBottomSheet}
+        closeBottomSheet={closeMinBottomSheet}
+        postId={postId}
+      />
       <PostOptionBottomSheet
         userName={userName}
         bottomSheetRef={bottomSheetRef}

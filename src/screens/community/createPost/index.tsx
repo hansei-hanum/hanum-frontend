@@ -80,7 +80,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
-  const { mutate, isLoading } = useCreatePost();
+  const { mutate, isLoading, isSuccess } = useCreatePost();
   const { mutate: editPostMutate, isLoading: isEditPostLoading } = useEditPost();
 
   const navigate = useNavigate();
@@ -89,6 +89,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
 
   const theme = useTheme();
 
+  console.log('communityEdit', communityEdit);
   const [text, setText] = useState<string>(communityEdit.text);
   const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
 
@@ -239,7 +240,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    if (isSuccess) {
       setText('');
       setSelectedImage([]);
       setVisibleType(VISIBLE_TYPE_LIST[0].text);

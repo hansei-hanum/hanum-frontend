@@ -47,7 +47,10 @@ import {
 } from 'src/hooks';
 import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
-import { articleIdAtom } from 'src/atoms';
+import { articleIdAtom, communityEditAtom } from 'src/atoms';
+import { BottomSheetRefProps } from 'src/types';
+
+import { HeaderOptionProps } from '../main';
 
 import * as S from './styled';
 
@@ -73,7 +76,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 >;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
-  const { isEdit, id } = route.params;
+  const { id } = route.params;
 
   const { data: postData, isLoading: isPostLoading } = useGetPostById({ articleId: id });
 
@@ -99,7 +102,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     isSuccess: isCreateReplySuccess,
   } = useCreateReply();
 
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
+
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+  const mineBottomSheet = useRef<BottomSheetRefProps>(null);
 
   const setArticleId = useSetRecoilState(articleIdAtom);
 
@@ -107,7 +113,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const commentInputRef = useRef<TextInput>(null);
 
-  const { userProfile } = useGetUser();
+  const { userProfile, userData } = useGetUser();
 
   const [comment, setComment] = useState<string>('');
   const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
@@ -239,22 +245,29 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setComment('');
   };
 
-  const openPostBottomSheet = (id?: number, name?: string) => {
-    if (isEdit) {
-      bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
-    } else {
-      // if (!id || !name) {
-      //   Toast.show({
-      //     type: 'info',
-      //     text1: '익명 사용자는 차단할 수 없어요',
-      //   });
-      //   return;
-      // }
+  const openPostBottomSheet = ({ postId, id, name, text, images }: HeaderOptionProps) => {
+    if (!isPostLoading && postData) {
+      const isOwn = id && userData?.id === id && name ? true : false;
       setTargetId(id || null);
       setUserName(name || '');
       commentInputRef.current?.blur();
+      if (isOwn) {
+        setCommunityEdit({ text, images, id: postId });
+      }
+      openPostOptionBottomSheet(isOwn);
+    }
+  };
+
+  const openPostOptionBottomSheet = (isOwn: boolean) => {
+    if (isOwn) {
+      mineBottomSheet.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
+    } else {
       openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
     }
+  };
+
+  const closeMinBottomSheet = () => {
+    mineBottomSheet.current?.scrollTo(0);
   };
 
   const toggleAnonymous = () => {
@@ -347,7 +360,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             scopeOfDisclosure={postData.data.scopeOfDisclosure}
             createdAt={postData.data.createdAt}
             openBottomSheet={() =>
-              openPostBottomSheet(postData.data.author?.id, postData.data.author?.name)
+              openPostBottomSheet({
+                postId: postData.data.id,
+                id: postData.data.author?.id,
+                name: postData.data.author?.name,
+                text: postData.data.content.spans ? postData.data.content.spans[0].text : '',
+                images: postData.data.attachments.map((item) => ({
+                  uri: item.thumbnail,
+                  id: item.id,
+                })),
+              })
             }
           />
         ) : (
@@ -432,20 +454,17 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           </S.PostDetailCommentContainer>
         </S.PostDetailBottomSection>
       </S.PostDetailInnerContainer>
-      {isEdit ? (
-        <CommunityMineBottomSheet
-          ref={bottomSheetRef}
-          closeBottomSheet={closeBottomSheet}
-          postId={id}
-        />
-      ) : (
-        <PostOptionBottomSheet
-          userName={userName}
-          targetId={targetId}
-          bottomSheetRef={bottomSheetRef}
-          closeBottomSheet={closeBottomSheet}
-        />
-      )}
+      <CommunityMineBottomSheet
+        ref={mineBottomSheet}
+        closeBottomSheet={closeMinBottomSheet}
+        postId={id}
+      />
+      <PostOptionBottomSheet
+        userName={userName}
+        targetId={targetId}
+        bottomSheetRef={bottomSheetRef}
+        closeBottomSheet={closeBottomSheet}
+      />
     </S.PostDetailContainer>
   );
 };
