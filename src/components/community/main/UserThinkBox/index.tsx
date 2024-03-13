@@ -19,7 +19,7 @@ export const UserThinkBox: React.FC = () => {
 
   return (
     <View>
-      <ScaleOpacity onPress={() => navigate('CommunityCreatePost')}>
+      <ScaleOpacity onPress={() => navigate('CommunityCreatePost', { isEdit: false })}>
         <S.UserThinkBoxContainer>
           <CommunityUserImage userImage={userProfile} />
           <S.UserThinkBoxWrapper>

@@ -115,14 +115,14 @@ export const CommunityMainScreen: React.FC = () => {
   const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
-  const { verifyUser, userData, department } = useGetUser();
+  const { verifyUser, userData } = useGetUser();
 
   const onProfilePress = (authorId?: number) => {
     if (verifyUser) {
       Toast.show({
         type: 'success',
         position: 'top',
-        text1: `${department} ${verifyUser.grade}학년 ${verifyUser.classroom}반`,
+        text1: `인증된 사용자에요`,
       });
     } else if (authorId) {
       Toast.show({

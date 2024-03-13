@@ -36,7 +36,7 @@ export const CommunityMineBottomSheet = forwardRef<
     closeBottomSheet();
     switch (option) {
       case CommunityMineBottomSheetTextEnum.EDIT:
-        navigate('CommunityCreatePost');
+        navigate('CommunityCreatePost', { isEdit: true });
         return;
       case CommunityMineBottomSheetTextEnum.DELETE:
         return setModalOpen(true);

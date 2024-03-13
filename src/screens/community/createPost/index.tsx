@@ -8,6 +8,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 
 import { useIsFocused } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -33,6 +34,7 @@ import {
 import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
 import { formatVisibleType, isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { RootStackParamList } from 'src/types';
 
 import * as S from './styled';
 
@@ -74,8 +76,13 @@ const UserSection: React.FC = () => {
     </S.UserSectionContainer>
   );
 };
+export type CommunityCreatePostScreenProps = StackScreenProps<
+  RootStackParamList,
+  'CommunityCreatePost'
+>;
 
-export const CommunityCreatePostScreen: React.FC = () => {
+export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps> = ({ route }) => {
+  const { isEdit } = route.params;
   const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
@@ -89,7 +96,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
 
   const theme = useTheme();
 
-  console.log('communityEdit', communityEdit);
   const [text, setText] = useState<string>(communityEdit.text);
   const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
 
@@ -240,7 +246,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || !isEdit) {
       setText('');
       setSelectedImage([]);
       setVisibleType(VISIBLE_TYPE_LIST[0].text);
