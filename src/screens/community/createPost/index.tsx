@@ -247,10 +247,13 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
 
   useEffect(() => {
     if (isSuccess || !isEdit) {
-      setText('');
-      setSelectedImage([]);
-      setVisibleType(VISIBLE_TYPE_LIST[0].text);
-      setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
+      isSuccess && navigate('CommunityMain');
+      setTimeout(() => {
+        setText('');
+        setSelectedImage([]);
+        setVisibleType(VISIBLE_TYPE_LIST[0].text);
+        setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
+      }, 1000);
     }
   }, [isLoading]);
 
