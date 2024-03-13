@@ -60,7 +60,7 @@ export const CommunityMineBottomSheet = forwardRef<
                 <S.CommunityMainOptionIconContainer>
                   {icon}
                   <Text size={15} color={isDanger ? theme.danger : theme.default}>
-                    {text} 하기
+                    게시글 {text}하기
                   </Text>
                 </S.CommunityMainOptionIconContainer>
                 <Icons name="chevron-forward" size={26} color={theme.placeholder} />
