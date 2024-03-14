@@ -156,11 +156,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
         selectionLimit: 5,
       };
       launchImageLibrary(options, (response) => {
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-        } else if (response.errorMessage) {
-          console.log('Image picker error: ', response.errorMessage);
-        } else {
+        if (response.assets) {
           const imageUri = response.assets?.map((item) => item.uri);
           const imageName = response.assets?.map((item) => item.fileName);
           const imageType = response.assets?.map((item) => item.type);

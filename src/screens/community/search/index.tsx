@@ -19,7 +19,6 @@ export const CommunitySearchScreen: React.FC<CommunitySearchScreenProps> = ({ ro
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
 
   const { debouncedValue } = useDebounce(searchQuery ? searchQuery : '', 300);
-  console.log('debouncedValue', debouncedValue);
 
   const {
     data: searchData,
