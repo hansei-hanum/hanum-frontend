@@ -28,11 +28,8 @@ import * as S from './styled';
 export interface CommunityBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
   closeBottomSheet: () => void;
-  targetId: number | null;
-  userName: string;
   userBottomSheet: boolean;
-  userImage?: string;
-  author?: GetCommentsAuthorProps;
+  author?: GetCommentsAuthorProps | null;
 }
 
 export interface openModalProps {
@@ -46,10 +43,8 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
   closeBottomSheet,
   userBottomSheet,
-  userImage,
   author,
 }) => {
-  console.log('PostOptionBottomSheet', userImage);
   const { option, enums } = CommunityOptionList(userBottomSheet);
   const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
@@ -122,12 +117,12 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
                 style={{ resizeMode: 'contain' }}
               />
               <S.UserInfoAuthorContainer>
-                <Text size={18} fontFamily="bold">
+                <Text size={16} fontFamily="bold">
                   {author?.name}
                 </Text>
                 {author && author.verificationInfo && (
                   <S.UserInfoVerificationContainer>
-                    <Text size={16}>{author.verificationInfo}</Text>
+                    <Text size={14}>{author.verificationInfo}</Text>
                     <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
                   </S.UserInfoVerificationContainer>
                 )}
