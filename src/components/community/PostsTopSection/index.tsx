@@ -20,7 +20,7 @@ export const PostsTopSection: React.FC<CommunityMainTopSectionProps> = ({
   return (
     <FlatList
       contentContainerStyle={{
-        ...(hasPadding && { paddingTop: isIos ? inset.top + 24 : 64 }),
+        ...(hasPadding && { paddingTop: isIos ? inset.top + 24 : 24 }),
       }}
       scrollEnabled={false}
       ListHeaderComponent={

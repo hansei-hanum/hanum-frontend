@@ -21,9 +21,13 @@ export interface HeaderOptionProps extends OpenBottomSheetProps {
   author?: GetCommentsAuthorProps;
 }
 
-const SCOPE_BOTTOM_SHEET_HEIGHT = RPH(-26);
+const SCOPE_BOTTOM_SHEET_HEIGHT = isIos ? RPH(-26) : RPH(-28);
 
 export const CommunityMainScreen: React.FC = () => {
+  const inset = useSafeAreaInsets();
+
+  const HEADER_HEIGHT = isIos ? inset.top : 48;
+
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure | null>(null);
@@ -36,10 +40,6 @@ export const CommunityMainScreen: React.FC = () => {
   // const [searchQuery, setSearchQuery] = useState<string | null>(null);
 
   const { bottomSheetRef, openBottomSheet } = useBottomSheet();
-
-  const inset = useSafeAreaInsets();
-
-  const HEADER_HEIGHT = isIos ? inset.top : 68;
 
   const scrollY = useRef(new Animated.Value(0)).current;
 

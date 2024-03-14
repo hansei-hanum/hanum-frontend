@@ -160,7 +160,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
             refreshControl={refreshControl}
             style={{
               position: 'relative',
-              paddingTop: hasInset ? (isIos ? inset.top + 14 : 68) : 24,
+              paddingTop: hasInset ? (isIos ? inset.top + 14 : 24) : 24,
             }}
             contentContainerStyle={{
               paddingBottom: inset.bottom + 100,
