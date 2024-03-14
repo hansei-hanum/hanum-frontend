@@ -79,7 +79,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
       case LimitedArticleScopeOfDisclosure.Peer:
         return '동급생';
       case LimitedArticleScopeOfDisclosure.Student:
-        return '학생';
+        return '재학생';
       default:
         return '전체 보기';
     }

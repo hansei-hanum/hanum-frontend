@@ -34,7 +34,7 @@ export const STUDENT_SCOPE_OPTION_LIST: ScopeOptionItems[] = [
     type: null,
   },
   {
-    text: '학생',
+    text: '재학생',
     type: LimitedArticleScopeOfDisclosure.Student,
   },
   {
