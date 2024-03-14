@@ -45,11 +45,7 @@ export const ScopeBottomSheet = forwardRef<BottomSheetRefProps, ScopeBottomSheet
                     {text}
                   </Text>
                 </S.ScopeBottomSheetIconContainer>
-                <Octicons
-                  name="check"
-                  size={26}
-                  color={scope === type ? theme.primary : theme.placeholder}
-                />
+                {scope === type && <Octicons name="check" size={26} color={theme.primary} />}
               </S.ScopeBottomSheetOptionContainer>
             </ScaleOpacity>
           ))}
