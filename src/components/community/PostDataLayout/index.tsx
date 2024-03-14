@@ -65,7 +65,7 @@ export type PostDataLayoutProps = PostDataLayoutCustomProps & ScrollViewProps;
 export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
   data,
   onEndReached,
-  hasThinkSection,
+  hasThinkSection = false,
   isLoading,
   refreshControl,
   isFetchingNextPage,
@@ -140,13 +140,12 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
       ) : data ? (
         data?.pages.length ? (
           <FlatList
-            {...props}
             scrollEventThrottle={16}
             data={data.pages || []}
             keyExtractor={(_, index) => index.toString()}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
-            ListHeaderComponent={hasThinkSection ? null : <PostsTopSection />}
+            ListHeaderComponent={!hasThinkSection ? null : <PostsTopSection />}
             refreshControl={refreshControl}
             style={{
               position: 'relative',
@@ -156,6 +155,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
               paddingBottom: inset.bottom + 100,
               rowGap: 40,
             }}
+            {...props}
             renderItem={({ item: { data } }) => (
               <View style={{ rowGap: 60 }}>
                 {data.items.map(

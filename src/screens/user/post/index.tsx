@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { RefreshControl, SafeAreaView } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import {
-  CommunityMineBottomSheet,
-  CommunityPost,
-  CommunityPostHeader,
-  PostBottom,
-  PostsTopSection,
-  ScreenHeader,
-  Spinner,
-  Text,
-} from 'src/components';
-import { useBottomSheet, useGetMyPosts, useNavigate } from 'src/hooks';
-import { communityEditAtom } from 'src/atoms';
-import { LimitedArticleScopeOfDisclosure } from 'src/api';
-import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
+import { PostDataLayout, ScreenHeader } from 'src/components';
+import { useGetMyPosts } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -30,36 +17,26 @@ export interface OpenBottomSheetProps {
 }
 
 export const UserPostScreen: React.FC = () => {
-  const [scope, setScope] = useState<LimitedArticleScopeOfDisclosure>(
-    LimitedArticleScopeOfDisclosure.Public,
-  );
-
   const theme = useTheme();
 
   const { data, isLoading, fetchNextPage, isFetchingNextPage, refetch } = useGetMyPosts({
     cursor: null,
   });
 
-  const setCommunityEdit = useSetRecoilState(communityEditAtom);
-
-  const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
-
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const [postId, setPostId] = useState<number | null>(null);
-
-  const navigate = useNavigate();
-
-  const onChatScreenNavigate = (id: number) => {
-    navigate('CommunityPostDetail', { id });
-  };
-
-  const openBottomSheet = ({ postId, text, images }: OpenBottomSheetProps) => {
-    setCommunityEdit({ text, images, id: postId });
-    setPostId(postId);
-    bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
-  };
+  const [refreshing, setRefreshing] = useState(false);
 
   const isFocused = useIsFocused();
+
+  const wait = (timeout: number) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = useCallback(() => {
+    refetch();
+    setRefreshing(true);
+    wait(500).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -77,94 +54,16 @@ export const UserPostScreen: React.FC = () => {
         }}
       />
       <S.UserPostWrapper>
-        {isLoading ? (
-          <Spinner size={40} isCenter />
-        ) : (
-          data &&
-          (data.pages[0].data.items.length > 0 ? (
-            <FlatList
-              scrollEventThrottle={16}
-              data={data.pages}
-              onScroll={(e) => setIsScrolled(e.nativeEvent.contentOffset.y > 0)}
-              keyExtractor={(_, index) => index.toString()}
-              onEndReached={() => fetchNextPage()}
-              onEndReachedThreshold={0.5}
-              contentContainerStyle={{
-                paddingBottom: 60,
-                rowGap: 40,
-              }}
-              renderItem={({ item: { data } }) => (
-                <View style={{ rowGap: 60 }}>
-                  {data.items.map(
-                    (
-                      {
-                        author,
-                        scopeOfDisclosure,
-                        createdAt,
-                        content,
-                        attachments,
-                        commentCount,
-                        reactions,
-                        id,
-                        authorName,
-                      },
-                      index,
-                    ) => (
-                      <S.UserPostBox key={index}>
-                        <CommunityPostHeader
-                          authorName={authorName}
-                          author={author}
-                          scopeOfDisclosure={scopeOfDisclosure}
-                          createdAt={createdAt}
-                          style={{ width: '100%' }}
-                          openBottomSheet={() =>
-                            openBottomSheet({
-                              postId: id,
-                              text: content.spans ? content.spans[0].text : '',
-                              images: attachments.map((item) => ({
-                                uri: item.thumbnail,
-                                id: item.id,
-                              })),
-                            })
-                          }
-                          onPress={() => onChatScreenNavigate(id)}
-                        />
-                        <CommunityPost
-                          content={content}
-                          attachments={attachments}
-                          createdAt={createdAt}
-                          onPress={() => onChatScreenNavigate(id)}
-                          index={index}
-                        />
-                        <PostBottom id={id} reactions={reactions} commentCount={commentCount} />
-                      </S.UserPostBox>
-                    ),
-                  )}
-                  {isFetchingNextPage && (
-                    <View style={{ paddingVertical: 20 }}>
-                      <Spinner size={40} />
-                    </View>
-                  )}
-                </View>
-              )}
-            />
-          ) : (
-            <>
-              <PostsTopSection withUserThinkBox={false} postScope={scope} setPostScope={setScope} />
-              <S.CommunityMainNoDataWrapper>
-                <Text size={16} color={theme.placeholder} isCenter>
-                  이 메뉴에는 아직 작성된 글이 없어요
-                </Text>
-              </S.CommunityMainNoDataWrapper>
-            </>
-          ))
-        )}
+        <PostDataLayout
+          style={{ position: 'relative', top: 0, paddingTop: 10 }}
+          data={data}
+          isLoading={isLoading}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          isFetchingNextPage={isFetchingNextPage}
+          onScroll={(e) => setIsScrolled(e.nativeEvent.contentOffset.y > 0)}
+          onEndReached={() => fetchNextPage()}
+        />
       </S.UserPostWrapper>
-      <CommunityMineBottomSheet
-        postId={postId}
-        ref={bottomSheetRef}
-        closeBottomSheet={closeBottomSheet}
-      />
     </SafeAreaView>
   );
 };
