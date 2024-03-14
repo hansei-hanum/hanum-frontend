@@ -21,7 +21,7 @@ export interface HeaderOptionProps extends OpenBottomSheetProps {
   author?: GetCommentsAuthorProps;
 }
 
-const SCOPE_BOTTOM_SHEET_HEIGHT = RPH(-40);
+const SCOPE_BOTTOM_SHEET_HEIGHT = RPH(-28);
 
 export const CommunityMainScreen: React.FC = () => {
   const setCommunityEdit = useSetRecoilState(communityEditAtom);

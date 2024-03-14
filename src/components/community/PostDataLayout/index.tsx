@@ -53,11 +53,12 @@ export interface PostDataLayoutCustomProps {
   /**
    * 데이터를 새로고침하는 컴포넌트입니다
    */
-  refreshControl: React.ReactNode;
+  refreshControl?: React.ReactNode;
   /**
    * 다음 페이지를 가져오는 중인지 여부입니다
    */
   isFetchingNextPage: boolean;
+  hasInset?: boolean;
 }
 
 export type PostDataLayoutProps = PostDataLayoutCustomProps & ScrollViewProps;
@@ -69,6 +70,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
   isLoading,
   refreshControl,
   isFetchingNextPage,
+  hasInset = true,
   ...props
 }) => {
   const theme = useTheme();
@@ -158,7 +160,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
             refreshControl={refreshControl}
             style={{
               position: 'relative',
-              paddingTop: isIos ? inset.top + 24 : 68,
+              paddingTop: hasInset ? (isIos ? inset.top + 14 : 68) : 24,
             }}
             contentContainerStyle={{
               paddingBottom: inset.bottom + 100,
@@ -224,18 +226,18 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
           />
         ) : (
           <>
-            <PostsTopSection />
-            <S.CommunityMainNoDataWrapper>
+            {hasThinkSection && <PostsTopSection />}
+            <S.CommunityMainNoDataWrapper style={{ flex: hasThinkSection ? 30 : 1 }}>
               <Text size={16} color={theme.placeholder} isCenter>
-                이 메뉴에는 아직 작성된 글이 없어요
+                아직 작성된 게시글이 없어요
               </Text>
             </S.CommunityMainNoDataWrapper>
           </>
         )
       ) : (
         <>
-          <PostsTopSection />
-          <S.CommunityMainNoDataWrapper>
+          {hasThinkSection && <PostsTopSection />}
+          <S.CommunityMainNoDataWrapper style={{ flex: hasThinkSection ? 30 : 1 }}>
             <Text size={16} color={theme.placeholder} isCenter>
               지금은 게시글을 불러올 수 없어요
             </Text>

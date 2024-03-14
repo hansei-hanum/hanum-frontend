@@ -21,6 +21,7 @@ export const ScopeBottomSheet = forwardRef<BottomSheetRefProps, ScopeBottomSheet
   ({ SCOPE_BOTTOM_SHEET_HEIGHT, scope, onPress }, ref) => {
     const { filteredVisibleType } = useFilteredVisibleType();
     const theme = useTheme();
+    const options = SCOPE_OPTION_LIST();
 
     return (
       <BottomSheet
@@ -29,7 +30,7 @@ export const ScopeBottomSheet = forwardRef<BottomSheetRefProps, ScopeBottomSheet
         maxScrollHeight={SCOPE_BOTTOM_SHEET_HEIGHT}
       >
         <S.ScopeBottomSheetContainer>
-          {SCOPE_OPTION_LIST.map(({ text, type }) => (
+          {options?.map(({ text, type }) => (
             <ScaleOpacity
               key={text}
               activeScale={filteredVisibleType(type)}

@@ -6,7 +6,6 @@ import { isIos } from 'src/utils';
 export const CommunitySearchContainer = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
-  border: 1px solid red;
 `;
 
 export const CommunitySearchHeaderWrapper = styled.View`
