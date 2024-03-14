@@ -11,3 +11,4 @@ export * from './main';
 export * from './MineBottomSheet';
 export * from './FormattedContent';
 export * from './PostsTopSection';
+export * from './PostDataLayout';

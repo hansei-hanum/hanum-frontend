@@ -7,7 +7,15 @@ import { WithLocalSvg } from 'react-native-svg';
 
 import { useTheme } from '@emotion/react';
 
-import { BottomSheet, Button, ButtonContainer, Modal, ScaleOpacity, Text } from 'src/components';
+import {
+  BottomSheet,
+  Button,
+  ButtonContainer,
+  Modal,
+  ScaleOpacity,
+  Spinner,
+  Text,
+} from 'src/components';
 import {
   CommunityBottomSheetTextEnum,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
@@ -28,11 +36,9 @@ import * as S from './styled';
 export interface CommunityBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetRefProps>;
   closeBottomSheet: () => void;
-  targetId: number | null;
-  userName: string;
   userBottomSheet: boolean;
-  userImage?: string;
-  author?: GetCommentsAuthorProps;
+  author?: GetCommentsAuthorProps | null;
+  bottomSheetLoading: boolean;
 }
 
 export interface openModalProps {
@@ -46,10 +52,9 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
   closeBottomSheet,
   userBottomSheet,
-  userImage,
   author,
+  bottomSheetLoading,
 }) => {
-  console.log('PostOptionBottomSheet', userImage);
   const { option, enums } = CommunityOptionList(userBottomSheet);
   const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
@@ -115,42 +120,48 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         modalBackDropVisible={modalOpen}
       >
         <S.PostOptionBottomSheetContainer>
-          {userBottomSheet && (
-            <S.UserInfoContainer>
-              <S.UserInfoImage
-                source={author && author.picture ? { uri: author.picture } : UserLogo}
-                style={{ resizeMode: 'contain' }}
-              />
-              <S.UserInfoAuthorContainer>
-                <Text size={18} fontFamily="bold">
-                  {author?.name}
-                </Text>
-                {author && author.verificationInfo && (
-                  <S.UserInfoVerificationContainer>
-                    <Text size={16}>{author.verificationInfo}</Text>
-                    <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
-                  </S.UserInfoVerificationContainer>
-                )}
-              </S.UserInfoAuthorContainer>
-            </S.UserInfoContainer>
+          {bottomSheetLoading ? (
+            <Spinner size={40} color={theme.placeholder} />
+          ) : (
+            <>
+              {userBottomSheet && (
+                <S.UserInfoContainer>
+                  <S.UserInfoImage
+                    source={author && author.picture ? { uri: author.picture } : UserLogo}
+                    style={{ resizeMode: 'contain' }}
+                  />
+                  <S.UserInfoAuthorContainer>
+                    <Text size={16} fontFamily="bold">
+                      {author?.name}
+                    </Text>
+                    {author && author.verificationInfo && (
+                      <S.UserInfoVerificationContainer>
+                        <Text size={14}>{author.verificationInfo}</Text>
+                        <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
+                      </S.UserInfoVerificationContainer>
+                    )}
+                  </S.UserInfoAuthorContainer>
+                </S.UserInfoContainer>
+              )}
+              {option.map(({ text, isBlock, icon }) => (
+                <ScaleOpacity key={text} onPress={() => onPress(text)}>
+                  <S.PostOptionBottomSheetOptionContainer>
+                    <S.PostOptionBottomSheetIconContainer>
+                      {isBlock ? (
+                        <Entypo name="block" size={30} color={theme.danger} />
+                      ) : (
+                        <Icons name={icon} size={30} color={theme.default} />
+                      )}
+                      <Text size={15} color={isBlock ? theme.danger : theme.default}>
+                        {text}
+                      </Text>
+                    </S.PostOptionBottomSheetIconContainer>
+                    <Icons name="chevron-forward" size={26} color={theme.placeholder} />
+                  </S.PostOptionBottomSheetOptionContainer>
+                </ScaleOpacity>
+              ))}
+            </>
           )}
-          {option.map(({ text, isBlock, icon }) => (
-            <ScaleOpacity key={text} onPress={() => onPress(text)}>
-              <S.PostOptionBottomSheetOptionContainer>
-                <S.PostOptionBottomSheetIconContainer>
-                  {isBlock ? (
-                    <Entypo name="block" size={30} color={theme.danger} />
-                  ) : (
-                    <Icons name={icon} size={30} color={theme.default} />
-                  )}
-                  <Text size={15} color={isBlock ? theme.danger : theme.default}>
-                    {text}
-                  </Text>
-                </S.PostOptionBottomSheetIconContainer>
-                <Icons name="chevron-forward" size={26} color={theme.placeholder} />
-              </S.PostOptionBottomSheetOptionContainer>
-            </ScaleOpacity>
-          ))}
         </S.PostOptionBottomSheetContainer>
       </BottomSheet>
       <ReportBottomSheet

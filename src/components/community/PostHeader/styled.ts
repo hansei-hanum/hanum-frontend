@@ -4,7 +4,6 @@ export const CommunityHeader = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
 `;
 
 export const CommunityHeaderTitle = styled.View`

@@ -67,7 +67,7 @@ export const UserBlockListScreen: React.FC = () => {
                   <ScaleOpacity onPress={() => mutate({ targetId: id })}>
                     <S.BlockListCancelButton>
                       {!isLoading ? (
-                        <Text size={14} fontFamily="bold">
+                        <Text size={14} fontFamily="bold" color={theme.white}>
                           차단 해제
                         </Text>
                       ) : (

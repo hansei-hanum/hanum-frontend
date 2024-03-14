@@ -8,3 +8,4 @@ export * from './visibleTypes';
 export * from './mineOptions';
 export * from './errorToast';
 export * from './mainMenu';
+export * from './scopeOption';

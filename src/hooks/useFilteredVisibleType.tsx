@@ -16,8 +16,9 @@ export const useFilteredVisibleType = () => {
     default: [LimitedArticleScopeOfDisclosure.Public],
   };
 
-  const filteredVisibleType = (text: LimitedArticleScopeOfDisclosure) => {
+  const filteredVisibleType = (text: LimitedArticleScopeOfDisclosure | null) => {
     const allowedTypes = userVisibleTypeMap[userType() || 'default'];
+    if (!text) return true;
     return allowedTypes.includes(text);
   };
 

@@ -1,47 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  FlatList,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  View,
-  TextInput,
-} from 'react-native';
+import { Animated, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RefreshControl } from 'react-native';
+import { HapticFeedbackTypes, trigger } from 'react-native-haptic-feedback';
 
 import { useIsFocused } from '@react-navigation/native';
 
-import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
 
-import {
-  CommunityPostHeader,
-  CommunityPost,
-  Text,
-  CommunityMainAnimatedHeader,
-  PostOptionBottomSheet,
-  PostBottom,
-  Spinner,
-  PostsTopSection,
-  CommunityMineBottomSheet,
-  ReportBottomSheet,
-  REPORT_BOTTOM_SHEET_HEIGHT,
-} from 'src/components';
-import {
-  useBottomSheet,
-  useDebounce,
-  useGetPosts,
-  useGetUser,
-  useNavigate,
-  useSearchPosts,
-} from 'src/hooks';
-import { COMMUNITY_BOTTOM_SHEET_HEIGHT, SCREEN_WIDTH } from 'src/constants';
-import { isIos } from 'src/utils';
+import { CommunityMainAnimatedHeader, PostDataLayout, ScopeBottomSheet } from 'src/components';
+import { useBottomSheet, useGetPosts } from 'src/hooks';
+import { RPH, isIos } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
 import { communityEditAtom } from 'src/atoms';
-import { BottomSheetRefProps } from 'src/types';
 
 import * as S from './styled';
 
@@ -49,9 +21,9 @@ export interface HeaderOptionProps extends OpenBottomSheetProps {
   author?: GetCommentsAuthorProps;
 }
 
-export const CommunityMainScreen: React.FC = () => {
-  const theme = useTheme();
+const SCOPE_BOTTOM_SHEET_HEIGHT = RPH(-26);
 
+export const CommunityMainScreen: React.FC = () => {
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
   const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure | null>(null);
@@ -61,48 +33,22 @@ export const CommunityMainScreen: React.FC = () => {
     cursor: null,
   });
 
-  const [searchQuery, setSearchQuery] = useState<string | null>(null);
+  // const [searchQuery, setSearchQuery] = useState<string | null>(null);
 
-  const { debouncedValue } = useDebounce(searchQuery ? searchQuery : '', 300);
+  const { bottomSheetRef, openBottomSheet } = useBottomSheet();
 
-  const {
-    data: searchData,
-    isLoading: isSearchLoading,
-    fetchNextPage: searchFetchNextPage,
-    isFetchingNextPage: isSearchFetchingNextPage,
-  } = useSearchPosts({
-    scope: postScope,
-    cursor: null,
-    query: debouncedValue,
-  });
-
-  const navigate = useNavigate();
   const inset = useSafeAreaInsets();
 
-  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
-  const mineBottomSheet = useRef<BottomSheetRefProps>(null);
-
-  const onChatScreenNavigate = (id: number) => {
-    navigate('CommunityPostDetail', { id });
-  };
-
-  const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
+  const HEADER_HEIGHT = isIos ? inset.top : 68;
 
   const scrollY = useRef(new Animated.Value(0)).current;
-  const searchRef = useRef<TextInput>(null);
 
   const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrollValue, setScrollValue] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
-  const [targetId, setTargetId] = useState<number | null>(null);
-  const [userName, setUserName] = useState<string>('');
-  const [postId, setPostId] = useState<number | null>(null);
-  const [openUserBottomSheet, setOpenUserBottomSheet] = useState<boolean>(false);
-  const [userBottomSheetImage, setUserBottomSheetImage] = useState<string | null>(null);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    searchRef.current?.blur();
     setIsSearchScreen(false);
     const offsetY = event.nativeEvent.contentOffset.y;
     scrollY.setValue(offsetY);
@@ -115,19 +61,14 @@ export const CommunityMainScreen: React.FC = () => {
   const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
-  const { userData } = useGetUser();
 
   const onEndReached = () => {
-    if (searchData) {
-      searchFetchNextPage();
-    } else if (data) {
-      fetchNextPage();
-    }
+    fetchNextPage();
   };
 
-  const onChangeText = (text: string) => {
-    setSearchQuery(text);
-  };
+  // const onChangeText = (text: string) => {
+  //   setSearchQuery(text);
+  // };
 
   const wait = (timeout: number) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -139,39 +80,16 @@ export const CommunityMainScreen: React.FC = () => {
     wait(500).then(() => setRefreshing(false));
   }, []);
 
+  const onHeaderScopePress = () => {
+    openBottomSheet({ scrollTo: SCOPE_BOTTOM_SHEET_HEIGHT });
+  };
+
+  const onScopeItemPress = (scope: LimitedArticleScopeOfDisclosure | null) => {
+    setPostScope(scope);
+    trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
+  };
+
   const isFocused = useIsFocused();
-
-  const onHeaderOptionPress = ({ postId, author, text, images }: HeaderOptionProps) => {
-    setOpenUserBottomSheet(false);
-    setPostId(postId);
-    const isOwn = author?.id && userData?.id === author.id && author.name ? true : false;
-    setTargetId(author?.id || null);
-    setUserName(author?.name || '');
-    if (isOwn) {
-      setCommunityEdit({ text, images, id: postId });
-    }
-    openPostOptionBottomSheet(isOwn);
-  };
-
-  const openPostOptionBottomSheet = (isOwn: boolean) => {
-    if (isOwn) {
-      mineBottomSheet.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
-    } else {
-      openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
-    }
-  };
-
-  const closeMinBottomSheet = () => {
-    mineBottomSheet.current?.scrollTo(0);
-  };
-
-  const onProfilePress = (author?: GetCommentsAuthorProps) => {
-    setTargetId(author?.id || null);
-    setUserName(author?.name || '');
-    setOpenUserBottomSheet(true);
-    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 });
-    setUserBottomSheetImage(author?.picture || null);
-  };
 
   useEffect(() => {
     if (isFocused) {
@@ -181,146 +99,30 @@ export const CommunityMainScreen: React.FC = () => {
   }, [isFocused]);
 
   return (
-    <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
+    <S.CommunityMainWrapper style={{ paddingTop: 40 }}>
       <CommunityMainAnimatedHeader
-        ref={searchRef}
+        onScopePress={onHeaderScopePress}
+        postScope={postScope}
         hidden={hidden}
         scrollY={scrollY}
         HEADER_HEIGHT={HEADER_HEIGHT}
-        setIsSearchScreen={setIsSearchScreen}
         isSearchScreen={isSearchScreen}
-        setHidden={setHidden}
-        onChangeText={onChangeText}
-        value={searchQuery ? searchQuery : ''}
-        closeSearchScreenClick={() => {
-          setSearchQuery(null);
-        }}
       />
-      {isSearchLoading ? (
-        <Spinner size={40} isCenter />
-      ) : isLoading ? (
-        <>
-          <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
-          <View
-            style={{
-              flex: 2,
-            }}
-          >
-            <Spinner size={40} />
-          </View>
-        </>
-      ) : data || searchData ? (
-        data?.pages.length || searchData?.pages.length ? (
-          <FlatList
-            onScroll={onScroll}
-            onMomentumScrollEnd={onSetScrollY}
-            scrollEventThrottle={16}
-            data={searchData ? searchData.pages : data?.pages || []}
-            keyExtractor={(_, index) => index.toString()}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.5}
-            ListHeaderComponent={
-              searchData ? null : (
-                <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
-              )
-            }
-            refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
-            style={{
-              position: 'relative',
-              paddingTop: isIos ? inset.top + 24 : 68,
-            }}
-            contentContainerStyle={{
-              paddingBottom: inset.bottom + 100,
-              rowGap: 40,
-            }}
-            renderItem={({ item: { data } }) => (
-              <View style={{ rowGap: 60 }}>
-                {data.items.map(
-                  (
-                    {
-                      author,
-                      scopeOfDisclosure,
-                      createdAt,
-                      content,
-                      attachments,
-                      commentCount,
-                      reactions,
-                      authorName,
-                      id,
-                    },
-                    index,
-                  ) => (
-                    <S.CommunityMainBox key={id}>
-                      <CommunityPostHeader
-                        authorName={authorName}
-                        author={author}
-                        scopeOfDisclosure={scopeOfDisclosure}
-                        createdAt={createdAt}
-                        style={{ width: '100%' }}
-                        openBottomSheet={() => {
-                          onHeaderOptionPress({
-                            postId: id,
-                            author: author,
-                            text: content.spans ? content.spans[0].text : '',
-                            images: attachments.map((item) => ({
-                              uri: item.thumbnail,
-                              id: item.id,
-                            })),
-                          });
-                        }}
-                        onPress={() => onChatScreenNavigate(id)}
-                        onProfilePress={() => onProfilePress(author)}
-                      />
-                      <CommunityPost
-                        content={content}
-                        attachments={attachments}
-                        createdAt={createdAt}
-                        onPress={() => onChatScreenNavigate(id)}
-                        index={index}
-                      />
-                      <PostBottom id={id} reactions={reactions} commentCount={commentCount} />
-                    </S.CommunityMainBox>
-                  ),
-                )}
-                {(isFetchingNextPage || isSearchFetchingNextPage) && (
-                  <View style={{ paddingVertical: 20 }}>
-                    <Spinner size={40} />
-                  </View>
-                )}
-              </View>
-            )}
-          />
-        ) : (
-          <>
-            <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
-            <S.CommunityMainNoDataWrapper>
-              <Text size={16} color={theme.placeholder} isCenter>
-                이 메뉴에는 아직 작성된 글이 없어요
-              </Text>
-            </S.CommunityMainNoDataWrapper>
-          </>
-        )
-      ) : (
-        <>
-          <PostsTopSection postScope={postScope} setPostScope={setPostScope} />
-          <S.CommunityMainNoDataWrapper>
-            <Text size={16} color={theme.placeholder} isCenter>
-              지금은 게시글을 불러올 수 없어요
-            </Text>
-          </S.CommunityMainNoDataWrapper>
-        </>
-      )}
-      <CommunityMineBottomSheet
-        ref={mineBottomSheet}
-        closeBottomSheet={closeMinBottomSheet}
-        postId={postId}
+      <PostDataLayout
+        data={data}
+        onEndReached={onEndReached}
+        hasThinkSection
+        isLoading={isLoading}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        isFetchingNextPage={isFetchingNextPage}
+        onScroll={onScroll}
+        onMomentumScrollEnd={onSetScrollY}
       />
-      <PostOptionBottomSheet
-        userBottomSheet={openUserBottomSheet}
-        userName={userName}
-        bottomSheetRef={bottomSheetRef}
-        closeBottomSheet={closeBottomSheet}
-        targetId={targetId}
+      <ScopeBottomSheet
+        ref={bottomSheetRef}
+        onPress={onScopeItemPress}
+        scope={postScope}
+        SCOPE_BOTTOM_SHEET_HEIGHT={SCOPE_BOTTOM_SHEET_HEIGHT}
       />
     </S.CommunityMainWrapper>
   );
