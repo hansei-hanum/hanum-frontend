@@ -8,13 +8,13 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 
 import { useIsFocused } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import {
   ScreenHeader,
-  Icon,
   PhotoCard,
   OptionCard,
   ScaleOpacity,
@@ -22,7 +22,6 @@ import {
   NoScrollbarScrollView,
   PhotosInterface,
   Spinner,
-  AnimatedHoc,
 } from 'src/components';
 import { useBlockGesture, useCreatePost, useEditPost, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
@@ -35,6 +34,7 @@ import {
 import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
 import { formatVisibleType, isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { RootStackParamList } from 'src/types';
 
 import * as S from './styled';
 
@@ -69,21 +69,30 @@ const UserSection: React.FC = () => {
             <MI name="lock" size={16} color={theme.white} />
           )}
           <Text size={12} color={theme.white} fontFamily="bold">
-            공개범위: {formatVisibleType(visibleType)}
+            {formatVisibleType(visibleType)}
           </Text>
         </S.VisibleTypeContainer>
       </View>
     </S.UserSectionContainer>
   );
 };
+export type CommunityCreatePostScreenProps = StackScreenProps<
+  RootStackParamList,
+  'CommunityCreatePost'
+>;
 
-export const CommunityCreatePostScreen: React.FC = () => {
+export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps> = ({ route }) => {
+  const { isEdit } = route.params;
   const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
   const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
   const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
 
-  const { mutate, isLoading } = useCreatePost();
-  const { mutate: editPostMutate, isLoading: isEditPostLoading } = useEditPost();
+  const { mutate, isLoading, isSuccess } = useCreatePost();
+  const {
+    mutate: editPostMutate,
+    isLoading: isEditPostLoading,
+    isSuccess: editSuccess,
+  } = useEditPost();
 
   const navigate = useNavigate();
 
@@ -112,20 +121,20 @@ export const CommunityCreatePostScreen: React.FC = () => {
         onTextInputBlur();
         return openImagePicker();
       case PostOptionEnum.VISIBLE:
-        if (Boolean(communityEdit.text)) {
+        if (isEdit) {
           Toast.show({
             type: 'error',
-            text1: '편집할때 공개범위는 설정할 수 없어요',
+            text1: '공개 설정은 수정할 수 없어요.',
           });
           return;
         } else {
           return navigate('CommunityVisibleType');
         }
       case PostOptionEnum.ANONYMOUS:
-        if (Boolean(communityEdit.text)) {
+        if (isEdit) {
           Toast.show({
             type: 'error',
-            text1: '편집할때 익명성은 설정할 수 없어요',
+            text1: '익명성 설정은 수정할 수 없어요.',
           });
           return;
         } else {
@@ -188,7 +197,7 @@ export const CommunityCreatePostScreen: React.FC = () => {
   };
 
   const onPost = () => {
-    if (communityEdit.id) {
+    if (communityEdit.id && isEdit) {
       editPostMutate({
         id: communityEdit.id,
         content: text,
@@ -207,18 +216,13 @@ export const CommunityCreatePostScreen: React.FC = () => {
         attachments: selectedImage as PhotosInterface[],
       });
     }
-
-    setText('');
-    setSelectedImage([]);
-    setVisibleType(VISIBLE_TYPE_LIST[0].text);
-    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
   };
 
   const isFocused = useIsFocused();
   const blockGesture = useBlockGesture(isLoading || isEditPostLoading);
 
   useEffect(() => {
-    if (communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
+    if (isEdit && communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
       const images = communityEdit.images.map((image) => image.uri);
       setSelectedImage(images);
     }
@@ -245,11 +249,30 @@ export const CommunityCreatePostScreen: React.FC = () => {
     }
   };
 
+  const resetData = () => {
+    setText('');
+    setSelectedImage([]);
+    setVisibleType(VISIBLE_TYPE_LIST[0].text);
+    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
+  };
+
+  useEffect(() => {
+    if (!isEdit) {
+      resetData();
+    }
+    if (isSuccess || editSuccess) {
+      navigate('CommunityMain');
+      setTimeout(() => {
+        resetData();
+      }, 1000);
+    }
+  }, [isLoading, isEditPostLoading]);
+
   return (
     <S.CreatePostContainer>
       <ScreenHeader
         isLoading={isLoading || isEditPostLoading}
-        title={`게시글 ${communityEdit.id ? '수정' : '작성'}하기`}
+        title={`게시글 ${isEdit ? '수정' : '작성'}하기`}
         rightContent={
           isLoading || isEditPostLoading ? (
             <Spinner size={24} color={theme.primary} />
@@ -279,15 +302,6 @@ export const CommunityCreatePostScreen: React.FC = () => {
             maxLength={5000}
           />
         </S.CreatePostMainSection>
-        <AnimatedHoc isOpen={keyboardShow}>
-          <S.CreatePostIconContainer style={{ opacity: keyboardShow ? 1 : 0 }}>
-            {POST_OPTION_LIST.map(({ icon, text }, index) => (
-              <ScaleOpacity key={index} onPress={() => onOptionClick(text)}>
-                <Icon icon={icon} includeBackground={false} />
-              </ScaleOpacity>
-            ))}
-          </S.CreatePostIconContainer>
-        </AnimatedHoc>
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
           <S.CreatePostImageSection>
             {(exitSelectedImage || Boolean(communityEdit.images?.length)) && (

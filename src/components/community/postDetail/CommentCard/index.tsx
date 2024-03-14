@@ -48,19 +48,16 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   attachment,
 }) => {
   const { userData } = useGetUser();
+
   const checkMyComment = userData?.id === author?.id;
+
   const articleId = useRecoilValue(articleIdAtom);
 
   const { mutate: updateReactionMutate } = useUpdateCommentReaction();
-  const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment({
-    articleId: articleId ?? 0,
-  });
+  const { mutate: deleteCommentMutate, isLoading: isDeleteCommentLoading } = useDeleteComment();
 
   const { mutate: updateReplyReactionMutation } = useUpdateReplyReaction();
-  const { mutate: deleteReplyMutate, isLoading: isDeleteReplyLoading } = useDeleteReply({
-    articleId: articleId ?? 0,
-    commentId: parentId ?? 0,
-  });
+  const { mutate: deleteReplyMutate, isLoading: isDeleteReplyLoading } = useDeleteReply();
 
   const theme = useTheme();
 
@@ -94,7 +91,9 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   };
 
   const reactedCount = reactions.filter(({ isReacted }) => isReacted).length;
+
   const [reaction, setReaction] = useState<boolean>(reactedCount >= 1 ? true : false);
+
   const [likes, setLikes] = useState<number>(
     reactions?.map(({ count }) => count).reduce((acc, cur) => acc + cur, 0),
   );
@@ -133,7 +132,9 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     } else {
       deleteCommentMutate({ articleId: articleId ?? 0, commentId: id });
     }
-    setCommentDeleteModal(!isDeleteCommentLoading || isDeleteReplyLoading);
+    setTimeout(() => {
+      setCommentDeleteModal(isDeleteCommentLoading || isDeleteReplyLoading);
+    }, 500);
   };
 
   return (
@@ -173,7 +174,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                     {isOverlay[index] && (
                       <ScaleOpacity onPress={() => showMore(index)}>
                         <Text size={14} color={theme.placeholder}>
-                          더보기
+                          더 보기
                         </Text>
                       </ScaleOpacity>
                     )}
@@ -201,7 +202,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                   >
                     <S.PostCommentImage
                       source={{ uri: attachment.original }}
-                      style={{ width: 300, height: 300 }}
+                      resizeMode="contain"
+                      style={{ width: '80%', height: '80%' }}
                     />
                   </S.PostCommentImageWrapper>
                 </ModalElement>

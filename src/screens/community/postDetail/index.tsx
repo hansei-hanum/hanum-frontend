@@ -1,10 +1,10 @@
-/* eslint-disable prefer-const */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import FI from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,7 +22,6 @@ import {
   Text,
   PostDetailLayout,
   MentionUserList,
-  ImageListBottomSheet,
   PostOptionBottomSheet,
   PhotoCard,
   PhotosInterface,
@@ -37,7 +36,6 @@ import {
 } from 'src/constants';
 import {
   useBottomSheet,
-  useCheckPhotoPermission,
   useCreateComment,
   useCreateReply,
   useDebounce,
@@ -47,10 +45,12 @@ import {
   useGetReplies,
   useGetUser,
 } from 'src/hooks';
-import { BottomSheetRefProps } from 'src/types';
 import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
-import { articleIdAtom } from 'src/atoms';
+import { articleIdAtom, communityEditAtom } from 'src/atoms';
+import { BottomSheetRefProps } from 'src/types';
+
+import { HeaderOptionProps } from '../main';
 
 import * as S from './styled';
 
@@ -76,7 +76,7 @@ export type CommunityPostDetailScreenProps = StackScreenProps<
 >;
 
 export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps> = ({ route }) => {
-  const { isEdit, id } = route.params;
+  const { id } = route.params;
 
   const { data: postData, isLoading: isPostLoading } = useGetPostById({ articleId: id });
 
@@ -102,26 +102,18 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     isSuccess: isCreateReplySuccess,
   } = useCreateReply();
 
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
+
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+  const mineBottomSheet = useRef<BottomSheetRefProps>(null);
 
   const setArticleId = useSetRecoilState(articleIdAtom);
 
   const inset = useSafeAreaInsets();
 
-  const ImageListBottomSheetRef = useRef<BottomSheetRefProps>(null);
   const commentInputRef = useRef<TextInput>(null);
 
-  const { checkPhotoPermission, permissionHeight, permission } = useCheckPhotoPermission({
-    ImageListBottomSheetRef,
-    commentInputRef,
-  });
-
-  const handlePresentModalPress = useCallback(() => {
-    setDoneCheck(false);
-    checkPhotoPermission();
-  }, []);
-
-  const { userProfile } = useGetUser();
+  const { userProfile, userData } = useGetUser();
 
   const [comment, setComment] = useState<string>('');
   const [mentionListOpen, setMentionListOpen] = useState<boolean>(false);
@@ -129,11 +121,10 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [commentId, setCommentId] = useState<number | null>(null);
   const [photo, setPhoto] = useState<PhotosInterface | null>(null);
-  const [doneCheck, setDoneCheck] = useState<boolean>(false);
   const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
-  const [height, setHeight] = useState<number>(0);
   const [users, setUsers] = useState({});
   const [mentionSearch, setMentionSearch] = useState<string>('');
+  const [targetId, setTargetId] = useState<number | null>(null);
 
   const { debouncedValue } = useDebounce(mentionSearch, 300);
 
@@ -143,10 +134,42 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const { refetch: replyRefetch } = useGetReplies({
     articleId: id,
-    commentId: commentId ?? -1,
-    isEnable: Boolean(commentId),
+    commentId: commentId,
   });
 
+  const handlePresentModalPress = () => {
+    if (photo) {
+      Toast.show({ type: 'error', text1: '댓글 이미지는 1장까지만 업로드 가능해요' });
+      return;
+    } else {
+      const options = {
+        mediaType: 'photo' as MediaType,
+        includeBase64: true,
+        maxHeight: 2000,
+        maxWidth: 2000,
+        selectionLimit: 1,
+      };
+      launchImageLibrary(options, (response) => {
+        if (response.assets) {
+          const imageUri = response.assets.map((item) => item.uri);
+          const imageName = response.assets.map((item) => item.fileName);
+          const imageType = response.assets.map((item) => item.type);
+          if (imageUri && imageName && imageType) {
+            const image = {
+              uri: imageUri[0],
+              name: imageName[0],
+              type: imageType[0],
+            };
+            setPhoto({
+              uri: image.uri as string,
+              name: image.name as string,
+              type: image.type as string,
+            });
+          }
+        }
+      });
+    }
+  };
   const theme = useTheme();
 
   const onChangeText = (text: string) => {
@@ -185,11 +208,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const sendChat = () => {
-    let inputString = comment;
-    let regex = /@[가-힣]+/g;
+    const inputString = comment;
+    const regex = /@[가-힣]+/g;
 
-    let outputString = inputString.replace(regex, (match) => {
-      let userName = match.substring(1);
+    const outputString = inputString.replace(regex, (match) => {
+      const userName = match.substring(1);
       return `@${users[userName as keyof typeof users]}`;
     });
 
@@ -222,13 +245,29 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setComment('');
   };
 
-  const openPostBottomSheet = () => {
-    if (isEdit) {
-      bottomSheetRef.current?.scrollTo(-height);
-    } else {
+  const openPostBottomSheet = ({ postId, id, name, text, images }: HeaderOptionProps) => {
+    if (!isPostLoading && postData) {
+      const isOwn = id && userData?.id === id && name ? true : false;
+      setTargetId(id || null);
+      setUserName(name || '');
       commentInputRef.current?.blur();
+      if (isOwn) {
+        setCommunityEdit({ text, images, id: postId });
+      }
+      openPostOptionBottomSheet(isOwn);
+    }
+  };
+
+  const openPostOptionBottomSheet = (isOwn: boolean) => {
+    if (isOwn) {
+      mineBottomSheet.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
+    } else {
       openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
     }
+  };
+
+  const closeMinBottomSheet = () => {
+    mineBottomSheet.current?.scrollTo(0);
   };
 
   const toggleAnonymous = () => {
@@ -261,16 +300,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onEndReached = () => {
-    const lastComment = commentsData?.pages[commentsData.pages.length - 1].data;
-    if (commentsData && lastComment?.nextCursor) {
+    const lastPage = commentsData?.pages[commentsData.pages.length - 1].data;
+    if (lastPage && lastPage.nextCursor) {
       fetchNextPage();
     }
   };
 
   useEffect(() => {
     if (isCreateCommentSuccess || isCreateReplySuccess) {
-      refetch();
       replyRefetch();
+      refetch();
     }
   }, [isCreateCommentLoading, isCreateReplyLoading]);
 
@@ -279,10 +318,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   useEffect(() => {
     if (isFocused) {
       setArticleId(id);
-      refetch();
     }
     if (commentsData) {
-      let newUsers: { [key: string]: number } = { ...users };
+      const newUsers: { [key: string]: number } = { ...users };
       commentsData.pages.map(({ data }) => {
         data.items.map(({ author }) => {
           if (author) {
@@ -292,7 +330,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
       });
       setUsers(newUsers);
     }
-  }, [isFocused, isGetCommentsLoading]);
+  }, [isFocused, isGetCommentsLoading, commentsData]);
 
   useEffect(() => {
     if (mentionData) {
@@ -321,16 +359,27 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
             author={postData.data.author}
             scopeOfDisclosure={postData.data.scopeOfDisclosure}
             createdAt={postData.data.createdAt}
-            openBottomSheet={openPostBottomSheet}
+            openBottomSheet={() =>
+              openPostBottomSheet({
+                postId: postData.data.id,
+                id: postData.data.author?.id,
+                name: postData.data.author?.name,
+                text: postData.data.content.spans ? postData.data.content.spans[0].text : '',
+                images: postData.data.attachments.map((item) => ({
+                  uri: item.thumbnail,
+                  id: item.id,
+                })),
+              })
+            }
           />
         ) : (
-          <CommunityPostDetailSkeleton.Header theme={theme} />
+          <CommunityPostDetailSkeleton.Header />
         )}
       </Header>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           isGetCommentsLoading || isPostLoading ? (
-            <CommunityPostDetailSkeleton.Content theme={theme} />
+            <CommunityPostDetailSkeleton.Content />
           ) : (
             <PostDetailLayout
               setCommentId={setCommentId}
@@ -361,6 +410,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 columnGap: 4,
                 paddingRight: 14,
                 marginVertical: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                width: '100%',
               }}
             >
               <PhotoCard item={photo.uri} onPress={onPhotoPress} />
@@ -402,29 +454,17 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
           </S.PostDetailCommentContainer>
         </S.PostDetailBottomSection>
       </S.PostDetailInnerContainer>
-      <ImageListBottomSheet
-        ref={ImageListBottomSheetRef}
-        setPhoto={setPhoto}
-        setDoneCheck={setDoneCheck}
-        photo={photo}
-        scrollHeight={permissionHeight}
-        permission={permission}
-        doneCheck={doneCheck}
+      <CommunityMineBottomSheet
+        ref={mineBottomSheet}
+        closeBottomSheet={closeMinBottomSheet}
+        postId={id}
       />
-      {isEdit ? (
-        <CommunityMineBottomSheet
-          ref={bottomSheetRef}
-          setHeight={setHeight}
-          height={height}
-          closeBottomSheet={closeBottomSheet}
-          postId={id}
-        />
-      ) : (
-        <PostOptionBottomSheet
-          bottomSheetRef={bottomSheetRef}
-          closeBottomSheet={closeBottomSheet}
-        />
-      )}
+      <PostOptionBottomSheet
+        userName={userName}
+        targetId={targetId}
+        bottomSheetRef={bottomSheetRef}
+        closeBottomSheet={closeBottomSheet}
+      />
     </S.PostDetailContainer>
   );
 };

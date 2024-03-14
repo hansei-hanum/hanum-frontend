@@ -29,7 +29,7 @@ export const getMyPosts = async ({ cursor, limit = 10 }: GetMyPostsValues) => {
     },
   });
 
-  const nextPage = data.data.cursor < data.data.nextCursor ? data.data.nextCursor : undefined;
+  const nextPage = data.data.nextCursor ? data.data.nextCursor : undefined;
 
   return { ...data, nextPage };
 };

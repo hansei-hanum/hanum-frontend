@@ -1,24 +1,20 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, DeleteReplyValues, deleteReply } from 'src/api';
 import { ErrorToast } from 'src/constants';
 
-import { useGetReplies } from '../useGetReplies';
-
-export const useDeleteReply = ({
-  articleId,
-  commentId,
-}: Pick<DeleteReplyValues, 'articleId' | 'commentId'>): UseMutationResult<
+export const useDeleteReply = (): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
   DeleteReplyValues
 > => {
-  const { refetch } = useGetReplies({ articleId, commentId });
+  const queryClient = useQueryClient();
+
   return useMutation('useDeleteReply', deleteReply, {
     onSuccess: () => {
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ['useGetReplies', 'useGetComments'] });
     },
     onError: (error) => {
       const message = error.response?.data.message;

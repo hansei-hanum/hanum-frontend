@@ -7,15 +7,18 @@ import { NoScrollbarScrollView, ScaleOpacity, Text } from 'src/components/common
 import { MAIN_MENU_LIST } from 'src/constants';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
 import { isIos } from 'src/utils';
+import { useFilteredVisibleType } from 'src/hooks';
 
 import * as S from './styled';
 
 export interface PostMenuProps {
-  setPostScope: React.Dispatch<React.SetStateAction<LimitedArticleScopeOfDisclosure>>;
-  postScope: LimitedArticleScopeOfDisclosure;
+  setPostScope: React.Dispatch<React.SetStateAction<LimitedArticleScopeOfDisclosure | null>>;
+  postScope: LimitedArticleScopeOfDisclosure | null;
 }
 
 export const PostMenu: React.FC<PostMenuProps> = ({ setPostScope, postScope }) => {
+  const { filteredVisibleType } = useFilteredVisibleType();
+
   const theme = useTheme();
 
   const onPress = (scope: LimitedArticleScopeOfDisclosure) => {
@@ -33,7 +36,11 @@ export const PostMenu: React.FC<PostMenuProps> = ({ setPostScope, postScope }) =
         }}
       >
         {MAIN_MENU_LIST.map(({ scope, text }) => (
-          <ScaleOpacity key={scope} activeOpacity={1} onPress={() => onPress(scope)}>
+          <ScaleOpacity
+            key={scope}
+            activeOpacity={1}
+            onPress={() => filteredVisibleType(scope) && onPress(scope)}
+          >
             <S.CommunityMainMenu
               style={[
                 {
@@ -42,7 +49,11 @@ export const PostMenu: React.FC<PostMenuProps> = ({ setPostScope, postScope }) =
                 },
               ]}
             >
-              <Text size={16} color={postScope !== scope ? theme.default : theme.white}>
+              <Text
+                size={16}
+                color={postScope !== scope ? theme.default : theme.white}
+                style={{ opacity: filteredVisibleType(scope) ? 1 : 0.3 }}
+              >
                 {text}
               </Text>
             </S.CommunityMainMenu>

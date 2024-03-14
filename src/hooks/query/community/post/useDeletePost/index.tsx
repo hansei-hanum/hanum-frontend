@@ -1,39 +1,31 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
+
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { AxiosError } from 'axios';
 
-import {
-  APIErrorResponse,
-  APIResponse,
-  DeletePostValues,
-  LimitedArticleScopeOfDisclosure,
-  deletePost,
-} from 'src/api';
+import { APIErrorResponse, APIResponse, DeletePostValues, deletePost } from 'src/api';
 import { ErrorToast } from 'src/constants';
-import { useNavigate } from 'src/hooks/useNavigate';
-
-import { useGetMyPosts } from '../../etc';
 
 export const useDeletePost = (): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
   DeletePostValues
 > => {
-  const { refetch } = useGetMyPosts({
-    cursor: null,
-  });
-
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const route = useRoute();
+  const navigation = useNavigation();
 
   return useMutation('useDeletePost', deletePost, {
     onSuccess: () => {
-      navigate('UserPost');
+      route.name === 'CommunityPostDetail' ? navigation.goBack() : null;
+      queryClient.invalidateQueries({ queryKey: ['useGetPosts'] });
+      queryClient.invalidateQueries({ queryKey: ['useGetMyPosts'] });
       Toast.show({
         type: 'success',
         text1: '게시글이 성공적으로 삭제되었어요',
       });
-      refetch();
     },
     onError: (error) => {
       console.log(error.response?.data, 'onError');

@@ -18,6 +18,7 @@ export const createComment = async ({
 }: CreateCommentValues) => {
   const token = await AsyncStorage.getItem('token');
   setAccessToken(token);
+
   const formData = new FormData();
 
   formData.append('isAnonymous', String(isAnonymous));

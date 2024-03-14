@@ -22,5 +22,6 @@ declare module '@emotion/react' {
     backDrop: string;
     lightPrimary: string;
     blackSkeleton: string;
+    skeleton: string;
   }
 }

@@ -3,7 +3,7 @@ import { FlatList, View } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
-import { CommunityUserImage, ScaleOpacity, Text } from 'src/components';
+import { CommunityUserImage, ScaleOpacity, Spinner, Text } from 'src/components';
 import { onTagProps } from 'src/screens';
 import { APIResponse, GetUserMentionResponse } from 'src/api';
 
@@ -18,12 +18,10 @@ export interface MentionUserListProps {
 export const MentionUserList: React.FC<MentionUserListProps> = ({ onTag, data, isLoading }) => {
   const theme = useTheme();
 
-  if (isLoading && !data) {
+  if (isLoading || !data || (data.data && data.data.items.length === 0)) {
     return (
-      <View style={{ padding: 14 }}>
-        <Text size={14} color={theme.placeholder}>
-          로딩중..
-        </Text>
+      <View style={{ padding: 14, justifyContent: 'center' }}>
+        <Spinner size={40} />
       </View>
     );
   } else if (data && data.data) {

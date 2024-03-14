@@ -1,12 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
+import {
+  Animated,
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  View,
+  TextInput,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Toast from 'react-native-toast-message';
 import { RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
 import {
   CommunityPostHeader,
@@ -17,6 +24,9 @@ import {
   PostBottom,
   Spinner,
   PostsTopSection,
+  CommunityMineBottomSheet,
+  ReportBottomSheet,
+  REPORT_BOTTOM_SHEET_HEIGHT,
 } from 'src/components';
 import {
   useBottomSheet,
@@ -26,18 +36,25 @@ import {
   useNavigate,
   useSearchPosts,
 } from 'src/hooks';
-import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
+import { COMMUNITY_BOTTOM_SHEET_HEIGHT, SCREEN_WIDTH } from 'src/constants';
 import { isIos } from 'src/utils';
-import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
+import { OpenBottomSheetProps } from 'src/screens/user';
+import { communityEditAtom } from 'src/atoms';
+import { BottomSheetRefProps } from 'src/types';
 
 import * as S from './styled';
+
+export interface HeaderOptionProps extends OpenBottomSheetProps {
+  author?: GetCommentsAuthorProps;
+}
 
 export const CommunityMainScreen: React.FC = () => {
   const theme = useTheme();
 
-  const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure>(
-    LimitedArticleScopeOfDisclosure.Public,
-  );
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
+
+  const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure | null>(null);
 
   const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } = useGetPosts({
     scope: postScope,
@@ -48,7 +65,12 @@ export const CommunityMainScreen: React.FC = () => {
 
   const { debouncedValue } = useDebounce(searchQuery ? searchQuery : '', 300);
 
-  const { data: searchData, isLoading: isSearchLoading } = useSearchPosts({
+  const {
+    data: searchData,
+    isLoading: isSearchLoading,
+    fetchNextPage: searchFetchNextPage,
+    isFetchingNextPage: isSearchFetchingNextPage,
+  } = useSearchPosts({
     scope: postScope,
     cursor: null,
     query: debouncedValue,
@@ -58,21 +80,30 @@ export const CommunityMainScreen: React.FC = () => {
   const inset = useSafeAreaInsets();
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
+  const mineBottomSheet = useRef<BottomSheetRefProps>(null);
 
-  const onChatScreenNavigate = (index: number) => {
-    navigate('CommunityPostDetail', { id: index, isEdit: false });
+  const onChatScreenNavigate = (id: number) => {
+    navigate('CommunityPostDetail', { id });
   };
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
 
   const scrollY = useRef(new Animated.Value(0)).current;
+  const searchRef = useRef<TextInput>(null);
 
   const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrollValue, setScrollValue] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const [targetId, setTargetId] = useState<number | null>(null);
+  const [userName, setUserName] = useState<string>('');
+  const [postId, setPostId] = useState<number | null>(null);
+  const [openUserBottomSheet, setOpenUserBottomSheet] = useState<boolean>(false);
+  const [userBottomSheetImage, setUserBottomSheetImage] = useState<string | null>(null);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    searchRef.current?.blur();
+    setIsSearchScreen(false);
     const offsetY = event.nativeEvent.contentOffset.y;
     scrollY.setValue(offsetY);
     setHidden(offsetY > 0 && scrollValue !== offsetY);
@@ -84,28 +115,14 @@ export const CommunityMainScreen: React.FC = () => {
   const onSetScrollY = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollValue(e.nativeEvent.contentOffset.y);
   };
-  const { verifyUser } = useGetUser();
-
-  const onProfilePress = () => {
-    if (verifyUser) {
-      Toast.show({
-        type: 'info',
-        position: 'top',
-        text1: '클라우드보안과 2학년 2반 재학생이에요',
-      });
-    } else {
-      Toast.show({
-        type: 'info',
-        position: 'top',
-        text1: '익명 사용자에요',
-      });
-    }
-  };
-
-  const isFocused = useIsFocused();
+  const { userData } = useGetUser();
 
   const onEndReached = () => {
-    fetchNextPage();
+    if (searchData) {
+      searchFetchNextPage();
+    } else if (data) {
+      fetchNextPage();
+    }
   };
 
   const onChangeText = (text: string) => {
@@ -122,15 +139,51 @@ export const CommunityMainScreen: React.FC = () => {
     wait(500).then(() => setRefreshing(false));
   }, []);
 
+  const isFocused = useIsFocused();
+
+  const onHeaderOptionPress = ({ postId, author, text, images }: HeaderOptionProps) => {
+    setOpenUserBottomSheet(false);
+    setPostId(postId);
+    const isOwn = author?.id && userData?.id === author.id && author.name ? true : false;
+    setTargetId(author?.id || null);
+    setUserName(author?.name || '');
+    if (isOwn) {
+      setCommunityEdit({ text, images, id: postId });
+    }
+    openPostOptionBottomSheet(isOwn);
+  };
+
+  const openPostOptionBottomSheet = (isOwn: boolean) => {
+    if (isOwn) {
+      mineBottomSheet.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
+    } else {
+      openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
+    }
+  };
+
+  const closeMinBottomSheet = () => {
+    mineBottomSheet.current?.scrollTo(0);
+  };
+
+  const onProfilePress = (author?: GetCommentsAuthorProps) => {
+    setTargetId(author?.id || null);
+    setUserName(author?.name || '');
+    setOpenUserBottomSheet(true);
+    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 });
+    setUserBottomSheetImage(author?.picture || null);
+  };
+
   useEffect(() => {
     if (isFocused) {
       refetch();
+      setCommunityEdit({ text: '', images: [], id: null });
     }
-  }, [postScope]);
+  }, [isFocused]);
 
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
+        ref={searchRef}
         hidden={hidden}
         scrollY={scrollY}
         HEADER_HEIGHT={HEADER_HEIGHT}
@@ -139,6 +192,9 @@ export const CommunityMainScreen: React.FC = () => {
         setHidden={setHidden}
         onChangeText={onChangeText}
         value={searchQuery ? searchQuery : ''}
+        closeSearchScreenClick={() => {
+          setSearchQuery(null);
+        }}
       />
       {isSearchLoading ? (
         <Spinner size={40} isCenter />
@@ -174,7 +230,7 @@ export const CommunityMainScreen: React.FC = () => {
               paddingTop: isIos ? inset.top + 24 : 68,
             }}
             contentContainerStyle={{
-              paddingBottom: 60,
+              paddingBottom: inset.bottom + 100,
               rowGap: 40,
             }}
             renderItem={({ item: { data } }) => (
@@ -201,11 +257,19 @@ export const CommunityMainScreen: React.FC = () => {
                         scopeOfDisclosure={scopeOfDisclosure}
                         createdAt={createdAt}
                         style={{ width: '100%' }}
-                        openBottomSheet={() =>
-                          openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT })
-                        }
+                        openBottomSheet={() => {
+                          onHeaderOptionPress({
+                            postId: id,
+                            author: author,
+                            text: content.spans ? content.spans[0].text : '',
+                            images: attachments.map((item) => ({
+                              uri: item.thumbnail,
+                              id: item.id,
+                            })),
+                          });
+                        }}
                         onPress={() => onChatScreenNavigate(id)}
-                        userImagePress={onProfilePress}
+                        onProfilePress={() => onProfilePress(author)}
                       />
                       <CommunityPost
                         content={content}
@@ -218,7 +282,7 @@ export const CommunityMainScreen: React.FC = () => {
                     </S.CommunityMainBox>
                   ),
                 )}
-                {isFetchingNextPage && (
+                {(isFetchingNextPage || isSearchFetchingNextPage) && (
                   <View style={{ paddingVertical: 20 }}>
                     <Spinner size={40} />
                   </View>
@@ -246,8 +310,18 @@ export const CommunityMainScreen: React.FC = () => {
           </S.CommunityMainNoDataWrapper>
         </>
       )}
-
-      <PostOptionBottomSheet bottomSheetRef={bottomSheetRef} closeBottomSheet={closeBottomSheet} />
+      <CommunityMineBottomSheet
+        ref={mineBottomSheet}
+        closeBottomSheet={closeMinBottomSheet}
+        postId={postId}
+      />
+      <PostOptionBottomSheet
+        userBottomSheet={openUserBottomSheet}
+        userName={userName}
+        bottomSheetRef={bottomSheetRef}
+        closeBottomSheet={closeBottomSheet}
+        targetId={targetId}
+      />
     </S.CommunityMainWrapper>
   );
 };

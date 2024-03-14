@@ -18,7 +18,6 @@ export interface ReportCompleteProps {
   setReportWindowOpen: React.Dispatch<React.SetStateAction<boolean>>;
   reportWindowHeight: number;
 }
-
 export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
   reportScreenAnimationValue,
   reportBottomSheetRef,
@@ -35,16 +34,14 @@ export const ReportCompleteWindow: React.FC<ReportCompleteProps> = ({
         backgroundColor: theme.background,
       }}
     >
-      <S.CompleteWindowHeader>
-        <Icon name="checkmark-circle-outline" size={RPW(18)} color={theme.primary} />
-        <Text size={22} fontFamily="bold" color={theme.default} isCenter>
-          신고가 완료됐어요
-        </Text>
-        <Text size={14} color={theme.placeholder} isCenter>
-          신고가 처리되면 처리 결과를 알려드릴게요.{'\n'}이 사용자의 게시글이 불쾌할 경우 차단할 수
-          있어요.
-        </Text>
-      </S.CompleteWindowHeader>
+      <Icon name="checkmark-circle-outline" size={RPW(18)} color={theme.primary} />
+      <Text size={22} fontFamily="bold" color={theme.default} isCenter>
+        신고가 완료됐어요
+      </Text>
+      <Text size={14} color={theme.placeholder} isCenter>
+        신고해주신 내용을 면밀히 검토할게요.{'\n'}
+        게시글이 불쾌할 경우 해당 사용자를 차단할 수 있어요.
+      </Text>
       <S.CompleteWindowButtonContainer
         onPress={() => {
           setReportWindowOpen(false);

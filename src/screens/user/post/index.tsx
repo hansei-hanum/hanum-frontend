@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
+
+import { useIsFocused } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
@@ -17,6 +19,7 @@ import {
 import { useBottomSheet, useGetMyPosts, useNavigate } from 'src/hooks';
 import { communityEditAtom } from 'src/atoms';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
 
 import * as S from './styled';
 
@@ -33,7 +36,7 @@ export const UserPostScreen: React.FC = () => {
 
   const theme = useTheme();
 
-  const { data, isLoading, fetchNextPage, isFetchingNextPage } = useGetMyPosts({
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, refetch } = useGetMyPosts({
     cursor: null,
   });
 
@@ -41,21 +44,28 @@ export const UserPostScreen: React.FC = () => {
 
   const { bottomSheetRef, closeBottomSheet } = useBottomSheet();
 
-  const [height, setHeight] = useState<number>(0);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [postId, setPostId] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
   const onChatScreenNavigate = (id: number) => {
-    navigate('CommunityPostDetail', { id, isEdit: true });
+    navigate('CommunityPostDetail', { id });
   };
 
   const openBottomSheet = ({ postId, text, images }: OpenBottomSheetProps) => {
     setCommunityEdit({ text, images, id: postId });
     setPostId(postId);
-    bottomSheetRef.current?.scrollTo(-height);
+    bottomSheetRef.current?.scrollTo(COMMUNITY_BOTTOM_SHEET_HEIGHT);
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -117,13 +127,13 @@ export const UserPostScreen: React.FC = () => {
                               })),
                             })
                           }
-                          onPress={() => onChatScreenNavigate(index)}
+                          onPress={() => onChatScreenNavigate(id)}
                         />
                         <CommunityPost
                           content={content}
                           attachments={attachments}
                           createdAt={createdAt}
-                          onPress={() => onChatScreenNavigate(index)}
+                          onPress={() => onChatScreenNavigate(id)}
                           index={index}
                         />
                         <PostBottom id={id} reactions={reactions} commentCount={commentCount} />
@@ -153,8 +163,6 @@ export const UserPostScreen: React.FC = () => {
       <CommunityMineBottomSheet
         postId={postId}
         ref={bottomSheetRef}
-        setHeight={setHeight}
-        height={height}
         closeBottomSheet={closeBottomSheet}
       />
     </SafeAreaView>

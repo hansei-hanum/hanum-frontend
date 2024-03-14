@@ -2,20 +2,18 @@ import { UseInfiniteQueryResult, useInfiniteQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
 
-import {
-  APIErrorResponse,
-  APIResponse,
-  GetRepliesResponse,
-  GetRepliesValues,
-  getReplies,
-} from 'src/api';
+import { APIErrorResponse, APIResponse, GetRepliesResponse, getReplies } from 'src/api';
 import { ErrorToast } from 'src/constants';
+
+export interface GetRepliesValues {
+  articleId: number | null;
+  commentId: number | null;
+}
 
 export const useGetReplies = ({
   articleId,
   commentId,
-  isEnable,
-}: Pick<GetRepliesValues, 'articleId' | 'commentId' | 'isEnable'>): UseInfiniteQueryResult<
+}: GetRepliesValues): UseInfiniteQueryResult<
   APIResponse<GetRepliesResponse>,
   AxiosError<APIErrorResponse>
 > => {
@@ -24,13 +22,14 @@ export const useGetReplies = ({
     ({ pageParam = null }) => getReplies({ articleId, cursor: pageParam, commentId }),
     {
       getNextPageParam: (lastPage) => {
+        if (!lastPage) return null;
         return lastPage.nextPage;
       },
       onError: (error) => {
         const message = error.response?.data.message;
         message && ErrorToast(message);
       },
-      enabled: isEnable ? isEnable : commentId === -1 ? false : false,
+      enabled: !!articleId && !!commentId,
     },
   );
 };

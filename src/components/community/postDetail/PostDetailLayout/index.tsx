@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { View } from 'react-native';
 
@@ -7,7 +7,13 @@ import { useRecoilValue } from 'recoil';
 
 import { useGetReplies } from 'src/hooks';
 import { PostCommentCard, CommunityPost, ScaleOpacity, Text, Spinner } from 'src/components';
-import { APIResponse, GetCommentsDetail, GetCommentsResponse, GetPostByIdResponse } from 'src/api';
+import {
+  APIResponse,
+  GetCommentsDetail,
+  GetCommentsResponse,
+  GetPostByIdResponse,
+  GetRepliesResponse,
+} from 'src/api';
 import { articleIdAtom } from 'src/atoms';
 import { RPH } from 'src/utils';
 
@@ -50,9 +56,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     isFetchingNextPage: isFetchingReplyNextPage,
     isLoading: replyLoading,
   } = useGetReplies({
-    articleId: articleId ?? -1,
-    commentId: localCommentId ?? -1,
-    isEnable: Boolean(localCommentId),
+    articleId: articleId,
+    commentId: localCommentId,
   });
 
   const repliesData = repliesPageData?.pages || [];
@@ -61,6 +66,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
   const theme = useTheme();
 
   const [showReply, setShowReply] = useState<Array<boolean>>([]);
+  const [replyData, setReplyData] = useState<{ [key: number]: APIResponse<GetRepliesResponse>[] }>(
+    {},
+  );
 
   const showChatReplies = (index: number) => {
     setShowReply((prev) => {
@@ -76,6 +84,15 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     setLocalCommentId(id);
   };
 
+  useEffect(() => {
+    if (repliesData && repliesData.length > 0 && localCommentId) {
+      setReplyData((prev) => {
+        const newReplyData = Array.isArray(repliesData) ? repliesData : [];
+        return { ...prev, [localCommentId]: newReplyData };
+      });
+    }
+  }, [replyLoading]);
+
   return (
     <S.PostDetailLayoutContainer>
       <FlatList
@@ -90,7 +107,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
           rowGap: 10,
         }}
         onEndReached={onEndReached}
-        onEndReachedThreshold={0.5}
         ListHeaderComponent={
           <>
             {!isPostLoading && postData ? (
@@ -186,9 +202,9 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                           <Spinner size={40} />
                         </View>
                       ) : (
-                        repliesData &&
-                        repliesData.length > 0 &&
-                        repliesData.map(
+                        replyData[props.id] &&
+                        replyData[props.id].length > 0 &&
+                        replyData[props.id].map(
                           ({ data: { items } }) =>
                             items &&
                             items.length > 0 &&
@@ -202,18 +218,15 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                           <Spinner size={40} />
                         </View>
                       )}
-                      {!replyLoading &&
-                        repliesData &&
-                        repliesData[0].data.total >= 10 &&
-                        lastPage.data.cursor < lastPage.data.nextCursor && (
-                          <View style={{ paddingLeft: 20 }}>
-                            <ScaleOpacity onPress={fetchNextPageReplies}>
-                              <Text size={14} color={theme.placeholder}>
-                                답글 더보기
-                              </Text>
-                            </ScaleOpacity>
-                          </View>
-                        )}
+                      {!replyLoading && lastPage && lastPage.data.nextCursor && (
+                        <View style={{ paddingLeft: 20 }}>
+                          <ScaleOpacity onPress={fetchNextPageReplies}>
+                            <Text size={14} color={theme.placeholder}>
+                              더 보기
+                            </Text>
+                          </ScaleOpacity>
+                        </View>
+                      )}
                     </View>
                   )}
                 </View>

@@ -7,8 +7,7 @@ import { PaginationItemProps, PaginationType } from 'src/types';
 import { GetCommentsValues } from '../comments';
 
 export interface GetRepliesValues extends GetCommentsValues {
-  commentId: number;
-  isEnable?: boolean;
+  commentId: number | null;
 }
 
 export interface GetRepliesDetail {
@@ -28,8 +27,12 @@ export const getReplies = async ({
   cursor = null,
   limit = 10,
 }: GetRepliesValues) => {
+  if (!articleId || !commentId) return null;
+
   const token = await AsyncStorage.getItem('token');
+
   setAccessToken(token);
+
   const { data } = await communityInstance.get(
     `${API_SUFFIX.COMMUNITY.BASE_URL}/${articleId}/comments/${commentId}/replies`,
     {

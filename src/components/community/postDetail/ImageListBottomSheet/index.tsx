@@ -72,25 +72,29 @@ export const ImageListBottomSheet = React.forwardRef<
     const [isLoading, setIsLoading] = useState(true);
     const [getPhotosNum, setGetPhotosNum] = useState(60);
 
-    const scrollTo = useCallback(
-      (destination: number) => {
-        'worklet';
-        active.value = destination !== 0;
+    const scrollTo = (destination: number) => {
+      'worklet';
+      active.value = destination !== 0;
 
-        translateY.value = withSpring(destination, {
-          damping: 100,
-          stiffness: 400,
-        });
-      },
-      [active, translateY],
-    );
+      translateY.value = withSpring(destination, {
+        damping: 100,
+        stiffness: 400,
+      });
+    };
 
     const isActive = useCallback(() => {
       'worklet';
       return active.value;
     }, [active]);
 
-    useImperativeHandle(ref, () => ({ scrollTo, isActive }), [scrollTo, isActive]);
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollTo: (destination: number) => runOnJS(scrollTo)(destination),
+        isActive,
+      }),
+      [scrollTo, isActive],
+    );
 
     const context = useSharedValue({ y: 0 });
     const gesture = Gesture.Pan()

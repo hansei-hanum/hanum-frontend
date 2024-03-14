@@ -1,23 +1,24 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 
 import { AxiosError } from 'axios';
 
 import { APIErrorResponse, APIResponse, DeleteCommentValues, deleteComment } from 'src/api';
 import { ErrorToast } from 'src/constants';
 
-import { useGetComments } from '../useGetComments';
+export interface UseDeleteCommentProps {
+  refetch: () => void;
+}
 
-export const useDeleteComment = ({
-  articleId,
-}: Pick<DeleteCommentValues, 'articleId'>): UseMutationResult<
+export const useDeleteComment = (): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
   DeleteCommentValues
 > => {
-  const { refetch } = useGetComments({ articleId });
+  const queryClient = useQueryClient();
+
   return useMutation('useDeleteComment', deleteComment, {
     onSuccess: () => {
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ['useGetComments'] });
     },
     onError: (error) => {
       const message = error.response?.data.message;

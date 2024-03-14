@@ -7,15 +7,15 @@ export interface GetUserMentionValue {
   name: string;
 }
 
+export interface GetUserMentionDetail {
+  id: number;
+  name: string;
+  picture: string;
+  verificationInfo: string;
+}
+
 export interface GetUserMentionResponse {
-  items: [
-    {
-      id: number;
-      name: string;
-      picture: string;
-      verificationInfo: string;
-    },
-  ];
+  items: GetUserMentionDetail[];
 }
 
 export const getUserMention = async ({ name }: GetUserMentionValue) => {

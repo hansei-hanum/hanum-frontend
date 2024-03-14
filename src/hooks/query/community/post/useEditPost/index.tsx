@@ -1,42 +1,30 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
+
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { AxiosError } from 'axios';
 
-import {
-  APIErrorResponse,
-  APIResponse,
-  EditPostValues,
-  LimitedArticleScopeOfDisclosure,
-  editPost,
-} from 'src/api';
+import { APIErrorResponse, APIResponse, EditPostValues, editPost } from 'src/api';
 import { ErrorToast } from 'src/constants';
-import { useNavigate } from 'src/hooks/useNavigate';
-
-import { useGetPosts } from '../useGetPosts';
-import { useGetMyPosts } from '../../etc';
 
 export const useEditPost = (): UseMutationResult<
   APIResponse<null>,
   AxiosError<APIErrorResponse>,
   EditPostValues
 > => {
-  const { refetch: postsRefetch } = useGetPosts({
-    scope: LimitedArticleScopeOfDisclosure.Public,
-    cursor: null,
-  });
-  const { refetch: myPostsRefetch } = useGetMyPosts({
-    cursor: null,
-  });
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const route = useRoute();
+  const navigation = useNavigation();
+
   return useMutation('useEditPost', editPost, {
     onSuccess: () => {
-      postsRefetch();
-      myPostsRefetch();
-      navigate('UserPost');
+      route.name === 'CommunityPostDetail' ? navigation.goBack() : null;
+      queryClient.invalidateQueries({ queryKey: ['useGetPosts'] });
+      queryClient.invalidateQueries({ queryKey: ['useGetMyPosts'] });
       Toast.show({
         type: 'success',
-        text1: '게시글이 성공적으로 수정되어었요',
+        text1: '게시글이 성공적으로 수정되었어요',
       });
     },
     onError: (error) => {
