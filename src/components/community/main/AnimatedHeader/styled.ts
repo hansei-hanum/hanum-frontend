@@ -46,4 +46,12 @@ export const CommunityMainSearchBarWrapper = styled(Animated.View)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  column-gap: 14px;
+`;
+
+export const CommunityMainSearchBarOptionContainer = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 4px;
 `;

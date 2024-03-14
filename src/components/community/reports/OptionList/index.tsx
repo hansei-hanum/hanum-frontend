@@ -15,18 +15,25 @@ export interface OptionListProps {
   enableScroll: boolean;
   onPress: () => void;
   theme: Theme;
+  isUserReport?: boolean;
 }
 
-export const OptionList: React.FC<OptionListProps> = ({ onPress, theme }) => {
+const USER_REPORT_DESCRIPTION = `이 유저를 신고하는 이유를 알려주세요.
+접수해주신 신고는 면밀히 검토하여 이용약관 위반이 확인될 경우,
+해당 사용자에 대해 이용제한 조치를 취할게요.
+`;
+
+const POST_REPORT_DESCRIPTION = `회원님의 신고는 모두 익명으로 처리됩니다. 누군가 위급한 상황에 있다고 생각된다면 즉시 문의주시기 바랍니다.`;
+
+export const OptionList: React.FC<OptionListProps> = ({ onPress, theme, isUserReport }) => {
   return (
     <>
       <S.ReportBottomSheetHeader>
         <Text size={16} fontFamily="bold" color={theme.default}>
-          이 게시물을 신고하는 이유
+          {isUserReport ? '이 유저를 신고하는 이유' : '이 게시물을 신고하는 이유'}
         </Text>
         <Text size={13} color={theme.placeholder}>
-          지적재산권 침해를 신고하는 경우를 제외하고 회원님의 신고는 익명으로 처리됩니다. 누군가
-          위급한 상황에 있다고 생각된다면 즉시 문의 주시기 바랍니다.
+          {isUserReport ? USER_REPORT_DESCRIPTION : POST_REPORT_DESCRIPTION}
         </Text>
       </S.ReportBottomSheetHeader>
       <View style={{ width: '100%', paddingTop: 10 }}>

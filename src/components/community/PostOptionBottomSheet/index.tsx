@@ -1,21 +1,25 @@
 import React, { useRef, useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Animated, Share } from 'react-native';
+import { Animated } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { WithLocalSvg } from 'react-native-svg';
 
 import { useTheme } from '@emotion/react';
 
 import { BottomSheet, Button, ButtonContainer, Modal, ScaleOpacity, Text } from 'src/components';
 import {
-  COMMUNITY_BOTTOM_SHEET_OPTION_LIST,
   CommunityBottomSheetTextEnum,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
   SCREEN_WIDTH,
+  CommunityOptionList,
+  CommunityBottomSheetUserTextEnum,
 } from 'src/constants';
 import { BottomSheetRefProps } from 'src/types';
 import { RPH, isIos } from 'src/utils';
 import { useBlock } from 'src/hooks';
+import { UserLogo, VerifyCheckIcon } from 'src/assets';
+import { GetCommentsAuthorProps } from 'src/api';
 
 import { ReportBottomSheet } from '../reports';
 
@@ -26,6 +30,9 @@ export interface CommunityBottomSheetProps {
   closeBottomSheet: () => void;
   targetId: number | null;
   userName: string;
+  userBottomSheet: boolean;
+  userImage?: string;
+  author?: GetCommentsAuthorProps;
 }
 
 export interface openModalProps {
@@ -33,14 +40,17 @@ export interface openModalProps {
   block: boolean;
 }
 
-const REPORT_BOTTOM_SHEET_HEIGHT = isIos ? RPH(-55) : RPH(-64);
+export const REPORT_BOTTOM_SHEET_HEIGHT = isIos ? RPH(-55) : RPH(-64);
 
 export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
   bottomSheetRef,
   closeBottomSheet,
-  targetId,
-  userName,
+  userBottomSheet,
+  userImage,
+  author,
 }) => {
+  console.log('PostOptionBottomSheet', userImage);
+  const { option, enums } = CommunityOptionList(userBottomSheet);
   const reportScreenAnimationValue = useRef(new Animated.Value(SCREEN_WIDTH)).current;
   const reportBottomSheetRef = useRef<BottomSheetRefProps>(null);
 
@@ -50,13 +60,13 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const onPress = (option: CommunityBottomSheetTextEnum) => {
+  const onPress = (option: CommunityBottomSheetUserTextEnum | CommunityBottomSheetTextEnum) => {
     reportScreenAnimationValue.setValue(SCREEN_WIDTH);
     closeBottomSheet();
     switch (option) {
-      case CommunityBottomSheetTextEnum.SHARE:
-        return sharePost();
-      case CommunityBottomSheetTextEnum.REPORT:
+      // case enums.SHARE:
+      //   return sharePost();
+      case enums.REPORT:
         // if (!targetId) {
         //   Toast.show({
         //     type: 'info',
@@ -65,8 +75,8 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         //   return;
         // }
         return reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
-      case CommunityBottomSheetTextEnum.BLOCK:
-        if (userName === '') {
+      case enums.BLOCK:
+        if (author?.name === '') {
           Toast.show({
             type: 'info',
             text1: '익명 사용자는 차단할 수 없어요',
@@ -77,14 +87,14 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     }
   };
 
-  const sharePost = async () => {
-    await Share.share({
-      url: 'app://',
-    });
-  };
+  // const sharePost = async () => {
+  //   await Share.share({
+  //     url: 'app://',
+  //   });
+  // };
 
   const onModalButtonPress = () => {
-    mutate({ targetId: targetId });
+    author && mutate({ targetId: author?.id });
     setTimeout(() => setModalOpen(false), 400);
   };
 
@@ -96,12 +106,35 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     <>
       <BottomSheet
         ref={bottomSheetRef}
-        maxScrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
-        scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
+        maxScrollHeight={
+          userBottomSheet ? COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 : COMMUNITY_BOTTOM_SHEET_HEIGHT
+        }
+        scrollHeight={
+          userBottomSheet ? COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 : COMMUNITY_BOTTOM_SHEET_HEIGHT
+        }
         modalBackDropVisible={modalOpen}
       >
         <S.PostOptionBottomSheetContainer>
-          {COMMUNITY_BOTTOM_SHEET_OPTION_LIST.map(({ text, isBlock, icon }) => (
+          {userBottomSheet && (
+            <S.UserInfoContainer>
+              <S.UserInfoImage
+                source={author && author.picture ? { uri: author.picture } : UserLogo}
+                style={{ resizeMode: 'contain' }}
+              />
+              <S.UserInfoAuthorContainer>
+                <Text size={18} fontFamily="bold">
+                  {author?.name}
+                </Text>
+                {author && author.verificationInfo && (
+                  <S.UserInfoVerificationContainer>
+                    <Text size={16}>{author.verificationInfo}</Text>
+                    <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
+                  </S.UserInfoVerificationContainer>
+                )}
+              </S.UserInfoAuthorContainer>
+            </S.UserInfoContainer>
+          )}
+          {option.map(({ text, isBlock, icon }) => (
             <ScaleOpacity key={text} onPress={() => onPress(text)}>
               <S.PostOptionBottomSheetOptionContainer>
                 <S.PostOptionBottomSheetIconContainer>
@@ -121,6 +154,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
         </S.PostOptionBottomSheetContainer>
       </BottomSheet>
       <ReportBottomSheet
+        isUserReport={userBottomSheet}
         reportScreenAnimationValue={reportScreenAnimationValue}
         ref={reportBottomSheetRef}
         scrollHeight={REPORT_BOTTOM_SHEET_HEIGHT}
@@ -130,7 +164,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
           backDropVisible={false}
           modalVisible={modalOpen || isLoading}
           title="이 사용자 차단하기"
-          text={`“${userName}” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
+          text={`“${author?.name}” 님을 차단하면 대나무숲에서 게시글과 댓글을 포함하여 이 사용자의 모든 활동을 볼 수 없게 돼요.\n\n차단을 해제하기 위해서는 더 보기 > 설정 > 차단 목록에서 사용자를 제거해야 해요.\n\n계속할까요?`}
           button={
             <ButtonContainer>
               <Button onPress={onModalCancelPress} isModalBtn isWhite isDisabled={isLoading}>

@@ -10,8 +10,8 @@ import { PostMenu } from '../PostMenu';
 import * as S from './styled';
 
 export interface CommunityMainTopSectionProps {
-  postScope: LimitedArticleScopeOfDisclosure;
-  setPostScope: React.Dispatch<React.SetStateAction<LimitedArticleScopeOfDisclosure>>;
+  postScope: LimitedArticleScopeOfDisclosure | null;
+  setPostScope: React.Dispatch<React.SetStateAction<LimitedArticleScopeOfDisclosure | null>>;
   withUserThinkBox?: boolean;
   hasPadding?: boolean;
 }

@@ -12,8 +12,8 @@ import { useFilteredVisibleType } from 'src/hooks';
 import * as S from './styled';
 
 export interface PostMenuProps {
-  setPostScope: React.Dispatch<React.SetStateAction<LimitedArticleScopeOfDisclosure>>;
-  postScope: LimitedArticleScopeOfDisclosure;
+  setPostScope: React.Dispatch<React.SetStateAction<LimitedArticleScopeOfDisclosure | null>>;
+  postScope: LimitedArticleScopeOfDisclosure | null;
 }
 
 export const PostMenu: React.FC<PostMenuProps> = ({ setPostScope, postScope }) => {

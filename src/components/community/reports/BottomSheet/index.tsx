@@ -25,12 +25,13 @@ import { ReportCompleteWindow } from '../CompleteWindow';
 import * as S from './styled';
 
 interface ReportBottomSheetProps extends AnimatedScrollViewProps {
+  isUserReport?: boolean;
   scrollHeight: number;
   reportScreenAnimationValue: Animated.Value;
 }
 
 export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBottomSheetProps>(
-  ({ scrollHeight, reportScreenAnimationValue }: ReportBottomSheetProps, ref) => {
+  ({ scrollHeight, reportScreenAnimationValue, isUserReport }: ReportBottomSheetProps, ref) => {
     const reportWindowHeight = -320;
     const theme = useTheme();
 
@@ -163,6 +164,7 @@ export const ReportBottomSheet = React.forwardRef<BottomSheetRefProps, ReportBot
                 theme={theme}
               />
               <OptionList
+                isUserReport={isUserReport}
                 theme={theme}
                 flatListRef={flatListRef}
                 enableScroll={enableScroll}

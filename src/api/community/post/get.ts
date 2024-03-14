@@ -7,14 +7,14 @@ import { API_SUFFIX } from 'src/api/suffix';
 import { LimitedArticleScopeOfDisclosure } from './create';
 
 export interface GetPostsValues {
-  scope: LimitedArticleScopeOfDisclosure;
+  scope: LimitedArticleScopeOfDisclosure | null;
   cursor: number | null;
   limit?: number;
 }
 
 export interface GetPostsDetail extends Exclude<PaginationItemProps, 'attachment'> {
   commentCount: number;
-  scopeOfDisclosure: LimitedArticleScopeOfDisclosure;
+  scopeOfDisclosure: LimitedArticleScopeOfDisclosure | null;
   attachments: [AttachmentType];
 }
 

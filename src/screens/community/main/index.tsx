@@ -25,6 +25,8 @@ import {
   Spinner,
   PostsTopSection,
   CommunityMineBottomSheet,
+  ReportBottomSheet,
+  REPORT_BOTTOM_SHEET_HEIGHT,
 } from 'src/components';
 import {
   useBottomSheet,
@@ -34,9 +36,9 @@ import {
   useNavigate,
   useSearchPosts,
 } from 'src/hooks';
-import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
+import { COMMUNITY_BOTTOM_SHEET_HEIGHT, SCREEN_WIDTH } from 'src/constants';
 import { isIos } from 'src/utils';
-import { LimitedArticleScopeOfDisclosure } from 'src/api';
+import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
 import { communityEditAtom } from 'src/atoms';
 import { BottomSheetRefProps } from 'src/types';
@@ -44,8 +46,7 @@ import { BottomSheetRefProps } from 'src/types';
 import * as S from './styled';
 
 export interface HeaderOptionProps extends OpenBottomSheetProps {
-  id?: number;
-  name?: string;
+  author?: GetCommentsAuthorProps;
 }
 
 export const CommunityMainScreen: React.FC = () => {
@@ -53,9 +54,7 @@ export const CommunityMainScreen: React.FC = () => {
 
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
 
-  const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure>(
-    LimitedArticleScopeOfDisclosure.Public,
-  );
+  const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure | null>(null);
 
   const { data, isLoading, refetch, fetchNextPage, isFetchingNextPage } = useGetPosts({
     scope: postScope,
@@ -99,6 +98,8 @@ export const CommunityMainScreen: React.FC = () => {
   const [targetId, setTargetId] = useState<number | null>(null);
   const [userName, setUserName] = useState<string>('');
   const [postId, setPostId] = useState<number | null>(null);
+  const [openUserBottomSheet, setOpenUserBottomSheet] = useState<boolean>(false);
+  const [userBottomSheetImage, setUserBottomSheetImage] = useState<string | null>(null);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     searchRef.current?.blur();
@@ -140,11 +141,12 @@ export const CommunityMainScreen: React.FC = () => {
 
   const isFocused = useIsFocused();
 
-  const onHeaderOptionPress = ({ postId, id, name, text, images }: HeaderOptionProps) => {
+  const onHeaderOptionPress = ({ postId, author, text, images }: HeaderOptionProps) => {
+    setOpenUserBottomSheet(false);
     setPostId(postId);
-    const isOwn = id && userData?.id === id && name ? true : false;
-    setTargetId(id || null);
-    setUserName(name || '');
+    const isOwn = author?.id && userData?.id === author.id && author.name ? true : false;
+    setTargetId(author?.id || null);
+    setUserName(author?.name || '');
     if (isOwn) {
       setCommunityEdit({ text, images, id: postId });
     }
@@ -161,6 +163,14 @@ export const CommunityMainScreen: React.FC = () => {
 
   const closeMinBottomSheet = () => {
     mineBottomSheet.current?.scrollTo(0);
+  };
+
+  const onProfilePress = (author?: GetCommentsAuthorProps) => {
+    setTargetId(author?.id || null);
+    setUserName(author?.name || '');
+    setOpenUserBottomSheet(true);
+    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 });
+    setUserBottomSheetImage(author?.picture || null);
   };
 
   useEffect(() => {
@@ -250,8 +260,7 @@ export const CommunityMainScreen: React.FC = () => {
                         openBottomSheet={() => {
                           onHeaderOptionPress({
                             postId: id,
-                            id: author?.id,
-                            name: author?.name,
+                            author: author,
                             text: content.spans ? content.spans[0].text : '',
                             images: attachments.map((item) => ({
                               uri: item.thumbnail,
@@ -260,6 +269,7 @@ export const CommunityMainScreen: React.FC = () => {
                           });
                         }}
                         onPress={() => onChatScreenNavigate(id)}
+                        onProfilePress={() => onProfilePress(author)}
                       />
                       <CommunityPost
                         content={content}
@@ -306,6 +316,7 @@ export const CommunityMainScreen: React.FC = () => {
         postId={postId}
       />
       <PostOptionBottomSheet
+        userBottomSheet={openUserBottomSheet}
         userName={userName}
         bottomSheetRef={bottomSheetRef}
         closeBottomSheet={closeBottomSheet}
