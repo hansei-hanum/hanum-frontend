@@ -1,10 +1,17 @@
 import styled from '@emotion/native';
 
 export const ScopeBottomSheetContainer = styled.View`
-  padding: 20px;
-  background-color: ${({ theme }) => theme.background};
-  flex-direction: column;
-  justify-content: center;
+  row-gap: 30px;
+  padding: 14px 20px;
+`;
+
+export const ScopeBottomSheetOptionContainer = styled.View`
+  flex-direction: row;
   align-items: center;
-  row-gap: 14px;
+  justify-content: space-between;
+`;
+
+export const ScopeBottomSheetIconContainer = styled(ScopeBottomSheetOptionContainer)`
+  column-gap: 10px;
+  justify-content: center;
 `;

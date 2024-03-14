@@ -14,7 +14,7 @@ import {
   ScopeBottomSheet,
 } from 'src/components';
 import { useBottomSheet, useGetPosts } from 'src/hooks';
-import { isIos } from 'src/utils';
+import { RPH, isIos } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
 import { communityEditAtom } from 'src/atoms';
@@ -26,7 +26,7 @@ export interface HeaderOptionProps extends OpenBottomSheetProps {
   author?: GetCommentsAuthorProps;
 }
 
-const SCOPE_BOTTOM_SHEET_HEIGHT = COMMUNITY_BOTTOM_SHEET_HEIGHT - 60;
+const SCOPE_BOTTOM_SHEET_HEIGHT = RPH(-40);
 
 export const CommunityMainScreen: React.FC = () => {
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
@@ -44,7 +44,7 @@ export const CommunityMainScreen: React.FC = () => {
 
   const inset = useSafeAreaInsets();
 
-  const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
+  const HEADER_HEIGHT = isIos ? inset.top : 68;
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -99,7 +99,7 @@ export const CommunityMainScreen: React.FC = () => {
   }, [isFocused]);
 
   return (
-    <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
+    <S.CommunityMainWrapper style={{ paddingTop: 40 }}>
       <CommunityMainAnimatedHeader
         onScopePress={onScopePress}
         postScope={postScope}

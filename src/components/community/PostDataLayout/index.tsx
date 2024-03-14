@@ -155,7 +155,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
             keyExtractor={(_, index) => index.toString()}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
-            ListHeaderComponent={!hasThinkSection ? null : <PostsTopSection />}
+            ListHeaderComponent={!hasThinkSection ? null : <PostsTopSection hasPadding />}
             refreshControl={refreshControl}
             style={{
               position: 'relative',
@@ -189,7 +189,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
                         author={author}
                         scopeOfDisclosure={scopeOfDisclosure}
                         createdAt={createdAt}
-                        style={{ width: '100%', paddingHorizontal: 10 }}
+                        style={{ width: '100%', paddingHorizontal: 14 }}
                         openBottomSheet={() => {
                           onHeaderOptionPress({
                             postId: id,
