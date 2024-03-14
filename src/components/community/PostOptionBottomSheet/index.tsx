@@ -131,12 +131,14 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
                     style={{ resizeMode: 'contain' }}
                   />
                   <S.UserInfoAuthorContainer>
-                    <Text size={16} fontFamily="bold">
+                    <Text size={16} fontFamily="bold" color={theme.default}>
                       {author?.name}
                     </Text>
                     {author && author.verificationInfo && (
                       <S.UserInfoVerificationContainer>
-                        <Text size={14}>{author.verificationInfo}</Text>
+                        <Text size={14} color={theme.default}>
+                          {author.verificationInfo}
+                        </Text>
                         <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
                       </S.UserInfoVerificationContainer>
                     )}

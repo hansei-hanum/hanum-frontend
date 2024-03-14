@@ -39,7 +39,7 @@ export const CommunityMainScreen: React.FC = () => {
 
   // const [searchQuery, setSearchQuery] = useState<string | null>(null);
 
-  const { bottomSheetRef, openBottomSheet } = useBottomSheet();
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -87,6 +87,7 @@ export const CommunityMainScreen: React.FC = () => {
   const onScopeItemPress = (scope: LimitedArticleScopeOfDisclosure | null) => {
     setPostScope(scope);
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
+    closeBottomSheet();
   };
 
   const isFocused = useIsFocused();
