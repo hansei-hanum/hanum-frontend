@@ -88,8 +88,17 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
   const [openUserBottomSheet, setOpenUserBottomSheet] = useState(false);
   const [postId, setPostId] = useState<number | null>(null);
   const [author, setAuthor] = useState<GetCommentsAuthorProps | null>(null);
+  const [bottomSheetLoading, setBottomSheetLoading] = useState(false);
+
+  const onBottomSheetLoading = () => {
+    setBottomSheetLoading(true);
+    setTimeout(() => {
+      setBottomSheetLoading(false);
+    }, 200);
+  };
 
   const onHeaderOptionPress = ({ postId, author, text, images }: HeaderOptionProps) => {
+    onBottomSheetLoading();
     setOpenUserBottomSheet(false);
     setPostId(postId);
     const isOwn = author?.id && userData?.id === author.id && author.name ? true : false;
@@ -109,6 +118,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
   };
 
   const onProfilePress = (author: GetCommentsAuthorProps | null) => {
+    onBottomSheetLoading();
     setAuthor(author);
     setOpenUserBottomSheet(true);
     openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 });
@@ -179,7 +189,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
                         author={author}
                         scopeOfDisclosure={scopeOfDisclosure}
                         createdAt={createdAt}
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', paddingHorizontal: 10 }}
                         openBottomSheet={() => {
                           onHeaderOptionPress({
                             postId: id,
@@ -239,6 +249,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
         postId={postId}
       />
       <PostOptionBottomSheet
+        bottomSheetLoading={bottomSheetLoading}
         userBottomSheet={openUserBottomSheet}
         bottomSheetRef={bottomSheetRef}
         closeBottomSheet={closeBottomSheet}

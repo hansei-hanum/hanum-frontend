@@ -2,6 +2,8 @@ import { Animated } from 'react-native';
 
 import styled from '@emotion/native';
 
+import { isIos } from 'src/utils';
+
 export const CommunityMainAnimatedHeader = styled(Animated.View)`
   position: absolute;
   top: 0;
@@ -12,7 +14,7 @@ export const CommunityMainAnimatedHeader = styled(Animated.View)`
   align-items: flex-end;
   background-color: ${({ theme }) => theme.background};
   flex-direction: row;
-  padding: 10px;
+  padding: ${isIos ? '12px' : '0px'} 10px;
 `;
 
 export const CommunityMainSearchBarWrapper = styled(Animated.View)`

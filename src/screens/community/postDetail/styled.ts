@@ -15,6 +15,16 @@ export const PostDetailInnerContainer = styled(isIos ? KeyboardAvoidingView : Vi
   width: 100%;
 `;
 
+export const PostDetailHeaderContainer = styled.View`
+  width: 100%;
+  padding: ${isIos ? '10px' : '20px'} 10px;
+  column-gap: 10px;
+  z-index: 10;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const PostDetailBottomSection = styled.View`
   width: 100%;
   flex-direction: column;
@@ -50,4 +60,14 @@ export const PostDetailCommentInput = styled(TextInput)`
   font-size: 15px;
   background-color: transparent;
   color: ${({ theme }) => theme.default};
+`;
+
+export const PostDetailPhotoCardWrapper = styled.View`
+  flex-direction: row;
+  column-gap: 4px;
+  padding-right: 14px;
+  margin: 0 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
 `;

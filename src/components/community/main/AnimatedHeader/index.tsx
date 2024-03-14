@@ -19,6 +19,7 @@ export interface CommunityMainAnimatedHeaderCustomProps {
   hidden: boolean;
   isSearchScreen: boolean;
   postScope: LimitedArticleScopeOfDisclosure | null;
+  onScopePress: () => void;
 }
 
 export type CommunityMainAnimatedHeaderProps = CommunityMainAnimatedHeaderCustomProps &
@@ -30,6 +31,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
   hidden,
   isSearchScreen,
   postScope,
+  onScopePress,
 }) => {
   const theme = useTheme();
 
@@ -79,7 +81,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
           opacity: hidden && !isSearchScreen ? shadowOpacity : 1,
         }}
       >
-        <TouchableOpacity activeOpacity={0.8}>
+        <TouchableOpacity activeOpacity={0.8} onPress={onScopePress}>
           <S.CommunityMainScopeContainer>
             <Text size={18}>{postScope ? postScope : '전체 공개'}</Text>
             <Icon name="chevron-down" size={18} color={theme.default} />

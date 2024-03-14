@@ -17,7 +17,6 @@ import {
   AnimatedHoc,
   CommunityPostHeader,
   CommunityUserImage,
-  Header,
   ReplyBox,
   Text,
   PostDetailLayout,
@@ -29,6 +28,7 @@ import {
   Spinner,
   ScaleOpacity,
   CommunityPostDetailSkeleton,
+  GoBackIcon,
 } from 'src/components';
 import {
   CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT,
@@ -49,6 +49,7 @@ import { formattedMention, isAndroid } from 'src/utils';
 import { RootStackParamList } from 'src/types/stackParams';
 import { articleIdAtom, communityEditAtom } from 'src/atoms';
 import { BottomSheetRefProps } from 'src/types';
+import { GetCommentsAuthorProps } from 'src/api';
 
 import { HeaderOptionProps } from '../main';
 
@@ -124,7 +125,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [openReplyBox, setOpenReplyBox] = useState<boolean>(false);
   const [users, setUsers] = useState({});
   const [mentionSearch, setMentionSearch] = useState<string>('');
-  const [targetId, setTargetId] = useState<number | null>(null);
+  const [openUserBottomSheet, setOpenUserBottomSheet] = useState<boolean>(false);
+  const [author, setAuthor] = useState<GetCommentsAuthorProps | null>(null);
+  const [bottomSheetLoading, setBottomSheetLoading] = useState<boolean>(false);
 
   const { debouncedValue } = useDebounce(mentionSearch, 300);
 
@@ -245,11 +248,19 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     setComment('');
   };
 
-  const openPostBottomSheet = ({ postId, id, name, text, images }: HeaderOptionProps) => {
+  const onBottomSheetLoading = () => {
+    setBottomSheetLoading(true);
+    setTimeout(() => {
+      setBottomSheetLoading(false);
+    }, 200);
+  };
+
+  const openPostBottomSheet = ({ postId, author, text, images }: HeaderOptionProps) => {
+    onBottomSheetLoading();
+    setOpenUserBottomSheet(false);
     if (!isPostLoading && postData) {
-      const isOwn = id && userData?.id === id && name ? true : false;
-      setTargetId(id || null);
-      setUserName(name || '');
+      const isOwn = id && userData?.id === id && author?.name ? true : false;
+      setAuthor(author || null);
       commentInputRef.current?.blur();
       if (isOwn) {
         setCommunityEdit({ text, images, id: postId });
@@ -264,6 +275,13 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     } else {
       openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT });
     }
+  };
+
+  const onProfilePress = (author: GetCommentsAuthorProps | null) => {
+    onBottomSheetLoading();
+    setAuthor(author);
+    setOpenUserBottomSheet(true);
+    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 });
   };
 
   const closeMinBottomSheet = () => {
@@ -342,28 +360,19 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   return (
     <S.PostDetailContainer style={{ paddingTop: inset.top, paddingBottom: inset.bottom }}>
-      <Header
-        isRow
-        style={{
-          borderBottomColor: theme.lightGray,
-          borderBottomWidth: 1,
-          zIndex: -11,
-          paddingHorizontal: 10,
-        }}
-        hasGoBackIcon
-      >
+      <S.PostDetailHeaderContainer>
+        <GoBackIcon />
         {!isPostLoading && postData ? (
           <CommunityPostHeader
             authorName={postData.data.authorName}
-            style={{ flex: 1, paddingRight: 4 }}
+            style={{ flex: 1 }}
             author={postData.data.author}
             scopeOfDisclosure={postData.data.scopeOfDisclosure}
             createdAt={postData.data.createdAt}
             openBottomSheet={() =>
               openPostBottomSheet({
                 postId: postData.data.id,
-                id: postData.data.author?.id,
-                name: postData.data.author?.name,
+                author: postData.data.author,
                 text: postData.data.content.spans ? postData.data.content.spans[0].text : '',
                 images: postData.data.attachments.map((item) => ({
                   uri: item.thumbnail,
@@ -371,11 +380,12 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 })),
               })
             }
+            onProfilePress={() => onProfilePress(author)}
           />
         ) : (
           <CommunityPostDetailSkeleton.Header />
         )}
-      </Header>
+      </S.PostDetailHeaderContainer>
       <S.PostDetailInnerContainer behavior="padding" keyboardVerticalOffset={10}>
         {!mentionListOpen || !CHECK_IF_THE_STRING_HAS_SPACE_AFTER_AT.test(comment) ? (
           isGetCommentsLoading || isPostLoading ? (
@@ -404,19 +414,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         )}
         <S.PostDetailBottomSection>
           {photo && (
-            <View
-              style={{
-                flexDirection: 'row',
-                columnGap: 4,
-                paddingRight: 14,
-                marginVertical: 10,
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                width: '100%',
-              }}
-            >
+            <S.PostDetailPhotoCardWrapper>
               <PhotoCard item={photo.uri} onPress={onPhotoPress} />
-            </View>
+            </S.PostDetailPhotoCardWrapper>
           )}
           <AnimatedHoc isOpen={openReplyBox}>
             <ReplyBox closeReplyBox={closeReplyBox} userName={userName} />
@@ -460,10 +460,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
         postId={id}
       />
       <PostOptionBottomSheet
-        userName={userName}
-        targetId={targetId}
+        bottomSheetLoading={bottomSheetLoading}
+        userBottomSheet={openUserBottomSheet}
         bottomSheetRef={bottomSheetRef}
         closeBottomSheet={closeBottomSheet}
+        author={author}
       />
     </S.PostDetailContainer>
   );

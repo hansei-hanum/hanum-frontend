@@ -7,18 +7,26 @@ import { useIsFocused } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
 
-import { CommunityMainAnimatedHeader, PostDataLayout } from 'src/components';
-import { useGetPosts } from 'src/hooks';
+import {
+  BottomSheet,
+  CommunityMainAnimatedHeader,
+  PostDataLayout,
+  ScopeBottomSheet,
+} from 'src/components';
+import { useBottomSheet, useGetPosts } from 'src/hooks';
 import { isIos } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
 import { communityEditAtom } from 'src/atoms';
+import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
 
 import * as S from './styled';
 
 export interface HeaderOptionProps extends OpenBottomSheetProps {
   author?: GetCommentsAuthorProps;
 }
+
+const SCOPE_BOTTOM_SHEET_HEIGHT = COMMUNITY_BOTTOM_SHEET_HEIGHT - 60;
 
 export const CommunityMainScreen: React.FC = () => {
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
@@ -30,14 +38,15 @@ export const CommunityMainScreen: React.FC = () => {
     cursor: null,
   });
 
-  const [searchQuery, setSearchQuery] = useState<string | null>(null);
+  // const [searchQuery, setSearchQuery] = useState<string | null>(null);
+
+  const { bottomSheetRef, openBottomSheet } = useBottomSheet();
 
   const inset = useSafeAreaInsets();
 
   const HEADER_HEIGHT = isIos ? inset.top + 14 : 68;
 
   const scrollY = useRef(new Animated.Value(0)).current;
-  const searchRef = useRef<TextInput>(null);
 
   const [isSearchScreen, setIsSearchScreen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -45,7 +54,6 @@ export const CommunityMainScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    searchRef.current?.blur();
     setIsSearchScreen(false);
     const offsetY = event.nativeEvent.contentOffset.y;
     scrollY.setValue(offsetY);
@@ -63,9 +71,9 @@ export const CommunityMainScreen: React.FC = () => {
     fetchNextPage();
   };
 
-  const onChangeText = (text: string) => {
-    setSearchQuery(text);
-  };
+  // const onChangeText = (text: string) => {
+  //   setSearchQuery(text);
+  // };
 
   const wait = (timeout: number) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -76,6 +84,10 @@ export const CommunityMainScreen: React.FC = () => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
+
+  const onScopePress = () => {
+    openBottomSheet({ scrollTo: SCOPE_BOTTOM_SHEET_HEIGHT });
+  };
 
   const isFocused = useIsFocused();
 
@@ -89,6 +101,7 @@ export const CommunityMainScreen: React.FC = () => {
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
+        onScopePress={onScopePress}
         postScope={postScope}
         hidden={hidden}
         scrollY={scrollY}
@@ -104,6 +117,10 @@ export const CommunityMainScreen: React.FC = () => {
         isFetchingNextPage={isFetchingNextPage}
         onScroll={onScroll}
         onMomentumScrollEnd={onSetScrollY}
+      />
+      <ScopeBottomSheet
+        ref={bottomSheetRef}
+        SCOPE_BOTTOM_SHEET_HEIGHT={SCOPE_BOTTOM_SHEET_HEIGHT}
       />
     </S.CommunityMainWrapper>
   );
