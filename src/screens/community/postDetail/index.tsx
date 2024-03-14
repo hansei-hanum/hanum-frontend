@@ -257,6 +257,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const openPostBottomSheet = ({ postId, author, text, images }: HeaderOptionProps) => {
     onBottomSheetLoading();
+    console.log('author', author);
     setOpenUserBottomSheet(false);
     if (!isPostLoading && postData) {
       const isOwn = id && userData?.id === id && author?.name ? true : false;
@@ -380,7 +381,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 })),
               })
             }
-            onProfilePress={() => onProfilePress(author)}
+            onProfilePress={() => onProfilePress(postData.data.author || null)}
           />
         ) : (
           <CommunityPostDetailSkeleton.Header />
