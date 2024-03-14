@@ -148,6 +148,7 @@ export const Router: React.FC = () => {
               name="CommunityAnonymitySettings"
               component={SC.AnonymitySettingsScreen}
             />
+            <Stack.Screen name="CommunitySearch" component={SC.CommunitySearchScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="HanowlMain" component={SC.HanowlApplyMainScreen} />

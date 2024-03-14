@@ -89,18 +89,11 @@ export const CommunityMainScreen: React.FC = () => {
   return (
     <S.CommunityMainWrapper style={{ paddingTop: inset.top }}>
       <CommunityMainAnimatedHeader
-        ref={searchRef}
+        postScope={postScope}
         hidden={hidden}
         scrollY={scrollY}
         HEADER_HEIGHT={HEADER_HEIGHT}
-        setIsSearchScreen={setIsSearchScreen}
         isSearchScreen={isSearchScreen}
-        setHidden={setHidden}
-        onChangeText={onChangeText}
-        value={searchQuery ? searchQuery : ''}
-        closeSearchScreenClick={() => {
-          setSearchQuery(null);
-        }}
       />
       <PostDataLayout
         data={data}
