@@ -69,7 +69,6 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
   isLoading,
   refreshControl,
   isFetchingNextPage,
-
   ...props
 }) => {
   const theme = useTheme();
@@ -148,7 +147,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
           </View>
         </>
       ) : data ? (
-        data?.pages.length ? (
+        data?.pages[0].data.total !== 0 ? (
           <FlatList
             scrollEventThrottle={16}
             data={data.pages || []}

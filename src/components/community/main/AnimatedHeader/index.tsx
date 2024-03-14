@@ -70,6 +70,21 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
     navigate('UserPost');
   };
 
+  const scopeToText = (scope: LimitedArticleScopeOfDisclosure | null) => {
+    switch (scope) {
+      case LimitedArticleScopeOfDisclosure.Alumni:
+        return '졸업생';
+      case LimitedArticleScopeOfDisclosure.Faculty:
+        return '교직원';
+      case LimitedArticleScopeOfDisclosure.Peer:
+        return '동급생';
+      case LimitedArticleScopeOfDisclosure.Student:
+        return '학생';
+      default:
+        return '전체 보기';
+    }
+  };
+
   return (
     <S.CommunityMainAnimatedHeader
       style={{
@@ -83,7 +98,7 @@ export const CommunityMainAnimatedHeader: React.FC<CommunityMainAnimatedHeaderPr
       >
         <TouchableOpacity activeOpacity={0.8} onPress={onScopePress}>
           <S.CommunityMainScopeContainer>
-            <Text size={18}>{postScope ? postScope : '전체 공개'}</Text>
+            <Text size={18}>{scopeToText(postScope)}</Text>
             <Icon name="chevron-down" size={18} color={theme.default} />
           </S.CommunityMainScopeContainer>
         </TouchableOpacity>

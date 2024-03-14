@@ -1,24 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, NativeSyntheticEvent, NativeScrollEvent, TextInput } from 'react-native';
+import { Animated, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RefreshControl } from 'react-native';
+import { HapticFeedbackTypes, trigger } from 'react-native-haptic-feedback';
 
 import { useIsFocused } from '@react-navigation/native';
 
 import { useSetRecoilState } from 'recoil';
 
-import {
-  BottomSheet,
-  CommunityMainAnimatedHeader,
-  PostDataLayout,
-  ScopeBottomSheet,
-} from 'src/components';
+import { CommunityMainAnimatedHeader, PostDataLayout, ScopeBottomSheet } from 'src/components';
 import { useBottomSheet, useGetPosts } from 'src/hooks';
 import { RPH, isIos } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
 import { communityEditAtom } from 'src/atoms';
-import { COMMUNITY_BOTTOM_SHEET_HEIGHT } from 'src/constants';
 
 import * as S from './styled';
 
@@ -85,8 +80,13 @@ export const CommunityMainScreen: React.FC = () => {
     wait(500).then(() => setRefreshing(false));
   }, []);
 
-  const onScopePress = () => {
+  const onHeaderScopePress = () => {
     openBottomSheet({ scrollTo: SCOPE_BOTTOM_SHEET_HEIGHT });
+  };
+
+  const onScopeItemPress = (scope: LimitedArticleScopeOfDisclosure | null) => {
+    setPostScope(scope);
+    trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
   };
 
   const isFocused = useIsFocused();
@@ -101,7 +101,7 @@ export const CommunityMainScreen: React.FC = () => {
   return (
     <S.CommunityMainWrapper style={{ paddingTop: 40 }}>
       <CommunityMainAnimatedHeader
-        onScopePress={onScopePress}
+        onScopePress={onHeaderScopePress}
         postScope={postScope}
         hidden={hidden}
         scrollY={scrollY}
@@ -120,6 +120,8 @@ export const CommunityMainScreen: React.FC = () => {
       />
       <ScopeBottomSheet
         ref={bottomSheetRef}
+        onPress={onScopeItemPress}
+        scope={postScope}
         SCOPE_BOTTOM_SHEET_HEIGHT={SCOPE_BOTTOM_SHEET_HEIGHT}
       />
     </S.CommunityMainWrapper>

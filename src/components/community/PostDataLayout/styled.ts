@@ -34,7 +34,7 @@ export const CommunityMainTopSection = styled.View`
 `;
 
 export const CommunityMainNoDataWrapper = styled.View`
-  height: 60%;
+  height: 80%;
   align-items: center;
   justify-content: center;
 `;

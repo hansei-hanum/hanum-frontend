@@ -15,7 +15,6 @@ export const CommunityMainAnimatedHeader = styled(Animated.View)`
   background-color: ${({ theme }) => theme.background};
   flex-direction: row;
   padding: ${isIos ? '12px' : '0px'} 16px;
-  border: 1px solid red;
 `;
 
 export const CommunityMainSearchBarWrapper = styled(Animated.View)`
