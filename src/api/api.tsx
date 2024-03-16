@@ -5,7 +5,7 @@ export const API_BASEURLS = {
   AUTH: 'https://account.hanum.us',
   INFO: 'https://info.hanum.us',
   FESTIVAL: 'https://festival.hanum.us',
-  COMMUNITY: 'https://xx.nekos.me',
+  COMMUNITY: 'https://community.hanum.us/',
 };
 
 const baseConfig = {

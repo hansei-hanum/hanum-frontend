@@ -20,5 +20,4 @@ export const Icon = styled.Text`
   color: ${({ theme }) => theme.black};
   padding: 0;
   margin: 0;
-  /* border: 1px solid red; */
 `;

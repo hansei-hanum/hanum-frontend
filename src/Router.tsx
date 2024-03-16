@@ -96,7 +96,7 @@ export const Router: React.FC = () => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      {/* <CheckVersion /> */}
+      <CheckVersion />
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{
@@ -163,7 +163,10 @@ export const Router: React.FC = () => {
             <Stack.Screen name="UserBlocList" component={SC.UserBlockListScreen} />
           </Stack.Group>
         </Stack.Navigator>
-        <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
+        <StatusBar
+          barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
+          backgroundColor={isAndroid ? (isDarkTheme ? '#2A2B2E' : '#fefefe') : 'auto'}
+        />
       </NavigationContainer>
       <Toast
         position="top"
