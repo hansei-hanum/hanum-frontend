@@ -8,6 +8,7 @@ export interface IconProps {
   backgroundColor?: string;
   size?: number;
 }
+
 export const Icon: React.FC<IconProps> = ({
   icon,
   backgroundColor,
