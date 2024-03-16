@@ -1,5 +1,5 @@
-import React, { Key, useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import React, { Key, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Keyboard, View } from 'react-native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native';
@@ -264,6 +264,15 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
     }
   }, [isLoading, isEditPostLoading]);
 
+  useLayoutEffect(() => {
+    const didShow = Keyboard.addListener('keyboardDidShow', onKeyboardShow);
+    const didHide = Keyboard.addListener('keyboardDidHide', onKeyboardHide);
+    return () => {
+      didShow.remove();
+      didHide.remove();
+    };
+  }, []);
+
   return (
     <S.CreatePostContainer>
       <ScreenHeader
@@ -296,6 +305,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
             onFocus={onKeyboardShow}
             onBlur={onKeyboardHide}
             maxLength={5000}
+            textAlignVertical="top"
           />
         </S.CreatePostMainSection>
         <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
