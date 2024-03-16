@@ -76,6 +76,6 @@ export const LIMITED_VISIBLE_TYPE_LIST: string[] = [
   '전체 공개',
   '교직원 공개',
   '졸업생 공개',
-  '학생 공개',
+  '재학생 공개',
   '동급생 공개',
 ];
