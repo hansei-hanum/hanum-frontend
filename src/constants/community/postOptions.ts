@@ -12,14 +12,14 @@ export interface PostOptionItems {
 export const POST_OPTION_LIST: PostOptionItems[] = [
   {
     text: PostOptionEnum.IMAGE_UPLOAD,
-    icon: '🖼️',
+    icon: '📷',
   },
   {
     text: PostOptionEnum.VISIBLE,
-    icon: '🔒',
+    icon: '👥',
   },
   {
     text: PostOptionEnum.ANONYMOUS,
-    icon: '👁️',
+    icon: '🔒',
   },
 ];

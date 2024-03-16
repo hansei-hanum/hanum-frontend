@@ -10,7 +10,7 @@ export const formatVisibleType = (type: VisibleTypeItems['text']) => {
     case LimitedArticleScopeOfDisclosure.Alumni:
       return '졸업생 공개';
     case LimitedArticleScopeOfDisclosure.Student:
-      return '학생 공개';
+      return '재학생 공개';
     case LimitedArticleScopeOfDisclosure.Peer:
       return '동급생 공개';
     default:

@@ -17,7 +17,7 @@ export enum LimitedArticleScopeOfDisclosure {
    */
   Alumni = 'Alumni',
   /**
-   * 학생 공개
+   * 재학생 공개
    */
   Student = 'Student',
   /**
