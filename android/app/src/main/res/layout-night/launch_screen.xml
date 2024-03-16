@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="#2A2B2E"
         android:scaleType="centerInside"
         android:src="@drawable/launch_screen" />
 </RelativeLayout>
