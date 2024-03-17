@@ -24,7 +24,6 @@ export const MealTableLayout: React.FC<MealTableLayoutProps> = ({ children }) =>
     setNotifyClick(!notifyClick);
     if (!notifyClick) {
       AsyncStorage.setItem('mealNotificationEnabled', 'true');
-      messaging().subscribeToTopic('community:post:peer');
       Toast.show({
         type: 'success',
         text1: '매일 8시에 알림을 보내드릴게요',
@@ -44,7 +43,7 @@ export const MealTableLayout: React.FC<MealTableLayoutProps> = ({ children }) =>
 
   return (
     <S.MealTableLayoutContainer>
-      <Header hasIconContainer={{ icon: "🍴", text: '급식표' }}>
+      <Header hasIconContainer={{ icon: '🍴', text: '급식표' }}>
         <S.MealTableLayoutAlertContainer>
           <Text size={17} fontFamily="medium">
             매일 아침 알림 받기

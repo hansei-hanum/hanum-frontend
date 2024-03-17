@@ -4,7 +4,7 @@ import { ViewProps } from 'react-native';
 import { useTheme } from '@emotion/react';
 
 import { Text, formatName } from 'src/components';
-import { TimeTableData } from 'src/constants/timTableData';
+import { useGetTimeTable } from 'src/hooks';
 
 import { Content } from '../Content';
 
@@ -35,22 +35,27 @@ const TimeTableText: React.FC<TimeTableProps> = ({ mainText, subText, fontSize, 
 };
 
 export const TimeTable: React.FC = () => {
+  const { data: TimeTableData } = useGetTimeTable();
+
   const [lessonIndex, setLessonIndex] = useState<number | undefined>(undefined);
   const partDurationList = [60, 60, 60, 100, 60, 60, 60];
   const today = new Date();
 
   const todayTimeTable = useMemo(() => {
-    const todayIndex = TimeTableData.data.findIndex((item) => {
-      const itemDate = new Date(item.date);
-      return (
-        itemDate.getFullYear() === today.getFullYear() &&
-        itemDate.getMonth() === today.getMonth() &&
-        itemDate.getDate() === today.getDate()
-      );
-    });
-
-    return todayIndex !== -1 ? TimeTableData.data[todayIndex].data : [];
-  }, [TimeTableData.data, today]);
+    if (TimeTableData) {
+      const todayIndex = TimeTableData.data.findIndex((item) => {
+        const itemDate = new Date(item.date);
+        return (
+          itemDate.getFullYear() === today.getFullYear() &&
+          itemDate.getMonth() === today.getMonth() &&
+          itemDate.getDate() === today.getDate()
+        );
+      });
+      return todayIndex !== -1 ? TimeTableData.data[todayIndex].data : [];
+    } else {
+      return [];
+    }
+  }, [TimeTableData?.data, today]);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -81,7 +86,7 @@ export const TimeTable: React.FC = () => {
   }, []);
 
   const getLesson = (index: number | undefined) => {
-    if (index !== undefined && todayTimeTable[index]) {
+    if (todayTimeTable && index !== undefined && todayTimeTable[index]) {
       return todayTimeTable[index];
     } else {
       return '-';
