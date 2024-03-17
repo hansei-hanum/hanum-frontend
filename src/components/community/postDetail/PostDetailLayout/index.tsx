@@ -60,6 +60,8 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     commentId: localCommentId,
   });
 
+  console.log('repliesPageData', repliesPageData);
+
   const repliesData = repliesPageData?.pages || [];
   const lastPage = repliesData[repliesData.length - 1] || [];
 
@@ -91,7 +93,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
         return { ...prev, [localCommentId]: newReplyData };
       });
     }
-  }, [replyLoading]);
+  }, [replyLoading, repliesPageData]);
 
   return (
     <S.PostDetailLayoutContainer>
