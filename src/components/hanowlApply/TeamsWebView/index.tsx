@@ -73,7 +73,6 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
           flex: teamLoading ? 0 : 0.8,
           paddingBottom: isAndroid ? 20 : 0,
         }}
-        injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         nestedScrollEnabled={true}

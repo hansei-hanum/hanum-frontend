@@ -30,7 +30,6 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
           backgroundColor: theme.black,
         }}
         onMessage={onMessage}
-        injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
         onLoadEnd={() => setTimeout(() => setMainLoading(false), 200)}
       />
       <S.HanowlApplyButtonWrapper

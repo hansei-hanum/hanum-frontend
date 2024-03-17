@@ -54,7 +54,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
 
   return (
     <S.CommunityPostContainer {...props}>
-      <S.CommunityPostContentWrapper style={oneImage && { paddingTop: 12 }}>
+      <S.CommunityPostContentWrapper>
         <TouchableOpacity activeOpacity={onPress ? 0.8 : 1} onPress={onPress}>
           {content.spans && (
             <Text
