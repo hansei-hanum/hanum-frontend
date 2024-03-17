@@ -42,7 +42,6 @@ import {
   useGetComments,
   useGetMention,
   useGetPostById,
-  useGetReplies,
   useGetUser,
 } from 'src/hooks';
 import { formattedMention, isAndroid } from 'src/utils';
@@ -134,11 +133,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const { data: mentionData, isLoading: isGetMentionLoading } = useGetMention({
     name: debouncedValue,
-  });
-
-  const { refetch: replyRefetch } = useGetReplies({
-    articleId: id,
-    commentId: commentId,
   });
 
   const handlePresentModalPress = () => {
@@ -333,7 +327,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   useEffect(() => {
     if (isCreateCommentSuccess || isCreateReplySuccess) {
-      replyRefetch();
       refetch();
     }
   }, [isCreateCommentLoading, isCreateReplyLoading]);

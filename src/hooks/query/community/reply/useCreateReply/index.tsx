@@ -1,4 +1,4 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 
 import { AxiosError } from 'axios';
 
@@ -10,7 +10,12 @@ export const useCreateReply = (): UseMutationResult<
   AxiosError<APIErrorResponse>,
   CreateReplyValues
 > => {
+  const queryClient = useQueryClient();
+
   return useMutation('useCreateReply', createReply, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['useGetReplies'] });
+    },
     onError: (error) => {
       const message = error.response?.data.message;
       ErrorToast(message);

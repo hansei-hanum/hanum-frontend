@@ -60,8 +60,6 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
     commentId: localCommentId,
   });
 
-  console.log('repliesPageData', repliesPageData);
-
   const repliesData = repliesPageData?.pages || [];
   const lastPage = repliesData[repliesData.length - 1] || [];
 
@@ -220,15 +218,18 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                           <Spinner size={40} />
                         </View>
                       )}
-                      {!replyLoading && lastPage && lastPage.data.nextCursor && (
-                        <View style={{ paddingLeft: 20 }}>
-                          <ScaleOpacity onPress={fetchNextPageReplies}>
-                            <Text size={14} color={theme.placeholder}>
-                              더 보기
-                            </Text>
-                          </ScaleOpacity>
-                        </View>
-                      )}
+                      {!replyLoading &&
+                        lastPage &&
+                        // lastPage.data.items.length >= 10 &&
+                        lastPage.data.nextCursor && (
+                          <View style={{ paddingLeft: 20 }}>
+                            <ScaleOpacity onPress={fetchNextPageReplies}>
+                              <Text size={14} color={theme.placeholder}>
+                                더 보기
+                              </Text>
+                            </ScaleOpacity>
+                          </View>
+                        )}
                     </View>
                   )}
                 </View>
