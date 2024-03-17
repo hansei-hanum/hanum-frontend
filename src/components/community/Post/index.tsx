@@ -82,7 +82,9 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
         <Swiper
           loop={false}
           containerStyle={{
-            height: !imageHeight || imageHeight > RPH(48) ? RPH(48) : imageHeight,
+            maxHeight: !imageHeight || imageHeight > RPH(48) ? RPH(48) : imageHeight,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           dotColor="#A3A3A3"
           activeDotColor={theme.primary}
@@ -97,7 +99,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
                   style={{ width: '100%' }}
                   source={{
                     uri: original,
-                    height: !imageHeight || imageHeight < RPH(48) ? RPH(48) : imageHeight,
+                    height: !imageHeight || imageHeight > RPH(48) ? RPH(48) : imageHeight,
                     cache: 'force-cache',
                   }}
                   resizeMode="contain"

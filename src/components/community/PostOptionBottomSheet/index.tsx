@@ -3,7 +3,6 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Animated, Image } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { WithLocalSvg } from 'react-native-svg';
 
 import { useTheme } from '@emotion/react';
 
@@ -72,16 +71,16 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
       // case enums.SHARE:
       //   return sharePost();
       case enums.REPORT:
-        // if (!targetId) {
-        //   Toast.show({
-        //     type: 'info',
-        //     text1: '익명 사용자는 신고할 수 없어요',
-        //   });
-        //   return;
-        // }
+        if (!author) {
+          Toast.show({
+            type: 'info',
+            text1: '익명 사용자의 게시글은 신고할 수 없어요',
+          });
+          return;
+        }
         return reportBottomSheetRef.current?.scrollTo(REPORT_BOTTOM_SHEET_HEIGHT);
       case enums.BLOCK:
-        if (author?.name === '') {
+        if (!author) {
           Toast.show({
             type: 'info',
             text1: '익명 사용자는 차단할 수 없어요',
@@ -107,8 +106,8 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     setModalOpen(false);
   };
 
-  const isVerified = author?.verificationInfo !== "인증되지 않은 사용자에요";
-  const isProfileVisible = author && userBottomSheet 
+  const isVerified = author?.verificationInfo !== '인증되지 않은 사용자에요';
+  const isProfileVisible = author && userBottomSheet;
 
   return (
     <>
@@ -137,14 +136,14 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
                     <Text size={16} fontFamily="bold" color={theme.default}>
                       {author?.name}
                     </Text>
-                      <S.UserInfoVerificationContainer>
-                        <Text size={14} color={theme.default}>
-                          {author.verificationInfo}
-                        </Text>
-                        {isVerified && (
-                          <Image source={VerifyCheckIcon} style={{width: 16, height: 16}} />
-                        )}
-                      </S.UserInfoVerificationContainer>
+                    <S.UserInfoVerificationContainer>
+                      <Text size={14} color={theme.default}>
+                        {author.verificationInfo}
+                      </Text>
+                      {isVerified && (
+                        <Image source={VerifyCheckIcon} style={{ width: 16, height: 16 }} />
+                      )}
+                    </S.UserInfoVerificationContainer>
                   </S.UserInfoAuthorContainer>
                 </S.UserInfoContainer>
               )}
