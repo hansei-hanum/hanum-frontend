@@ -107,7 +107,7 @@ export const HANOWL_APPLY = {
     },
   ] as ConfirmBoxProps[],
 
-  URL: 'https://hanowl.com/',
+  URL: 'https://hanowl.com',
 
   START_DATE: '2024-03-21T00:00:00',
 };
