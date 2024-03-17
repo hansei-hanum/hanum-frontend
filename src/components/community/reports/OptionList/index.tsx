@@ -12,8 +12,6 @@ import { Text } from 'src/components';
 import * as S from './styled';
 
 export interface OptionListProps {
-  flatListRef: React.RefObject<FlatList>;
-  enableScroll: boolean;
   onPress: () => void;
   theme: Theme;
   isUserReport?: boolean;

@@ -40,6 +40,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   const [show, setShow] = useState(false);
 
   const imageHeight = imageHeights[index * attachments.length];
+  console.log('imageHeights', imageHeights);
   const oneImage = attachments.length === 1;
 
   const theme = useTheme();
@@ -82,24 +83,26 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
         <Swiper
           loop={false}
           containerStyle={{
-            maxHeight: !imageHeight || imageHeight > RPH(48) ? RPH(48) : imageHeight,
+            height: !imageHeight || imageHeight > RPH(48) ? RPH(48) : imageHeight,
             justifyContent: 'center',
             alignItems: 'center',
           }}
           dotColor="#A3A3A3"
           activeDotColor={theme.primary}
         >
-          {attachments.map(({ original }, i) => {
+          {attachments.map(({ thumbnail }, i) => {
             const imageHeight = oneImage
               ? imageHeights[i]
               : imageHeights[index * attachments.length + i];
             return (
               <S.CommunityPostImageWrapper key={i}>
                 <Image
-                  style={{ width: '100%' }}
+                  style={{
+                    width: '100%',
+                    height: !imageHeight || imageHeight < RPH(48) ? RPH(48) : imageHeight,
+                  }}
                   source={{
-                    uri: original,
-                    height: !imageHeight || imageHeight > RPH(48) ? RPH(48) : imageHeight,
+                    uri: thumbnail,
                     cache: 'force-cache',
                   }}
                   resizeMode="contain"
