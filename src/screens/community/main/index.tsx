@@ -6,11 +6,15 @@ import { HapticFeedbackTypes, trigger } from 'react-native-haptic-feedback';
 
 import { useIsFocused } from '@react-navigation/native';
 
+import { useSetRecoilState } from 'recoil';
+
 import { CommunityMainAnimatedHeader, PostDataLayout, ScopeBottomSheet } from 'src/components';
 import { useBottomSheet, useGetPosts } from 'src/hooks';
 import { RPH, isIos } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
+import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
+import { ANONYMITY_OPTION_LIST, VISIBLE_TYPE_LIST } from 'src/constants';
 
 import * as S from './styled';
 
@@ -24,6 +28,10 @@ export const CommunityMainScreen: React.FC = () => {
   const inset = useSafeAreaInsets();
 
   const HEADER_HEIGHT = isIos ? inset.top : 48;
+
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
+  const setVisibleType = useSetRecoilState(visibleTypeAtom);
+  const setAnonymityTypes = useSetRecoilState(anonymityTypeAtom);
 
   const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure | null>(null);
 
@@ -84,6 +92,9 @@ export const CommunityMainScreen: React.FC = () => {
   useEffect(() => {
     if (isFocused) {
       refetch();
+      setCommunityEdit({ text: '', images: [], id: null });
+      setVisibleType(VISIBLE_TYPE_LIST[0].text);
+      setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
     }
   }, [isFocused]);
 
