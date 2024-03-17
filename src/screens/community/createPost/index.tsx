@@ -200,10 +200,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
     } else {
       mutate({
         isAnonymous: anonymityType.type === '실명 표시' ? false : true,
-        author:
-          anonymityType.type === '닉네임 사용' && anonymityType.nickname !== ''
-            ? anonymityType.nickname
-            : undefined,
+        author: undefined,
         content: text,
         scopeOfDisclosure: visibleType,
         attachments: selectedImage as PhotosInterface[],
