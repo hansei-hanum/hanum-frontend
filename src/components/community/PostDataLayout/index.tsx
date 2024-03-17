@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, ScrollViewProps, View } from 'react-native';
 import { InfiniteData } from 'react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -140,6 +140,11 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
   const closeMineBottomSheet = () => {
     mineBottomSheet.current?.scrollTo(0);
   };
+
+  useEffect(() => {
+    const isBottomSheetActive = mineBottomSheet.current?.isActive();
+    console.log('isBottomSheetActive', isBottomSheetActive);
+  }, [mineBottomSheet.current]);
 
   return (
     <>

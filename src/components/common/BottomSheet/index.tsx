@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import React, { useCallback, useImperativeHandle } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
@@ -28,11 +26,19 @@ interface BottomSheetProps {
   children?: React.ReactNode;
   modalBackDropVisible?: boolean;
   style?: ViewProps['style'];
+  onBottomSheetClosePress?: () => void;
 }
 
 export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(
   (
-    { scrollHeight, children, modalBackDropVisible, maxScrollHeight, style }: BottomSheetProps,
+    {
+      scrollHeight,
+      children,
+      modalBackDropVisible,
+      maxScrollHeight,
+      style,
+      onBottomSheetClosePress,
+    }: BottomSheetProps,
     ref,
   ) => {
     const MAX_TRANSLATE_Y = !maxScrollHeight ? -SCREEN_HEIGHT + 50 : maxScrollHeight - 50;
@@ -72,6 +78,7 @@ export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProp
       })
       .onEnd(() => {
         if (translateY.value > scrollHeight / 1.2) {
+          onBottomSheetClosePress && onBottomSheetClosePress();
           scrollTo(0);
         } else {
           scrollTo(scrollHeight);
@@ -101,10 +108,11 @@ export const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProp
     const rBackdropProps = useAnimatedProps(() => {
       return {
         pointerEvents: active.value ? 'auto' : 'none',
-      } as any;
+      };
     }, []);
 
     const onTouchStart = () => {
+      onBottomSheetClosePress && onBottomSheetClosePress();
       scrollTo(0);
     };
 

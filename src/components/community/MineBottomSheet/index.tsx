@@ -2,15 +2,19 @@ import React, { forwardRef, useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@emotion/react';
+import { useSetRecoilState } from 'recoil';
 
 import { BottomSheet, Button, Modal, ScaleOpacity, Text } from 'src/components/common';
 import {
+  ANONYMITY_OPTION_LIST,
   COMMUNITY_BOTTOM_SHEET_HEIGHT,
   COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST,
   CommunityMineBottomSheetTextEnum,
+  VISIBLE_TYPE_LIST,
 } from 'src/constants';
 import { useNavigate, useDeletePost } from 'src/hooks';
 import { BottomSheetRefProps } from 'src/types';
+import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
 
 import * as S from './styled';
 
@@ -23,6 +27,10 @@ export const CommunityMineBottomSheet = forwardRef<
   BottomSheetRefProps,
   CommunityMineBottomSheetProps
 >(({ closeBottomSheet, postId }, ref) => {
+  const setCommunityEdit = useSetRecoilState(communityEditAtom);
+  const setVisibleType = useSetRecoilState(visibleTypeAtom);
+  const setAnonymityTypes = useSetRecoilState(anonymityTypeAtom);
+
   const { options } = COMMUNITY_MINE_BOTTOM_SHEET_OPTION_LIST();
   const theme = useTheme();
 
@@ -50,9 +58,19 @@ export const CommunityMineBottomSheet = forwardRef<
     }
   };
 
+  const reset = () => {
+    setCommunityEdit({ text: '', images: [], id: null });
+    setVisibleType(VISIBLE_TYPE_LIST[0].text);
+    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
+  };
+
   return (
     <>
-      <BottomSheet ref={ref} scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}>
+      <BottomSheet
+        ref={ref}
+        scrollHeight={COMMUNITY_BOTTOM_SHEET_HEIGHT}
+        onBottomSheetClosePress={reset}
+      >
         <S.CommunityMineBottomSheetContainer>
           {options.map(({ text, icon, isDanger }) => (
             <ScaleOpacity onPress={() => onPress(text)} key={text}>
