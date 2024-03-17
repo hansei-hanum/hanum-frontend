@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
@@ -14,11 +14,21 @@ import * as S from './styled';
 export const UserBlockListScreen: React.FC = () => {
   const theme = useTheme();
 
-  const { mutate, isLoading } = useReleaseBlock();
+  const { mutate } = useReleaseBlock();
 
   const { data, refetch, isLoading: getBlockList } = useGetBlockList();
 
   const isFocused = useIsFocused();
+
+  const [loadingIds, setLoadingIds] = useState<number[]>([]);
+
+  const handleReleaseBlock = (id: number) => {
+    setLoadingIds((prev) => [...prev, id]);
+    mutate({ targetId: id });
+    setTimeout(() => {
+      setLoadingIds((prev) => prev.filter((loadingId) => loadingId !== id));
+    }, 500);
+  };
 
   useEffect(() => {
     if (isFocused) {
@@ -61,10 +71,10 @@ export const UserBlockListScreen: React.FC = () => {
                       <Text size={14}>{verificationInfo}</Text>
                     </S.BlockListUserInfoContainer>
                   </S.BlockListUserContainer>
-                  <ScaleOpacity onPress={() => mutate({ targetId: id })}>
+                  <ScaleOpacity onPress={() => handleReleaseBlock(id)}>
                     <S.BlockListCancelButton>
-                      {!isLoading ? (
-                        <Text size={14} fontFamily="bold" color={theme.white}>
+                      {!loadingIds.includes(id) ? (
+                        <Text size={14} fontFamily="bold" color={theme.white} isCenter>
                           차단 해제
                         </Text>
                       ) : (

@@ -97,8 +97,9 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
 
   const [text, setText] = useState<string>(communityEdit.text);
   const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
-
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
+
+  const canPost = text.length >= 1;
 
   const exitSelectedImage = selectedImage && selectedImage?.length > 0;
 
@@ -188,6 +189,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
   };
 
   const onPost = () => {
+    if (!canPost) return null;
     if (communityEdit.id && isEdit) {
       editPostMutate({
         id: communityEdit.id,
@@ -264,8 +266,8 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
           isLoading || isEditPostLoading ? (
             <Spinner size={24} color={theme.primary} />
           ) : (
-            <ScaleOpacity onPress={onPost}>
-              <Text size={16} color={text.length >= 1 ? theme.primary : theme.placeholder}>
+            <ScaleOpacity onPress={onPost} activeScale={canPost}>
+              <Text size={16} color={canPost ? theme.primary : theme.placeholder}>
                 게시
               </Text>
             </ScaleOpacity>

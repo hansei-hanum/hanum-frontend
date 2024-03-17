@@ -32,7 +32,10 @@ export const BlockListUserInfoContainer = styled.View`
 `;
 
 export const BlockListCancelButton = styled.View`
-  padding: 8px 12px;
+  width: 70px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
   background: ${({ theme }) => theme.primary};
   border-radius: 6px;
 `;
