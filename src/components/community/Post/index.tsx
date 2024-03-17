@@ -40,7 +40,6 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
   const [show, setShow] = useState(false);
 
   const imageHeight = imageHeights[index * attachments.length];
-  console.log('imageHeights', imageHeights);
   const oneImage = attachments.length === 1;
 
   const theme = useTheme();
@@ -74,7 +73,7 @@ export const CommunityPost: React.FC<CommunityPostProps> = ({
         {isOverLay && (
           <ScaleOpacity onPress={() => setShow(!show)} style={{ marginTop: 4 }}>
             <Text size={size} color={theme.placeholder}>
-              더 보기
+              {show ? '접기' : '더 보기'}
             </Text>
           </ScaleOpacity>
         )}

@@ -148,7 +148,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
         includeBase64: true,
         maxHeight: 2000,
         maxWidth: 2000,
-        selectionLimit: 5,
+        selectionLimit: selectedImage.length >= 5 ? 0 : 5 - selectedImage.length,
       };
       launchImageLibrary(options, (response) => {
         if (response.assets) {
