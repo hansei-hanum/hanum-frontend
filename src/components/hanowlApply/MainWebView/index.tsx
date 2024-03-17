@@ -19,7 +19,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
   const navigate = useNavigate();
 
   const [mainLoading, setMainLoading] = useState(true);
-  const { isApplyPeriod, time } = useCheckApplyPeriod();
+  const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   return (
     <>
@@ -45,7 +45,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
           isDisabled={!isApplyPeriod}
           style={{ opacity: 1, backgroundColor: isApplyPeriod ? theme.primary : theme.placeholder }}
         >
-          {isApplyPeriod ? '학생회 지원하기' : `모집 시작까지 ${time} 남았어요`}
+          {isApplyPeriod ? '학생회 지원하기' : `${timeLeftString}`}
         </Button>
       </S.HanowlApplyButtonWrapper>
     </>

@@ -47,7 +47,7 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
   theme,
   onPress,
 }) => {
-  const { isApplyPeriod, time } = useCheckApplyPeriod();
+  const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     if (!navState.url.includes('https')) {
@@ -93,9 +93,7 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
           isDisabled={!isApplyPeriod}
         >
           <Text size={16} isCenter color={theme.white}>
-            {isApplyPeriod
-              ? `${TEAM_ID_TO_TEXT[message as TeamId]} 지원하기`
-              : `모집 시작까지 ${time} 남았어요`}
+            {isApplyPeriod ? `${TEAM_ID_TO_TEXT[message as TeamId]} 지원하기` : `${timeLeftString}`}
           </Text>
         </Button>
       </S.TeamApplyButtonWrapper>

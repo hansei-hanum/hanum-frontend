@@ -41,5 +41,7 @@ export const useCheckApplyPeriod = () => {
     }, 1000);
   }, []);
 
-  return { isApplyPeriod, time };
+  const timeLeftString = `모집 시작까지 ${time}남았어요`;
+
+  return { isApplyPeriod, timeLeftString };
 };
