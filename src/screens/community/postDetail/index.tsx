@@ -190,7 +190,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const onCommentInputBlur = () => {
     setComment('');
     setCommentId(null);
-    setIsAnonymous(false);
     setMentionListOpen(false);
     setOpenReplyBox(false);
   };
