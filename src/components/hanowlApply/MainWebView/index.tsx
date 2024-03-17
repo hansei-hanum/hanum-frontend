@@ -25,7 +25,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
     <>
       <S.HanowlApplyMainDummyContainer style={!mainLoading && { display: 'none' }} />
       <WebView
-        source={{ uri: HANOWL_APPLY.URL }}
+        source={{ uri: `${HANOWL_APPLY.URL}?isApp=true` }}
         style={{
           flex: 1,
           backgroundColor: theme.black,

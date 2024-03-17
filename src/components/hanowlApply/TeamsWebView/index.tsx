@@ -66,7 +66,7 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
   return (
     <>
       <WebView
-        source={{ uri: `${HANOWL_APPLY.URL}teams/${message}` }}
+        source={{ uri: `${HANOWL_APPLY.URL}teams/${message}?isApp=true` }}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onNavigationStateChange={onNavigationStateChange}
         style={{
