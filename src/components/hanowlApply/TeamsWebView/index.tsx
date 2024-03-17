@@ -7,6 +7,7 @@ import { Theme } from '@emotion/react';
 import { isAndroid } from 'src/utils';
 import { Button, Text } from 'src/components/common';
 import { HANOWL_APPLY } from 'src/constants';
+import { useCheckApplyPeriod } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -46,6 +47,8 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
   theme,
   onPress,
 }) => {
+  const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
+
   const onNavigationStateChange = (navState: WebViewNavigation) => {
     if (!navState.url.includes('https')) {
       return false;
@@ -79,9 +82,18 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
         nestedScrollEnabled={true}
       />
       <S.TeamApplyButtonWrapper>
-        <Button onPress={onPress} style={{ paddingVertical: 14, backgroundColor: theme.primary }}>
+        <Button
+          onPress={onPress}
+          style={{
+            paddingVertical: 14,
+            opacity: 1,
+            backgroundColor: isApplyPeriod ? theme.primary : theme.placeholder,
+          }}
+          activeOpacity={1}
+          isDisabled={!isApplyPeriod}
+        >
           <Text size={16} isCenter color={theme.white}>
-            {TEAM_ID_TO_TEXT[message as TeamId]} 지원하기
+            {isApplyPeriod ? `${TEAM_ID_TO_TEXT[message as TeamId]} 지원하기` : `${timeLeftString}`}
           </Text>
         </Button>
       </S.TeamApplyButtonWrapper>

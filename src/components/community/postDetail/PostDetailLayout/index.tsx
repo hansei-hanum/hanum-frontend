@@ -117,7 +117,7 @@ export const PostDetailLayout: React.FC<PostDetailLayoutProps> = ({
                   attachments={postData.attachments}
                   index={0}
                   style={{
-                    minHeight: RPH(20),
+                    minHeight: RPH(10),
                     alignItems: 'flex-start',
                     justifyContent: 'flex-start',
                   }}

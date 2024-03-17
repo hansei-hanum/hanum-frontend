@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { FlatList, ScrollViewProps, View } from 'react-native';
 import { InfiniteData } from 'react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import { useSetRecoilState } from 'recoil';
 import { useTheme } from '@emotion/react';
@@ -29,7 +30,6 @@ import { CommunityMineBottomSheet } from '../MineBottomSheet';
 import { PostOptionBottomSheet } from '../PostOptionBottomSheet';
 
 import * as S from './styled';
-import Toast from 'react-native-toast-message';
 
 export interface PostDataLayoutCustomProps {
   /**
@@ -176,7 +176,7 @@ export const PostDataLayout: React.FC<PostDataLayoutProps> = ({
             }}
             {...props}
             renderItem={({ item: { data } }) => (
-              <View style={{ rowGap: 60 }}>
+              <View style={{ rowGap: 40 }}>
                 {data.items.map(
                   (
                     {

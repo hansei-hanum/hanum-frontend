@@ -18,6 +18,7 @@ export const PostDetailInnerContainer = styled(isIos ? KeyboardAvoidingView : Vi
 export const PostDetailHeaderContainer = styled.View`
   width: 100%;
   padding: ${isIos ? '10px' : '20px'} 10px;
+  padding-bottom: 0;
   column-gap: 10px;
   z-index: 10;
   flex-direction: row;

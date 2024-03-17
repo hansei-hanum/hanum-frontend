@@ -128,6 +128,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   const [openUserBottomSheet, setOpenUserBottomSheet] = useState<boolean>(false);
   const [author, setAuthor] = useState<GetCommentsAuthorProps | null>(null);
   const [bottomSheetLoading, setBottomSheetLoading] = useState<boolean>(false);
+  const [height, setHeight] = useState(0);
 
   const { debouncedValue } = useDebounce(mentionSearch, 300);
 
@@ -257,7 +258,6 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
 
   const openPostBottomSheet = ({ postId, author, text, images }: HeaderOptionProps) => {
     onBottomSheetLoading();
-    console.log('author', author);
     setOpenUserBottomSheet(false);
     if (!isPostLoading && postData) {
       const isOwn = id && userData?.id === id && author?.name ? true : false;
@@ -289,7 +289,7 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     onBottomSheetLoading();
     setAuthor(author);
     setOpenUserBottomSheet(true);
-    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 });
+    openBottomSheet({ scrollTo: COMMUNITY_BOTTOM_SHEET_HEIGHT - (author ? 70 : 0) });
   };
 
   const closeMinBottomSheet = () => {
@@ -446,6 +446,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
                 onChangeText={onChangeText}
                 onBlur={onCommentInputBlur}
                 onFocus={onCommentInputFocus}
+                textAlignVertical="top"
+                {...(isAndroid && {
+                  onContentSizeChange: (e) => setHeight(e.nativeEvent.contentSize.height),
+                  style: { height: Math.max(35, height), maxHeight: 120 },
+                })}
               />
               {isCreateCommentLoading || isCreateReplyLoading ? (
                 <Spinner />

@@ -4,7 +4,7 @@ import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { useTheme } from '@emotion/react';
 
 import { Button } from 'src/components/common';
-import { useNavigate } from 'src/hooks';
+import { useCheckApplyPeriod, useNavigate } from 'src/hooks';
 import { HANOWL_APPLY } from 'src/constants';
 
 import * as S from './styled';
@@ -19,6 +19,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
   const navigate = useNavigate();
 
   const [mainLoading, setMainLoading] = useState(true);
+  const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   return (
     <>
@@ -38,8 +39,13 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
         end={{ x: 0, y: 1 }}
         colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)']}
       >
-        <Button onPress={() => navigate('HanowlSelectTeam')} activeOpacity={1}>
-          학생회 지원하기
+        <Button
+          onPress={() => navigate('HanowlSelectTeam')}
+          activeOpacity={1}
+          isDisabled={!isApplyPeriod}
+          style={{ opacity: 1, backgroundColor: isApplyPeriod ? theme.primary : theme.placeholder }}
+        >
+          {isApplyPeriod ? '학생회 지원하기' : `${timeLeftString}`}
         </Button>
       </S.HanowlApplyButtonWrapper>
     </>
