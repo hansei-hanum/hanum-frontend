@@ -1,25 +1,31 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Image } from 'react-native';
 
 import { SCREEN_WIDTH } from 'src/constants';
 
 export const useGetImagesHeight = () => {
-  const [imageHeights, setImageHeights] = useState<Array<number>>([]);
+  const [imageHeights, setImageHeights] = useState<number[]>([]);
 
-  const getHeightsForImage = useCallback((uri: string, index: number) => {
-    try {
-      Image.getSize(uri, (imgWidth, imgHeight) => {
-        const ratio = 6 / 4;
-        setImageHeights((prev) => {
-          const newImageHeights = [...prev];
-          newImageHeights[index] = Math.min(SCREEN_WIDTH * ratio, imgHeight); // 이미지의 높이를 화면의 너비 * 6/4 와 이미지의 높이 중 작은 값으로 설정
-          return newImageHeights;
-        });
-      });
-    } catch (error) {
-      console.error('Error getting image size:', error);
-    }
-  }, []);
+  const getHeightsForImage = (url: string, index: number) => {
+    Image.getSize(url, (width, height) => {
+      const aspectRatio = width / height;
+      const imageHeight = SCREEN_WIDTH / aspectRatio;
 
-  return { imageHeights, getHeightsForImage };
+      if (index >= imageHeights.length) {
+        setImageHeights((oldArray) => [
+          ...oldArray,
+          ...new Array(Math.max(0, index - oldArray.length + 1)).fill(0),
+          imageHeight,
+        ]);
+      } else {
+        setImageHeights((oldArray) => [
+          ...oldArray.slice(0, index),
+          imageHeight,
+          ...oldArray.slice(index + 1),
+        ]);
+      }
+    });
+  };
+
+  return { getHeightsForImage, imageHeights };
 };
