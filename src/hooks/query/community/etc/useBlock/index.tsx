@@ -1,4 +1,4 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
 
 import { AxiosError } from 'axios';
@@ -11,8 +11,11 @@ export const useBlock = (): UseMutationResult<
   AxiosError<APIErrorResponse>,
   BlockValue
 > => {
+  const queryClient = useQueryClient();
+
   return useMutation('useBlock', block, {
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['useGetPosts'] });
       Toast.show({
         type: 'success',
         text1: '성공적으로 차단되었어요',

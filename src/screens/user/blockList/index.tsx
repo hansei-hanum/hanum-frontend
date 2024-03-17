@@ -43,13 +43,10 @@ export const UserBlockListScreen: React.FC = () => {
           keyExtractor={(index) => index.toString()}
           contentContainerStyle={{
             width: '100%',
-            flexDirection: 'column',
-            rowGap: 24,
-            padding: 14,
             paddingTop: 20,
           }}
           renderItem={({ item: { data } }) => (
-            <>
+            <View style={{ rowGap: 24, flexDirection: 'column', padding: 14 }}>
               {data.items.map(({ picture, name, id, verificationInfo }) => (
                 <S.BlockListBox key={id}>
                   <S.BlockListUserContainer>
@@ -77,7 +74,7 @@ export const UserBlockListScreen: React.FC = () => {
                   </ScaleOpacity>
                 </S.BlockListBox>
               ))}
-            </>
+            </View>
           )}
         />
       )}
