@@ -76,6 +76,7 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
         injectedJavaScriptBeforeContentLoaded={`window.isNativeApp = true;`}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        nestedScrollEnabled={true}
       />
       <S.TeamApplyButtonWrapper>
         <Button onPress={onPress} style={{ paddingVertical: 14, backgroundColor: theme.primary }}>

@@ -3,7 +3,6 @@ import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import MI from 'react-native-vector-icons/MaterialIcons';
-import { WithLocalSvg } from 'react-native-svg';
 import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';
@@ -16,6 +15,7 @@ import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api
 import { CommunityPostProps } from '../Post';
 
 import * as S from './styled';
+import { Image } from 'react-native';
 
 export interface CommunityPostHeaderProps extends Pick<CommunityPostProps, 'createdAt'> {
   author?: GetCommentsAuthorProps;
@@ -61,6 +61,8 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
     }
   };
 
+  const isVerified = author?.verificationInfo ? author.verificationInfo != "인증되지 않은 사용자에요" : false;
+
   return (
     <S.CommunityHeader style={style}>
       <S.CommunityHeaderTitle>
@@ -73,9 +75,9 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
         <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={{ rowGap: 2 }}>
           <S.AuthorContainer>
             <Text size={16}>{authorName}</Text>
-            {author && author.verificationInfo && (
-              <ScaleOpacity onPress={() => onVerifyIconPress(author.id, author.verificationInfo)}>
-                <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
+            {isVerified && (
+              <ScaleOpacity onPress={() => onVerifyIconPress(author?.id, author?.verificationInfo)}>
+                <Image source={VerifyCheckIcon} style={{width: 16, height: 16}} />
               </ScaleOpacity>
             )}
           </S.AuthorContainer>

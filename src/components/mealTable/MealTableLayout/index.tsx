@@ -7,8 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '@emotion/react';
 
-import { MealIcon } from 'src/assets';
-
 import { Header, Text } from '../../common';
 
 import * as S from './styled';
@@ -46,7 +44,7 @@ export const MealTableLayout: React.FC<MealTableLayoutProps> = ({ children }) =>
 
   return (
     <S.MealTableLayoutContainer>
-      <Header hasIconContainer={{ icon: MealIcon, text: '급식표' }}>
+      <Header hasIconContainer={{ icon: "🍴", text: '급식표' }}>
         <S.MealTableLayoutAlertContainer>
           <Text size={17} fontFamily="medium">
             매일 아침 알림 받기

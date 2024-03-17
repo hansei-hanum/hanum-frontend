@@ -93,7 +93,7 @@ export const ScheduleScreen: React.FC = () => {
 
   return (
     <S.ScheduleContainer>
-      <Header hasGoBackIcon hasIconContainer={{ icon: CalendarIcon, text: '학사일정' }} />
+      <Header hasGoBackIcon hasIconContainer={{ icon: "📅", text: '학사일정' }} />
       {monthSchedule.isLoading || !monthSchedule.data ? (
         <Spinner isCenter />
       ) : (

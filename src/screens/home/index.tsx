@@ -159,8 +159,8 @@ export const HomeScreen: React.FC = () => {
         <AlertBox
           navigateUrl="HanowlMain"
           icon="📢"
-          subText="학생회 모집 기간이에요"
-          mainText="동아리 모집 공고 보기"
+          subText="학생회 모집 공고가 있어요"
+          mainText="학생회 모집 공고 보기"
         />
         <TimeTable />
         <Timer />

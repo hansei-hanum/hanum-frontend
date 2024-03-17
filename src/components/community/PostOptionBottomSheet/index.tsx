@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Animated } from 'react-native';
+import { Animated, Image } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { WithLocalSvg } from 'react-native-svg';
 
@@ -107,15 +107,18 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
     setModalOpen(false);
   };
 
+  const isVerified = author?.verificationInfo !== "인증되지 않은 사용자에요";
+  const isProfileVisible = author && userBottomSheet 
+
   return (
     <>
       <BottomSheet
         ref={bottomSheetRef}
         maxScrollHeight={
-          userBottomSheet ? COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 : COMMUNITY_BOTTOM_SHEET_HEIGHT
+          isProfileVisible ? COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 : COMMUNITY_BOTTOM_SHEET_HEIGHT
         }
         scrollHeight={
-          userBottomSheet ? COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 : COMMUNITY_BOTTOM_SHEET_HEIGHT
+          isProfileVisible ? COMMUNITY_BOTTOM_SHEET_HEIGHT - 70 : COMMUNITY_BOTTOM_SHEET_HEIGHT
         }
         modalBackDropVisible={modalOpen}
       >
@@ -124,7 +127,7 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
             <Spinner size={40} color={theme.placeholder} />
           ) : (
             <>
-              {userBottomSheet && (
+              {isProfileVisible && (
                 <S.UserInfoContainer>
                   <S.UserInfoImage
                     source={author && author.picture ? { uri: author.picture } : UserLogo}
@@ -134,14 +137,14 @@ export const PostOptionBottomSheet: React.FC<CommunityBottomSheetProps> = ({
                     <Text size={16} fontFamily="bold" color={theme.default}>
                       {author?.name}
                     </Text>
-                    {author && author.verificationInfo && (
                       <S.UserInfoVerificationContainer>
                         <Text size={14} color={theme.default}>
                           {author.verificationInfo}
                         </Text>
-                        <WithLocalSvg asset={VerifyCheckIcon} width={16} height={16} />
+                        {isVerified && (
+                          <Image source={VerifyCheckIcon} style={{width: 16, height: 16}} />
+                        )}
                       </S.UserInfoVerificationContainer>
-                    )}
                   </S.UserInfoAuthorContainer>
                 </S.UserInfoContainer>
               )}

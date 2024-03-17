@@ -279,6 +279,13 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onProfilePress = (author: GetCommentsAuthorProps | null) => {
+    if (!author) {
+      return Toast.show({
+        type: 'info',
+        position: 'top',
+        text1: '익명 사용자의 프로필은 볼 수 없어요',
+      });
+    }
     onBottomSheetLoading();
     setAuthor(author);
     setOpenUserBottomSheet(true);

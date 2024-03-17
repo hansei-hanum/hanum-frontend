@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { Image, StyleProp, ViewStyle } from 'react-native';
 import { WithLocalSvg } from 'react-native-svg';
 
 import { GoBackIcon } from '../GoBackHeader';
 import { Text } from '../Text';
 
 import * as S from './styled';
+import { Icon } from '../Icon';
 
 export interface HeaderProps {
   children?: React.ReactNode;
@@ -40,7 +41,8 @@ export const Header: React.FC<HeaderProps> = ({
       {hasGoBackIcon && <GoBackIcon />}
       {hasIconContainer && (
         <S.HeaderIconContainer>
-          <WithLocalSvg width={32} height={32} asset={hasIconContainer.icon} />
+          {/* <WithLocalSvg width={32} height={32} asset={hasIconContainer.icon} /> */}
+          <Icon includeBackground={false} icon={hasIconContainer.icon} size={30} />
           <Text size={20} fontFamily="bold">
             {hasIconContainer.text}
           </Text>
