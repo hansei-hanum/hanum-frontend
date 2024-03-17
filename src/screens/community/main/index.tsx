@@ -13,7 +13,8 @@ import { useBottomSheet, useGetPosts } from 'src/hooks';
 import { RPH, isIos } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 import { OpenBottomSheetProps } from 'src/screens/user';
-import { communityEditAtom } from 'src/atoms';
+import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
+import { ANONYMITY_OPTION_LIST, VISIBLE_TYPE_LIST } from 'src/constants';
 
 import * as S from './styled';
 
@@ -29,6 +30,8 @@ export const CommunityMainScreen: React.FC = () => {
   const HEADER_HEIGHT = isIos ? inset.top : 48;
 
   const setCommunityEdit = useSetRecoilState(communityEditAtom);
+  const setVisibleType = useSetRecoilState(visibleTypeAtom);
+  const setAnonymityTypes = useSetRecoilState(anonymityTypeAtom);
 
   const [postScope, setPostScope] = useState<LimitedArticleScopeOfDisclosure | null>(null);
 
@@ -36,8 +39,6 @@ export const CommunityMainScreen: React.FC = () => {
     scope: postScope,
     cursor: null,
   });
-
-  // const [searchQuery, setSearchQuery] = useState<string | null>(null);
 
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } = useBottomSheet();
 
@@ -66,10 +67,6 @@ export const CommunityMainScreen: React.FC = () => {
     fetchNextPage();
   };
 
-  // const onChangeText = (text: string) => {
-  //   setSearchQuery(text);
-  // };
-
   const wait = (timeout: number) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
@@ -96,6 +93,8 @@ export const CommunityMainScreen: React.FC = () => {
     if (isFocused) {
       refetch();
       setCommunityEdit({ text: '', images: [], id: null });
+      setVisibleType(VISIBLE_TYPE_LIST[0].text);
+      setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
     }
   }, [isFocused]);
 

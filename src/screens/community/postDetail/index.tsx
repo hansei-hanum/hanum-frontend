@@ -260,9 +260,9 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     onBottomSheetLoading();
     setOpenUserBottomSheet(false);
     if (!isPostLoading && postData) {
-      const isOwn = id && userData?.id === id && author?.name ? true : false;
-      setAuthor(author || null);
       commentInputRef.current?.blur();
+      const isOwn = author?.id && userData?.id === author.id && author.name ? true : false;
+      setAuthor(author || null);
       if (isOwn) {
         setCommunityEdit({ text, images, id: postId });
       }
