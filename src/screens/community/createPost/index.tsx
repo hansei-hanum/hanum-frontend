@@ -25,12 +25,7 @@ import {
 } from 'src/components';
 import { useBlockGesture, useCreatePost, useEditPost, useGetUser, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets';
-import {
-  ANONYMITY_OPTION_LIST,
-  POST_OPTION_LIST,
-  PostOptionEnum,
-  VISIBLE_TYPE_LIST,
-} from 'src/constants';
+import { POST_OPTION_LIST, PostOptionEnum } from 'src/constants';
 import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
 import { formatVisibleType, isIos } from 'src/utils';
 import { LimitedArticleScopeOfDisclosure } from 'src/api';
@@ -84,8 +79,8 @@ export type CommunityCreatePostScreenProps = StackScreenProps<
 export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps> = ({ route }) => {
   const { isEdit } = route.params;
   const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
-  const [visibleType, setVisibleType] = useRecoilState(visibleTypeAtom);
-  const [anonymityType, setAnonymityTypes] = useRecoilState(anonymityTypeAtom);
+  const visibleType = useRecoilValue(visibleTypeAtom);
+  const anonymityType = useRecoilValue(anonymityTypeAtom);
 
   const { mutate, isLoading, isSuccess } = useCreatePost();
   const {
@@ -245,22 +240,9 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
     }
   };
 
-  const resetData = () => {
-    setText('');
-    setSelectedImage([]);
-    setVisibleType(VISIBLE_TYPE_LIST[0].text);
-    setAnonymityTypes({ type: ANONYMITY_OPTION_LIST[0].title });
-  };
-
   useEffect(() => {
-    if (!isEdit) {
-      resetData();
-    }
     if (isSuccess || editSuccess) {
       navigate('CommunityMain');
-      setTimeout(() => {
-        resetData();
-      }, 1000);
     }
   }, [isLoading, isEditPostLoading]);
 
