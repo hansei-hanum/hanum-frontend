@@ -11,15 +11,18 @@ import * as S from './styled';
 
 export interface MainWebViewProps {
   onMessage: (event: WebViewMessageEvent) => void;
+  isLoading: boolean;
 }
 
-export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
+export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading }) => {
   const theme = useTheme();
 
   const navigate = useNavigate();
 
   const [mainLoading, setMainLoading] = useState(true);
   const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
+
+  const checkDisplay = !mainLoading && !isLoading && isApplyPeriod;
 
   return (
     <>
@@ -42,10 +45,14 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage }) => {
         <Button
           onPress={() => navigate('HanowlSelectTeam')}
           activeOpacity={1}
-          isDisabled={!isApplyPeriod}
-          style={{ opacity: 1, backgroundColor: isApplyPeriod ? theme.primary : theme.placeholder }}
+          isDisabled={checkDisplay}
+          style={{
+            opacity: 1,
+            backgroundColor: checkDisplay ? theme.primary : theme.placeholder,
+          }}
+          isLoading={isLoading}
         >
-          {isApplyPeriod ? '학생회 지원하기' : `${timeLeftString}`}
+          {!isLoading && (isApplyPeriod ? '학생회 지원하기' : `${timeLeftString}`)}
         </Button>
       </S.HanowlApplyButtonWrapper>
     </>

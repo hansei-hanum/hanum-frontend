@@ -19,8 +19,11 @@ import { SCREEN_HEIGHT } from 'src/constants';
 import { isAndroid } from 'src/utils';
 import { TeamType, hanowlApplyAtom } from 'src/atoms';
 import { useBottomSheet, useNavigate } from 'src/hooks';
+import { UseGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
 
 export const HanowlApplyMainScreen: React.FC = () => {
+  const { data, isLoading } = UseGetTemporaryApplication();
+  console.log(data, 'useGetTemporaryApplication');
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -62,7 +65,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
           marginTop: isAndroid ? 10 : 0,
         }}
       />
-      <MainWebView onMessage={onMessage} />
+      <MainWebView onMessage={onMessage} isLoading={isLoading} />
       <BottomSheet
         ref={bottomSheetRef}
         scrollHeight={-SCREEN_HEIGHT + 100}
@@ -82,6 +85,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
               teamLoading={teamLoading}
               theme={theme}
               onPress={onPress}
+              isLoading={isLoading}
             />
           </ScrollView>
         ) : (
@@ -90,6 +94,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
             teamLoading={teamLoading}
             theme={theme}
             onPress={onPress}
+            isLoading={isLoading}
           />
         )}
       </BottomSheet>

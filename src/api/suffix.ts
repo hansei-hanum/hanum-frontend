@@ -34,12 +34,17 @@ export const COMMUNITY = {
   USER_MENTION: '/users/mentions/search',
 };
 
+export const HANOWL_APPLY = {
+  TEMPORARY_APPLICATION: '/user/@me/applications',
+};
+
 export interface ApiSuffixProps {
   AUTH: typeof AUTH;
   INFO: typeof INFO;
   PAY: typeof PAY;
   EOULLIM: typeof EOULLIM;
   COMMUNITY: typeof COMMUNITY;
+  HANOWL_APPLY: typeof HANOWL_APPLY;
 }
 
 export const API_SUFFIX: ApiSuffixProps = {
@@ -48,4 +53,5 @@ export const API_SUFFIX: ApiSuffixProps = {
   PAY,
   EOULLIM,
   COMMUNITY,
+  HANOWL_APPLY,
 };
