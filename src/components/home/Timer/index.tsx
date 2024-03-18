@@ -59,6 +59,7 @@ export const Timer: React.FC = () => {
     setInterval(onUpdate, 1000 * 60);
     onUpdate();
   }, [isFocused]);
+
   return (
     <Content icon="⌚︎" name="타이머">
       <S.TimerTextWrapper>
