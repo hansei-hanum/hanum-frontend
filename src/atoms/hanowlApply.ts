@@ -11,6 +11,7 @@ export type TeamType =
   | '도서부';
 
 export interface HanowlApplyAtomProps {
+  id?: string;
   team: TeamType | '';
   introduce: string;
   motive: string;

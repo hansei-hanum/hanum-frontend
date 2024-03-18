@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 
 import { useTheme } from '@emotion/react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import {
   AppLayoutWithoutButton,
@@ -11,12 +11,12 @@ import {
   NoScrollbarScrollView,
   Text,
 } from 'src/components';
-import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
-import { hanowlApplyAtom } from 'src/atoms';
+import { hanowlApplyAtom, hanowlApplyDataAtom } from 'src/atoms';
 
 import * as S from './styled';
 export const ConfirmScreen: React.FC = () => {
+  const hanowlApplyData = useRecoilValue(hanowlApplyDataAtom);
   const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
 
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ export const ConfirmScreen: React.FC = () => {
           }
         >
           <NoScrollbarScrollView contentContainerStyle={{ rowGap: 20, marginTop: 30 }}>
-            {HANOWL_APPLY.CONFIRM_DUMMY_LIST.map((props, index) => (
+            {hanowlApplyData.map((props, index) => (
               <ConfirmBox {...props} key={index} />
             ))}
           </NoScrollbarScrollView>

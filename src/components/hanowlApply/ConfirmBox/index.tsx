@@ -5,20 +5,21 @@ import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
 
 import { ScaleOpacity, Text } from 'src/components/common';
-import { HanowlApplyAtomProps, hanowlApplyAtom } from 'src/atoms';
+import { TeamType, hanowlApplyAtom } from 'src/atoms';
 import { useNavigate } from 'src/hooks';
+import { GetTemporaryApplicationResponse } from 'src/api/hanowlApply';
+import { getPrevTimeString } from 'src/utils';
 
 import * as S from './styled';
 
-export interface ConfirmBoxProps extends HanowlApplyAtomProps {
-  date: string;
-}
+export interface ConfirmBoxProps extends GetTemporaryApplicationResponse {}
 
 export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
-  team,
-  date,
-  introduce,
-  motive,
+  department,
+  id,
+  introduction,
+  motivation,
+  updated_at,
   aspiration,
 }) => {
   const navigate = useNavigate();
@@ -28,9 +29,10 @@ export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
 
   const onBoxPress = () => {
     setHanowlApply({
-      team,
-      introduce,
-      motive,
+      id,
+      team: department.name as TeamType,
+      introduce: introduction,
+      motive: motivation,
       aspiration,
     });
     navigate('HanowlSelectTeam');
@@ -40,8 +42,8 @@ export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
     <ScaleOpacity onPress={onBoxPress}>
       <S.ConfirmBox>
         <S.ConfirmBoxTextContainer>
-          <Text size={18}>{team} 지원서</Text>
-          <Text size={12}>(마지막 수정 {date})</Text>
+          <Text size={18}>{department.name} 지원서</Text>
+          <Text size={12}>(마지막 수정 {getPrevTimeString(updated_at)})</Text>
         </S.ConfirmBoxTextContainer>
         <MaterialIcons name="chevron-right" size={30} color={theme.placeholder} />
       </S.ConfirmBox>

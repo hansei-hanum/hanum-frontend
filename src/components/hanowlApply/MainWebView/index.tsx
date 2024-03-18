@@ -6,21 +6,31 @@ import { useTheme } from '@emotion/react';
 import { Button } from 'src/components/common';
 import { useCheckApplyPeriod, useNavigate } from 'src/hooks';
 import { HANOWL_APPLY } from 'src/constants';
+import { GetTemporaryApplicationResponse } from 'src/api/hanowlApply';
 
 import * as S from './styled';
 
 export interface MainWebViewProps {
   onMessage: (event: WebViewMessageEvent) => void;
   isLoading: boolean;
+  applyData?: GetTemporaryApplicationResponse[];
 }
 
-export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading }) => {
+export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, applyData }) => {
   const theme = useTheme();
 
   const navigate = useNavigate();
 
   const [mainLoading, setMainLoading] = useState(true);
   const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
+
+  const onButtonPress = () => {
+    if (applyData && applyData?.length > 0) {
+      navigate('HanowlConfirm');
+    } else {
+      navigate('HanowlSelectTeam');
+    }
+  };
 
   const checkDisplay = !mainLoading && !isLoading && isApplyPeriod;
 
@@ -43,9 +53,9 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading }
         colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)']}
       >
         <Button
-          onPress={() => navigate('HanowlSelectTeam')}
+          onPress={onButtonPress}
           activeOpacity={1}
-          isDisabled={checkDisplay}
+          // isDisabled={checkDisplay}
           style={{
             opacity: 1,
             backgroundColor: checkDisplay ? theme.primary : theme.placeholder,

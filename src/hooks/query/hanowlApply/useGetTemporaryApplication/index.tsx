@@ -1,14 +1,20 @@
 import { UseQueryResult, useQuery } from 'react-query';
 
 import { AxiosError } from 'axios';
+import { useSetRecoilState } from 'recoil';
 
 import { GetTemporaryApplicationResponse, getTemporaryApplication } from 'src/api/hanowlApply';
+import { hanowlApplyDataAtom } from 'src/atoms';
 
-export const UseGetTemporaryApplication = (): UseQueryResult<
-  GetTemporaryApplicationResponse,
+export const useGetTemporaryApplication = (): UseQueryResult<
+  GetTemporaryApplicationResponse[],
   AxiosError
 > => {
-  return useQuery('UseGetTemporaryApplication', getTemporaryApplication, {
+  const setHanowlApplyData = useSetRecoilState(hanowlApplyDataAtom);
+  return useQuery('useGetTemporaryApplication', getTemporaryApplication, {
+    onSuccess: (data) => {
+      setHanowlApplyData(data);
+    },
     retry: 0,
   });
 };
