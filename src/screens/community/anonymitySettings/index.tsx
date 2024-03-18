@@ -75,6 +75,12 @@ export const AnonymitySettingsScreen: React.FC = () => {
 
   const isFocused = useIsFocused();
 
+  useEffect(() => {
+    if (isFocused && anonymityType.type === ANONYMITY_OPTION_LIST[2].title) {
+      animation({ animation: nicknameAnimation, value: 1 });
+    }
+  }, [anonymityType, isFocused]);
+
   return (
     <CreatePostSettingForm
       keyboardAvoidingViewEnabled={isIos}
