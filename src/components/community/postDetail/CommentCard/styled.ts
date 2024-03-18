@@ -76,3 +76,10 @@ export const PostDetailLayoutReplyContainer = styled.View`
   column-gap: 10px;
   align-items: center;
 `;
+
+export const AuthorContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 2px;
+`;

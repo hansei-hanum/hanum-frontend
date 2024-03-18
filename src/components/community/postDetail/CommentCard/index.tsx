@@ -3,13 +3,14 @@ import { NativeSyntheticEvent, TextLayoutEventData, TouchableOpacity, View } fro
 import ModalElement from 'react-native-modal';
 import { HapticFeedbackTypes, trigger } from 'react-native-haptic-feedback';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Image } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
 
-import { UserLogo } from 'src/assets';
+import { UserLogo, VerifyCheckIcon } from 'src/assets';
 import { Button, FormattedContent, Modal, ScaleOpacity, Text } from 'src/components';
-import { getPrevTimeString, isIos } from 'src/utils';
+import { getPrevTimeString, isIos, onVerifyIconPress } from 'src/utils';
 import { GetCommentsDetail, GetRepliesDetail } from 'src/api';
 import {
   useDeleteComment,
@@ -137,17 +138,33 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     }, 500);
   };
 
+  const isVerified = author?.verificationInfo
+    ? author.verificationInfo != '인증되지 않은 사용자에요'
+    : false;
+
   return (
     <>
       <S.PostCommentCardContainer>
         <View style={{ flex: 1, flexDirection: 'row', columnGap: 6 }}>
           <S.PostCommentCardImage
             source={author && author.picture !== '' ? { uri: author.picture } : UserLogo}
-            style={isReply && { width: 36, height: 36 }}
+            style={isReply && { width: 38, height: 38 }}
           />
-          <View style={{ rowGap: 4, flex: 1 }}>
+          <View style={{ rowGap: isReply ? 2 : 4, flex: 1 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text size={13}>{authorName}</Text>
+              <S.AuthorContainer>
+                <Text size={16}>{authorName}</Text>
+                {isVerified && (
+                  <ScaleOpacity
+                    onPress={() => onVerifyIconPress(author?.id, author?.verificationInfo)}
+                  >
+                    <Image
+                      source={VerifyCheckIcon}
+                      style={{ width: 16, height: 16, position: 'relative', bottom: 0.5 }}
+                    />
+                  </ScaleOpacity>
+                )}
+              </S.AuthorContainer>
               <Text size={13} color={theme.placeholder}>
                 {'  '}
                 {getPrevTimeString(createdAt)}

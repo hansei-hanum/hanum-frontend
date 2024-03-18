@@ -7,3 +7,4 @@ export * from './formatted';
 export * from './openContactChannel';
 export * from './formatVisibleType';
 export * from './formattedMention';
+export * from './onVerifyIconPress';
