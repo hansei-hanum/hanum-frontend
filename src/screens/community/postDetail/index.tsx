@@ -189,18 +189,11 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
   };
 
   const onTag = ({ userName, isReply, commentId }: onTagProps) => {
-    if (userName) {
-      isReply && setOpenReplyBox(true);
-      commentInputRef.current?.focus();
-      setUserName(userName);
-      onChangeText(`${comment.split('@').slice(0, -1).join('@')}@${userName} `);
-      setMentionListOpen(false);
-    } else {
-      Toast.show({
-        type: 'info',
-        text1: '익명 유저는 언급할 수 없어요',
-      });
-    }
+    isReply && setOpenReplyBox(true);
+    commentInputRef.current?.focus();
+    setUserName(userName ?? '익명');
+    userName && onChangeText(`${comment.split('@').slice(0, -1).join('@')}@${userName} `);
+    setMentionListOpen(false);
     if (commentId) setCommentId(commentId);
   };
 

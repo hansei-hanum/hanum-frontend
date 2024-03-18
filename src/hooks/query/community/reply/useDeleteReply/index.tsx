@@ -14,7 +14,7 @@ export const useDeleteReply = (): UseMutationResult<
 
   return useMutation('useDeleteReply', deleteReply, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['useGetReplies', 'useGetComments'] });
+      queryClient.invalidateQueries({ queryKey: ['useGetReplies'] });
     },
     onError: (error) => {
       const message = error.response?.data.message;
