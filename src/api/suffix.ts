@@ -36,6 +36,7 @@ export const COMMUNITY = {
 
 export const HANOWL_APPLY = {
   TEMPORARY_APPLICATION: '/user/@me/applications',
+  GET_TEAMS: '/departments',
 };
 
 export interface ApiSuffixProps {

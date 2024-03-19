@@ -49,7 +49,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
 
   const onPress = () => {
     bottomSheetRef.current?.scrollTo(0);
-    setHanowlApply((prev) => ({ ...prev, team: TEAM_ID_TO_TEXT[message as TeamId] as TeamType }));
+    // setHanowlApply((prev) => ({ ...prev, team: TEAM_ID_TO_TEXT[message as TeamId] as TeamType }));
     navigate('HanowlApplyDetails');
   };
 

@@ -1,5 +1,7 @@
 import { atom } from 'recoil';
 
+import { GetHanowlTeamsDetail } from 'src/api/hanowlApply';
+
 export type TeamType =
   | '기능부'
   | '방송부'
@@ -12,7 +14,7 @@ export type TeamType =
 
 export interface HanowlApplyAtomProps {
   id?: string;
-  team: TeamType | '';
+  team: GetHanowlTeamsDetail | { id: string; name: string };
   introduce: string;
   motive: string;
   aspiration: string;
@@ -21,7 +23,10 @@ export interface HanowlApplyAtomProps {
 export const hanowlApplyAtom = atom<HanowlApplyAtomProps>({
   key: 'hanowlApplyAtom',
   default: {
-    team: '',
+    team: {
+      id: '',
+      name: '',
+    },
     introduce: '',
     motive: '',
     aspiration: '',

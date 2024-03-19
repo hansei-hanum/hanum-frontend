@@ -8,27 +8,34 @@ import { hanowlApplyAtom } from 'src/atoms';
 import { AppLayout, HanowlApplySkeleton, SelectBox, SelectLayout } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
+import { useGetHanowlTeams } from 'src/hooks/query/hanowlApply';
 
 export const SelectTeamScreen: React.FC = () => {
-  const teams = HANOWL_APPLY.TEAMS;
+  const { data, isLoading } = useGetHanowlTeams();
+  const teamsData = data?.data;
 
   const navigate = useNavigate();
 
   const [hanowlApply, setHanowlApply] = useRecoilState(hanowlApplyAtom);
 
-  const [isSelected, setIsSelected] = useState(teams.map(() => false));
+  const [isSelected, setIsSelected] = useState(teamsData ? teamsData.items.map(() => false) : []);
 
   const handleSelect = (index: number) => {
+    if (!teamsData) return;
     const newSelected = isSelected.map((_, i) => (i === index ? true : false));
     setIsSelected(newSelected);
-    setHanowlApply((prev) => ({ ...prev, team: teams[index] }));
+    setHanowlApply((prev) => ({
+      ...prev,
+      team: { name: teamsData.items[index].name, id: teamsData.items[index].id },
+    }));
   };
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused && hanowlApply.team) {
-      const index = teams.findIndex((team) => team === hanowlApply.team);
+      if (!teamsData) return;
+      const index = teamsData.items.findIndex(({ name }) => name === hanowlApply.team.name);
       const newSelected = isSelected.map((_, i) => (i === index ? true : false));
       setIsSelected(newSelected);
     }
@@ -41,15 +48,18 @@ export const SelectTeamScreen: React.FC = () => {
       onPress={() => navigate('HanowlApplyDetails')}
     >
       <SelectLayout>
-        {teams.map((item, index) => (
-          <SelectBox
-            key={index}
-            name={item}
-            isSelect={isSelected[index]}
-            onPress={() => handleSelect(index)}
-          />
-        ))}
-        {/* <HanowlApplySkeleton.TeamsSelect /> */}
+        {isLoading && !teamsData ? (
+          <HanowlApplySkeleton.TeamsSelect />
+        ) : (
+          teamsData?.items.map(({ name }, index) => (
+            <SelectBox
+              key={index}
+              name={name}
+              isSelect={isSelected[index]}
+              onPress={() => handleSelect(index)}
+            />
+          ))
+        )}
       </SelectLayout>
     </AppLayout>
   );
