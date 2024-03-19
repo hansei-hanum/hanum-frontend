@@ -3,7 +3,7 @@ import { ApplyInputCustomProps } from 'src/components';
 
 export const HANOWL_APPLY = {
   CONTENT_SUBTEXTS: [
-    '각 섹션별 글자는 최소 10자 ~ 최대 5000자까지 입력 가능해요.',
+    '각 섹션별 글자는 최소 10자 ~ 최대 500자까지 입력 가능해요.',
     '최소 글자를 맞추지 못하면 지원서를 제출할 수 없어요.',
     '최대 글자를 넘기게되면 초과된 글자는 삭제돼요.',
   ] as string[],

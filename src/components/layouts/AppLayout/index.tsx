@@ -15,11 +15,12 @@ import * as S from './styled';
 
 export interface AppLayoutCustomProps extends AppLayoutWithoutButtonCustomProps {
   isLoading?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
   bottomText: string;
   isDisabled?: boolean;
   withScrollView?: boolean;
   scrollViewRef?: RefObject<ScrollView>;
+  hasOwnButton?: React.ReactNode;
 }
 
 export type AppLayoutProps = AppLayoutCustomProps & ViewProps;
@@ -34,6 +35,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   isDisabled = false,
   withScrollView = false,
   scrollViewRef,
+  hasOwnButton,
   ...props
 }) => {
   const setAuth = useSetRecoilState(authAtom);
@@ -62,9 +64,13 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           />
         )}
         <S.AppLayoutButtonWrapper>
-          <Button onPress={onUserPress} isDisabled={isDisabled} isLoading={isLoading}>
-            {bottomText}
-          </Button>
+          {hasOwnButton ? (
+            hasOwnButton
+          ) : (
+            <Button onPress={onUserPress} isDisabled={isDisabled} isLoading={isLoading}>
+              {bottomText}
+            </Button>
+          )}
         </S.AppLayoutButtonWrapper>
       </S.AppLayoutContainer>
     </S.AppLayoutWrapper>

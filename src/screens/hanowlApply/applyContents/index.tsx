@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { editHanowlApplicationAtom, hanowlApplyAtom, isDisableAtom } from 'src/atoms';
-import { AppLayout, ApplyInput, Text } from 'src/components';
+import { AppLayout, ApplyInput, Button, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
 import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
@@ -52,7 +52,7 @@ export const ApplyContentsScreen: React.FC = () => {
     }
   };
 
-  const onPressButton = () => {
+  const onPressSubmitButton = () => {
     const [introduce, motive, aspiration] = value;
     setHanowlApply((prev) => ({
       ...prev,
@@ -72,37 +72,37 @@ export const ApplyContentsScreen: React.FC = () => {
     }
   }, [isFocused]);
 
-  // const updateApplication = () => {
-  //   const [introduce, motive, aspiration] = value;
-  //   if (!data && !hanowlApply.id) {
-  //     mutate({
-  //       departmentId: hanowlApply.team.id,
-  //       introduction: introduce,
-  //       motivation: motive,
-  //       aspiration: aspiration,
-  //       isSubmit: false,
-  //     });
-  //   } else if (data || editHanowlApplication || hanowlApply.id) {
-  //     editHanowlApplicationMutate({
-  //       departmentId: hanowlApply.team.id,
-  //       introduction: introduce,
-  //       motivation: motive,
-  //       aspiration: aspiration,
-  //       applicationId: editHanowlApplication
-  //         ? editHanowlApplication
-  //         : hanowlApply.id
-  //           ? hanowlApply.id
-  //           : data?.data || '',
-  //     });
-  //   }
-  //   setHanowlApply((prev) => ({
-  //     ...prev,
-  //     id: data?.data || editHanowlApplication || '',
-  //     introduce,
-  //     motive,
-  //     aspiration,
-  //   }));
-  // };
+  const updateApplication = () => {
+    const [introduce, motive, aspiration] = value;
+    if (!data && !hanowlApply.id) {
+      mutate({
+        departmentId: hanowlApply.team.id,
+        introduction: introduce,
+        motivation: motive,
+        aspiration: aspiration,
+        isSubmit: false,
+      });
+    } else if (data || editHanowlApplication || hanowlApply.id) {
+      editHanowlApplicationMutate({
+        departmentId: hanowlApply.team.id,
+        introduction: introduce,
+        motivation: motive,
+        aspiration: aspiration,
+        applicationId: editHanowlApplication
+          ? editHanowlApplication
+          : hanowlApply.id
+            ? hanowlApply.id
+            : data?.data || '',
+      });
+    }
+    setHanowlApply((prev) => ({
+      ...prev,
+      id: data?.data || '',
+      introduce,
+      motive,
+      aspiration,
+    }));
+  };
 
   // useEffect(() => {
   //   if (value.every((item) => item.length >= 10) && !isLoading && !isEditLoading) {
@@ -117,8 +117,7 @@ export const ApplyContentsScreen: React.FC = () => {
     <AppLayout
       headerText={`${hanowlApply.team.name} 지원에 필요한\n내용을 작성해 주세요`}
       bottomText="다음"
-      isLoading={isLoading}
-      onPress={onPressButton}
+      isLoading={isLoading || isEditLoading}
       withScrollView
       isDisabled={isDisabled}
       scrollViewRef={scrollViewRef}
@@ -131,6 +130,22 @@ export const ApplyContentsScreen: React.FC = () => {
           ))}
         </View>
       }
+      hasOwnButton={
+        <Button.Container>
+          <Button
+            onPress={updateApplication}
+            isDisabled={isDisabled}
+            isLoading={isEditLoading || isLoading}
+            isWhite
+            isModalBtn
+          >
+            임시저장
+          </Button>
+          <Button onPress={onPressSubmitButton} isDisabled={isDisabled || isEditLoading} isModalBtn>
+            제출하기
+          </Button>
+        </Button.Container>
+      }
     >
       {HANOWL_APPLY.CONTENTS.map(({ height, placeholder }, index) => (
         <ApplyInput
@@ -141,6 +156,7 @@ export const ApplyContentsScreen: React.FC = () => {
           onChangeText={(text) => onChange(text, index)}
           onLayout={(e) => onLayout(e, index)}
           onFocus={() => onFocused(index)}
+          maxLength={500}
         />
       ))}
     </AppLayout>

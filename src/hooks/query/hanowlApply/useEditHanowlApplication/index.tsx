@@ -1,4 +1,4 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 
 import { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
@@ -12,10 +12,13 @@ export const useEditHanowlApplication = (): UseMutationResult<
   AxiosError<APIErrorResponse>,
   EditHanowlApplicationValues
 > => {
+  const queryClient = useQueryClient();
+
   const setEditHanowlApplication = useSetRecoilState(editHanowlApplicationAtom);
+
   return useMutation('useEditHanowlApplication', editHanowlApplication, {
     onSuccess: ({ data }) => {
-      console.log('useEditHanowlApplication data', data);
+      queryClient.invalidateQueries('useGetTemporaryApplication');
       setEditHanowlApplication(data);
     },
   });

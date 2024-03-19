@@ -24,7 +24,6 @@ export const ApplyInput = forwardRef<TextInput, ApplyInputProps>(
         style={{ borderColor: theme.lightGray, textAlignVertical: 'top' }}
         placeholder={placeholder}
         placeholderTextColor={theme.placeholder}
-        maxLength={5000}
         {...props}
       />
     );

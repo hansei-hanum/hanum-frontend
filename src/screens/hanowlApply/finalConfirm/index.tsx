@@ -33,12 +33,12 @@ export const FinalConfirmTextContainer: React.FC<FinalConfirmProps> = ({ subject
 
 export const FinalConfirmScreen: React.FC = () => {
   const hanowlApplyData = useRecoilValue(hanowlApplyDataAtom);
-  const hasData = hanowlApplyData.length > 0;
 
   const { mutate, isLoading } = useCreateHanowlApplication();
 
   const theme = useTheme();
   const hanowlApply = useRecoilValue(hanowlApplyAtom);
+  const hasData = hanowlApply.id;
 
   const [timer, setTimer] = useState<number>(10);
 
@@ -48,9 +48,6 @@ export const FinalConfirmScreen: React.FC = () => {
 
   const onButtonPress = () => {
     if (hasData) {
-      navigate('Main');
-      return;
-    } else {
       mutate({
         departmentId: hanowlApply.team.id,
         introduction: hanowlApply.introduce,
@@ -58,6 +55,9 @@ export const FinalConfirmScreen: React.FC = () => {
         aspiration: hanowlApply.aspiration,
         isSubmit: true,
       });
+    } else {
+      navigate('Main');
+      return;
     }
   };
 
@@ -76,7 +76,7 @@ export const FinalConfirmScreen: React.FC = () => {
     <AppLayout
       headerText={`작성하신 내용을\n확인해 주세요`}
       subHeaderText={
-        !hasData && (
+        hasData && (
           <View>
             {HANOWL_APPLY.FINAL_CONFIRM_SUBTEXTS.map((item, index) => (
               <Text key={index} size={14} color={theme.danger}>
@@ -86,25 +86,25 @@ export const FinalConfirmScreen: React.FC = () => {
           </View>
         )
       }
-      isDisabled={!hasData && timer !== 0}
-      bottomText={hasData ? '확인' : `최종 제출하기 ${timer === 0 ? '' : `(${timer})`}`}
+      isDisabled={hasData ? timer !== 0 : false}
+      bottomText={!hasData ? '확인' : `최종 제출하기 ${timer === 0 ? '' : `(${timer})`}`}
       withScrollView
       isLoading={isLoading}
       onPress={onButtonPress}
     >
       {hasData ? (
         <>
-          <FinalConfirmTextContainer subject="부서" text={hanowlApplyData[0].department.name} />
-          <FinalConfirmTextContainer subject="자기소개" text={hanowlApplyData[0].introduction} />
-          <FinalConfirmTextContainer subject="지원 동기" text={hanowlApplyData[0].motivation} />
-          <FinalConfirmTextContainer subject="포부" text={hanowlApplyData[0].aspiration} />
-        </>
-      ) : (
-        <>
           <FinalConfirmTextContainer subject="부서" text={hanowlApply.team.name} />
           <FinalConfirmTextContainer subject="자기소개" text={hanowlApply.introduce} />
           <FinalConfirmTextContainer subject="지원 동기" text={hanowlApply.motive} />
           <FinalConfirmTextContainer subject="포부" text={hanowlApply.aspiration} />
+        </>
+      ) : (
+        <>
+          <FinalConfirmTextContainer subject="부서" text={hanowlApplyData[0].department.name} />
+          <FinalConfirmTextContainer subject="자기소개" text={hanowlApplyData[0].introduction} />
+          <FinalConfirmTextContainer subject="지원 동기" text={hanowlApplyData[0].motivation} />
+          <FinalConfirmTextContainer subject="포부" text={hanowlApplyData[0].aspiration} />
         </>
       )}
     </AppLayout>

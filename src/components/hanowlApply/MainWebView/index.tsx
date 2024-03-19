@@ -27,12 +27,10 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
   const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   const onButtonPress = () => {
-    // if (applyData && applyData.items?.length > 0) {
-    //   navigate('HanowlConfirm');
-    // } else {
-    // }
     if (applyData?.isSubmitted) {
       navigate('HanowlFinalConfirm');
+    } else if (applyData && applyData.items?.length > 0) {
+      navigate('HanowlConfirm');
     } else if (isStudent) {
       navigate('HanowlSelectTeam');
     } else {
@@ -66,7 +64,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
         <Button
           onPress={onButtonPress}
           activeOpacity={1}
-          isDisabled={!checkDisplay}
+          // isDisabled={!checkDisplay}
           style={{
             opacity: 1,
             backgroundColor: checkDisplay ? theme.primary : theme.placeholder,
