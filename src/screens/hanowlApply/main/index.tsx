@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebViewMessageEvent } from 'react-native-webview';
 import { ScrollView } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
@@ -18,10 +19,12 @@ import {
 import { SCREEN_HEIGHT } from 'src/constants';
 import { isAndroid } from 'src/utils';
 import { hanowlApplyAtom } from 'src/atoms';
-import { useBottomSheet, useNavigate } from 'src/hooks';
+import { useBottomSheet, useCheckUserType, useGetUser, useNavigate } from 'src/hooks';
 import { useGetHanowlTeams, useGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
 
 export const HanowlApplyMainScreen: React.FC = () => {
+  const { isStudent } = useCheckUserType();
+
   const { data: teamsData, isLoading: isTeamsLoading } = useGetHanowlTeams();
 
   const { data, isLoading } = useGetTemporaryApplication();
@@ -68,7 +71,14 @@ export const HanowlApplyMainScreen: React.FC = () => {
         };
       });
     }
-    navigate('HanowlApplyDetails');
+    if (isStudent) {
+      Toast.show({
+        type: 'error',
+        text1: '학생회 지원은 재학생만 가능해요',
+      });
+    } else {
+      navigate('HanowlApplyDetails');
+    }
   };
 
   return (
@@ -86,7 +96,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
       <MainWebView
         onMessage={onMessage}
         isLoading={isLoading || isTeamsLoading}
-        applyData={data?.data.items}
+        applyData={data?.data}
       />
       <BottomSheet
         ref={bottomSheetRef}

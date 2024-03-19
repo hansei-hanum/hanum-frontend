@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
+import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';
 
 import { Button } from 'src/components/common';
-import { useCheckApplyPeriod, useNavigate } from 'src/hooks';
+import { useCheckApplyPeriod, useCheckUserType, useNavigate } from 'src/hooks';
 import { HANOWL_APPLY } from 'src/constants';
-import { GetTemporaryApplicationDetail } from 'src/api/hanowlApply';
+import {
+  GetTemporaryApplicationDetail,
+  GetTemporaryApplicationResponse,
+} from 'src/api/hanowlApply';
 
 import * as S from './styled';
 
 export interface MainWebViewProps {
   onMessage: (event: WebViewMessageEvent) => void;
   isLoading: boolean;
-  applyData?: GetTemporaryApplicationDetail[];
+  applyData?: GetTemporaryApplicationResponse;
 }
 
 export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, applyData }) => {
+  const { isStudent } = useCheckUserType();
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -25,7 +30,20 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
   const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   const onButtonPress = () => {
-    navigate('HanowlSelectTeam');
+    // if (applyData && applyData.items?.length > 0) {
+    //   navigate('HanowlConfirm');
+    // } else {
+    // }
+    if (applyData?.isSubmitted) {
+      navigate('HanowlFinalConfirm');
+    } else if (isStudent) {
+      navigate('HanowlSelectTeam');
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: '학생회 지원은 재학생만 가능해요',
+      });
+    }
   };
 
   const checkDisplay = !mainLoading && !isLoading && isApplyPeriod;

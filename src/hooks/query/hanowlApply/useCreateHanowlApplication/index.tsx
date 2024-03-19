@@ -1,4 +1,4 @@
-import { UseMutationResult, useMutation } from 'react-query';
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
 
 import { AxiosError } from 'axios';
@@ -13,9 +13,10 @@ export const useCreateHanowlApplication = (): UseMutationResult<
   CreateHanowlApplicationValues
 > => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   return useMutation('useCreateHanowlApplication', createHanowlApplication, {
     onSuccess: (data, variables) => {
-      console.log('useCreateHanowlApplication data', data);
+      queryClient.invalidateQueries('useGetTemporaryApplication');
       if (variables.isSubmit) {
         Toast.show({
           type: 'success',
