@@ -81,5 +81,5 @@ export const AuthorContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  column-gap: 2px;
+  column-gap: 4px;
 `;

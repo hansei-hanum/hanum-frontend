@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
 
 import { hanowlApplyAtom } from 'src/atoms';
-import { AppLayout, SelectBox, SelectLayout } from 'src/components';
+import { AppLayout, HanowlApplySkeleton, SelectBox, SelectLayout } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
 
@@ -49,6 +49,7 @@ export const SelectTeamScreen: React.FC = () => {
             onPress={() => handleSelect(index)}
           />
         ))}
+        {/* <HanowlApplySkeleton.TeamsSelect /> */}
       </SelectLayout>
     </AppLayout>
   );
