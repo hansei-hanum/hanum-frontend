@@ -7,10 +7,7 @@ import { useTheme } from '@emotion/react';
 import { Button } from 'src/components/common';
 import { useCheckApplyPeriod, useCheckUserType, useNavigate } from 'src/hooks';
 import { HANOWL_APPLY } from 'src/constants';
-import {
-  GetTemporaryApplicationDetail,
-  GetTemporaryApplicationResponse,
-} from 'src/api/hanowlApply';
+import { GetTemporaryApplicationResponse } from 'src/api/hanowlApply';
 
 import * as S from './styled';
 
