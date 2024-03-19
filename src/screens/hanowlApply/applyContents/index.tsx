@@ -4,16 +4,20 @@ import { LayoutChangeEvent, ScrollView, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { hanowlApplyAtom, isDisableAtom } from 'src/atoms';
+import { editHanowlApplicationAtom, hanowlApplyAtom, isDisableAtom } from 'src/atoms';
 import { AppLayout, ApplyInput, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
 import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
+import { useEditHanowlApplication } from 'src/hooks/query/hanowlApply/useEditHanowlApplicatoin';
 
 export const ApplyContentsScreen: React.FC = () => {
-  const { mutate, data } = useCreateHanowlApplication();
+  const { mutate, data, isLoading } = useCreateHanowlApplication();
+  const { mutate: editHanowlApplicationMutate, isLoading: isEditLoading } =
+    useEditHanowlApplication();
+  const editHanowlApplication = useRecoilValue(editHanowlApplicationAtom);
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -30,7 +34,7 @@ export const ApplyContentsScreen: React.FC = () => {
     const newValue = [...value];
     newValue[index] = text;
     setValue(newValue);
-    setIsDisabled(newValue.every((item) => item.length < 10));
+    setIsDisabled(newValue.some((item) => item.length < 10));
   };
 
   const onLayout = (e: LayoutChangeEvent, index: number) => {
@@ -66,28 +70,50 @@ export const ApplyContentsScreen: React.FC = () => {
       setValue([hanowlApply.introduce, hanowlApply.motive, hanowlApply.aspiration]);
       setIsDisabled(false);
     }
+  }, [isFocused]);
+
+  const updateApplication = () => {
     const [introduce, motive, aspiration] = value;
-    if (isFocused && value.every((item) => item.length >= 10)) {
-      setInterval(() => {
-        mutate({
-          departmentId: hanowlApply.team.id,
-          introduction: introduce,
-          motivation: motive,
-          aspiration: aspiration,
-          isSubmit: false,
-        });
-      }, 1000 * 60);
-    }
-    if (!isFocused && value.every((item) => item.length >= 10)) {
+    if (!data && !hanowlApply.id) {
       mutate({
         departmentId: hanowlApply.team.id,
-        introduction: hanowlApply.introduce,
-        motivation: hanowlApply.motive,
-        aspiration: hanowlApply.aspiration,
+        introduction: introduce,
+        motivation: motive,
+        aspiration: aspiration,
         isSubmit: false,
       });
+    } else if (data || editHanowlApplication || hanowlApply.id) {
+      editHanowlApplicationMutate({
+        departmentId: hanowlApply.team.id,
+        introduction: introduce,
+        motivation: motive,
+        aspiration: aspiration,
+        applicationId: editHanowlApplication
+          ? editHanowlApplication
+          : hanowlApply.id
+            ? hanowlApply.id
+            : data?.data || '',
+      });
     }
-  }, [isFocused]);
+    setHanowlApply((prev) => ({
+      ...prev,
+      id: data?.data || editHanowlApplication || '',
+      introduce,
+      motive,
+      aspiration,
+    }));
+  };
+
+  useEffect(() => {
+    if (value.every((item) => item.length >= 10) && !isLoading && !isEditLoading) {
+      if (isFocused) {
+        const intervalId = setInterval(updateApplication, 1000 * 3);
+        return () => clearInterval(intervalId);
+      } else {
+        updateApplication();
+      }
+    }
+  }, [isFocused, value, data, isLoading]);
 
   return (
     <AppLayout

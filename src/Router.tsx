@@ -51,6 +51,7 @@ export const Router: React.FC = () => {
 
   const getToken = async () => {
     const token = await AsyncStorage.getItem('token');
+    console.log('token', token);
     setToken(token);
     return token;
   };

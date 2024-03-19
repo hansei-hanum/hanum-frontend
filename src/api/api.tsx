@@ -6,7 +6,7 @@ export const API_BASEURLS = {
   INFO: 'https://info.hanum.us',
   FESTIVAL: 'https://festival.hanum.us',
   COMMUNITY: 'https://community.hanum.us/',
-  HANOWL_APPLY: 'https://xx.nekos.me/',
+  HANOWL_APPLY: 'https://noti-recruit.hanum.us/',
 };
 
 const baseConfig = {
