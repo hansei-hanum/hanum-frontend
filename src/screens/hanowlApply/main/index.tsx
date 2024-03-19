@@ -19,7 +19,7 @@ import {
 import { SCREEN_HEIGHT } from 'src/constants';
 import { isAndroid } from 'src/utils';
 import { hanowlApplyAtom } from 'src/atoms';
-import { useBottomSheet, useCheckUserType, useGetUser, useNavigate } from 'src/hooks';
+import { useBottomSheet, useCheckUserType, useNavigate } from 'src/hooks';
 import { useGetHanowlTeams, useGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
 
 export const HanowlApplyMainScreen: React.FC = () => {

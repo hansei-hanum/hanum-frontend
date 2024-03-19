@@ -1,11 +1,11 @@
 import { TeamType } from 'src/atoms';
-import { ApplyInputCustomProps, ConfirmBoxProps } from 'src/components';
+import { ApplyInputCustomProps } from 'src/components';
 
 export const HANOWL_APPLY = {
   CONTENT_SUBTEXTS: [
-    '작성하시는 내용은 자동으로 임시저장돼요.',
-    '고민이 더 필요하다면 이 창을 닫고 해도 괜찮아요.',
-    '그래도 나중에 이어서 작성할 수 있어요.',
+    '각 섹션별 글자는 최소 10자 ~ 최대 5000자까지 입력 가능해요.',
+    '최소 글자를 맞추지 못하면 지원서를 제출할 수 없어요.',
+    '최대 글자를 넘기게되면 초과된 글자는 삭제돼요.',
   ] as string[],
 
   TEAMS: [
@@ -39,73 +39,6 @@ export const HANOWL_APPLY = {
     '또한, 여러 부서에 중복 지원도 불가해요.',
     '작성하신 내용이 맞는지 다시 확인해 주세요.',
   ] as string[],
-
-  CONFIRM_DUMMY_LIST: [
-    {
-      team: '기능부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-    {
-      team: '도서부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-    {
-      team: '도서부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-    {
-      team: '도서부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-    {
-      team: '도서부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-    {
-      team: '도서부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-    {
-      team: '도서부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-    {
-      team: '도서부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-
-    {
-      team: '학예 체육부',
-      date: '2021.09.01',
-      introduce: '앙기모링 최근원 입니다~~~~~~~',
-      motive: '앙기모링 최근원 입니다~~~~~~~',
-      aspiration: '앙기모링 최근원 입니다~~~~~~~',
-    },
-  ] as ConfirmBoxProps[],
 
   URL: 'https://recruit.hanum.us/',
 

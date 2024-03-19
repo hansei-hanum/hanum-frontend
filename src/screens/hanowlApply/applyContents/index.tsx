@@ -122,15 +122,15 @@ export const ApplyContentsScreen: React.FC = () => {
       withScrollView
       isDisabled={isDisabled}
       scrollViewRef={scrollViewRef}
-      // subHeaderText={
-      //   <View>
-      //     {HANOWL_APPLY.CONTENT_SUBTEXTS.map((item, index) => (
-      //       <Text key={index} size={14} color={theme.placeholder}>
-      //         {item}
-      //       </Text>
-      //     ))}
-      //   </View>
-      // }
+      subHeaderText={
+        <View>
+          {HANOWL_APPLY.CONTENT_SUBTEXTS.map((item, index) => (
+            <Text key={index} size={14} color={theme.placeholder}>
+              {item}
+            </Text>
+          ))}
+        </View>
+      }
     >
       {HANOWL_APPLY.CONTENTS.map(({ height, placeholder }, index) => (
         <ApplyInput
