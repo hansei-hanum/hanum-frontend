@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebViewMessageEvent } from 'react-native-webview';
 import { ScrollView } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
@@ -12,15 +13,22 @@ import {
   MainWebView,
   TEAM_ID_TO_TEXT,
   TeamId,
-  HanowlApplyTeamsSkeleton,
+  HanowlApplySkeleton,
   TeamsWebView,
 } from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
 import { isAndroid } from 'src/utils';
-import { TeamType, hanowlApplyAtom } from 'src/atoms';
-import { useBottomSheet, useNavigate } from 'src/hooks';
+import { hanowlApplyAtom } from 'src/atoms';
+import { useBottomSheet, useCheckUserType, useGetUser, useNavigate } from 'src/hooks';
+import { useGetHanowlTeams, useGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
 
 export const HanowlApplyMainScreen: React.FC = () => {
+  const { isStudent } = useCheckUserType();
+
+  const { data: teamsData, isLoading: isTeamsLoading } = useGetHanowlTeams();
+
+  const { data, isLoading } = useGetTemporaryApplication();
+
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -46,8 +54,31 @@ export const HanowlApplyMainScreen: React.FC = () => {
 
   const onPress = () => {
     bottomSheetRef.current?.scrollTo(0);
-    setHanowlApply((prev) => ({ ...prev, team: TEAM_ID_TO_TEXT[message as TeamId] as TeamType }));
-    navigate('HanowlApplyDetails');
+    if (teamsData) {
+      setHanowlApply((prev) => {
+        const teamDataItem = teamsData?.data.items.find(
+          (item) => item.name === TEAM_ID_TO_TEXT[message as TeamId],
+        );
+        if (!teamDataItem) {
+          return prev;
+        }
+        return {
+          ...prev,
+          team: {
+            name: teamDataItem.name,
+            id: teamDataItem.id,
+          },
+        };
+      });
+    }
+    if (isStudent) {
+      navigate('HanowlApplyDetails');
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: '학생회 지원은 재학생만 가능해요',
+      });
+    }
   };
 
   return (
@@ -62,13 +93,17 @@ export const HanowlApplyMainScreen: React.FC = () => {
           marginTop: isAndroid ? 10 : 0,
         }}
       />
-      <MainWebView onMessage={onMessage} />
+      <MainWebView
+        onMessage={onMessage}
+        isLoading={isLoading || isTeamsLoading}
+        applyData={data?.data}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         scrollHeight={-SCREEN_HEIGHT + 100}
         style={{ backgroundColor: '#2A2B2E' }}
       >
-        {teamLoading && <HanowlApplyTeamsSkeleton theme={theme} />}
+        {teamLoading && <HanowlApplySkeleton.Teams theme={theme} />}
         {isAndroid ? (
           <ScrollView
             contentContainerStyle={{
@@ -82,6 +117,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
               teamLoading={teamLoading}
               theme={theme}
               onPress={onPress}
+              isLoading={isLoading}
             />
           </ScrollView>
         ) : (
@@ -90,6 +126,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
             teamLoading={teamLoading}
             theme={theme}
             onPress={onPress}
+            isLoading={isLoading || isTeamsLoading}
           />
         )}
       </BottomSheet>

@@ -109,5 +109,5 @@ export const HANOWL_APPLY = {
 
   URL: 'https://recruit.hanum.us/',
 
-  START_DATE: '2024-03-21T00:00:00',
+  START_DATE: '2024-03-20T09:00:00',
 };

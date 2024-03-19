@@ -34,18 +34,16 @@ export const Router: React.FC = () => {
 
   const { data, isLoading } = useFetchUser();
 
+  const systemTheme = useColorScheme();
+
   const [isReady, setIsReady] = useState(false);
   const [token, setToken] = useState<string | null>(null);
-  const [theme, setTheme] = useState(Appearance.getColorScheme());
 
   Appearance.addChangeListener(({ colorScheme }) => {
-    setTheme(colorScheme);
     colorScheme && setAppTheme(colorScheme);
   });
 
-  const isDarkTheme = theme === 'dark';
-
-  const systemTheme = useColorScheme();
+  const isDarkTheme = systemTheme === 'dark';
 
   const getTheme = () => {
     systemTheme && setAppTheme(systemTheme);
@@ -96,7 +94,7 @@ export const Router: React.FC = () => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      {/* <CheckVersion /> */}
+      <CheckVersion />
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{

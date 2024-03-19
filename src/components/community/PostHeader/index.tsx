@@ -3,14 +3,13 @@ import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import MI from 'react-native-vector-icons/MaterialIcons';
-import Toast from 'react-native-toast-message';
 import { Image } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
 import { UserLogo, VerifyCheckIcon } from 'src/assets';
 import { ScaleOpacity, Text } from 'src/components';
-import { getPrevTimeString } from 'src/utils';
+import { getPrevTimeString, onVerifyIconPress } from 'src/utils';
 import { GetCommentsAuthorProps, LimitedArticleScopeOfDisclosure } from 'src/api';
 
 import { CommunityPostProps } from '../Post';
@@ -38,28 +37,6 @@ export const CommunityPostHeader: React.FC<CommunityPostHeaderProps> = ({
   onProfilePress,
 }) => {
   const theme = useTheme();
-
-  const onVerifyIconPress = (authorId?: number, verificationInfo?: string) => {
-    if (verificationInfo) {
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: `${verificationInfo}`,
-      });
-    } else if (authorId) {
-      Toast.show({
-        type: 'info',
-        position: 'top',
-        text1: '미인증 사용자에요',
-      });
-    } else {
-      Toast.show({
-        type: 'info',
-        position: 'top',
-        text1: '익명 사용자에요',
-      });
-    }
-  };
 
   const isVerified = author?.verificationInfo
     ? author.verificationInfo != '인증되지 않은 사용자에요'

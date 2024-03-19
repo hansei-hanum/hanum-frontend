@@ -39,11 +39,13 @@ export interface TeamsWebViewProps {
   message: string | null;
   theme: Theme;
   onPress: () => void;
+  isLoading: boolean;
 }
 
 export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
   message,
   teamLoading,
+  isLoading,
   theme,
   onPress,
 }) => {
@@ -63,10 +65,12 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
     return true;
   };
 
+  const checkDisplay = !teamLoading && !isLoading && isApplyPeriod;
+
   return (
     <>
       <WebView
-        source={{ uri: `${HANOWL_APPLY.URL}teams/${message}?isApp=true` }}
+        source={{ uri: `${HANOWL_APPLY.URL}teams/${message}` }}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         onNavigationStateChange={onNavigationStateChange}
         style={{
@@ -87,13 +91,17 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
           style={{
             paddingVertical: 14,
             opacity: 1,
-            backgroundColor: isApplyPeriod ? theme.primary : theme.placeholder,
+            backgroundColor: checkDisplay ? theme.primary : theme.placeholder,
           }}
           activeOpacity={1}
-          isDisabled={!isApplyPeriod}
+          isDisabled={!checkDisplay}
+          isLoading={isLoading}
         >
           <Text size={16} isCenter color={theme.white}>
-            {isApplyPeriod ? `${TEAM_ID_TO_TEXT[message as TeamId]} 지원하기` : `${timeLeftString}`}
+            {!isLoading &&
+              (isApplyPeriod
+                ? `${TEAM_ID_TO_TEXT[message as TeamId]} 지원하기`
+                : `${timeLeftString}`)}
           </Text>
         </Button>
       </S.TeamApplyButtonWrapper>

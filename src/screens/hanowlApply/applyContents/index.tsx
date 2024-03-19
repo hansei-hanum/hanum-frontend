@@ -4,14 +4,21 @@ import { LayoutChangeEvent, ScrollView, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { hanowlApplyAtom, isDisableAtom } from 'src/atoms';
+import { editHanowlApplicationAtom, hanowlApplyAtom, isDisableAtom } from 'src/atoms';
 import { AppLayout, ApplyInput, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
+import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
+import { useEditHanowlApplication } from 'src/hooks/query/hanowlApply/useEditHanowlApplication';
 
 export const ApplyContentsScreen: React.FC = () => {
+  const { mutate, data, isLoading } = useCreateHanowlApplication();
+  const { mutate: editHanowlApplicationMutate, isLoading: isEditLoading } =
+    useEditHanowlApplication();
+  const editHanowlApplication = useRecoilValue(editHanowlApplicationAtom);
+
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -27,7 +34,7 @@ export const ApplyContentsScreen: React.FC = () => {
     const newValue = [...value];
     newValue[index] = text;
     setValue(newValue);
-    setIsDisabled(newValue.some((item) => item === ''));
+    setIsDisabled(newValue.some((item) => item.length < 10));
   };
 
   const onLayout = (e: LayoutChangeEvent, index: number) => {
@@ -65,24 +72,65 @@ export const ApplyContentsScreen: React.FC = () => {
     }
   }, [isFocused]);
 
+  // const updateApplication = () => {
+  //   const [introduce, motive, aspiration] = value;
+  //   if (!data && !hanowlApply.id) {
+  //     mutate({
+  //       departmentId: hanowlApply.team.id,
+  //       introduction: introduce,
+  //       motivation: motive,
+  //       aspiration: aspiration,
+  //       isSubmit: false,
+  //     });
+  //   } else if (data || editHanowlApplication || hanowlApply.id) {
+  //     editHanowlApplicationMutate({
+  //       departmentId: hanowlApply.team.id,
+  //       introduction: introduce,
+  //       motivation: motive,
+  //       aspiration: aspiration,
+  //       applicationId: editHanowlApplication
+  //         ? editHanowlApplication
+  //         : hanowlApply.id
+  //           ? hanowlApply.id
+  //           : data?.data || '',
+  //     });
+  //   }
+  //   setHanowlApply((prev) => ({
+  //     ...prev,
+  //     id: data?.data || editHanowlApplication || '',
+  //     introduce,
+  //     motive,
+  //     aspiration,
+  //   }));
+  // };
+
+  // useEffect(() => {
+  //   if (value.every((item) => item.length >= 10) && !isLoading && !isEditLoading) {
+  //     if (isFocused) {
+  //       const intervalId = setInterval(updateApplication, 1000 * 1000);
+  //       return () => clearInterval(intervalId);
+  //     }
+  //   }
+  // }, [isFocused, value, data, isLoading]);
+
   return (
     <AppLayout
-      headerText={`${hanowlApply.team} 지원에 필요한\n내용을 작성해 주세요`}
+      headerText={`${hanowlApply.team.name} 지원에 필요한\n내용을 작성해 주세요`}
       bottomText="다음"
-      isLoading={false}
+      isLoading={isLoading}
       onPress={onPressButton}
       withScrollView
       isDisabled={isDisabled}
       scrollViewRef={scrollViewRef}
-      subHeaderText={
-        <View>
-          {HANOWL_APPLY.CONTENT_SUBTEXTS.map((item, index) => (
-            <Text key={index} size={14} color={theme.placeholder}>
-              {item}
-            </Text>
-          ))}
-        </View>
-      }
+      // subHeaderText={
+      //   <View>
+      //     {HANOWL_APPLY.CONTENT_SUBTEXTS.map((item, index) => (
+      //       <Text key={index} size={14} color={theme.placeholder}>
+      //         {item}
+      //       </Text>
+      //     ))}
+      //   </View>
+      // }
     >
       {HANOWL_APPLY.CONTENTS.map(({ height, placeholder }, index) => (
         <ApplyInput

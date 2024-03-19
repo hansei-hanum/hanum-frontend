@@ -67,16 +67,20 @@ export const TimeTable: React.FC = () => {
       let accrueDuration = 0;
       let lessonCount = 0;
 
-      for (let i = 0; i < partDurationList.length; i++) {
-        accrueDuration += partDurationList[i];
-        if (totalMinutes >= startingPoint + accrueDuration) {
-          lessonCount++;
-        } else {
-          break;
+      if (currentDate.getHours() >= 8 && currentDate.getHours() < 18) {
+        for (let i = 0; i < partDurationList.length; i++) {
+          accrueDuration += partDurationList[i];
+          if (totalMinutes >= startingPoint + accrueDuration) {
+            lessonCount++;
+          } else {
+            break;
+          }
         }
+        setLessonIndex(lessonCount);
+      } else {
+        setLessonIndex(undefined);
       }
 
-      setLessonIndex(lessonCount);
       animationFrameId = requestAnimationFrame(updateLessonIndex);
     };
 

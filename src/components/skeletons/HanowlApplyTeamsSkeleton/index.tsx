@@ -1,7 +1,10 @@
 import { View } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-import { Theme } from '@emotion/react';
+import { Theme, useTheme } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
+
+import { themeAtom } from 'src/atoms';
 
 export interface TeamsSkeletonProps {
   theme: Theme;
@@ -23,7 +26,7 @@ const SkeletonItem: React.FC<{ paddingLeft?: number; theme: Theme }> = ({ paddin
   </SkeletonPlaceholder>
 );
 
-export const HanowlApplyTeamsSkeleton: React.FC<TeamsSkeletonProps> = ({ theme }) => {
+const TeamsSkeleton: React.FC<TeamsSkeletonProps> = ({ theme }) => {
   return (
     <View style={{ flex: 0.8, paddingHorizontal: 20 }}>
       <View style={{ rowGap: 40, marginTop: 16 }}>
@@ -34,3 +37,38 @@ export const HanowlApplyTeamsSkeleton: React.FC<TeamsSkeletonProps> = ({ theme }
     </View>
   );
 };
+
+const TeamsSelectSkeleton: React.FC = () => {
+  const themeColor = useRecoilValue(themeAtom);
+  const isDark = themeColor === 'dark';
+
+  const theme = useTheme();
+  return (
+    <>
+      {Array.from({ length: 8 }).map((_, index) => (
+        <View style={{ width: '100%' }} key={index}>
+          <SkeletonPlaceholder
+            backgroundColor={isDark ? theme.selectBox : theme.lightGray}
+            highlightColor={isDark ? theme.lightGray : theme.selectBox}
+          >
+            <View
+              style={{
+                width: '100%',
+                height: 60,
+                borderRadius: 14,
+              }}
+            />
+          </SkeletonPlaceholder>
+        </View>
+      ))}
+    </>
+  );
+};
+
+export const HanowlApplySkeleton = Object.assign(
+  {},
+  {
+    Teams: TeamsSkeleton,
+    TeamsSelect: TeamsSelectSkeleton,
+  },
+);
