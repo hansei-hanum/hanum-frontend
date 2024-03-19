@@ -10,8 +10,11 @@ import { hanowlApplyAtom, isDisableAtom } from 'src/atoms';
 import { AppLayout, ApplyInput, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
+import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
 
 export const ApplyContentsScreen: React.FC = () => {
+  const { mutate, data } = useCreateHanowlApplication();
+
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -27,7 +30,7 @@ export const ApplyContentsScreen: React.FC = () => {
     const newValue = [...value];
     newValue[index] = text;
     setValue(newValue);
-    setIsDisabled(newValue.some((item) => item === ''));
+    setIsDisabled(newValue.every((item) => item.length < 10));
   };
 
   const onLayout = (e: LayoutChangeEvent, index: number) => {
@@ -53,7 +56,7 @@ export const ApplyContentsScreen: React.FC = () => {
       motive,
       aspiration,
     }));
-    navigate('HanowlFinalConfirm');
+    // navigate('HanowlFinalConfirm');
   };
 
   const isFocused = useIsFocused();
@@ -63,11 +66,32 @@ export const ApplyContentsScreen: React.FC = () => {
       setValue([hanowlApply.introduce, hanowlApply.motive, hanowlApply.aspiration]);
       setIsDisabled(false);
     }
+    const [introduce, motive, aspiration] = value;
+    if (isFocused && value.every((item) => item.length >= 10)) {
+      setInterval(() => {
+        mutate({
+          departmentId: hanowlApply.team.id,
+          introduction: introduce,
+          motivation: motive,
+          aspiration: aspiration,
+          isSubmit: false,
+        });
+      }, 1000 * 60);
+    }
+    if (!isFocused && value.every((item) => item.length >= 10)) {
+      mutate({
+        departmentId: hanowlApply.team.id,
+        introduction: hanowlApply.introduce,
+        motivation: hanowlApply.motive,
+        aspiration: hanowlApply.aspiration,
+        isSubmit: false,
+      });
+    }
   }, [isFocused]);
 
   return (
     <AppLayout
-      headerText={`${hanowlApply.team} 지원에 필요한\n내용을 작성해 주세요`}
+      headerText={`${hanowlApply.team.name} 지원에 필요한\n내용을 작성해 주세요`}
       bottomText="다음"
       isLoading={false}
       onPress={onPressButton}

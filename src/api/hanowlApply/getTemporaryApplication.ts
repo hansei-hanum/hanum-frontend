@@ -24,6 +24,6 @@ export interface GetTemporaryApplicationResponse {
 }
 
 export const getTemporaryApplication = async () => {
-  const { data } = await hanowlApplyInstance.get(API_SUFFIX.HANOWL_APPLY.TEMPORARY_APPLICATION);
+  const { data } = await hanowlApplyInstance.get(API_SUFFIX.HANOWL_APPLY.APPLICATION);
   return data;
 };

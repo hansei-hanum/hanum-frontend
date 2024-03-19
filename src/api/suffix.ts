@@ -35,7 +35,7 @@ export const COMMUNITY = {
 };
 
 export const HANOWL_APPLY = {
-  TEMPORARY_APPLICATION: '/users/@me/applications',
+  APPLICATION: '/users/@me/applications',
   GET_TEAMS: '/departments',
 };
 
