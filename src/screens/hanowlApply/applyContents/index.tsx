@@ -11,7 +11,7 @@ import { AppLayout, ApplyInput, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
 import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
-import { useEditHanowlApplication } from 'src/hooks/query/hanowlApply/useEditHanowlApplicatoin';
+import { useEditHanowlApplication } from 'src/hooks/query/hanowlApply/useEditHanowlApplication';
 
 export const ApplyContentsScreen: React.FC = () => {
   const { mutate, data, isLoading } = useCreateHanowlApplication();
@@ -60,7 +60,7 @@ export const ApplyContentsScreen: React.FC = () => {
       motive,
       aspiration,
     }));
-    // navigate('HanowlFinalConfirm');
+    navigate('HanowlFinalConfirm');
   };
 
   const isFocused = useIsFocused();
@@ -72,67 +72,65 @@ export const ApplyContentsScreen: React.FC = () => {
     }
   }, [isFocused]);
 
-  const updateApplication = () => {
-    const [introduce, motive, aspiration] = value;
-    if (!data && !hanowlApply.id) {
-      mutate({
-        departmentId: hanowlApply.team.id,
-        introduction: introduce,
-        motivation: motive,
-        aspiration: aspiration,
-        isSubmit: false,
-      });
-    } else if (data || editHanowlApplication || hanowlApply.id) {
-      editHanowlApplicationMutate({
-        departmentId: hanowlApply.team.id,
-        introduction: introduce,
-        motivation: motive,
-        aspiration: aspiration,
-        applicationId: editHanowlApplication
-          ? editHanowlApplication
-          : hanowlApply.id
-            ? hanowlApply.id
-            : data?.data || '',
-      });
-    }
-    setHanowlApply((prev) => ({
-      ...prev,
-      id: data?.data || editHanowlApplication || '',
-      introduce,
-      motive,
-      aspiration,
-    }));
-  };
+  // const updateApplication = () => {
+  //   const [introduce, motive, aspiration] = value;
+  //   if (!data && !hanowlApply.id) {
+  //     mutate({
+  //       departmentId: hanowlApply.team.id,
+  //       introduction: introduce,
+  //       motivation: motive,
+  //       aspiration: aspiration,
+  //       isSubmit: false,
+  //     });
+  //   } else if (data || editHanowlApplication || hanowlApply.id) {
+  //     editHanowlApplicationMutate({
+  //       departmentId: hanowlApply.team.id,
+  //       introduction: introduce,
+  //       motivation: motive,
+  //       aspiration: aspiration,
+  //       applicationId: editHanowlApplication
+  //         ? editHanowlApplication
+  //         : hanowlApply.id
+  //           ? hanowlApply.id
+  //           : data?.data || '',
+  //     });
+  //   }
+  //   setHanowlApply((prev) => ({
+  //     ...prev,
+  //     id: data?.data || editHanowlApplication || '',
+  //     introduce,
+  //     motive,
+  //     aspiration,
+  //   }));
+  // };
 
-  useEffect(() => {
-    if (value.every((item) => item.length >= 10) && !isLoading && !isEditLoading) {
-      if (isFocused) {
-        const intervalId = setInterval(updateApplication, 1000 * 3);
-        return () => clearInterval(intervalId);
-      } else {
-        updateApplication();
-      }
-    }
-  }, [isFocused, value, data, isLoading]);
+  // useEffect(() => {
+  //   if (value.every((item) => item.length >= 10) && !isLoading && !isEditLoading) {
+  //     if (isFocused) {
+  //       const intervalId = setInterval(updateApplication, 1000 * 1000);
+  //       return () => clearInterval(intervalId);
+  //     }
+  //   }
+  // }, [isFocused, value, data, isLoading]);
 
   return (
     <AppLayout
       headerText={`${hanowlApply.team.name} 지원에 필요한\n내용을 작성해 주세요`}
       bottomText="다음"
-      isLoading={false}
+      isLoading={isLoading}
       onPress={onPressButton}
       withScrollView
       isDisabled={isDisabled}
       scrollViewRef={scrollViewRef}
-      subHeaderText={
-        <View>
-          {HANOWL_APPLY.CONTENT_SUBTEXTS.map((item, index) => (
-            <Text key={index} size={14} color={theme.placeholder}>
-              {item}
-            </Text>
-          ))}
-        </View>
-      }
+      // subHeaderText={
+      //   <View>
+      //     {HANOWL_APPLY.CONTENT_SUBTEXTS.map((item, index) => (
+      //       <Text key={index} size={14} color={theme.placeholder}>
+      //         {item}
+      //       </Text>
+      //     ))}
+      //   </View>
+      // }
     >
       {HANOWL_APPLY.CONTENTS.map(({ height, placeholder }, index) => (
         <ApplyInput

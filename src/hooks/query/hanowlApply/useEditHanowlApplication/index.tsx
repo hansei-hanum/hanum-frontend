@@ -15,6 +15,7 @@ export const useEditHanowlApplication = (): UseMutationResult<
   const setEditHanowlApplication = useSetRecoilState(editHanowlApplicationAtom);
   return useMutation('useEditHanowlApplication', editHanowlApplication, {
     onSuccess: ({ data }) => {
+      console.log('useEditHanowlApplication data', data);
       setEditHanowlApplication(data);
     },
   });

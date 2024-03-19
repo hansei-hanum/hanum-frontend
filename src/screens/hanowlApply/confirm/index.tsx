@@ -25,7 +25,7 @@ export const ConfirmScreen: React.FC = () => {
 
   const onPress = () => {
     setHanowlApply({
-      team: '',
+      team: { name: '', id: '' },
       introduce: '',
       motive: '',
       aspiration: '',

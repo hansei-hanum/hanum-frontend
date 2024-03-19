@@ -15,6 +15,7 @@ export const useCreateHanowlApplication = (): UseMutationResult<
   const navigate = useNavigate();
   return useMutation('useCreateHanowlApplication', createHanowlApplication, {
     onSuccess: (data, variables) => {
+      console.log('useCreateHanowlApplication data', data);
       if (variables.isSubmit) {
         Toast.show({
           type: 'success',

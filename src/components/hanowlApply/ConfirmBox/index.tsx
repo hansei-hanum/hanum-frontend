@@ -7,12 +7,12 @@ import { useSetRecoilState } from 'recoil';
 import { ScaleOpacity, Text } from 'src/components/common';
 import { TeamType, hanowlApplyAtom } from 'src/atoms';
 import { useNavigate } from 'src/hooks';
-import { GetTemporaryApplicationResponse } from 'src/api/hanowlApply';
+import { GetTemporaryApplicationDetail } from 'src/api/hanowlApply';
 import { getPrevTimeString } from 'src/utils';
 
 import * as S from './styled';
 
-export interface ConfirmBoxProps extends GetTemporaryApplicationResponse {}
+export interface ConfirmBoxProps extends GetTemporaryApplicationDetail {}
 
 export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
   department,
@@ -30,7 +30,7 @@ export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
   const onBoxPress = () => {
     setHanowlApply({
       id,
-      team: department.name as TeamType,
+      team: { name: department.name as TeamType, id: department.id },
       introduce: introduction,
       motive: motivation,
       aspiration,

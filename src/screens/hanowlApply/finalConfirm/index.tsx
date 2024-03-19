@@ -9,6 +9,8 @@ import { useRecoilValue } from 'recoil';
 import { AppLayout, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { hanowlApplyAtom } from 'src/atoms';
+import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
+import { useBlockGesture } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -30,10 +32,24 @@ export const FinalConfirmTextContainer: React.FC<FinalConfirmProps> = ({ subject
 };
 
 export const FinalConfirmScreen: React.FC = () => {
+  const { mutate, isLoading } = useCreateHanowlApplication();
+
   const theme = useTheme();
   const hanowlApply = useRecoilValue(hanowlApplyAtom);
 
   const [timer, setTimer] = useState<number>(10);
+
+  useBlockGesture(isLoading);
+
+  const onButtonPress = () => {
+    mutate({
+      departmentId: hanowlApply.team.id,
+      introduction: hanowlApply.introduce,
+      motivation: hanowlApply.motive,
+      aspiration: hanowlApply.aspiration,
+      isSubmit: true,
+    });
+  };
 
   const isFocused = useIsFocused();
 
@@ -61,9 +77,10 @@ export const FinalConfirmScreen: React.FC = () => {
       isDisabled={timer !== 0}
       bottomText={`최종 제출하기 ${timer === 0 ? '' : `(${timer})`}`}
       withScrollView
-      onPress={() => {}}
+      isLoading={isLoading}
+      onPress={onButtonPress}
     >
-      <FinalConfirmTextContainer subject="부서" text={hanowlApply.team} />
+      <FinalConfirmTextContainer subject="부서" text={hanowlApply.team.name} />
       <FinalConfirmTextContainer subject="자기소개" text={hanowlApply.introduce} />
       <FinalConfirmTextContainer subject="지원 동기" text={hanowlApply.motive} />
       <FinalConfirmTextContainer subject="포부" text={hanowlApply.aspiration} />
