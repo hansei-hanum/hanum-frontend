@@ -94,7 +94,7 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
             backgroundColor: checkDisplay ? theme.primary : theme.placeholder,
           }}
           activeOpacity={1}
-          isDisabled={checkDisplay}
+          isDisabled={!checkDisplay}
           isLoading={isLoading}
         >
           <Text size={16} isCenter color={theme.white}>

@@ -51,7 +51,6 @@ export const Router: React.FC = () => {
 
   const getToken = async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log('token', token);
     setToken(token);
     return token;
   };
@@ -95,7 +94,7 @@ export const Router: React.FC = () => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      {/* <CheckVersion /> */}
+      <CheckVersion />
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           screenOptions={{

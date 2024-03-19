@@ -72,12 +72,12 @@ export const HanowlApplyMainScreen: React.FC = () => {
       });
     }
     if (isStudent) {
+      navigate('HanowlApplyDetails');
+    } else {
       Toast.show({
         type: 'error',
         text1: '학생회 지원은 재학생만 가능해요',
       });
-    } else {
-      navigate('HanowlApplyDetails');
     }
   };
 
