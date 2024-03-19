@@ -6,14 +6,14 @@ import { useTheme } from '@emotion/react';
 import { Button } from 'src/components/common';
 import { useCheckApplyPeriod, useNavigate } from 'src/hooks';
 import { HANOWL_APPLY } from 'src/constants';
-import { GetTemporaryApplicationResponse } from 'src/api/hanowlApply';
+import { GetTemporaryApplicationDetail } from 'src/api/hanowlApply';
 
 import * as S from './styled';
 
 export interface MainWebViewProps {
   onMessage: (event: WebViewMessageEvent) => void;
   isLoading: boolean;
-  applyData?: GetTemporaryApplicationResponse[];
+  applyData?: GetTemporaryApplicationDetail[];
 }
 
 export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, applyData }) => {

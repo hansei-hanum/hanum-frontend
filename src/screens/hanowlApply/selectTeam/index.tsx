@@ -6,7 +6,6 @@ import { useRecoilState } from 'recoil';
 
 import { hanowlApplyAtom } from 'src/atoms';
 import { AppLayout, HanowlApplySkeleton, SelectBox, SelectLayout } from 'src/components';
-import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
 import { useGetHanowlTeams } from 'src/hooks/query/hanowlApply';
 

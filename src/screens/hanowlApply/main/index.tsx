@@ -17,11 +17,13 @@ import {
 } from 'src/components';
 import { SCREEN_HEIGHT } from 'src/constants';
 import { isAndroid } from 'src/utils';
-import { TeamType, hanowlApplyAtom } from 'src/atoms';
+import { hanowlApplyAtom } from 'src/atoms';
 import { useBottomSheet, useNavigate } from 'src/hooks';
-import { useGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
+import { useGetHanowlTeams, useGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
 
 export const HanowlApplyMainScreen: React.FC = () => {
+  const { data: teamsData, isLoading: isTeamsLoading } = useGetHanowlTeams();
+
   const { data, isLoading } = useGetTemporaryApplication();
 
   const navigate = useNavigate();
@@ -49,7 +51,23 @@ export const HanowlApplyMainScreen: React.FC = () => {
 
   const onPress = () => {
     bottomSheetRef.current?.scrollTo(0);
-    // setHanowlApply((prev) => ({ ...prev, team: TEAM_ID_TO_TEXT[message as TeamId] as TeamType }));
+    if (teamsData) {
+      setHanowlApply((prev) => {
+        const teamDataItem = teamsData?.data.items.find(
+          (item) => item.name === TEAM_ID_TO_TEXT[message as TeamId],
+        );
+        if (!teamDataItem) {
+          return prev;
+        }
+        return {
+          ...prev,
+          team: {
+            name: teamDataItem.name,
+            id: teamDataItem.id,
+          },
+        };
+      });
+    }
     navigate('HanowlApplyDetails');
   };
 
@@ -65,7 +83,11 @@ export const HanowlApplyMainScreen: React.FC = () => {
           marginTop: isAndroid ? 10 : 0,
         }}
       />
-      <MainWebView onMessage={onMessage} isLoading={isLoading} applyData={data} />
+      <MainWebView
+        onMessage={onMessage}
+        isLoading={isLoading || isTeamsLoading}
+        applyData={data?.data.items}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         scrollHeight={-SCREEN_HEIGHT + 100}
@@ -94,7 +116,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
             teamLoading={teamLoading}
             theme={theme}
             onPress={onPress}
-            isLoading={isLoading}
+            isLoading={isLoading || isTeamsLoading}
           />
         )}
       </BottomSheet>

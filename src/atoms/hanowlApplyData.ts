@@ -1,8 +1,8 @@
 import { atom } from 'recoil';
 
-import { GetTemporaryApplicationResponse } from 'src/api/hanowlApply';
+import { GetTemporaryApplicationDetail } from 'src/api/hanowlApply';
 
-export const hanowlApplyDataAtom = atom<GetTemporaryApplicationResponse[]>({
+export const hanowlApplyDataAtom = atom<GetTemporaryApplicationDetail[]>({
   key: 'hanowlApplyDataAtom',
   default: [],
 });

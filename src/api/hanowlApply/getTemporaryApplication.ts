@@ -1,7 +1,7 @@
 import { hanowlApplyInstance } from '../api';
 import { API_SUFFIX } from '../suffix';
 
-export interface GetTemporaryApplicationResponse {
+export interface GetTemporaryApplicationDetail {
   id: string;
   user_id: number;
   department: {
@@ -11,8 +11,16 @@ export interface GetTemporaryApplicationResponse {
   introduction: string;
   motivation: string;
   aspiration: string;
-  is_submitted: boolean;
+  isSubmitted: boolean;
   updated_at: string;
+}
+
+export interface GetTemporaryApplicationResponse {
+  items: GetTemporaryApplicationDetail[];
+  limit: number;
+  total: number;
+  totalPage: number;
+  isSubmitted: boolean;
 }
 
 export const getTemporaryApplication = async () => {
