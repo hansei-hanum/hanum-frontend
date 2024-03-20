@@ -39,6 +39,7 @@ export const SelectTeamScreen: React.FC = () => {
 
   useEffect(() => {
     if (isFocused && hanowlApply.team) {
+      setIsDisabled(hanowlApply.team.name?false:true);
       if (!teamsData) return;
       const index = teamsData.items.findIndex(({ name }) => name === hanowlApply.team.name);
       const newSelected = isSelected.map((_, i) => (i === index ? true : false));
@@ -50,7 +51,7 @@ export const SelectTeamScreen: React.FC = () => {
     <AppLayout
       headerText={`지원할 부서를\n선택해 주세요`}
       bottomText="다음"
-      onPress={() => setNavigate(['Main', 'HanowlApplyDetails'])}
+      onPress={() => navigate('HanowlApplyDetails')}
       isDisabled={isDisabled}
     >
       <SelectLayout>

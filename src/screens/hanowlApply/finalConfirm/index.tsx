@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 import { useRecoilValue } from 'recoil';
@@ -10,7 +10,7 @@ import { AppLayout, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { hanowlApplyAtom, hanowlApplyDataAtom } from 'src/atoms';
 import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
-import { useBlockGesture, useNavigate } from 'src/hooks';
+import { useBlockGesture, useInitNavigate, useNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -36,6 +36,8 @@ export const FinalConfirmScreen: React.FC = () => {
 
   const { mutate, isLoading } = useCreateHanowlApplication();
 
+  const navigation = useNavigation();
+
   const theme = useTheme();
   const hanowlApply = useRecoilValue(hanowlApplyAtom);
   const hasData = hanowlApply.motive;
@@ -43,8 +45,10 @@ export const FinalConfirmScreen: React.FC = () => {
   const [timer, setTimer] = useState<number>(5);
 
   const navigate = useNavigate();
+  console.log(hanowlApply, 'hanowlApply'),
 
   useBlockGesture(isLoading);
+  const {initNavigate} = useInitNavigate();
 
   const onButtonPress = () => {
     if (hasData) {
@@ -56,8 +60,7 @@ export const FinalConfirmScreen: React.FC = () => {
         isSubmit: true,
       });
     } else {
-      navigate('Main');
-      return;
+      navigation.goBack();
     }
   };
 
@@ -103,14 +106,14 @@ export const FinalConfirmScreen: React.FC = () => {
           <FinalConfirmTextContainer subject="지원 동기" text={hanowlApply.motive} />
           <FinalConfirmTextContainer subject="포부" text={hanowlApply.aspiration} />
         </>
-      ) : (
+      ) : hanowlApplyData ?(
         <>
-          <FinalConfirmTextContainer subject="부서" text={hanowlApplyData[0].department.name} />
-          <FinalConfirmTextContainer subject="자기소개" text={hanowlApplyData[0].introduction} />
-          <FinalConfirmTextContainer subject="지원 동기" text={hanowlApplyData[0].motivation} />
-          <FinalConfirmTextContainer subject="포부" text={hanowlApplyData[0].aspiration} />
+          <FinalConfirmTextContainer subject="부서" text={hanowlApplyData[0]?.department?.name} />
+          <FinalConfirmTextContainer subject="자기소개" text={hanowlApplyData[0]?.introduction} />
+          <FinalConfirmTextContainer subject="지원 동기" text={hanowlApplyData[0]?.motivation} />
+          <FinalConfirmTextContainer subject="포부" text={hanowlApplyData[0]?.aspiration} />
         </>
-      )}
+      ):null}
     </AppLayout>
   );
 };

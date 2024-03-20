@@ -9,7 +9,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { editHanowlApplicationAtom, hanowlApplyAtom, isDisableAtom } from 'src/atoms';
 import { AppLayout, ApplyInput, Button, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
-import { useNavigate } from 'src/hooks';
+import { useBlockGesture, useNavigate } from 'src/hooks';
 import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
 import { useEditHanowlApplication } from 'src/hooks/query/hanowlApply/useEditHanowlApplication';
 import { useInitNavigate } from 'src/hooks';
@@ -114,6 +114,7 @@ export const ApplyContentsScreen: React.FC = () => {
     navigation.goBack();
   };
 
+  useBlockGesture(true);
   // useEffect(() => {
   //   if (value.every((item) => item.length >= 10) && !isLoading && !isEditLoading) {
   //     if (isFocused) {
@@ -138,6 +139,7 @@ export const ApplyContentsScreen: React.FC = () => {
               {item}
             </Text>
           ))}
+          <Text size={14} color={theme.danger}>이 페이지를 벗어나면 작성한 모든 내용이 사라져요.</Text>
         </View>
       }
       onPress={onPressSubmitButton}
