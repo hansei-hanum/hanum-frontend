@@ -74,7 +74,13 @@ export const HanowlApplyMainScreen: React.FC = () => {
       });
     }
     if (isStudent) {
-      setNavigate(['Main', 'HanowlApplyDetails']);
+      if (data?.data?.isSubmitted){
+        return Toast.show({
+          type: 'error',
+          text1: '이미 지원서를 제출하셨어요.',
+        });
+      }
+      navigate('HanowlApplyDetails');
     } else {
       Toast.show({
         type: 'error',
@@ -119,7 +125,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
               teamLoading={teamLoading}
               theme={theme}
               onPress={onPress}
-              isLoading={isLoading}
+              isLoading={isLoading || isTeamsLoading}
             />
           </ScrollView>
         ) : (
