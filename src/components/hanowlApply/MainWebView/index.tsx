@@ -64,7 +64,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
         <Button
           onPress={onButtonPress}
           activeOpacity={1}
-          isDisabled={!checkDisplay}
+          // isDisabled={!checkDisplay}
           style={{
             opacity: 1,
             backgroundColor: checkDisplay ? theme.primary : theme.placeholder,

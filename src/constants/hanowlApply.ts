@@ -40,6 +40,8 @@ export const HANOWL_APPLY = {
     '작성하신 내용이 맞는지 다시 확인해 주세요.',
   ] as string[],
 
+  CHECK_SUBTEXTS: '이미 지원서를 제출하셨어요.\n제출된 지원서는 수정과 삭제가 불가해요.',
+
   URL: 'https://recruit.hanum.us/',
 
   START_DATE: '2024-03-20T09:00:00',

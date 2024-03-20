@@ -38,7 +38,7 @@ export const FinalConfirmScreen: React.FC = () => {
 
   const theme = useTheme();
   const hanowlApply = useRecoilValue(hanowlApplyAtom);
-  const hasData = hanowlApply.id;
+  const hasData = hanowlApply.motive;
 
   const [timer, setTimer] = useState<number>(10);
 
@@ -74,9 +74,9 @@ export const FinalConfirmScreen: React.FC = () => {
 
   return (
     <AppLayout
-      headerText={`작성하신 내용을\n확인해 주세요`}
+      headerText={hasData ? `작성하신 내용을\n확인해 주세요` : `제출하신 내용은\n다음과 같아요`}
       subHeaderText={
-        hasData && (
+        hasData ? (
           <View>
             {HANOWL_APPLY.FINAL_CONFIRM_SUBTEXTS.map((item, index) => (
               <Text key={index} size={14} color={theme.danger}>
@@ -84,6 +84,10 @@ export const FinalConfirmScreen: React.FC = () => {
               </Text>
             ))}
           </View>
+        ) : (
+          <Text size={14} color={theme.danger}>
+            {HANOWL_APPLY.CHECK_SUBTEXTS}
+          </Text>
         )
       }
       isDisabled={hasData ? timer !== 0 : false}
