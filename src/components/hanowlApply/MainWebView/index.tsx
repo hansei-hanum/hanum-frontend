@@ -72,7 +72,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
           }}
           isLoading={isLoading || mainLoading}
         >
-          {!(isLoading || mainLoading) && (isApplyPeriod ? '학생회 지원하기' : `${timeLeftString}`)}
+          {!(isLoading || mainLoading) && (isApplyPeriod ? (applyData?.isSubmitted ? '제출한 지원서 보기' : '학생회 지원하기') : `${timeLeftString}`)}
         </Button>
       </S.HanowlApplyButtonWrapper>
     </>
