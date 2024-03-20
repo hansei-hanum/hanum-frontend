@@ -8,6 +8,7 @@ import { hanowlApplyAtom } from 'src/atoms';
 import { AppLayout, HanowlApplySkeleton, SelectBox, SelectLayout } from 'src/components';
 import { useNavigate } from 'src/hooks';
 import { useGetHanowlTeams } from 'src/hooks/query/hanowlApply';
+import { useInitNavigate } from 'src/hooks';
 
 export const SelectTeamScreen: React.FC = () => {
   const { data, isLoading } = useGetHanowlTeams();
@@ -17,7 +18,11 @@ export const SelectTeamScreen: React.FC = () => {
 
   const [hanowlApply, setHanowlApply] = useRecoilState(hanowlApplyAtom);
 
+  const { setNavigate } = useInitNavigate();
+
   const [isSelected, setIsSelected] = useState(teamsData ? teamsData.items.map(() => false) : []);
+
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleSelect = (index: number) => {
     if (!teamsData) return;
@@ -27,6 +32,7 @@ export const SelectTeamScreen: React.FC = () => {
       ...prev,
       team: { name: teamsData.items[index].name, id: teamsData.items[index].id },
     }));
+    setIsDisabled(false);
   };
 
   const isFocused = useIsFocused();
@@ -44,7 +50,8 @@ export const SelectTeamScreen: React.FC = () => {
     <AppLayout
       headerText={`지원할 부서를\n선택해 주세요`}
       bottomText="다음"
-      onPress={() => navigate('HanowlApplyDetails')}
+      onPress={() => setNavigate(['Main', 'HanowlApplyDetails'])}
+      isDisabled={isDisabled}
     >
       <SelectLayout>
         {isLoading && !teamsData ? (

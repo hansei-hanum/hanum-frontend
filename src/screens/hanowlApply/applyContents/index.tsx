@@ -12,6 +12,9 @@ import { HANOWL_APPLY } from 'src/constants';
 import { useNavigate } from 'src/hooks';
 import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
 import { useEditHanowlApplication } from 'src/hooks/query/hanowlApply/useEditHanowlApplication';
+import { useInitNavigate } from 'src/hooks';
+import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export const ApplyContentsScreen: React.FC = () => {
   const { mutate, data, isLoading } = useCreateHanowlApplication();
@@ -21,6 +24,7 @@ export const ApplyContentsScreen: React.FC = () => {
 
   const theme = useTheme();
   const navigate = useNavigate();
+  const navigation = useNavigation();
 
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -102,6 +106,12 @@ export const ApplyContentsScreen: React.FC = () => {
       motive,
       aspiration,
     }));
+    
+    Toast.show({
+      type: 'success',
+      text1: '임시저장이 완료되었어요',
+    });
+    navigation.goBack();
   };
 
   // useEffect(() => {

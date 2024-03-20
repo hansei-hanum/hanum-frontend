@@ -40,7 +40,7 @@ export const FinalConfirmScreen: React.FC = () => {
   const hanowlApply = useRecoilValue(hanowlApplyAtom);
   const hasData = hanowlApply.motive;
 
-  const [timer, setTimer] = useState<number>(10);
+  const [timer, setTimer] = useState<number>(5);
 
   const navigate = useNavigate();
 

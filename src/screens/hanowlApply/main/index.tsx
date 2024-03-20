@@ -21,6 +21,7 @@ import { isAndroid } from 'src/utils';
 import { hanowlApplyAtom } from 'src/atoms';
 import { useBottomSheet, useCheckUserType, useNavigate } from 'src/hooks';
 import { useGetHanowlTeams, useGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
+import { useInitNavigate } from 'src/hooks';
 
 export const HanowlApplyMainScreen: React.FC = () => {
   const { isStudent } = useCheckUserType();
@@ -28,8 +29,9 @@ export const HanowlApplyMainScreen: React.FC = () => {
   const { data: teamsData, isLoading: isTeamsLoading } = useGetHanowlTeams();
 
   const { data, isLoading } = useGetTemporaryApplication();
-
+  
   const navigate = useNavigate();
+  const { setNavigate } = useInitNavigate();
 
   const theme = useTheme();
   const { bottomSheetRef, openBottomSheet } = useBottomSheet();
@@ -72,7 +74,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
       });
     }
     if (isStudent) {
-      navigate('HanowlApplyDetails');
+      setNavigate(['Main', 'HanowlApplyDetails']);
     } else {
       Toast.show({
         type: 'error',
