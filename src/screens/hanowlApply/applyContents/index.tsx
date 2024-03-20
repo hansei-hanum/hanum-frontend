@@ -130,22 +130,23 @@ export const ApplyContentsScreen: React.FC = () => {
           ))}
         </View>
       }
-      hasOwnButton={
-        <Button.Container>
-          <Button
-            onPress={updateApplication}
-            isDisabled={isDisabled}
-            isLoading={isEditLoading || isLoading}
-            isWhite
-            isModalBtn
-          >
-            임시저장
-          </Button>
-          <Button onPress={onPressSubmitButton} isDisabled={isDisabled || isEditLoading} isModalBtn>
-            제출하기
-          </Button>
-        </Button.Container>
-      }
+      onPress={onPressSubmitButton}
+      // hasOwnButton={
+      //   <Button.Container>
+      //     <Button
+      //       onPress={updateApplication}
+      //       isDisabled={isDisabled}
+      //       isLoading={isEditLoading || isLoading}
+      //       isWhite
+      //       isModalBtn
+      //     >
+      //       임시저장
+      //     </Button>
+      //     <Button onPress={onPressSubmitButton} isDisabled={isDisabled || isEditLoading} isModalBtn>
+      //       제출하기
+      //     </Button>
+      //   </Button.Container>
+      // }
     >
       {HANOWL_APPLY.CONTENTS.map(({ height, placeholder }, index) => (
         <ApplyInput

@@ -27,10 +27,11 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
   const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   const onButtonPress = () => {
+    // else if (applyData && applyData.items?.length > 0) {
+    //   navigate('HanowlConfirm');
+    // }
     if (applyData?.isSubmitted) {
       navigate('HanowlFinalConfirm');
-    } else if (applyData && applyData.items?.length > 0) {
-      navigate('HanowlConfirm');
     } else if (isStudent) {
       navigate('HanowlSelectTeam');
     } else {
