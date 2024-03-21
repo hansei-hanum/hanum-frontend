@@ -36,6 +36,7 @@ export const useCheckApplyPeriod = () => {
   };
 
   useEffect(() => {
+    checkApplyPeriod();
     setInterval(() => {
       checkApplyPeriod();
     }, 1000);

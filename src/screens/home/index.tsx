@@ -110,12 +110,15 @@ export const HomeScreen: React.FC = () => {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      setHanowlApply({
-        team: { name: '', id: '' },
-        aspiration: '',
-        introduce: '',
-        motive: '',
-      });
+    //   setTimeout(() => {
+    //     console.log('reset');
+    //   setHanowlApply({
+    //     team: { name: '', id: '' },
+    //     aspiration: '',
+    //     introduce: '',
+    //     motive: '',
+    //   });
+    // }, 1000 * 3);
     }
   }, [isFocused]);
 

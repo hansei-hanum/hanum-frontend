@@ -46,7 +46,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>카메라 사용 권한은 이미지 촬영 및 첨부를 위해 필요합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>대나무숲에 사진을 올리기 위해서는 사진첩 점근 권한이 필요해요.</string>
+	<string>사진을 업로드하기 위해서는 사진첩 점근 권한이 필요해요.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

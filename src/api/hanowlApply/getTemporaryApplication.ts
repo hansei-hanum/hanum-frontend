@@ -12,7 +12,7 @@ export interface GetTemporaryApplicationDetail {
   motivation: string;
   aspiration: string;
   isSubmitted: boolean;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface GetTemporaryApplicationResponse {

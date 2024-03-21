@@ -14,7 +14,10 @@ export const useGetTemporaryApplication = (): UseQueryResult<
   const setHanowlApplyData = useSetRecoilState(hanowlApplyDataAtom);
   return useQuery('useGetTemporaryApplication', getTemporaryApplication, {
     onSuccess: ({ data }) => {
-      setHanowlApplyData(data.items);
+      console.log(data, 'data');
+      if(data){
+        setHanowlApplyData(data.items);
+      }
     },
     retry: 0,
   });

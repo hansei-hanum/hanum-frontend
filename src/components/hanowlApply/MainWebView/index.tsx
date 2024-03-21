@@ -7,10 +7,7 @@ import { useTheme } from '@emotion/react';
 import { Button } from 'src/components/common';
 import { useCheckApplyPeriod, useCheckUserType, useNavigate } from 'src/hooks';
 import { HANOWL_APPLY } from 'src/constants';
-import {
-  GetTemporaryApplicationDetail,
-  GetTemporaryApplicationResponse,
-} from 'src/api/hanowlApply';
+import { GetTemporaryApplicationResponse } from 'src/api/hanowlApply';
 
 import * as S from './styled';
 
@@ -30,9 +27,8 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
   const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   const onButtonPress = () => {
-    // if (applyData && applyData.items?.length > 0) {
+    // else if (applyData && applyData.items?.length > 0) {
     //   navigate('HanowlConfirm');
-    // } else {
     // }
     if (applyData?.isSubmitted) {
       navigate('HanowlFinalConfirm');
@@ -69,14 +65,14 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
         <Button
           onPress={onButtonPress}
           activeOpacity={1}
-          isDisabled={!checkDisplay}
+          // isDisabled={!checkDisplay}
           style={{
             opacity: 1,
             backgroundColor: checkDisplay ? theme.primary : theme.placeholder,
           }}
-          isLoading={isLoading}
+          isLoading={isLoading || mainLoading}
         >
-          {!isLoading && (isApplyPeriod ? '학생회 지원하기' : `${timeLeftString}`)}
+          {!(isLoading || mainLoading) && (isApplyPeriod ? (applyData?.isSubmitted ? '제출한 지원서 보기' : '학생회 지원하기') : `${timeLeftString}`)}
         </Button>
       </S.HanowlApplyButtonWrapper>
     </>

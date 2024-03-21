@@ -53,7 +53,13 @@ export const ConfirmScreen: React.FC = () => {
             </Text>
           }
         >
-          <NoScrollbarScrollView contentContainerStyle={{ rowGap: 20, marginTop: 30 }}>
+          <NoScrollbarScrollView
+            contentContainerStyle={{
+              rowGap: 20,
+              marginTop: 30,
+              paddingBottom: 50,
+            }}
+          >
             {hanowlApplyData.map((props, index) => (
               <ConfirmBox {...props} key={index} />
             ))}

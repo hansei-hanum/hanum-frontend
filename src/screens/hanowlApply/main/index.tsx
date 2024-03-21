@@ -19,8 +19,9 @@ import {
 import { SCREEN_HEIGHT } from 'src/constants';
 import { isAndroid } from 'src/utils';
 import { hanowlApplyAtom } from 'src/atoms';
-import { useBottomSheet, useCheckUserType, useGetUser, useNavigate } from 'src/hooks';
+import { useBottomSheet, useCheckUserType, useNavigate } from 'src/hooks';
 import { useGetHanowlTeams, useGetTemporaryApplication } from 'src/hooks/query/hanowlApply';
+import { useInitNavigate } from 'src/hooks';
 
 export const HanowlApplyMainScreen: React.FC = () => {
   const { isStudent } = useCheckUserType();
@@ -28,8 +29,9 @@ export const HanowlApplyMainScreen: React.FC = () => {
   const { data: teamsData, isLoading: isTeamsLoading } = useGetHanowlTeams();
 
   const { data, isLoading } = useGetTemporaryApplication();
-
+  
   const navigate = useNavigate();
+  const { setNavigate } = useInitNavigate();
 
   const theme = useTheme();
   const { bottomSheetRef, openBottomSheet } = useBottomSheet();
@@ -72,6 +74,12 @@ export const HanowlApplyMainScreen: React.FC = () => {
       });
     }
     if (isStudent) {
+      if (data?.data?.isSubmitted){
+        return Toast.show({
+          type: 'error',
+          text1: '이미 지원서를 제출하셨어요.',
+        });
+      }
       navigate('HanowlApplyDetails');
     } else {
       Toast.show({
@@ -117,7 +125,7 @@ export const HanowlApplyMainScreen: React.FC = () => {
               teamLoading={teamLoading}
               theme={theme}
               onPress={onPress}
-              isLoading={isLoading}
+              isLoading={isLoading || isTeamsLoading}
             />
           </ScrollView>
         ) : (

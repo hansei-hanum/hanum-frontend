@@ -9,6 +9,7 @@ import { TeamType, hanowlApplyAtom } from 'src/atoms';
 import { useNavigate } from 'src/hooks';
 import { GetTemporaryApplicationDetail } from 'src/api/hanowlApply';
 import { getPrevTimeString } from 'src/utils';
+import { useInitNavigate } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -19,11 +20,12 @@ export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
   id,
   introduction,
   motivation,
-  updated_at,
+  updatedAt,
   aspiration,
 }) => {
   const navigate = useNavigate();
   const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
+  const { setNavigate } = useInitNavigate();
 
   const theme = useTheme();
 
@@ -35,7 +37,7 @@ export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
       motive: motivation,
       aspiration,
     });
-    navigate('HanowlSelectTeam');
+    setNavigate(["Main", "HanowlApplyDetails"]);
   };
 
   return (
@@ -43,7 +45,7 @@ export const ConfirmBox: React.FC<ConfirmBoxProps> = ({
       <S.ConfirmBox>
         <S.ConfirmBoxTextContainer>
           <Text size={18}>{department.name} 지원서</Text>
-          <Text size={12}>(마지막 수정 {getPrevTimeString(updated_at)})</Text>
+          <Text size={13} color={theme.placeholder}>마지막 수정 {getPrevTimeString(updatedAt)}</Text>
         </S.ConfirmBoxTextContainer>
         <MaterialIcons name="chevron-right" size={30} color={theme.placeholder} />
       </S.ConfirmBox>

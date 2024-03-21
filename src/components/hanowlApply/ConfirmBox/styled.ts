@@ -13,4 +13,5 @@ export const ConfirmBox = styled.View`
 export const ConfirmBoxTextContainer = styled.View`
   flex-direction: column;
   flex: 1;
+  row-gap: 3px;
 `;
