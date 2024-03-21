@@ -2,11 +2,10 @@ import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
 
 import { AxiosError } from 'axios';
+import { useSetRecoilState } from 'recoil';
 
 import { APIErrorResponse, APIResponse } from 'src/api';
 import { CreateHanowlApplicationValues, createHanowlApplication } from 'src/api/hanowlApply';
-import { useNavigate } from 'src/hooks/useNavigate';
-import { useSetRecoilState } from 'recoil';
 import { hanowlApplyAtom } from 'src/atoms';
 import { useInitNavigate } from 'src/hooks/useInitNavigate';
 
@@ -16,8 +15,9 @@ export const useCreateHanowlApplication = (): UseMutationResult<
   CreateHanowlApplicationValues
 > => {
   const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
-  const {initNavigate} = useInitNavigate();
+  const { initNavigate } = useInitNavigate();
   const queryClient = useQueryClient();
+
   return useMutation('useCreateHanowlApplication', createHanowlApplication, {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries('useGetTemporaryApplication');

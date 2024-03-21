@@ -15,7 +15,7 @@ export const useGetTemporaryApplication = (): UseQueryResult<
   return useQuery('useGetTemporaryApplication', getTemporaryApplication, {
     onSuccess: ({ data }) => {
       console.log(data, 'data');
-      if(data){
+      if (data) {
         setHanowlApplyData(data.items);
       }
     },

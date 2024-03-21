@@ -10,7 +10,7 @@ import { AppLayout, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { hanowlApplyAtom, hanowlApplyDataAtom } from 'src/atoms';
 import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
-import { useBlockGesture, useInitNavigate, useNavigate } from 'src/hooks';
+import { useBlockGesture } from 'src/hooks';
 
 import * as S from './styled';
 
@@ -44,11 +44,7 @@ export const FinalConfirmScreen: React.FC = () => {
 
   const [timer, setTimer] = useState<number>(5);
 
-  const navigate = useNavigate();
-  console.log(hanowlApply, 'hanowlApply'),
-
-  useBlockGesture(isLoading);
-  const {initNavigate} = useInitNavigate();
+  console.log(hanowlApply, 'hanowlApply'), useBlockGesture(isLoading);
 
   const onButtonPress = () => {
     if (hasData) {
@@ -106,14 +102,14 @@ export const FinalConfirmScreen: React.FC = () => {
           <FinalConfirmTextContainer subject="지원 동기" text={hanowlApply.motive} />
           <FinalConfirmTextContainer subject="포부" text={hanowlApply.aspiration} />
         </>
-      ) : hanowlApplyData ?(
+      ) : hanowlApplyData ? (
         <>
           <FinalConfirmTextContainer subject="부서" text={hanowlApplyData[0]?.department?.name} />
           <FinalConfirmTextContainer subject="자기소개" text={hanowlApplyData[0]?.introduction} />
           <FinalConfirmTextContainer subject="지원 동기" text={hanowlApplyData[0]?.motivation} />
           <FinalConfirmTextContainer subject="포부" text={hanowlApplyData[0]?.aspiration} />
         </>
-      ):null}
+      ) : null}
     </AppLayout>
   );
 };

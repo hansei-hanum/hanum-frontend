@@ -23,6 +23,5 @@ export const useInitNavigate = () => {
     );
   };
 
-
   return { initNavigate, setNavigate };
 };

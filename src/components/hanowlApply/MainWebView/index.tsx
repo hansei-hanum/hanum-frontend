@@ -27,9 +27,6 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
   const { isApplyPeriod, timeLeftString } = useCheckApplyPeriod();
 
   const onButtonPress = () => {
-    // else if (applyData && applyData.items?.length > 0) {
-    //   navigate('HanowlConfirm');
-    // }
     if (applyData?.isSubmitted) {
       navigate('HanowlFinalConfirm');
     } else if (isStudent) {
@@ -72,7 +69,12 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
           }}
           isLoading={isLoading || mainLoading}
         >
-          {!(isLoading || mainLoading) && (isApplyPeriod ? (applyData?.isSubmitted ? '제출한 지원서 보기' : '학생회 지원하기') : `${timeLeftString}`)}
+          {!(isLoading || mainLoading) &&
+            (isApplyPeriod
+              ? applyData?.isSubmitted
+                ? '제출한 지원서 보기'
+                : '학생회 지원하기'
+              : `${timeLeftString}`)}
         </Button>
       </S.HanowlApplyButtonWrapper>
     </>

@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Image, StyleProp, ViewStyle } from 'react-native';
-import { WithLocalSvg } from 'react-native-svg';
+import { StyleProp, ViewStyle } from 'react-native';
 
 import { GoBackIcon } from '../GoBackHeader';
 import { Text } from '../Text';
+import { Icon } from '../Icon';
 
 import * as S from './styled';
-import { Icon } from '../Icon';
 
 export interface HeaderProps {
   children?: React.ReactNode;

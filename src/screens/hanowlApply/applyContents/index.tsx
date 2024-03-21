@@ -4,27 +4,16 @@ import { LayoutChangeEvent, ScrollView, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-import { editHanowlApplicationAtom, hanowlApplyAtom, isDisableAtom } from 'src/atoms';
-import { AppLayout, ApplyInput, Button, Text } from 'src/components';
+import { hanowlApplyAtom, isDisableAtom } from 'src/atoms';
+import { AppLayout, ApplyInput, Text } from 'src/components';
 import { HANOWL_APPLY } from 'src/constants';
 import { useBlockGesture, useNavigate } from 'src/hooks';
-import { useCreateHanowlApplication } from 'src/hooks/query/hanowlApply';
-import { useEditHanowlApplication } from 'src/hooks/query/hanowlApply/useEditHanowlApplication';
-import { useInitNavigate } from 'src/hooks';
-import { useNavigation } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
 
 export const ApplyContentsScreen: React.FC = () => {
-  const { mutate, data, isLoading } = useCreateHanowlApplication();
-  const { mutate: editHanowlApplicationMutate, isLoading: isEditLoading } =
-    useEditHanowlApplication();
-  const editHanowlApplication = useRecoilValue(editHanowlApplicationAtom);
-
   const theme = useTheme();
   const navigate = useNavigate();
-  const navigation = useNavigation();
 
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -76,59 +65,12 @@ export const ApplyContentsScreen: React.FC = () => {
     }
   }, [isFocused]);
 
-  const updateApplication = () => {
-    const [introduce, motive, aspiration] = value;
-    if (!data && !hanowlApply.id) {
-      mutate({
-        departmentId: hanowlApply.team.id,
-        introduction: introduce,
-        motivation: motive,
-        aspiration: aspiration,
-        isSubmit: false,
-      });
-    } else if (data || editHanowlApplication || hanowlApply.id) {
-      editHanowlApplicationMutate({
-        departmentId: hanowlApply.team.id,
-        introduction: introduce,
-        motivation: motive,
-        aspiration: aspiration,
-        applicationId: editHanowlApplication
-          ? editHanowlApplication
-          : hanowlApply.id
-            ? hanowlApply.id
-            : data?.data || '',
-      });
-    }
-    setHanowlApply((prev) => ({
-      ...prev,
-      id: data?.data || '',
-      introduce,
-      motive,
-      aspiration,
-    }));
-    
-    Toast.show({
-      type: 'success',
-      text1: '임시저장이 완료되었어요',
-    });
-    navigation.goBack();
-  };
-
   useBlockGesture(true);
-  // useEffect(() => {
-  //   if (value.every((item) => item.length >= 10) && !isLoading && !isEditLoading) {
-  //     if (isFocused) {
-  //       const intervalId = setInterval(updateApplication, 1000 * 1000);
-  //       return () => clearInterval(intervalId);
-  //     }
-  //   }
-  // }, [isFocused, value, data, isLoading]);
 
   return (
     <AppLayout
       headerText={`${hanowlApply.team.name} 지원에 필요한\n내용을 작성해 주세요`}
       bottomText="다음"
-      isLoading={isLoading || isEditLoading}
       withScrollView
       isDisabled={isDisabled}
       scrollViewRef={scrollViewRef}
@@ -139,26 +81,12 @@ export const ApplyContentsScreen: React.FC = () => {
               {item}
             </Text>
           ))}
-          <Text size={14} color={theme.danger}>이 페이지를 벗어나면 작성한 모든 내용이 사라져요.</Text>
+          <Text size={14} color={theme.danger}>
+            이 페이지를 벗어나면 작성한 모든 내용이 사라져요.
+          </Text>
         </View>
       }
       onPress={onPressSubmitButton}
-      // hasOwnButton={
-      //   <Button.Container>
-      //     <Button
-      //       onPress={updateApplication}
-      //       isDisabled={isDisabled}
-      //       isLoading={isEditLoading || isLoading}
-      //       isWhite
-      //       isModalBtn
-      //     >
-      //       임시저장
-      //     </Button>
-      //     <Button onPress={onPressSubmitButton} isDisabled={isDisabled || isEditLoading} isModalBtn>
-      //       제출하기
-      //     </Button>
-      //   </Button.Container>
-      // }
     >
       {HANOWL_APPLY.CONTENTS.map(({ height, placeholder }, index) => (
         <ApplyInput

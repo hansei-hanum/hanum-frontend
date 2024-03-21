@@ -9,7 +9,6 @@ import { Theme, useTheme } from '@emotion/react';
 import { ContentBox, Text, Spinner, Header, NoScrollbarScrollView } from 'src/components';
 import { useGetMonthSchedule } from 'src/hooks';
 import { setKoreanLocale } from 'src/constants';
-import { CalendarIcon } from 'src/assets';
 
 import * as S from './styled';
 
@@ -93,7 +92,7 @@ export const ScheduleScreen: React.FC = () => {
 
   return (
     <S.ScheduleContainer>
-      <Header hasGoBackIcon hasIconContainer={{ icon: "📅", text: '학사일정' }} />
+      <Header hasGoBackIcon hasIconContainer={{ icon: '📅', text: '학사일정' }} />
       {monthSchedule.isLoading || !monthSchedule.data ? (
         <Spinner isCenter />
       ) : (

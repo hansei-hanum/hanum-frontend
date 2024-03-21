@@ -7,13 +7,13 @@ import { PermissionsAndroid, TouchableOpacity, Image, View } from 'react-native'
 import messaging from '@react-native-firebase/messaging';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
 import { Timer, Schedule, Header, LunchTable, TimeTable, AlertBox } from 'src/components';
 import { isAndroid, isIos, openContactChannel } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
-import { hanowlApplyAtom, themeAtom } from 'src/atoms';
+import { themeAtom } from 'src/atoms';
 
 import { Logo, WhiteLogo } from '../../../assets/images';
 
@@ -23,7 +23,6 @@ export const HomeScreen: React.FC = () => {
   const theme = useTheme();
 
   const themeValue = useRecoilValue(themeAtom);
-  const setHanowlApply = useSetRecoilState(hanowlApplyAtom);
 
   const { mutate } = useConnectNotification();
 
@@ -110,15 +109,15 @@ export const HomeScreen: React.FC = () => {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-    //   setTimeout(() => {
-    //     console.log('reset');
-    //   setHanowlApply({
-    //     team: { name: '', id: '' },
-    //     aspiration: '',
-    //     introduce: '',
-    //     motive: '',
-    //   });
-    // }, 1000 * 3);
+      //   setTimeout(() => {
+      //     console.log('reset');
+      //   setHanowlApply({
+      //     team: { name: '', id: '' },
+      //     aspiration: '',
+      //     introduce: '',
+      //     motive: '',
+      //   });
+      // }, 1000 * 3);
     }
   }, [isFocused]);
 

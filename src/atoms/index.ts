@@ -11,4 +11,3 @@ export * from './hanowlApply';
 export * from './communityEdit';
 export * from './articleId';
 export * from './hanowlApplyData';
-export * from './editHanowlApplication';

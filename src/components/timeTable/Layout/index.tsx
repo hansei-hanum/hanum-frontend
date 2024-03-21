@@ -15,7 +15,7 @@ export const TimeTableLayout: React.FC<TimeTableLayoutProps> = ({ isStudent, chi
 
   return (
     <S.TimeTableContainer>
-      <Header hasIconContainer={{ icon: "⏰", text: '시간표' }}>
+      <Header hasIconContainer={{ icon: '⏰', text: '시간표' }}>
         {isStudent && (
           <Text size={17}>
             {department} {grade}학년 {classroom}반

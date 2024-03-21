@@ -32,7 +32,9 @@ export const AnonymitySettingsCard: React.FC<AnonymitySettingsCardProps> = ({
           <Icon icon={icon} size={34} includeBackground={false} />
           <Text.Column>
             <Text size={18}>{title}</Text>
-            <Text size={12} color={theme.placeholder}>{description}</Text>
+            <Text size={12} color={theme.placeholder}>
+              {description}
+            </Text>
           </Text.Column>
         </S.AnonymitySettingsList>
         <MCI
