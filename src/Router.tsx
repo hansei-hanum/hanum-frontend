@@ -158,6 +158,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="UserPost" component={SC.UserPostScreen} />
             <Stack.Screen name="UserBlocList" component={SC.UserBlockListScreen} />
           </Stack.Group>
+          <Stack.Screen name="MatchList" component={SC.SportsTotoMainScreen} />
         </Stack.Navigator>
         <StatusBar
           barStyle={isDarkTheme ? 'light-content' : 'dark-content'}

@@ -8,3 +8,4 @@ export * from './noInternet';
 export * from './hanowlApply';
 export * from './info';
 export * from './user';
+export * from './sportsToto'

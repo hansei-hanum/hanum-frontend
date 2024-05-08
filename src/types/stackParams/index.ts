@@ -5,6 +5,7 @@ import { HanowlStackParamList } from './hanowl';
 import { HanumPayStackParamList } from './hanumPay';
 import { MainStackParamList } from './main';
 import { UserStackParamList } from './user';
+import { SportsTotoParamList } from './sportsToto';
 
 export type RootStackParamList = AuthStackParamList &
   MainStackParamList &
@@ -12,6 +13,7 @@ export type RootStackParamList = AuthStackParamList &
   EoullimStackParamList &
   CommunityStackParamList &
   UserStackParamList &
+  SportsTotoParamList &
   HanowlStackParamList & {
     NoInternet: undefined;
   };
