@@ -172,7 +172,7 @@ export const HomeScreen: React.FC = () => {
         }}
       >
         <AlertBox
-          navigateUrl="MatchList"
+          navigateUrl="TotoMain"
           icon="📢"
           subText="체육 대회가 진행중이에요"
           mainText="승부 예측 하러가기"
