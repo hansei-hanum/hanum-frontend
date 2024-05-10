@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import WebView from 'react-native-webview';
 
 export const LiveChattingScreen: React.FC = () => {

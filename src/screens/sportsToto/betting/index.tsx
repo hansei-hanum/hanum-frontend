@@ -1,4 +1,3 @@
-import { Text } from '@react-native-material/core';
 import React from 'react';
 import WebView from 'react-native-webview';
 

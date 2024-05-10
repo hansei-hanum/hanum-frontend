@@ -1,16 +1,14 @@
 import React from 'react';
+import { SafeAreaView, View } from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
-import { TotoMainWebView } from 'src/components/sportsToto/MainWebView';
-import { GoBackIcon } from 'src/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { isAndroid } from 'src/utils';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@emotion/react';
-import { TabBarStyle } from 'src/styles';
 import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { isIos } from 'src/utils';
 import { MatchListScreen, PredictScreen, PointLogScreen, LiveChattingScreen } from '..';
-
+import { Header, Text } from 'src/components';
+import { isIos } from 'src/utils';
+import { TabBarStyle } from 'src/styles';
 const BottomTab = createBottomTabNavigator();
 
 export const SportsTotoMainScreen: React.FC = () => {
@@ -18,28 +16,21 @@ export const SportsTotoMainScreen: React.FC = () => {
   const inset = useSafeAreaInsets();
 
   const style = TabBarStyle(theme, inset);
+  const [pageTitle, setPageTitle] = React.useState('실시간 경기');
 
-  const getScreenOptions = (title: string, iconName: string) => ({
-    title,
-    tabBarIcon: ({ color }: { color: string }) => <Icons name={iconName} size={25} color={color} />,
-  });
-
-  const triggerTabPress = () => {
+  const triggerTabPress = (title: string) => {
+    setPageTitle(title);
     trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
   };
 
   return (
-    <>
-      <GoBackIcon
-        style={{
-          position: 'absolute',
-          top: inset.top + 10,
-          left: 10,
-          zIndex: 999,
-          marginTop: isAndroid ? 10 : 0,
-        }}
-      />
-
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header isTotoText={true} style={{ flexDirection: 'row' }} hasGoBackIcon={true}>
+        <Text style={{ flex: 1 }} isCenter={true} size={18}>
+          {pageTitle}
+        </Text>
+        <View style={{ flex: 1 }}></View>
+      </Header>
       <BottomTab.Navigator
         screenOptions={{
           headerShown: false,
@@ -52,41 +43,53 @@ export const SportsTotoMainScreen: React.FC = () => {
             paddingVertical: 4,
           },
         }}
-        initialRouteName="홈"
+        initialRouteName="Live"
       >
         <BottomTab.Screen
           name="Live"
           component={LiveChattingScreen}
-          options={getScreenOptions('실시간', 'live')}
+          options={{
+            tabBarLabel: '실시간 경기',
+            tabBarIcon: ({ color }) => <Icons name="live" size={25} color={color} />,
+          }}
           listeners={{
-            tabPress: triggerTabPress,
+            tabPress: () => triggerTabPress('실시간 경기'),
           }}
         />
         <BottomTab.Screen
           name="Match"
           component={MatchListScreen}
-          options={getScreenOptions('경기', 'match-lsit')}
+          options={{
+            tabBarLabel: '경기 목록',
+            tabBarIcon: ({ color }) => <Icons name="match-list" size={25} color={color} />,
+          }}
           listeners={{
-            tabPress: triggerTabPress,
+            tabPress: () => triggerTabPress('경기 목록'),
           }}
         />
         <BottomTab.Screen
           name="Point"
           component={PointLogScreen}
-          options={getScreenOptions('포인트', 'point')}
+          options={{
+            tabBarLabel: '포인트 내약',
+            tabBarIcon: ({ color }) => <Icons name="point" size={25} color={color} />,
+          }}
           listeners={{
-            tabPress: triggerTabPress,
+            tabPress: () => triggerTabPress('포인트 내역'),
           }}
         />
         <BottomTab.Screen
           name="Predict"
           component={PredictScreen}
-          options={getScreenOptions('예측 기록', 'predict-log')}
+          options={{
+            tabBarLabel: '예측 내역',
+            tabBarIcon: ({ color }) => <Icons name="predict-log" size={25} color={color} />,
+          }}
           listeners={{
-            tabPress: triggerTabPress,
+            tabPress: () => triggerTabPress('예측 내역'),
           }}
         />
       </BottomTab.Navigator>
-    </>
+    </SafeAreaView>
   );
 };

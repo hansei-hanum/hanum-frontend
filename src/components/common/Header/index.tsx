@@ -16,6 +16,7 @@ export interface HeaderProps {
     text: string;
   };
   isRow?: boolean;
+  isTotoText?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -25,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
   style,
   hasGoBackIcon,
   hasIconContainer,
+  isTotoText,
 }) => {
   return (
     <S.HeaderContainer
@@ -37,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
         style,
       ]}
     >
-      {hasGoBackIcon && <GoBackIcon />}
+      {hasGoBackIcon && <GoBackIcon style={{ flex: isTotoText ? 1 : 0 }} />}
       {hasIconContainer && (
         <S.HeaderIconContainer>
           {/* <WithLocalSvg width={32} height={32} asset={hasIconContainer.icon} /> */}
