@@ -15,6 +15,7 @@ import { sportsTotoTitleAtom } from 'src/atoms';
 
 import { MatchListScreen, PredictScreen, PointLogScreen, LiveChattingScreen } from '..';
 import { RankingScreen } from '../ranking';
+import { PredictLogsScreen } from '../predictLogs';
 const BottomTab = createBottomTabNavigator();
 
 export const SportsTotoMainScreen: React.FC = () => {
@@ -101,8 +102,8 @@ export const SportsTotoMainScreen: React.FC = () => {
           }}
         />
         <BottomTab.Screen
-          name="Predict"
-          component={PredictScreen}
+          name="PredictLogs"
+          component={PredictLogsScreen}
           options={{
             tabBarLabel: '예측 내역',
             tabBarIcon: ({ color }) => <Icons name="access-time" size={25} color={color} />,

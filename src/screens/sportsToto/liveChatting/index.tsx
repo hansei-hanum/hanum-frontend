@@ -4,5 +4,10 @@ import WebView from 'react-native-webview';
 import { SPORTS_TOTO_WEBVIEW_URL } from 'src/constants/sportsToTo';
 
 export const LiveChattingScreen: React.FC = () => {
-  return <WebView source={{ uri: `${SPORTS_TOTO_WEBVIEW_URL}/liveChatting` }} />;
+  return (
+    <WebView
+      source={{ uri: `${SPORTS_TOTO_WEBVIEW_URL}/liveChatting` }}
+      onMessage={(event) => console.log(event.nativeEvent.data, 'qwer')}
+    />
+  );
 };
