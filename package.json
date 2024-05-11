@@ -41,6 +41,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
     "@types/react-native-vector-icons": "^6.4.14",
+    "@webview-bridge/react-native": "^1.4.2",
     "axios": "^1.5.0",
     "date-fns": "^2.30.0",
     "deprecated-react-native-prop-types": "^4.2.1",

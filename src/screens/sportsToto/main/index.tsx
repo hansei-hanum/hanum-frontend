@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import MRI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,25 +7,30 @@ import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { useTheme } from '@emotion/react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { Header, ScreenHeader, Text } from 'src/components';
+import { ScreenHeader } from 'src/components';
 import { isIos } from 'src/utils';
-import { TabBarStyle } from 'src/styles';
+import { sportsTotoTitleAtom } from 'src/atoms';
 
 import { MatchListScreen, PredictScreen, PointLogScreen, LiveChattingScreen } from '..';
+import { RankingScreen } from '../ranking';
 const BottomTab = createBottomTabNavigator();
 
 export const SportsTotoMainScreen: React.FC = () => {
   const theme = useTheme();
   const inset = useSafeAreaInsets();
 
-  const style = TabBarStyle(theme, inset);
-  const [pageTitle, setPageTitle] = useState('실시간 경기');
+  const sportsTotoTitle = useRecoilValue(sportsTotoTitleAtom);
+  const setSportsTotoTileAtom = useSetRecoilState(sportsTotoTitleAtom);
 
-  const triggerTabPress = (title: string) => {
-    setPageTitle(title);
-    trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
-  };
+  const triggerTabPress = useCallback(
+    (title: string) => {
+      setSportsTotoTileAtom(title);
+      trigger(isIos ? HapticFeedbackTypes.selection : HapticFeedbackTypes.impactLight);
+    },
+    [sportsTotoTitle],
+  );
 
   return (
     <>
@@ -34,8 +39,8 @@ export const SportsTotoMainScreen: React.FC = () => {
           paddingTop: inset.top,
           backgroundColor: '#FEFEFE',
         }}
-        isItemBlack={theme.black}
-        title={pageTitle}
+        isItemBlack={true}
+        title={sportsTotoTitle}
       />
       <BottomTab.Navigator
         screenOptions={{
@@ -77,11 +82,22 @@ export const SportsTotoMainScreen: React.FC = () => {
           name="Point"
           component={PointLogScreen}
           options={{
-            tabBarLabel: '포인트 내역',
+            tabBarLabel: '포인트',
             tabBarIcon: ({ color }) => <MRI name="wallet-outline" size={25} color={color} />,
           }}
           listeners={{
-            tabPress: () => triggerTabPress('포인트 내역'),
+            tabPress: () => triggerTabPress('포인트'),
+          }}
+        />
+        <BottomTab.Screen
+          name="Ranking"
+          component={RankingScreen}
+          options={{
+            tabBarLabel: '포인트 순위',
+            tabBarIcon: ({ color }) => <MRI name="medal-outline" size={25} color={color} />,
+          }}
+          listeners={{
+            tabPress: () => triggerTabPress('포인트 순위'),
           }}
         />
         <BottomTab.Screen

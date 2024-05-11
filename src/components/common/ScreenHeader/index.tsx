@@ -11,7 +11,7 @@ export interface ScreenHeaderCustomProps {
   title: string;
   rightContent?: React.ReactNode;
   isLoading?: boolean;
-  isItemBlack?: string;
+  isItemBlack?: boolean;
 }
 
 export type ScreenHeaderProps = ScreenHeaderCustomProps & ViewProps;
@@ -26,7 +26,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   const theme = useTheme();
   return (
     <S.ScreenHeaderContainer {...props}>
-      <GoBackIcon isLoading={isLoading} iconColor={isItemBlack ? theme.black : theme.default} />
+      <GoBackIcon isLoading={isLoading} isBlack={isItemBlack} />
       <Text size={16} color={isItemBlack ? theme.black : theme.default}>
         {title}
       </Text>

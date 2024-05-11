@@ -9,7 +9,8 @@ import { useTheme } from '@emotion/react';
 export interface GoBackCustomIconProps {
   isLoading?: boolean;
   size?: number;
-  iconColor?: string;
+  isWhite?: boolean;
+  isBlack?: boolean;
   onPress?: () => void;
 }
 
@@ -18,7 +19,8 @@ export type GoBackIconProps = GoBackCustomIconProps & TouchableOpacityProps;
 export const GoBackIcon: React.FC<GoBackIconProps> = ({
   isLoading,
   size = 25,
-  iconColor,
+  isWhite,
+  isBlack,
   onPress,
   ...props
 }) => {
@@ -36,7 +38,11 @@ export const GoBackIcon: React.FC<GoBackIconProps> = ({
       }}
       {...props}
     >
-      <Entypo name="chevron-thin-left" size={size} color={iconColor ?? theme.default} />
+      <Entypo
+        name="chevron-thin-left"
+        size={size}
+        color={isWhite ? theme.white : isBlack ? theme.black : theme.default}
+      />
     </TouchableOpacity>
   );
 };
