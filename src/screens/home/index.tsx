@@ -5,7 +5,7 @@ import { Notifier } from 'react-native-notifier';
 import { PermissionsAndroid, TouchableOpacity, Image, View } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
@@ -106,21 +106,6 @@ export const HomeScreen: React.FC = () => {
     }
   }
 
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (isFocused) {
-      //   setTimeout(() => {
-      //     console.log('reset');
-      //   setHanowlApply({
-      //     team: { name: '', id: '' },
-      //     aspiration: '',
-      //     introduce: '',
-      //     motive: '',
-      //   });
-      // }, 1000 * 3);
-    }
-  }, [isFocused]);
-
   useEffect(() => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
       if (remoteMessage.data) {
@@ -136,6 +121,8 @@ export const HomeScreen: React.FC = () => {
         }
       });
   }, []);
+
+  console.log('HomeScreen render');
 
   return (
     <S.HomeScreenWrapper>

@@ -1,6 +1,8 @@
 import React from 'react';
 import WebView from 'react-native-webview';
 
+import { SPORTS_TOTO_WEBVIEW_URL } from 'src/constants/sportsToTo';
+
 export const PredictScreen: React.FC = () => {
-  return <WebView source={{ uri: 'http://localhost:5173/predict' }} />;
+  return <WebView source={{ uri: `${SPORTS_TOTO_WEBVIEW_URL}/predict` }} />;
 };

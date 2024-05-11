@@ -160,10 +160,6 @@ export const Router: React.FC = () => {
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="TotoMain" component={SC.SportsTotoMainScreen} />
-            <Stack.Screen name="MatchList" component={SC.MatchListScreen} />
-            <Stack.Screen name="LiveChatting" component={SC.LiveChattingScreen} />
-            <Stack.Screen name="Point" component={SC.PointLogScreen} />
-            <Stack.Screen name="Predict" component={SC.PredictScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar
