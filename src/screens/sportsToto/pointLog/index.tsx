@@ -28,5 +28,5 @@ export const TotoPointLogScreen: React.FC = () => {
     debug: true,
   });
 
-  return <WebView source={{ uri: `${SPORTS_TOTO_WEBVIEW_URL}/pointLog` }} />;
+  return <WebView source={{ uri: `${SPORTS_TOTO_WEBVIEW_URL}/point-log` }} />;
 };

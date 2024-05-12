@@ -4,5 +4,5 @@ import WebView from 'react-native-webview';
 import { SPORTS_TOTO_WEBVIEW_URL } from 'src/constants/sportsToTo';
 
 export const TotoRankingScreen: React.FC = () => {
-  return <WebView source={{ uri: `${SPORTS_TOTO_WEBVIEW_URL}/rankingList` }} />;
+  return <WebView source={{ uri: `${SPORTS_TOTO_WEBVIEW_URL}/ranking-list` }} />;
 };

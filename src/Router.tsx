@@ -161,6 +161,7 @@ export const Router: React.FC = () => {
           <Stack.Group>
             <Stack.Screen name="TotoMain" component={SC.TotoMainScreen} />
             <Stack.Screen name="TotoPredict" component={SC.TotoPredictScreen} />
+            <Stack.Screen name="TotoBetting" component={SC.TotoBettingScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar

@@ -16,3 +16,4 @@ export * from './useAuthInput';
 export * from './useDebounce';
 export * from './useFilteredVisibleType';
 export * from './useCheckApplyPeriod';
+export * from './useAppBridge';

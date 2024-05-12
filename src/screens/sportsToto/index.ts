@@ -4,3 +4,4 @@ export * from './liveChatting';
 export * from './pointLog';
 export * from './predict';
 export * from './ranking';
+export * from './betting';

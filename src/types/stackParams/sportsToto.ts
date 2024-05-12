@@ -5,4 +5,5 @@ export type SportsTotoParamList = {
   TotoRanking: undefined;
   TotoPredict: undefined;
   TotoMain: undefined;
+  TotoBetting: undefined;
 };
