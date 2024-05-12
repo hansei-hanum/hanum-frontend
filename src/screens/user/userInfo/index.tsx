@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { useTheme } from '@emotion/react';
 
 import { Button, Header, InfoBox, Modal, Text } from 'src/components';
-import { useGetUser, useInitNavigate } from 'src/hooks';
+import { useGetUser, useInitNavigate, useNavigate } from 'src/hooks';
 import { UserLogo } from 'src/assets/';
 import { deleteUser, disconnectNotification } from 'src/api';
 import { USER_INFO_LIST } from 'src/constants';
@@ -23,6 +25,7 @@ export const UserInfoScreen: React.FC = () => {
   const theme = useTheme();
 
   const { initNavigate } = useInitNavigate();
+  const navigate = useNavigate();
   const [isSecessionClick, setIsSecessionClick] = useState<boolean>(false);
 
   const { userData, userProfile, verifyUser, formatUser, userType } = useGetUser();
@@ -45,7 +48,9 @@ export const UserInfoScreen: React.FC = () => {
   return (
     <>
       <S.UserInfoWrapper>
-        <Header hasGoBackIcon />
+        <TouchableWithoutFeedback onPress={() => navigate('TotoMain')}>
+          <Header hasGoBackIcon />
+        </TouchableWithoutFeedback>
         {userData && (
           <S.UserInfoContainer>
             <S.UserInfoProfileContainer>
