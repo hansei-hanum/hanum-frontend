@@ -8,17 +8,18 @@ import { SPORTS_TOTO_WEBVIEW_URL } from 'src/constants/sportsToTo';
 import { useNavigate } from 'src/hooks';
 
 type AppBridgeState = {
-  goToPointLogScreen: () => Promise<void>;
+  goToScreen: () => Promise<void>;
 };
 
-export const PointLogScreen: React.FC = () => {
+export const TotoPointLogScreen: React.FC = () => {
   const navigate = useNavigate();
+
   const setSportsTotoTileAtom = useSetRecoilState(sportsTotoTitleAtom);
 
   const appBridge = bridge<AppBridgeState>(() => ({
-    goToPointLogScreen: async () => {
+    goToScreen: async () => {
       await setSportsTotoTileAtom('포인트 순위');
-      navigate('Ranking');
+      navigate('TotoRanking');
     },
   }));
 

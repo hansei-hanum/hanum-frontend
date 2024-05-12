@@ -3,6 +3,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import MRI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { trigger, HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { StatusBar } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -10,15 +11,15 @@ import { useTheme } from '@emotion/react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { ScreenHeader } from 'src/components';
-import { isIos } from 'src/utils';
+import { isAndroid, isIos } from 'src/utils';
 import { sportsTotoTitleAtom } from 'src/atoms';
 
-import { MatchListScreen, PredictScreen, PointLogScreen, LiveChattingScreen } from '..';
-import { RankingScreen } from '../ranking';
-import { PredictLogsScreen } from '../predictLogs';
+import { TotoMatchListScreen, TotoPointLogScreen, TotoLiveChattingScreen } from '..';
+import { TotoRankingScreen } from '../ranking';
+import { TotoPredictLogsScreen } from '../predictLogs';
 const BottomTab = createBottomTabNavigator();
 
-export const SportsTotoMainScreen: React.FC = () => {
+export const TotoMainScreen: React.FC = () => {
   const theme = useTheme();
   const inset = useSafeAreaInsets();
 
@@ -55,11 +56,11 @@ export const SportsTotoMainScreen: React.FC = () => {
             paddingVertical: 4,
           },
         }}
-        initialRouteName="LiveChatting"
+        initialRouteName="TotoLiveChatting"
       >
         <BottomTab.Screen
-          name="LiveChatting"
-          component={LiveChattingScreen}
+          name="TotoLiveChatting"
+          component={TotoLiveChattingScreen}
           options={{
             tabBarLabel: '실시간 경기',
             tabBarIcon: ({ color }) => <Icons name="play-circle-outline" size={25} color={color} />,
@@ -69,8 +70,8 @@ export const SportsTotoMainScreen: React.FC = () => {
           }}
         />
         <BottomTab.Screen
-          name="MatchList"
-          component={MatchListScreen}
+          name="TotoMatchList"
+          component={TotoMatchListScreen}
           options={{
             tabBarLabel: '경기 목록',
             tabBarIcon: ({ color }) => <Icons name="sports-basketball" size={25} color={color} />,
@@ -80,8 +81,8 @@ export const SportsTotoMainScreen: React.FC = () => {
           }}
         />
         <BottomTab.Screen
-          name="Point"
-          component={PointLogScreen}
+          name="TotoPoint"
+          component={TotoPointLogScreen}
           options={{
             tabBarLabel: '포인트',
             tabBarIcon: ({ color }) => <MRI name="wallet-outline" size={25} color={color} />,
@@ -91,8 +92,8 @@ export const SportsTotoMainScreen: React.FC = () => {
           }}
         />
         <BottomTab.Screen
-          name="Ranking"
-          component={RankingScreen}
+          name="TotoRanking"
+          component={TotoRankingScreen}
           options={{
             tabBarLabel: '포인트 순위',
             tabBarIcon: ({ color }) => <MRI name="medal-outline" size={25} color={color} />,
@@ -102,8 +103,8 @@ export const SportsTotoMainScreen: React.FC = () => {
           }}
         />
         <BottomTab.Screen
-          name="PredictLogs"
-          component={PredictLogsScreen}
+          name="TotoPredictLogs"
+          component={TotoPredictLogsScreen}
           options={{
             tabBarLabel: '예측 내역',
             tabBarIcon: ({ color }) => <Icons name="access-time" size={25} color={color} />,
@@ -113,6 +114,7 @@ export const SportsTotoMainScreen: React.FC = () => {
           }}
         />
       </BottomTab.Navigator>
+      <StatusBar barStyle={'dark-content'} backgroundColor={isAndroid ? '#2A2B2E' : 'auto'} />
     </>
   );
 };

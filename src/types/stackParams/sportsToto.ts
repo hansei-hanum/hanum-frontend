@@ -1,8 +1,8 @@
 export type SportsTotoParamList = {
-  MatchList: undefined;
-  LiveChatting: undefined;
-  Point: undefined;
-  Ranking: undefined;
-  Predict: undefined;
+  TotoMatchList: undefined;
+  TotoLiveChatting: undefined;
+  TotoPoint: undefined;
+  TotoRanking: undefined;
+  TotoPredict: undefined;
   TotoMain: undefined;
 };

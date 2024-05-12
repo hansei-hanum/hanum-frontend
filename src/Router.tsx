@@ -159,7 +159,8 @@ export const Router: React.FC = () => {
             <Stack.Screen name="UserBlocList" component={SC.UserBlockListScreen} />
           </Stack.Group>
           <Stack.Group>
-            <Stack.Screen name="TotoMain" component={SC.SportsTotoMainScreen} />
+            <Stack.Screen name="TotoMain" component={SC.TotoMainScreen} />
+            <Stack.Screen name="TotoPredict" component={SC.TotoPredictScreen} />
           </Stack.Group>
         </Stack.Navigator>
         <StatusBar
