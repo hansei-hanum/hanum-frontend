@@ -7,7 +7,7 @@ export const TotoLiveChattingScreen: React.FC = () => {
   const { WebView } = useAppBridge({ screenName: 'TotoPredict' });
 
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ilx1ZDY0ZFx1YWUzOFx1YjNkOSIsInZhbGlkYXRpb25TdHJpbmciOiJcdWIyOTBcdWFlMDhcdWI5YzgifQ.XrZz6olEG-k6NoHT5aBIl88igmZgJO6q9LqEndCXckU';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImFzZGYiLCJ2YWxpZGF0aW9uU3RyaW5nIjoiQXNkZiJ9.mB5tb7ZCJKgOQoNxscZPD8JVU40tmoht8Wg525EBX60';
 
   return (
     <WebView
