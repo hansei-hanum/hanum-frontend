@@ -7,7 +7,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { useTheme } from '@emotion/react';
 
-import { HomeScreen, ShowMoreScreen, TimeTableScreen, MealTableScreen } from 'src/screens';
+import { useCheckUserType } from 'src/hooks';
+
+import {
+  HomeScreen,
+  ShowMoreScreen,
+  TimeTableScreen,
+  MealTableScreen,
+  AllTimeTableScreen,
+} from 'src/screens';
 import { isIos } from 'src/utils';
 import { TabBarStyle } from 'src/styles';
 
@@ -16,6 +24,8 @@ import { CommunityMainScreen } from '../community';
 const BottomTab = createBottomTabNavigator();
 
 export const MainScreen: React.FC = () => {
+  const { isTeacher } = useCheckUserType();
+
   const theme = useTheme();
   const inset = useSafeAreaInsets();
 
@@ -54,8 +64,8 @@ export const MainScreen: React.FC = () => {
         }}
       />
       <BottomTab.Screen
-        name="TimeTable"
-        component={TimeTableScreen}
+        name="AllTimeTable"
+        component={isTeacher ? TimeTableScreen : AllTimeTableScreen}
         options={getScreenOptions('시간표', 'access-time')}
         listeners={{
           tabPress: triggerTabPress,
