@@ -10,7 +10,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Schedule, Header, LunchTable, TimeTable, AlertBox } from 'src/components';
+import { Timer, Schedule, Header, LunchTable, TimeTable } from 'src/components';
 import { isAndroid, isIos, openContactChannel } from 'src/utils';
 import { useConnectNotification } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
@@ -171,12 +171,6 @@ export const HomeScreen: React.FC = () => {
           rowGap: 20,
         }}
       >
-        <AlertBox
-          navigateUrl="TimeTable"
-          icon="🌐"
-          subText="모든 시간표"
-          mainText="모든 시간표 보러가기"
-        />
         <TimeTable />
         <Timer />
         <LunchTable />
