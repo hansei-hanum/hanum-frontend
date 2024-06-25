@@ -1,5 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { Modal, Animated, TouchableWithoutFeedback, PanResponder, Dimensions } from 'react-native';
+import {
+  Modal,
+  Animated,
+  TouchableWithoutFeedback,
+  PanResponder,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 
 import { Text } from 'src/components/common';
 
@@ -46,13 +53,17 @@ export const TimeTableBottomSheet: React.FC<TimeTableBottomSheetProps> = ({
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dy: panY }], { useNativeDriver: false }),
+      onPanResponderMove: (event, gestureState) => {
+        panY.setValue(gestureState.dy);
+      },
       onPanResponderRelease: (event, gestureState) => {
         if (gestureState.dy > 50) {
-          // Adjust the threshold as needed
           closeModal();
         } else {
-          openBottomSheet.start();
+          Animated.spring(panY, {
+            toValue: 0,
+            useNativeDriver: true,
+          }).start();
         }
       },
     }),
@@ -79,7 +90,7 @@ export const TimeTableBottomSheet: React.FC<TimeTableBottomSheetProps> = ({
     });
   };
 
-  const a = [
+  const dummy = [
     '클라우드보안과 1학년 10반',
     '클라우드보안과 1학년 10반',
     '클라우드보안과 2학년 10반',
@@ -94,19 +105,22 @@ export const TimeTableBottomSheet: React.FC<TimeTableBottomSheetProps> = ({
       <TouchableWithoutFeedback onPress={closeModal}>
         <S.Overlay style={{ opacity }}>
           <S.BottomSheetContainer style={{ transform: [{ translateY: translateY }] }}>
-            <S.BottomSheetHandle {...handlePanResponder.panHandlers} />
+            <Animated.View
+              style={{ width: '100%', height: 30 }}
+              {...handlePanResponder.panHandlers}
+            >
+              <S.BottomSheetHandle />
+            </Animated.View>
             <S.BottomSheetItemContainer>
-              <S.StyledScrollView>
-                {a.map((item, index) => {
-                  return (
-                    <S.BottomSheetItem key={index} activeOpacity={0.8}>
-                      <Text size={16} style={{ height: 60 }}>
-                        {item}
-                      </Text>
-                    </S.BottomSheetItem>
-                  );
-                })}
-              </S.StyledScrollView>
+              <ScrollView>
+                {dummy.map((item, index) => (
+                  <S.BottomSheetItem key={index} activeOpacity={0.8}>
+                    <Text size={16} style={{ height: 60 }}>
+                      {item}
+                    </Text>
+                  </S.BottomSheetItem>
+                ))}
+              </ScrollView>
             </S.BottomSheetItemContainer>
           </S.BottomSheetContainer>
         </S.Overlay>

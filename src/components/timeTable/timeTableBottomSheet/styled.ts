@@ -8,19 +8,14 @@ export const Overlay = styled(Animated.View)`
   background-color: rgba(0, 0, 0, 0.4);
 `;
 
-
-
 export const BottomSheetContainer = styled(Animated.View)`
   height: 220px;
   align-items: center;
   background-color: white;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
-  padding: 20px;
+  padding: 15px 20px;
 
-`;
-
-export const StyledScrollView = styled.ScrollView`
 `;
 
 export const BottomSheetHandle = styled.View`
@@ -28,10 +23,10 @@ export const BottomSheetHandle = styled.View`
   width: 75px;
   background-color: gray;
   border-radius: 2px;
+  margin: 0 auto;
 `
 
-export const BottomSheetItemContainer = styled.View`
-  padding-top: 30px;
+export const BottomSheetItemContainer = styled.View` ㅍㅊ
   width: 100%;
 `
 
