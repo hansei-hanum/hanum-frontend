@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal,
   Animated,
@@ -7,9 +7,10 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-
+import { useTheme } from '@emotion/react';
+import Octicons from 'react-native-vector-icons/Octicons';
 import { Text } from 'src/components/common';
-
+import { useGetUser, useGetTimeTable } from 'src/hooks';
 import * as S from './styled';
 
 interface TimeTableBottomSheetProps {
@@ -21,6 +22,11 @@ export const TimeTableBottomSheet: React.FC<TimeTableBottomSheetProps> = ({
   modalVisible,
   setModalVisible,
 }) => {
+  const theme = useTheme();
+  const { classroom, grade, department } = useGetUser();
+  const { data, isLoading } = useGetTimeTable();
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
   const screenHeight = Dimensions.get('screen').height;
   const panY = useRef(new Animated.Value(screenHeight)).current;
   const opacity = useRef(new Animated.Value(1)).current;
@@ -90,14 +96,21 @@ export const TimeTableBottomSheet: React.FC<TimeTableBottomSheetProps> = ({
     });
   };
 
+  const handleItemPress = (item: string) => {
+    setSelectedItem(item);
+  };
+
   const dummy = [
-    '클라우드보안과 1학년 10반',
-    '클라우드보안과 1학년 10반',
-    '클라우드보안과 2학년 10반',
-    '클라우드보안과 2학년 10반',
-    '클라우드보안과 2학년 10반',
-    '클라우드보안과 2학년 10반',
-    '클라우드보안과 2학년 10반',
+    '클라우드보안과 1학년 1반',
+    '클라우드보안과 1학년 2반',
+    '메타버스게임과 1학년 1반',
+    '클라우드보안과 2학년 1반',
+    '클라우드보안과 2학년 2반',
+    '메타버스게임과 2학년 1반',
+    '메타버스게임과 2학년 2반',
+    '클라우드보안과 3학년 1반',
+    '네트워크보안과 3학년 1반',
+    '게임과 3학년 1반',
   ];
 
   return (
@@ -114,10 +127,17 @@ export const TimeTableBottomSheet: React.FC<TimeTableBottomSheetProps> = ({
             <S.BottomSheetItemContainer>
               <ScrollView>
                 {dummy.map((item, index) => (
-                  <S.BottomSheetItem key={index} activeOpacity={0.8}>
+                  <S.BottomSheetItem
+                    key={index}
+                    activeOpacity={0.8}
+                    onPress={() => handleItemPress(item)}
+                  >
                     <Text size={16} style={{ height: 60 }}>
                       {item}
                     </Text>
+                    {selectedItem === item && (
+                      <Octicons name="check" size={26} color={theme.primary} />
+                    )}
                   </S.BottomSheetItem>
                 ))}
               </ScrollView>

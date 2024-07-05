@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { Header, Text, TimeTableBottomSheet } from 'src/components';
 import { useGetUser } from 'src/hooks';

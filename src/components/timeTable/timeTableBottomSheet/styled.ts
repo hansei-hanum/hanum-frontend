@@ -1,7 +1,6 @@
 import styled from '@emotion/native';
 import { Animated } from 'react-native';
 
-
 export const Overlay = styled(Animated.View)`
   flex: 1;
   justify-content: flex-end;
@@ -15,7 +14,6 @@ export const BottomSheetContainer = styled(Animated.View)`
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   padding: 15px 20px;
-
 `;
 
 export const BottomSheetHandle = styled.View`
@@ -24,12 +22,14 @@ export const BottomSheetHandle = styled.View`
   background-color: gray;
   border-radius: 2px;
   margin: 0 auto;
-`
+`;
 
-export const BottomSheetItemContainer = styled.View` ㅍㅊ
+export const BottomSheetItemContainer = styled.View`
   width: 100%;
-`
+`;
 
 export const BottomSheetItem = styled.TouchableOpacity`
   align-items: flex-start;
-`
+  justify-content: space-between;
+  flex-direction: row;
+`;
