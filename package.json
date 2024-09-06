@@ -23,7 +23,8 @@
     "lint": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --fix --cache",
     "format": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "postinstall": "npx react-native setup-ios-permissions && npx pod-install ios",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
     "@emotion/native": "^11.11.0",

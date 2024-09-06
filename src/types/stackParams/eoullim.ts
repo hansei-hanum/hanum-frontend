@@ -4,4 +4,5 @@ export type EoullimStackParamList = {
   EoullimTimeTable: undefined;
   EoullimRaffle: undefined;
   EoullimStatus: undefined;
+  EoullimBoothInfo: undefined;
 };

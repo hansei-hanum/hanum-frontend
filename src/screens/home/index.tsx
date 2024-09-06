@@ -10,9 +10,9 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@emotion/react';
 
-import { Timer, Schedule, Header, LunchTable, TimeTable, AlertBox } from 'src/components';
+import { Timer, Schedule, Header, LunchTable, TimeTable, AlertBox, HanumPay } from 'src/components';
 import { isAndroid, isIos, openContactChannel } from 'src/utils';
-import { useConnectNotification } from 'src/hooks';
+import { useConnectNotification, useNavigate } from 'src/hooks';
 import { themeAtom } from 'src/atoms';
 
 import { Logo, WhiteLogo } from '../../../assets/images';
@@ -21,6 +21,8 @@ import * as S from './styled';
 
 export const HomeScreen: React.FC = () => {
   const theme = useTheme();
+
+  const navigate = useNavigate();
 
   const themeValue = useRecoilValue(themeAtom);
 
@@ -172,11 +174,12 @@ export const HomeScreen: React.FC = () => {
         }}
       >
         <AlertBox
-          navigateUrl="HanowlMain"
-          icon="📢"
-          subText="학생회 모집 공고가 있어요"
-          mainText="학생회 모집 공고 보기"
+          navigateUrl="EoullimMain"
+          icon="🎉"
+          subText="한세 어울림 마당이 진행중이에요"
+          mainText="축제 즐기러가기"
         />
+        <HanumPay />
         <TimeTable />
         <Timer />
         <LunchTable />

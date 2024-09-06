@@ -135,6 +135,7 @@ export const Router: React.FC = () => {
             <Stack.Screen name="EoullimTimeTable" component={SC.EoullimTimeTableScreen} />
             <Stack.Screen name="EoullimRaffle" component={SC.EoullimRaffleScreen} />
             <Stack.Screen name="EoullimStatus" component={SC.EoullimStatusScreen} />
+            <Stack.Screen name="EoullimBoothInfo" component={SC.BoothInfoScreen} />
           </Stack.Group>
           <Stack.Group>
             <Stack.Screen name="CommunityPostDetail" component={SC.CommunityPostDetailScreen} />

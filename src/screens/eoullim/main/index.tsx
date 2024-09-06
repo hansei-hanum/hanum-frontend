@@ -17,10 +17,15 @@ const EoullimList = [
     icon: '📆',
     navigateUrl: 'EoullimTimeTable',
   },
+  // {
+  //   title: '공연 투표하기',
+  //   icon: '📥',
+  //   navigateUrl: 'EoullimVote',
+  // },
   {
-    title: '공연 투표하기',
-    icon: '📥',
-    navigateUrl: 'EoullimVote',
+    title: '부스 정보 보기',
+    icon: '⛺️',
+    navigateUrl: 'EoullimBoothInfo',
   },
 ];
 
@@ -50,7 +55,12 @@ export const EoullimMainScreen: React.FC = () => {
             <Text size={24} fontFamily="bold" color={theme.white}>
               {userData?.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
             </Text>
-            {!luckyDraw.isLoading ? (
+            <S.EoullimBoxContainer>
+              {EoullimList.map(({ icon, title, navigateUrl }) => (
+                <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
+              ))}
+            </S.EoullimBoxContainer>
+            {/* {!luckyDraw.isLoading ? (
               <>
                 <S.EoullimBoxContainer>
                   {EoullimList.map(({ icon, title, navigateUrl }) => (
@@ -67,7 +77,7 @@ export const EoullimMainScreen: React.FC = () => {
               </>
             ) : (
               <Spinner />
-            )}
+            )} */}
           </S.EoulimContentContainer>
         </S.EoullimContainer>
       </S.EoullimWrapper>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { RefreshControl } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
-
 import { useTheme } from '@emotion/react';
 
 import { Button, Text, HanumPayHeader, AuthFailedModal, Spinner } from 'src/components';
@@ -13,7 +12,6 @@ import * as S from './styled';
 
 export const HanumPayMainScreen: React.FC = () => {
   const theme = useTheme();
-
   const navigate = useNavigate();
   const { refreshing, onRefresh } = useOnRefresh();
 
