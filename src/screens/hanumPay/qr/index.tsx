@@ -13,6 +13,7 @@ import {
   Modal,
   QRScanner,
   QRScannerBox,
+  ScreenHeader,
 } from 'src/components';
 import { boothAtom } from 'src/atoms';
 import { useCheckUserType, useNavigate } from 'src/hooks';
@@ -80,7 +81,7 @@ export const HanumPayQRScreen: React.FC = () => {
       <>
         <S.HanumPayQRWrapper>
           <S.HanumPayQRHeaderWrapper>
-            <HanumPayHeader title="결제하기" />
+            <ScreenHeader title="결제하기" />
           </S.HanumPayQRHeaderWrapper>
           {cameraModal ? (
             <QRScannerBox.Permission>

@@ -4,7 +4,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 
-import { AuthFailedModal, EoullimBox, GoBackIcon, Text, Spinner } from 'src/components';
+import { AuthFailedModal, EoullimBox, GoBackIcon, Text } from 'src/components';
 import { EoullimPoster } from 'src/assets';
 import { useCheckUserType, useGetUser } from 'src/hooks';
 import { useGetLuckyDraw } from 'src/hooks/query/eoullim';

@@ -12,12 +12,6 @@ export const BoothInfoScreen: React.FC = () => {
       <ScreenHeader title="부스 정보" />
       <S.BoothInfoContainer>
         <BoothBox />
-        <BoothBox />
-        <BoothBox />
-        <BoothBox />
-        <BoothBox />
-        <BoothBox />
-        <BoothBox />
       </S.BoothInfoContainer>
     </S.BoothInfoScreenInfoWrapper>
   );

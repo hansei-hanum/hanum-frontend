@@ -4,7 +4,14 @@ import { RefreshControl } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 
-import { Button, Text, HanumPayHeader, AuthFailedModal, Spinner } from 'src/components';
+import {
+  Button,
+  Text,
+  HanumPayHeader,
+  AuthFailedModal,
+  Spinner,
+  ScreenHeader,
+} from 'src/components';
 import { useCheckUserType, useGetPaymentDetail, useNavigate, useOnRefresh } from 'src/hooks';
 import { formattedMoney, isIos } from 'src/utils';
 
@@ -41,7 +48,7 @@ export const HanumPayMainScreen: React.FC = () => {
     return (
       <S.HanumPayWrapper>
         <S.HanumPayContainer>
-          <HanumPayHeader title="한움페이" />
+          <ScreenHeader title="한움페이" />
           <S.HanumPaySection>
             <Text.Column>
               <Text size={14} color={theme.placeholder}>
