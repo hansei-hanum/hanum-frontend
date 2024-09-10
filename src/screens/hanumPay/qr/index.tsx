@@ -62,6 +62,7 @@ export const HanumPayQRScreen: React.FC = () => {
         const result = await request(
           Platform.OS === 'android' ? PERMISSIONS.ANDROID.CAMERA : PERMISSIONS.IOS.CAMERA,
         );
+        console.log(result);
 
         if (result !== RESULTS.GRANTED) {
           setCameraModal(true); // 권한 거부 시 모달 표시

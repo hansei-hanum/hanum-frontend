@@ -25,7 +25,7 @@ export interface PaymentValues {
 }
 
 export const getPaymentDetail = async () => {
-  const { data } = await payInstance.get(`${API_SUFFIX.PAY.PAYMENT_DETAIL}?page=1&limit=400`);
+  const { data } = await payInstance.get(`${API_SUFFIX.PAY.PAYMENT_DETAIL}?page=1&limit=100`);
   return data;
 };
 
