@@ -17,12 +17,16 @@ export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl
   const navigate = useNavigate();
 
   return (
-    <ScaleOpacity onPress={() => navigate(navigateUrl)} style={{ width: isBig ? '100%' : '48%' }}>
-      <S.EoullimBox blurType="light" blurAmount={1} reducedTransparencyFallbackColor="white" />
-      <S.EoullimBoxTextContainer>
-        <Icon size={60} icon={icon} includeBackground={false} />
-        <S.EoullimBoxText>{title}</S.EoullimBoxText>
-      </S.EoullimBoxTextContainer>
+    <ScaleOpacity
+      onPress={() => navigate(navigateUrl)}
+      style={{ width: isBig ? '100%' : '48%', borderRadius: 20 }}
+    >
+      <S.EoullimBox blurType="light" blurAmount={1} reducedTransparencyFallbackColor="white">
+        <S.EoullimBoxTextContainer>
+          <Icon size={60} icon={icon} includeBackground={false} />
+          <S.EoullimBoxText>{title}</S.EoullimBoxText>
+        </S.EoullimBoxTextContainer>
+      </S.EoullimBox>
     </ScaleOpacity>
   );
 };

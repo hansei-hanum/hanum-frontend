@@ -27,6 +27,7 @@ export const EoullimBoxTextContainer = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
 `;
 
 export const EoullimBoxIcon = styled.Text`

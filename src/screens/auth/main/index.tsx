@@ -51,6 +51,7 @@ export const AuthMainScreen: React.FC = () => {
           </S.AuthMainScreenLogoContainer>
           <S.AuthMainScreenMainSection>
             <Button onPress={() => navigate('Login')}>로그인</Button>
+
             <Button
               isWhite
               onPress={() => setModalVisible({ isAgreeModal: true, isCurrentStudentModal: false })}
