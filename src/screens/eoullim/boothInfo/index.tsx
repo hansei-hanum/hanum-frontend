@@ -1,18 +1,26 @@
 import React from 'react';
 
+import { BoothMap } from 'src/assets';
+import { Header, ScreenHeader, Text } from 'src/components';
+import { isIos } from 'src/utils';
+
 import * as S from './styled';
-
-import { ScreenHeader } from 'src/components';
-
-import { BoothBox } from 'src/components';
 
 export const BoothInfoScreen: React.FC = () => {
   return (
-    <S.BoothInfoScreenInfoWrapper>
-      <ScreenHeader title="부스 정보" />
-      <S.BoothInfoContainer>
-        <BoothBox />
-      </S.BoothInfoContainer>
-    </S.BoothInfoScreenInfoWrapper>
+    <S.EoullimTimeTableWrapper>
+      <ScreenHeader title="부스맵" />
+      <S.EoullimTimeTableContainer
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          paddingHorizontal: isIos ? 20 : 0,
+          rowGap: 10,
+        }}
+      >
+        <S.EoullimTimeTableImage source={BoothMap} />
+      </S.EoullimTimeTableContainer>
+    </S.EoullimTimeTableWrapper>
   );
 };

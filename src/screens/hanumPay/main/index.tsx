@@ -134,7 +134,7 @@ export const HanumPayMainScreen: React.FC = () => {
                     },
                   )
                 ) : (
-                  <Text size={16}>아직 이용내역이 없어요.</Text>
+                  <Text size={16}>아직 이용내역이 없어요</Text>
                 )}
               </S.HanumUseAgeContainer>
             </S.HanumUseAgeHistory>

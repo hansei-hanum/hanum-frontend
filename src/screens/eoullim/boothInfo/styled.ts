@@ -1,12 +1,21 @@
 import styled from '@emotion/native';
 
-export const BoothInfoScreenInfoWrapper = styled.SafeAreaView`
+import { isIos } from 'src/utils';
+
+export const EoullimTimeTableWrapper = styled.SafeAreaView`
+  flex: 1;
   background-color: ${({ theme }) => theme.background};
-  width: 100%;
+  padding: 20px;
+  padding-bottom: 0;
 `;
 
-export const BoothInfoContainer = styled.ScrollView`
-  padding: 0 20px;
-  width: 100%;
-  flex-direction: column;
+export const EoullimTimeTableContainer = styled.ScrollView`
+  flex: 1;
+`;
+
+export const EoullimTimeTableImage = styled.ImageBackground`
+  border-radius: 20px;
+  margin-top: 20px;
+  height: ${isIos ? '820px' : '700px'};
+  border: 1px solid ${({ theme }) => theme.lightGray};
 `;
