@@ -8,12 +8,14 @@ import { useTheme } from '@emotion/react';
 import { AppLayout } from 'src/components';
 import { checkNumber, isAndroid } from 'src/utils';
 import { usePayment } from 'src/hooks';
-import { boothAtom, isDisableAtom } from 'src/atoms';
+import { boothAtom, isDisableAtom, themeAtom } from 'src/atoms';
 
 import * as S from './styled';
 
 export const HanumPayScreen: React.FC = () => {
   const theme = useTheme();
+  const themeValue = useRecoilValue(themeAtom);
+
   const [money, setMoney] = useState<string>('');
   const setIsDisabled = useSetRecoilState(isDisableAtom);
 
@@ -55,7 +57,7 @@ export const HanumPayScreen: React.FC = () => {
         color={theme.placeholder}
         value={money}
         inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
-        inputStyle={{ fontSize: 20 }}
+        inputStyle={{ fontSize: 20, color: themeValue === 'light' ? 'black' : 'white' }}
       />
     </AppLayout>
   );

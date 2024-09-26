@@ -4,7 +4,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 import { useTheme } from '@emotion/react';
 
-import { AuthFailedModal, EoullimBox, GoBackIcon, Text } from 'src/components';
+import { AuthFailedModal, EoullimBox, GoBackIcon, Text, Spinner } from 'src/components';
 import { EoullimPoster } from 'src/assets';
 import { useCheckUserType, useGetUser } from 'src/hooks';
 import { useGetLuckyDraw } from 'src/hooks/query/eoullim';
@@ -60,7 +60,7 @@ export const EoullimMainScreen: React.FC = () => {
                 <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
               ))}
             </S.EoullimBoxContainer>
-            {/* {!luckyDraw.isLoading ? (
+            {!luckyDraw.isLoading ? (
               <>
                 <S.EoullimBoxContainer>
                   {EoullimList.map(({ icon, title, navigateUrl }) => (
@@ -77,7 +77,7 @@ export const EoullimMainScreen: React.FC = () => {
               </>
             ) : (
               <Spinner />
-            )} */}
+            )}
           </S.EoulimContentContainer>
         </S.EoullimContainer>
       </S.EoullimWrapper>

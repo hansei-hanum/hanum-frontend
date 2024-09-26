@@ -4,6 +4,7 @@ apply plugin: "com.google.gms.google-services"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -75,7 +76,12 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
-    
+
+    externalNativeBuild {
+        cmake {
+            path "android/app/src/main/CMakeLists.txt"
+        }
+    }
 
     namespace "com.hanowl.hanum"
     defaultConfig {
@@ -132,6 +138,10 @@ dependencies {
         implementation jscFlavor
     }
     implementation project(':react-native-splash-screen')
+}
+
+ext {
+    FLIPPER_VERSION = '0.182.0'
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
