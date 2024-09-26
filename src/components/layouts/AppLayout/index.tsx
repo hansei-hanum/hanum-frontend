@@ -21,6 +21,7 @@ export interface AppLayoutCustomProps extends AppLayoutWithoutButtonCustomProps 
   withScrollView?: boolean;
   scrollViewRef?: RefObject<ScrollView>;
   hasOwnButton?: React.ReactNode;
+  buttonDisabled?: boolean;
 }
 
 export type AppLayoutProps = AppLayoutCustomProps & ViewProps;

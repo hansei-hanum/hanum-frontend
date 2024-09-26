@@ -17,6 +17,7 @@ export const HanumPayScreen: React.FC = () => {
   const themeValue = useRecoilValue(themeAtom);
 
   const [money, setMoney] = useState<string>('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const setIsDisabled = useSetRecoilState(isDisableAtom);
 
   const boothInfo = useRecoilValue(boothAtom);
@@ -24,7 +25,14 @@ export const HanumPayScreen: React.FC = () => {
   const { mutate, isLoading } = usePayment();
 
   const onSubmit = () => {
-    boothInfo.id !== 0 && mutate({ amount: parseInt(money), boothId: boothInfo.id });
+    if (!isLoading && boothInfo.id !== 0 && !isButtonDisabled) {
+      setIsButtonDisabled(true);
+      mutate({ amount: parseInt(money), boothId: boothInfo.id });
+
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 1000);
+    }
   };
 
   const onMoneyChange = (money: string) => {
@@ -38,6 +46,7 @@ export const HanumPayScreen: React.FC = () => {
   useEffect(() => {
     if (isFocused) {
       setIsDisabled(true);
+      setIsButtonDisabled(false);
     }
   }, [isFocused]);
 
@@ -47,14 +56,15 @@ export const HanumPayScreen: React.FC = () => {
       onPress={onSubmit}
       headerText={`${boothInfo.name}에` + '\n얼마를 결제할까요?'}
       bottomText="결제하기"
+      buttonDisabled={isButtonDisabled}
     >
       <S.TextFieldFormInput
-        placeholderTextColor={theme.placeholder}
+        placeholderTextColor={themeValue === 'light' ? 'black' : 'white'}
         variant="standard"
         label="결제 금액"
         keyboardType="numeric"
         onChangeText={onMoneyChange}
-        color={theme.placeholder}
+        color={themeValue === 'light' ? 'black' : 'white'}
         value={money}
         inputContainerStyle={{ paddingTop: isAndroid ? 10 : 0 }}
         inputStyle={{ fontSize: 20, color: themeValue === 'light' ? 'black' : 'white' }}
