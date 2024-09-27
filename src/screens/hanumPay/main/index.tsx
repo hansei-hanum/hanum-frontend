@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { RefreshControl, Platform } from 'react-native';
+import React, { useEffect } from 'react';
+import { RefreshControl } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useTheme } from '@emotion/react';
 
-import {
-  Button,
-  Text,
-  HanumPayHeader,
-  AuthFailedModal,
-  Spinner,
-  ScreenHeader,
-} from 'src/components';
+import { Button, Text, HanumPayHeader, AuthFailedModal, ScreenHeader } from 'src/components';
 import { useCheckUserType, useGetPaymentDetail, useNavigate, useOnRefresh } from 'src/hooks';
 import { formattedMoney, isIos } from 'src/utils';
 import * as S from './styled';
 
 export const HanumPayMainScreen: React.FC = () => {
-  // const [cameraPermission, setCameraPermission] = useState<PermissionStatus | null>(null);
-
   const theme = useTheme();
   const navigate = useNavigate();
   const { refreshing, onRefresh } = useOnRefresh();
