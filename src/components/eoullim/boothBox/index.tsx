@@ -2,29 +2,31 @@ import React from 'react';
 
 import * as S from './styled';
 
-import { BoothImg } from 'src/assets';
-
 import { Text } from 'src/components/common';
 
-import { View } from 'react-native';
+import { BoothInfoData } from 'src/constants/eoulim/boothData';
 
 export const BoothBox: React.FC = () => {
   return (
-    <View style={{ marginTop: 20, width: '100%', alignItems: 'center' }}>
-      <Text size={20}>클보2-1</Text>
-      <S.BoothBoxContainer>
-        <S.BoothImgContainer>
-          <S.BoothImg source={BoothImg} />
-        </S.BoothImgContainer>
-        <S.DescriptionContainer>
-          <Text isCenter={true} color="black" size={20} fontFamily="bold">
-            연전흠
-          </Text>
-          <Text size={12} color="gray">
-            전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.전집입니다.
-          </Text>
-        </S.DescriptionContainer>
-      </S.BoothBoxContainer>
-    </View>
+    <S.BoothBoxContainer>
+      {BoothInfoData.map((item, index) => {
+        return (
+          <S.BoothBox key={index}>
+            <S.BoothImg source={item.img} />
+            <S.BoothDescription>
+              <Text size={15} color="lightgray">
+                {item.id}
+              </Text>
+              <Text size={15} color="lightgray">
+                {item.boothName}
+              </Text>
+              <Text size={15} color="lightgray">
+                {item.hashTag}
+              </Text>
+            </S.BoothDescription>
+          </S.BoothBox>
+        );
+      })}
+    </S.BoothBoxContainer>
   );
 };

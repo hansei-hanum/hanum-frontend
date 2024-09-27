@@ -2,14 +2,14 @@ import styled from '@emotion/native';
 
 import { isIos } from 'src/utils';
 
-export const EoullimTimeTableWrapper = styled.SafeAreaView`
+export const EoullimBoothInfoWrapper = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
   padding: 20px;
   padding-bottom: 0;
 `;
 
-export const EoullimTimeTableContainer = styled.ScrollView`
+export const ScrollView = styled.ScrollView`
   flex: 1;
 `;
 

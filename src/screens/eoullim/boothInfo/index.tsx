@@ -1,13 +1,16 @@
 import React from 'react';
 
-import { ScreenHeader } from 'src/components';
+import { ScreenHeader, BoothBox } from 'src/components';
 
 import * as S from './styled';
 
 export const BoothInfoScreen: React.FC = () => {
   return (
-    <S.EoullimTimeTableWrapper>
+    <S.EoullimBoothInfoWrapper>
       <ScreenHeader title="부스정보" />
-    </S.EoullimTimeTableWrapper>
+      <S.ScrollView>
+        <BoothBox />
+      </S.ScrollView>
+    </S.EoullimBoothInfoWrapper>
   );
 };

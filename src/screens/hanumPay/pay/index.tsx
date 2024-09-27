@@ -28,7 +28,6 @@ export const HanumPayScreen: React.FC = () => {
     if (!isLoading && boothInfo.id !== 0 && !isButtonDisabled) {
       setIsButtonDisabled(true);
       mutate({ amount: parseInt(money), boothId: boothInfo.id });
-
       setTimeout(() => {
         setIsButtonDisabled(false);
       }, 1000);
