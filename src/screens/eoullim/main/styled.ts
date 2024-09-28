@@ -9,6 +9,7 @@ export const EoullimContainer = styled.ImageBackground`
   flex: 1;
   padding: 20px 0;
   row-gap: 30px;
+  flex-direction: column;
 `;
 
 export const EoulimContentContainer = styled.View`
@@ -22,4 +23,12 @@ export const EoullimBoxContainer = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
+  flex-direction: column;
+  row-gap: 10px;
+  gap: 10px;
+`;
+
+export const EoullimRow = styled.View`
+  flex-direction: row;
+  gap: 10px;
 `;

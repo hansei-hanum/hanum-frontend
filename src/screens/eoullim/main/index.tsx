@@ -11,27 +11,8 @@ import { useGetLuckyDraw } from 'src/hooks/query/eoullim';
 
 import * as S from './styled';
 
-const EoullimList = [
-  {
-    title: '행사일정 보기',
-    icon: '📆',
-    navigateUrl: 'EoullimTimeTable',
-  },
-  // {
-  //   title: '공연 투표하기',
-  //   icon: '📥',
-  //   navigateUrl: 'EoullimVote',
-  // },
-  {
-    title: '부스 정보 보기',
-    icon: '⛺️',
-    navigateUrl: 'EoullimBoothInfo',
-  },
-];
-
 export const EoullimMainScreen: React.FC = () => {
   const theme = useTheme();
-
   const luckyDraw = useGetLuckyDraw();
 
   const { userData } = useGetUser();
@@ -46,6 +27,29 @@ export const EoullimMainScreen: React.FC = () => {
     }
   }, [isFocused]);
 
+  const EoullimList = [
+    {
+      title: '행사일정 보기',
+      icon: '📆',
+      navigateUrl: 'EoullimTimeTable',
+    },
+    {
+      title: '공연 투표하기',
+      icon: '📥',
+      navigateUrl: 'EoullimVote',
+    },
+    {
+      title: '부스 정보 보기',
+      icon: '⛺️',
+      navigateUrl: 'EoullimBoothInfo',
+    },
+    {
+      title: '나의 추첨번호',
+      icon: '🎁',
+      navigateUrl: luckyDraw.data ? 'EoullimStatus' : 'EoullimRaffle',
+    },
+  ];
+
   if (verifyUser) {
     return (
       <S.EoullimWrapper>
@@ -56,28 +60,17 @@ export const EoullimMainScreen: React.FC = () => {
               {userData?.name}님 반가워요 👋 {'\n'}즐거운 축제 되세요!
             </Text>
             <S.EoullimBoxContainer>
-              {EoullimList.map(({ icon, title, navigateUrl }) => (
-                <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
-              ))}
+              <S.EoullimRow>
+                {EoullimList.slice(0, 2).map(({ icon, title, navigateUrl }) => (
+                  <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
+                ))}
+              </S.EoullimRow>
+              <S.EoullimRow>
+                {EoullimList.slice(2, 4).map(({ icon, title, navigateUrl }) => (
+                  <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
+                ))}
+              </S.EoullimRow>
             </S.EoullimBoxContainer>
-            {!luckyDraw.isLoading ? (
-              <>
-                <S.EoullimBoxContainer>
-                  {EoullimList.map(({ icon, title, navigateUrl }) => (
-                    <EoullimBox key={title} icon={icon} title={title} navigateUrl={navigateUrl} />
-                  ))}
-                </S.EoullimBoxContainer>
-                <EoullimBox
-                  key={'추첨하기'}
-                  icon={'🎁'}
-                  title={'나의 추첨번호'}
-                  navigateUrl={luckyDraw.data ? 'EoullimStatus' : 'EoullimRaffle'}
-                  isBig={true}
-                />
-              </>
-            ) : (
-              <Spinner />
-            )}
           </S.EoulimContentContainer>
         </S.EoullimContainer>
       </S.EoullimWrapper>
