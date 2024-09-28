@@ -34,7 +34,8 @@ export const BoothInfoData = [
   {
     id: '학부모부스',
     boothName: '아이스크림 & 츄서스',
-    hashTag: '#1 #2 #3 #4',
+    hashTag:
+      '#아이스크림과 츄러스의 조합 #아츄 널 보면 재채기가 나올 것 같아 #롯데월드보다 맛있다 #츄러스 츄베릅',
     img: Parant,
   },
   {
@@ -62,7 +63,7 @@ export const BoothInfoData = [
   {
     id: '클라우드보안과 2-2',
     boothName: '가가멜 문방구',
-    hashTag: '#추억의 문방구  #없는거 빼고 다 있다  #인생역전의 기회  #궁금하면 클보2-2로',
+    hashTag: '#추억의 문방구  #없는거 빼고 다 있다  #나랑 피크닉 마시러 갈래?  #궁금하면 클보2-2로',
     img: C2_2,
   },
   {
@@ -74,7 +75,7 @@ export const BoothInfoData = [
   {
     id: '메타버스게임과 2-1',
     boothName: '노비주막',
-    hashTag: '#1 #2 #3 #4',
+    hashTag: '#노비주막 #민속놀이 #전통놀이 #식혜 #매실',
     img: M2_1,
   },
   {
