@@ -11,11 +11,10 @@ export const EoullimBoxWrapper = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const EoullimBox = styled(BlurView)`
+export const EoullimBox = styled.View`
   width: 100%;
   height: 220px;
   background-color: rgba(248, 248, 248, 0.8);
-
   justify-content: center;
   border-radius: 16px;
 `;

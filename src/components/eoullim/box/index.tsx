@@ -21,7 +21,7 @@ export const EoullimBox: React.FC<EoullimBoxProps> = ({ title, icon, navigateUrl
       onPress={() => navigate(navigateUrl)}
       style={{ width: isBig ? '100%' : '48%', borderRadius: 20 }}
     >
-      <S.EoullimBox blurType="light" blurAmount={1} reducedTransparencyFallbackColor="white">
+      <S.EoullimBox>
         <S.EoullimBoxTextContainer>
           <Icon size={60} icon={icon} includeBackground={false} />
           <S.EoullimBoxText>{title}</S.EoullimBoxText>
