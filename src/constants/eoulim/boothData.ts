@@ -21,7 +21,7 @@ export const BoothInfoData = [
   },
   {
     id: '선생님부스',
-    boothName: '타투',
+    boothName: '지니‘s 타투샵',
     hashTag: '#오늘만즐기는타투  #타타타타투투투  #친구랑커플타투  #(님들은 못하는)커플타투~',
     img: Teacher1,
   },
