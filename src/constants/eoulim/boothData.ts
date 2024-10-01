@@ -42,7 +42,7 @@ export const BoothInfoData = [
     id: '클라우드보안과 1-1',
     boothName: '요술민속촌',
     hashTag: '#전통  #오락  #옛날  #추억  #대결',
-    img: C1_1,
+    img: C1_2,
   },
   {
     id: '클라우드보안과 1-2',
