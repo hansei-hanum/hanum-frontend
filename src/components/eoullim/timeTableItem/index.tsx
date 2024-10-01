@@ -1,6 +1,7 @@
-import React from 'react';
-import * as S from './styled';
+// import React from "react";
 
-export const TimeTableItem: React.FC = () => {
-  return <S.Item></S.Item>;
-};
+// export const TimeTableItem: React.FC = () => {
+//     return(
+
+//     )
+// }
