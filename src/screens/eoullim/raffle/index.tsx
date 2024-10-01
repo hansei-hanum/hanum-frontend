@@ -4,7 +4,14 @@ import { Linking } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { Button, HanumPayHeader, Modal, QRScanner, QRScannerBox } from 'src/components';
+import {
+  Button,
+  HanumPayHeader,
+  Modal,
+  QRScanner,
+  QRScannerBox,
+  ScreenHeader,
+} from 'src/components';
 import { useLuckyDraw } from 'src/hooks/query/eoullim/useLuckyDraw';
 
 import * as S from './styled';
@@ -37,7 +44,7 @@ export const EoullimRaffleScreen: React.FC = () => {
     <>
       <S.EoullimRaffleWrapper>
         <S.EoullimRaffleHeaderWrapper>
-          <HanumPayHeader title="추첨번호 받기" />
+          <ScreenHeader title="추첨번호 받기" />
         </S.EoullimRaffleHeaderWrapper>
         {modalVisible ? (
           <QRScannerBox.Permission>

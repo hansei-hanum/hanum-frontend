@@ -17,13 +17,13 @@ export const BoothInfoData = [
     id: '선생님부스',
     boothName: '쌤볶이',
     hashTag: '#추억의떡볶이  #미녀떡볶이  #둘이먹다하나죽어도모르는  #순한맛',
-    img: Teacher2,
+    img: Teacher1,
   },
   {
     id: '선생님부스',
     boothName: '타투',
     hashTag: '#오늘만즐기는타투  #타타타타투투투  #친구랑커플타투  #(님들은 못하는)커플타투~',
-    img: Teacher1,
+    img: Teacher2,
   },
   {
     id: '선생님부스',
@@ -50,7 +50,7 @@ export const BoothInfoData = [
     hashTag: [
       '#귀염 뽀짝 아기자기 메이드 카페  #촬영 금지📵  #메이드짱의 뽀짝한 세상  #반전매력 메이드카페  #스위트 앤 섹시 메이드카페',
     ],
-    img: C1_2,
+    img: C1_1,
   },
   {
     id: '클라우드보안과 2-1',
