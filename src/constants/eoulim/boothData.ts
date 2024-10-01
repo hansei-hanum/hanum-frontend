@@ -42,7 +42,7 @@ export const BoothInfoData = [
     id: '클라우드보안과 1-1',
     boothName: '요술민속촌',
     hashTag: '#전통  #오락  #옛날  #추억  #대결',
-    img: C1_2,
+    img: C1_1,
   },
   {
     id: '클라우드보안과 1-2',
@@ -50,7 +50,7 @@ export const BoothInfoData = [
     hashTag: [
       '#귀염 뽀짝 아기자기 메이드 카페  #촬영 금지📵  #메이드짱의 뽀짝한 세상  #반전매력 메이드카페  #스위트 앤 섹시 메이드카페',
     ],
-    img: C1_1,
+    img: C1_2,
   },
   {
     id: '클라우드보안과 2-1',
