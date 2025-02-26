@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">한움</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">WC7E1zx2X6CZBXNV7bTyYsrFROa2DC4fv7DaVA</string>
+    <string name="appCenterAnalytics_whenToEnableAnalytics">true</string>
+    <string name="appCenterCrashes_whenToSendCrashes">true</string>
+</resources>

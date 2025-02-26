@@ -1,0 +1,143 @@
+{
+  "name": "Hanum",
+  "version": "2.4",
+  "private": true,
+  "repository": "https://github.com/hansei-hanum/hanum-frontend.git",
+  "maintainers": [
+    {
+      "name": "GeunWon Choi",
+      "email": "kidjustinchoi@gmail.com",
+      "url": "https://github.com/choi138"
+    },
+    {
+      "name": "Park Han",
+      "email": "bagkan1211@gmail.com",
+      "url": "https://github.com/phph1211"
+    }
+  ],
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --fix --cache",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
+    "postinstall": "npx react-native setup-ios-permissions && npx pod-install ios",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@emotion/native": "^11.11.0",
+    "@emotion/react": "^11.11.1",
+    "@gorhom/bottom-sheet": "^4.4.8",
+    "@gorhom/portal": "^1.0.14",
+    "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-native-camera-roll/camera-roll": "^7.1.0",
+    "@react-native-community/blur": "^4.3.2",
+    "@react-native-firebase/app": "^18.3.2",
+    "@react-native-firebase/messaging": "^18.3.2",
+    "@react-native-masked-view/masked-view": "^0.2.8",
+    "@react-native-material/core": "^1.3.7",
+    "@react-navigation/bottom-tabs": "^6.5.8",
+    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/stack": "^6.3.17",
+    "@types/react-native-vector-icons": "^6.4.14",
+    "appcenter": "^5.0.2",
+    "appcenter-analytics": "^5.0.2",
+    "appcenter-crashes": "^5.0.2",
+    "axios": "^1.5.0",
+    "date-fns": "^2.30.0",
+    "deprecated-react-native-prop-types": "^4.2.1",
+    "expo-splash-screen": "^0.20.5",
+    "expo-status-bar": "~1.6.0",
+    "global": "^4.4.0",
+    "lottie-react-native": "6.2.0",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.45",
+    "patch-package": "^8.0.0",
+    "path": "^0.12.7",
+    "react-dom": "^18.2.0",
+    "react-native": "0.72.4",
+    "react-native-asset": "^2.1.1",
+    "react-native-calendars": "^1.1300.0",
+    "react-native-camera": "^4.2.1",
+    "react-native-code-push": "^9.0.0",
+    "react-native-confirmation-code-field": "^7.3.1",
+    "react-native-gesture-handler": "^2.12.1",
+    "react-native-haptic-feedback": "^2.2.0",
+    "react-native-image-picker": "^7.1.0",
+    "react-native-image-zoom-viewer": "^3.0.1",
+    "react-native-inappbrowser-reborn": "^3.7.0",
+    "react-native-linear-gradient": "^2.8.3",
+    "react-native-modal": "^13.0.1",
+    "react-native-notifier": "^1.9.0",
+    "react-native-permissions": "^3.9.0",
+    "react-native-qrcode-scanner": "^1.5.5",
+    "react-native-reanimated": "^3.16.4",
+    "react-native-safe-area-context": "^4.7.1",
+    "react-native-screens": "^3.25.0",
+    "react-native-skeleton-placeholder": "^5.2.4",
+    "react-native-splash-screen": "^3.3.0",
+    "react-native-svg": "13.9.0",
+    "react-native-swiper": "^1.6.0",
+    "react-native-toast-message": "^2.2.0",
+    "react-native-toggle-element": "^2.0.1",
+    "react-native-vector-icons": "^10.0.0",
+    "react-native-version-check": "^3.4.7",
+    "react-native-webview": "^13.8.1",
+    "react-query": "^3.39.3",
+    "recoil": "^0.7.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@babel/preset-env": "^7.20.0",
+    "@babel/runtime": "^7.20.0",
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.2",
+    "@react-native/eslint-config": "^0.72.2",
+    "@react-native/metro-config": "^0.72.11",
+    "@tsconfig/react-native": "^3.0.0",
+    "@types/react": "^18.0.24",
+    "@types/react-native-version-check": "^3.4.8",
+    "@types/react-test-renderer": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "babel-jest": "^29.2.1",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-native": "^4.0.0",
+    "husky": "^8.0.3",
+    "jest": "^29.2.1",
+    "metro-react-native-babel-preset": "0.76.8",
+    "prettier": "^3.0.3",
+    "react": "^18.2.0",
+    "react-test-renderer": "18.2.0",
+    "typescript": "4.8.4"
+  },
+  "lint-staged": {
+    "**/*.+(ts|tsx|js|jsx)": [
+      "eslint --fix --cache",
+      "prettier --write"
+    ]
+  },
+  "resolutions": {
+    "react-native-permissions": "^3.9.0"
+  },
+  "overrides": {
+    "react-native-qrcode-scanner": {
+      "react-native-permissions": "^3.9.0"
+    }
+  },
+  "reactNativePermissionsIOS": [
+    "Camera"
+  ],
+  "engines": {
+    "node": ">=16"
+  }
+}
