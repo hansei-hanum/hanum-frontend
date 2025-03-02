@@ -42,19 +42,20 @@ export const TimeTable: React.FC = () => {
   const today = new Date();
 
   const todayTimeTable = useMemo(() => {
-    if (TimeTableData) {
-      const todayIndex = TimeTableData.data.findIndex((item) => {
-        const itemDate = new Date(item.date);
-        return (
-          itemDate.getFullYear() === today.getFullYear() &&
-          itemDate.getMonth() === today.getMonth() &&
-          itemDate.getDate() === today.getDate()
-        );
-      });
-      return todayIndex !== -1 ? TimeTableData.data[todayIndex].data : [];
-    } else {
+    if (!TimeTableData?.data) {
       return [];
     }
+
+    const todayIndex = TimeTableData.data.findIndex((item) => {
+      const itemDate = new Date(item.date);
+      return (
+        itemDate.getFullYear() === today.getFullYear() &&
+        itemDate.getMonth() === today.getMonth() &&
+        itemDate.getDate() === today.getDate()
+      );
+    });
+
+    return todayIndex !== -1 ? TimeTableData.data[todayIndex].data : [];
   }, [TimeTableData?.data, today]);
 
   useEffect(() => {

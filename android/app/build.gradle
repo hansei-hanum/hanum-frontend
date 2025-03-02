@@ -139,7 +139,6 @@ dependencies {
     implementation project(':react-native-splash-screen')
     implementation 'com.microsoft.appcenter:appcenter-analytics:5.0.5'
     implementation 'com.microsoft.appcenter:appcenter-crashes:5.0.5'
-
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
