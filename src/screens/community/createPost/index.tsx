@@ -101,7 +101,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
 
   const requestData = {
     contentName: '게시물 제목',
-    author: anonymityType.nickname,
+    author: anonymityType.nickname || '',
     content: text,
   };
 
