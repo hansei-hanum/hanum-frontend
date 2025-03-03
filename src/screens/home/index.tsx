@@ -176,7 +176,7 @@ export const HomeScreen: React.FC = () => {
           rowGap: 20,
         }}
       >
-        {/* <Modal
+        <Modal
           title="알림"
           text={'한움은 현재 점검중이에요 \n' + '나중에 다시 시도해 보세요'}
           modalVisible={modalVisible}
@@ -190,7 +190,7 @@ export const HomeScreen: React.FC = () => {
               확인
             </Button>
           }
-        /> */}
+        />
 
         <TimeTable />
         <Timer />

@@ -9,6 +9,7 @@ import { MediaType, launchImageLibrary } from 'react-native-image-picker';
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { communityFilter } from 'src/api';
 
 import { useTheme } from '@emotion/react';
 import { useSetRecoilState } from 'recoil';
@@ -135,6 +136,28 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     name: debouncedValue,
   });
 
+  const requestData = {
+    contentName: '게시물 제목',
+    author: '',
+    content: comment,
+  };
+
+  const filterContent = async () => {
+    try {
+      const result = await communityFilter(requestData);
+      if (result.status === 'SUCCESS') {
+        console.log('메시지 검증 성공');
+        return false;
+      } else {
+        console.log('부적절한 내용 발견:', result.detail);
+        return true;
+      }
+    } catch (error) {
+      console.error('필터링 실패:', error);
+      return true;
+    }
+  };
+
   const handlePresentModalPress = () => {
     if (photo) {
       Toast.show({ type: 'error', text1: '댓글 이미지는 1장까지만 업로드 가능해요' });
@@ -197,7 +220,16 @@ export const CommunityPostDetailScreen: React.FC<CommunityPostDetailScreenProps>
     if (commentId) setCommentId(commentId);
   };
 
-  const sendChat = () => {
+  const sendChat = async () => {
+    const hasProfanity = await filterContent();
+    if (hasProfanity) {
+      console.log('비속어가 포함되어 있어 게시할 수 없습니다.');
+      Toast.show({
+        type: 'error',
+        text1: '댓글에 비속어가 포함되어있어요.',
+      });
+      return;
+    }
     const inputString = comment;
     const regex = /@[가-힣]+/g;
 
