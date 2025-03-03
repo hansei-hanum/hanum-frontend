@@ -1,23 +1,17 @@
-import React, {
-  Key,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-import { Keyboard, View } from "react-native";
-import MI from "react-native-vector-icons/MaterialIcons";
-import MCI from "react-native-vector-icons/MaterialCommunityIcons";
-import { TextInput } from "react-native";
-import { MediaType, launchImageLibrary } from "react-native-image-picker";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import Toast from "react-native-toast-message";
+import React, { Key, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Keyboard, View } from 'react-native';
+import MI from 'react-native-vector-icons/MaterialIcons';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TextInput } from 'react-native';
+import { MediaType, launchImageLibrary } from 'react-native-image-picker';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 
-import { useIsFocused } from "@react-navigation/native";
-import { StackScreenProps } from "@react-navigation/stack";
+import { useIsFocused } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-import { useTheme } from "@emotion/react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useTheme } from '@emotion/react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import {
   ScreenHeader,
@@ -28,26 +22,17 @@ import {
   NoScrollbarScrollView,
   PhotosInterface,
   Spinner,
-} from "src/components";
-import {
-  useBlockGesture,
-  useCreatePost,
-  useEditPost,
-  useGetUser,
-  useNavigate,
-} from "src/hooks";
-import { UserLogo } from "src/assets";
-import { POST_OPTION_LIST, PostOptionEnum } from "src/constants";
-import {
-  anonymityTypeAtom,
-  communityEditAtom,
-  visibleTypeAtom,
-} from "src/atoms";
-import { formatVisibleType, isIos } from "src/utils";
-import { LimitedArticleScopeOfDisclosure } from "src/api";
-import { RootStackParamList } from "src/types";
+} from 'src/components';
+import { useBlockGesture, useCreatePost, useEditPost, useGetUser, useNavigate } from 'src/hooks';
+import { UserLogo } from 'src/assets';
+import { POST_OPTION_LIST, PostOptionEnum } from 'src/constants';
+import { anonymityTypeAtom, communityEditAtom, visibleTypeAtom } from 'src/atoms';
+import { formatVisibleType, isIos } from 'src/utils';
+import { LimitedArticleScopeOfDisclosure, communityFilter } from 'src/api';
+import { RootStackParamList } from 'src/types';
 
-import * as S from "./styled";
+import * as S from './styled';
+import axios from 'axios';
 
 const UserSection: React.FC = () => {
   const anonymityType = useRecoilValue(anonymityTypeAtom);
@@ -67,8 +52,8 @@ const UserSection: React.FC = () => {
         <Text size={16}>
           {anonymityType.nickname
             ? anonymityType.nickname
-            : anonymityType.type === "익명으로 표시"
-              ? "익명"
+            : anonymityType.type === '익명으로 표시'
+              ? '익명'
               : userData?.name}
         </Text>
         <S.VisibleTypeContainer>
@@ -89,12 +74,10 @@ const UserSection: React.FC = () => {
 };
 export type CommunityCreatePostScreenProps = StackScreenProps<
   RootStackParamList,
-  "CommunityCreatePost"
+  'CommunityCreatePost'
 >;
 
-export const CommunityCreatePostScreen: React.FC<
-  CommunityCreatePostScreenProps
-> = ({ route }) => {
+export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps> = ({ route }) => {
   const { isEdit } = route.params;
   const [communityEdit, setCommunityEdit] = useRecoilState(communityEditAtom);
   const visibleType = useRecoilValue(visibleTypeAtom);
@@ -114,10 +97,31 @@ export const CommunityCreatePostScreen: React.FC<
   const theme = useTheme();
 
   const [text, setText] = useState<string>(communityEdit.text);
-  const [selectedImage, setSelectedImage] = useState<
-    PhotosInterface[] | string[]
-  >([]);
+  const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
+  const [includeProfanity, setIncludeProfanity] = useState<boolean>(false);
+
+  const requestData = {
+    contentName: '게시물 제목',
+    author: '작성자 이름',
+    content: text,
+  };
+
+  const filterContent = async () => {
+    try {
+      const result = await communityFilter(requestData);
+      if (result.status === 'SUCCESS') {
+        console.log('메시지 검증 성공');
+        return false;
+      } else {
+        console.log('부적절한 내용 발견:', result.detail);
+        return true;
+      }
+    } catch (error) {
+      console.error('필터링 실패:', error);
+      return true;
+    }
+  };
 
   const canPost = text.length >= 1;
 
@@ -139,22 +143,22 @@ export const CommunityCreatePostScreen: React.FC<
       case PostOptionEnum.VISIBLE:
         if (isEdit) {
           Toast.show({
-            type: "error",
-            text1: "공개 설정은 수정할 수 없어요.",
+            type: 'error',
+            text1: '공개 설정은 수정할 수 없어요.',
           });
           return;
         } else {
-          return navigate("CommunityVisibleType");
+          return navigate('CommunityVisibleType');
         }
       case PostOptionEnum.ANONYMOUS:
         if (isEdit) {
           Toast.show({
-            type: "error",
-            text1: "익명성 설정은 수정할 수 없어요.",
+            type: 'error',
+            text1: '익명성 설정은 수정할 수 없어요.',
           });
           return;
         } else {
-          return navigate("CommunityAnonymitySettings");
+          return navigate('CommunityAnonymitySettings');
         }
     }
   };
@@ -162,18 +166,17 @@ export const CommunityCreatePostScreen: React.FC<
   const openImagePicker = () => {
     if (selectedImage.length >= 5) {
       Toast.show({
-        type: "error",
-        text1: "이미지는 5장까지만 업로드 가능해요",
+        type: 'error',
+        text1: '이미지는 5장까지만 업로드 가능해요',
       });
       return;
     } else {
       const options = {
-        mediaType: "photo" as MediaType,
+        mediaType: 'photo' as MediaType,
         includeBase64: true,
         maxHeight: 2000,
         maxWidth: 2000,
-        selectionLimit:
-          selectedImage.length >= 5 ? 0 : 5 - selectedImage.length,
+        selectionLimit: selectedImage.length >= 5 ? 0 : 5 - selectedImage.length,
       };
       launchImageLibrary(options, (response) => {
         if (response.assets) {
@@ -182,8 +185,8 @@ export const CommunityCreatePostScreen: React.FC<
           const imageType = response.assets?.map((item) => item.type);
           const images = imageUri?.map((uri, index) => ({
             uri,
-            name: imageName?.[index] || "",
-            type: imageType?.[index] || "",
+            name: imageName?.[index] || '',
+            type: imageType?.[index] || '',
           }));
           setSelectedImage([
             ...(selectedImage as PhotosInterface[]),
@@ -212,8 +215,20 @@ export const CommunityCreatePostScreen: React.FC<
     setKeyboardShow(false);
   };
 
-  const onPost = () => {
-    if (!canPost) return null;
+  const onPost = async () => {
+    const hasProfanity = await filterContent();
+
+    if (hasProfanity) {
+      console.log('비속어가 포함되어 있어 게시할 수 없습니다.');
+      Toast.show({
+        type: 'error',
+        text1: '게시글에 비속어가 포함되어있어요.',
+      });
+      return;
+    }
+
+    if (!canPost) return;
+
     if (communityEdit.id && isEdit) {
       editPostMutate({
         id: communityEdit.id,
@@ -223,9 +238,9 @@ export const CommunityCreatePostScreen: React.FC<
       });
     } else {
       mutate({
-        isAnonymous: anonymityType.type === "실명 표시" ? false : true,
+        isAnonymous: anonymityType.type === '실명 표시' ? false : true,
         author:
-          anonymityType.type === "닉네임 사용" && anonymityType.nickname !== ""
+          anonymityType.type === '닉네임 사용' && anonymityType.nickname !== ''
             ? anonymityType.nickname
             : undefined,
         content: text,
@@ -239,36 +254,27 @@ export const CommunityCreatePostScreen: React.FC<
   const blockGesture = useBlockGesture(isLoading || isEditPostLoading);
 
   useEffect(() => {
-    if (
-      isEdit &&
-      communityEdit.images &&
-      Boolean(communityEdit.images?.length) &&
-      isFocused
-    ) {
+    if (isEdit && communityEdit.images && Boolean(communityEdit.images?.length) && isFocused) {
       const images = communityEdit.images.map((image) => image.uri);
       setSelectedImage(images);
     }
     blockGesture;
   }, [isFocused]);
 
-  const convertToKey = (
-    value: string | PhotosInterface
-  ): Key | null | undefined => {
-    if (typeof value === "string") {
+  const convertToKey = (value: string | PhotosInterface): Key | null | undefined => {
+    if (typeof value === 'string') {
       return value;
-    } else if (value && "uri" in value) {
+    } else if (value && 'uri' in value) {
       return value.uri;
     } else {
       return undefined;
     }
   };
 
-  const convertToString = (
-    value: string | PhotosInterface
-  ): string | undefined => {
-    if (typeof value === "string") {
+  const convertToString = (value: string | PhotosInterface): string | undefined => {
+    if (typeof value === 'string') {
       return value;
-    } else if (value && "uri" in value) {
+    } else if (value && 'uri' in value) {
       return value.uri;
     } else {
       return undefined;
@@ -277,13 +283,13 @@ export const CommunityCreatePostScreen: React.FC<
 
   useEffect(() => {
     if (isSuccess || editSuccess) {
-      navigate("CommunityMain");
+      navigate('CommunityMain');
     }
   }, [isLoading, isEditPostLoading]);
 
   useLayoutEffect(() => {
-    const didShow = Keyboard.addListener("keyboardDidShow", onKeyboardShow);
-    const didHide = Keyboard.addListener("keyboardDidHide", onKeyboardHide);
+    const didShow = Keyboard.addListener('keyboardDidShow', onKeyboardShow);
+    const didHide = Keyboard.addListener('keyboardDidHide', onKeyboardHide);
     return () => {
       didShow.remove();
       didHide.remove();
@@ -294,16 +300,13 @@ export const CommunityCreatePostScreen: React.FC<
     <S.CreatePostContainer>
       <ScreenHeader
         isLoading={isLoading || isEditPostLoading}
-        title={`게시글 ${isEdit ? "수정" : "작성"}하기`}
+        title={`게시글 ${isEdit ? '수정' : '작성'}하기`}
         rightContent={
           isLoading || isEditPostLoading ? (
             <Spinner size={24} color={theme.primary} />
           ) : (
             <ScaleOpacity onPress={onPost} activeScale={canPost}>
-              <Text
-                size={16}
-                color={canPost ? theme.primary : theme.placeholder}
-              >
+              <Text size={16} color={canPost ? theme.primary : theme.placeholder}>
                 게시
               </Text>
             </ScaleOpacity>
@@ -328,13 +331,13 @@ export const CommunityCreatePostScreen: React.FC<
             textAlignVertical="top"
           />
         </S.CreatePostMainSection>
-        <View style={{ display: keyboardShow ? "none" : "flex" }}>
+        <View style={{ display: keyboardShow ? 'none' : 'flex' }}>
           <S.CreatePostImageSection>
             {(exitSelectedImage || Boolean(communityEdit.images?.length)) && (
               <NoScrollbarScrollView
                 horizontal={true}
                 contentContainerStyle={{
-                  flexDirection: "row",
+                  flexDirection: 'row',
                   columnGap: 4,
                   paddingRight: 14,
                   marginVertical: 10,
@@ -352,12 +355,7 @@ export const CommunityCreatePostScreen: React.FC<
           </S.CreatePostImageSection>
           <S.CreatePostMainSection>
             {POST_OPTION_LIST.map((props, index) => (
-              <OptionCard
-                key={index}
-                index={index}
-                onOptionClick={onOptionClick}
-                {...props}
-              />
+              <OptionCard key={index} index={index} onOptionClick={onOptionClick} {...props} />
             ))}
           </S.CreatePostMainSection>
         </View>

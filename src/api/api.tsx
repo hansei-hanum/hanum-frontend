@@ -6,6 +6,7 @@ export const API_BASEURLS = {
   INFO: 'https://info.hanum.us',
   FESTIVAL: 'https://festival.hanum.us',
   COMMUNITY: 'https://community.hanum.us/',
+  COMMUNITYFILTER: 'https://filter.hanum.us/',
   HANOWL_APPLY: 'https://noti-recruit.hanum.us/',
 };
 
@@ -29,6 +30,7 @@ export const payInstance = createAxiosInstance(API_BASEURLS.PAY);
 export const infoInstance = createAxiosInstance(API_BASEURLS.INFO);
 export const festivalInstance = createAxiosInstance(API_BASEURLS.FESTIVAL);
 export const communityInstance = createAxiosInstance(API_BASEURLS.COMMUNITY);
+export const communityFilterInstance = createAxiosInstance(API_BASEURLS.COMMUNITYFILTER);
 export const hanowlApplyInstance = createAxiosInstance(API_BASEURLS.HANOWL_APPLY);
 
 export interface APIResponse<T = unknown> {
@@ -49,6 +51,7 @@ export const setAccessToken = (token: string | null) => {
     festivalInstance,
     communityInstance,
     hanowlApplyInstance,
+    communityFilterInstance,
   ];
 
   instances.forEach((instance) => {

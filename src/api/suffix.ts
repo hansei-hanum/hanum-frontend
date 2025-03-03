@@ -34,6 +34,10 @@ export const COMMUNITY = {
   USER_MENTION: '/users/mentions/search',
 };
 
+export const COMMUNITYFILTER = {
+  FILTER: '/validate/message',
+};
+
 export const HANOWL_APPLY = {
   APPLICATION: '/users/@me/applications',
   GET_TEAMS: '/departments',
@@ -45,6 +49,7 @@ export interface ApiSuffixProps {
   PAY: typeof PAY;
   EOULLIM: typeof EOULLIM;
   COMMUNITY: typeof COMMUNITY;
+  COMMUNITYFILTER: typeof COMMUNITYFILTER;
   HANOWL_APPLY: typeof HANOWL_APPLY;
 }
 
@@ -54,5 +59,6 @@ export const API_SUFFIX: ApiSuffixProps = {
   PAY,
   EOULLIM,
   COMMUNITY,
+  COMMUNITYFILTER,
   HANOWL_APPLY,
 };
