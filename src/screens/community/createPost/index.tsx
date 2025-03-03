@@ -32,7 +32,6 @@ import { LimitedArticleScopeOfDisclosure, communityFilter } from 'src/api';
 import { RootStackParamList } from 'src/types';
 
 import * as S from './styled';
-import axios from 'axios';
 
 const UserSection: React.FC = () => {
   const anonymityType = useRecoilValue(anonymityTypeAtom);
@@ -99,11 +98,10 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
   const [text, setText] = useState<string>(communityEdit.text);
   const [selectedImage, setSelectedImage] = useState<PhotosInterface[] | string[]>([]);
   const [keyboardShow, setKeyboardShow] = useState<boolean>(false);
-  const [includeProfanity, setIncludeProfanity] = useState<boolean>(false);
 
   const requestData = {
     contentName: '게시물 제목',
-    author: '작성자 이름',
+    author: anonymityType.nickname,
     content: text,
   };
 
@@ -222,7 +220,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
       console.log('비속어가 포함되어 있어 게시할 수 없습니다.');
       Toast.show({
         type: 'error',
-        text1: '게시글에 비속어가 포함되어있어요.',
+        text1: '게시글/닉네임에 비속어가 포함되어있어요.',
       });
       return;
     }

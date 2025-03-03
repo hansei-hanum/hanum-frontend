@@ -3,7 +3,7 @@ import { API_SUFFIX } from './suffix';
 
 export interface ValidateMessageRequest {
   contentName: string;
-  author: string;
+  author: string | undefined;
   content: string;
 }
 
