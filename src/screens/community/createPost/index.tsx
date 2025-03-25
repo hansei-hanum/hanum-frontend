@@ -121,7 +121,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
     }
   };
 
-  const canPost = text.length >= 1;
+  let canPost = text.length >= 1;
 
   const exitSelectedImage = selectedImage && selectedImage?.length > 0;
 
@@ -246,6 +246,7 @@ export const CommunityCreatePostScreen: React.FC<CommunityCreatePostScreenProps>
         attachments: selectedImage as PhotosInterface[],
       });
     }
+    canPost = false;
   };
 
   const isFocused = useIsFocused();

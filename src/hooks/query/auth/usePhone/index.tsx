@@ -21,14 +21,16 @@ export const usePhone = (): UseMutationResult<
       setAuth({ ...auth, phone: variables.phone });
       navigate('VerifyCode');
     },
-    onError: (error) => {
-      console.log(error, 'error');
-      console.log(error.response?.data, 'error data');
-      const message = error.response?.data.message;
-      setAuth({
-        ...auth,
-        errorMessage: authPhoneErrorMessage[message ?? ('' || AUTH_ERROR_MESSAGE)],
-      });
+    onError: (config) => {
+      // console.log(error, 'error');
+      // console.log(error.response?.data, 'error data');
+      // const message = error.response?.data.message;
+      // setAuth({
+      //   ...auth,
+      //   errorMessage: authPhoneErrorMessage[message ?? ('' || AUTH_ERROR_MESSAGE)],
+      // });
+      // setAuth({ ...auth, phone: JSON.parse(config?.data || '{}').phone });
+      navigate('VerifyCode');
     },
     retry: 0,
   });

@@ -3,6 +3,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect } from 'react';
 import { Notifier } from 'react-native-notifier';
 import { PermissionsAndroid, TouchableOpacity, Image, View } from 'react-native';
+import codePush from 'react-native-code-push';
 
 import messaging from '@react-native-firebase/messaging';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -126,6 +127,8 @@ export const HomeScreen: React.FC = () => {
     }
   }, [isFocused]);
 
+  console.log(process.env);
+
   useEffect(() => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
       if (remoteMessage.data) {
@@ -141,6 +144,20 @@ export const HomeScreen: React.FC = () => {
         }
       });
   }, []);
+
+  codePush.sync({
+    installMode: codePush.InstallMode.IMMEDIATE,
+    mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+    updateDialog: true,
+  });
+
+  codePush.getUpdateMetadata().then((metadata) => {
+    if (metadata) {
+      console.log('현재 설치된 업데이트:', metadata);
+    } else {
+      console.log('업데이트 없음');
+    }
+  });
 
   return (
     <S.HomeScreenWrapper>
@@ -176,7 +193,7 @@ export const HomeScreen: React.FC = () => {
           rowGap: 20,
         }}
       >
-        <Modal
+        {/* <Modal
           title="알림"
           text={'한움은 현재 점검중이에요 \n' + '나중에 다시 시도해 보세요'}
           modalVisible={modalVisible}
@@ -190,7 +207,14 @@ export const HomeScreen: React.FC = () => {
               확인
             </Button>
           }
-        />
+        /> */}
+
+        {/* <AlertBox
+          navigateUrl="HanowlMain"
+          icon="📢"
+          subText="학생회 모집 공고가 있어요"
+          mainText="학생회 모집 공고 보기"
+        /> */}
 
         <TimeTable />
         <Timer />
@@ -200,5 +224,3 @@ export const HomeScreen: React.FC = () => {
     </S.HomeScreenWrapper>
   );
 };
-
-// ios

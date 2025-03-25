@@ -42,7 +42,7 @@ export const HANOWL_APPLY = {
 
   CHECK_SUBTEXTS: '이미 지원서를 제출하셨어요.\n제출된 지원서는 수정과 삭제가 불가해요.',
 
-  URL: 'https://recruit.hanum.us/',
+  URL: 'https://2025-hanowl-nz2k.vercel.app/',
 
   START_DATE: '2024-03-20T09:00:00',
 };

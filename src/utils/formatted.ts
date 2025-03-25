@@ -15,6 +15,8 @@ export const formattedDepartment = (department: null | string) => {
       return '해킹보안과';
     case 'GAME':
       return '게임과';
+    case 'INTELLIGENT_SOFTWARE':
+      return '지능형소프트웨어과';
   }
 };
 

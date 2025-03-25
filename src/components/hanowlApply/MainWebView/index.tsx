@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import Toast from 'react-native-toast-message';
+import { Linking } from 'react-native';
 
 import { useTheme } from '@emotion/react';
 
@@ -28,9 +29,13 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
 
   const onButtonPress = () => {
     if (applyData?.isSubmitted) {
-      navigate('HanowlFinalConfirm');
+      Linking.openURL(
+        'https://docs.google.com/forms/d/e/1FAIpQLSe3Z0wijuu-unboh6bisdrQkAEiQo4axVYQ-4MWkxY5-vGBmA/viewform?usp=header',
+      );
     } else if (isStudent) {
-      navigate('HanowlSelectTeam');
+      Linking.openURL(
+        'https://docs.google.com/forms/d/e/1FAIpQLSe3Z0wijuu-unboh6bisdrQkAEiQo4axVYQ-4MWkxY5-vGBmA/viewform?usp=header',
+      );
     } else {
       Toast.show({
         type: 'error',
@@ -45,6 +50,7 @@ export const MainWebView: React.FC<MainWebViewProps> = ({ onMessage, isLoading, 
     <>
       <S.HanowlApplyMainDummyContainer style={!mainLoading && { display: 'none' }} />
       <WebView
+        cacheEnabled={true}
         source={{ uri: `${HANOWL_APPLY.URL}` }}
         style={{
           flex: 1,

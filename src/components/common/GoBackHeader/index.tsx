@@ -3,7 +3,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-
+import { Linking } from 'react-native';
 import { useTheme } from '@emotion/react';
 
 export interface GoBackCustomIconProps {

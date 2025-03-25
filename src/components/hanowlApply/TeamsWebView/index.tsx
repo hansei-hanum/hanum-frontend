@@ -87,7 +87,11 @@ export const TeamsWebView: React.FC<TeamsWebViewProps> = ({
       />
       <S.TeamApplyButtonWrapper>
         <Button
-          onPress={onPress}
+          onPress={() =>
+            Linking.openURL(
+              'https://docs.google.com/forms/d/e/1FAIpQLSe3Z0wijuu-unboh6bisdrQkAEiQo4axVYQ-4MWkxY5-vGBmA/viewform?usp=header',
+            )
+          }
           style={{
             paddingVertical: 14,
             opacity: 1,
