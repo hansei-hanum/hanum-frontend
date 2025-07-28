@@ -1,5 +1,4 @@
 def node_require(script)
-  # Resolve script with node to allow for hoisting
   require Pod::Executable.execute_command('node', ['-p',
     "require.resolve(
       '#{script}',
@@ -8,19 +7,19 @@ def node_require(script)
 end
 
 node_require('react-native/scripts/react_native_pods.rb')
+
 node_require('react-native-permissions/scripts/setup.rb')
 
 platform :ios, '15.5'
 
 prepare_react_native_project!
+
 use_frameworks! :linkage => :static
 
 setup_permissions([
   'PhotoLibrary',
   'PhotoLibraryAddOnly',
 ])
-
-flipper_config = FlipperConfiguration.disabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -30,6 +29,7 @@ end
 
 target 'Hanum' do
   config = use_native_modules!
+
   $RNFirebaseAsStaticFramework = true
   pod 'FirebaseCore', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
@@ -40,7 +40,6 @@ target 'Hanum' do
     :path => config[:reactNativePath],
     :hermes_enabled => flags[:hermes_enabled],
     :fabric_enabled => flags[:fabric_enabled],
-    :flipper_configuration => flipper_config,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
@@ -54,7 +53,7 @@ target 'Hanum' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.5'

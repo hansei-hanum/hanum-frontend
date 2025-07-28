@@ -43,7 +43,7 @@ export const MainScreen: React.FC = () => {
           paddingVertical: 4,
         },
       }}
-      initialRouteName="홈"
+      initialRouteName="Home" // 여기를 "홈"에서 "Home"으로 변경했습니다.
     >
       <BottomTab.Screen
         name="Home"
