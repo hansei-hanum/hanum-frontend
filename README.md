@@ -15,3 +15,12 @@ $ yarn run <os>
 # example
 $ yarn run ios # run ios app
 ```
+
+```cmd
+git clone https://github.com/hansei-hanum/hanum-frontend.git
+cd hanum-frontend
+yarn install
+
+# command of a specific package
+$ yarn run android
+```
