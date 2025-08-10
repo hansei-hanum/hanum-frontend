@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "765614676171",
+    "project_id": "hansei-hanum",
+    "storage_bucket": "hansei-hanum.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765614676171:android:430c73d6e6016bd12aa34e",
+        "android_client_info": {
+          "package_name": "com.hanowl.hanum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "765614676171-206kh8fg1glq3javo1m9blmvslee8gp7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbFgZQkh6YCyFThPPDpF2f34q2WqAG3N4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "765614676171-206kh8fg1glq3javo1m9blmvslee8gp7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "765614676171-ct06fpprkdmbm3r3hvb4ku6hrgn8deij.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hanowl.hanum"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

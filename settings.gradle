@@ -1,0 +1,32 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        google()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "Hanum"
+
+include(":app")
+
+include(":react-native-vector-icons")
+project(":react-native-vector-icons").projectDir = new File(rootProject.projectDir, "../node_modules/react-native-vector-icons/android")
+
+include(":react-native-splash-screen")
+project(":react-native-splash-screen").projectDir = new File(rootProject.projectDir, "../node_modules/react-native-splash-screen/android")
+
+include(":react-native-code-push")
+project(":react-native-code-push").projectDir = new File(rootProject.projectDir, "../node_modules/react-native-code-push/android/app")
+
+includeBuild('../node_modules/react-native/packages/react-native-gradle-plugin')
+
+
